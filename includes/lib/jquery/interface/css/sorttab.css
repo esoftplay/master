@@ -1,0 +1,38 @@
+ul
+{
+	list-style: none;
+	border-bottom: 1px solid #eee;
+	height: 30px;
+}
+.sortableitem
+{
+	cursor:move;
+	list-style: none;
+	float: left;
+	height: 30px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	border-bottom: 1px solid #fff;
+	margin-right: 2px;
+}
+.sortableitem a.tabs
+{
+	display: block;
+	float: left;
+	padding: 0 10px;
+	height: 30px;
+	line-height: 30px;
+}
+.sortableitem p
+{
+	clear: both;
+}
+.sortHelper
+{
+	float: left;
+	height: 30px;
+	line-height: 30px;
+	border: 1px solid #9c0;
+	background-color: #fff;
+	border-bottom: 1px solid #fff;
+}

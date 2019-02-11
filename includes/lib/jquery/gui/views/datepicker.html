@@ -1,0 +1,6 @@
+<?php echo $content['title'];?><input type="text" id="<?php echo $divid;?>" size="30" value="<?php echo $content['content'];?>" />
+<script type="text/javascript">
+	$(function() {
+		$("#<?php echo $divid;?>").datepicker(<?php echo $param;?>);
+	});
+</script>

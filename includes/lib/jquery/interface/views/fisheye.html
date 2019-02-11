@@ -1,0 +1,15 @@
+<div id="{$divid}" class="fisheye">
+	<div{$params.container}>
+	{foreach key=key item=item from=$content}
+		<{$params.items} href="{$item.link}" class="fisheyeItem"><img src="{$item.thumb}" width="30" /><{$params.itemsText}>{$item.title}</{$params.itemsText}></{$params.items}>
+	{/foreach}
+	</div>
+</div>
+{literal}
+<script type="text/javascript">
+	$(document).ready(
+		function() {
+			$('#{/literal}{$divid}{literal}').Fisheye({/literal}{$param}{literal});
+		});
+</script>
+{/literal}

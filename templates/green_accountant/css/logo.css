@@ -1,0 +1,9 @@
+.widget_logo{
+  float: left;
+  height: 59px;
+  margin: 100px 40px 0;
+  overflow: hidden;
+  position: absolute;
+  width: 180px;
+  z-index: 12;
+}

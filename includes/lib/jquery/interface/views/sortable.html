@@ -1,0 +1,58 @@
+{foreach key=position item=blocks from=$content}
+	<div id="{$position}" class="{$className}">
+		{foreach key=id item=data from=$blocks}
+			<div id="{$id}" class="groupItem">
+				<div class="itemHeader">{$data.title}<a href="#" class="closeEl">[+]</a></div>
+				<div class="itemContent">{$data.content}</div>
+			</div>
+		{/foreach}
+		<p>&nbsp;</p>
+	</div>
+{/foreach}
+{literal}
+<script type="text/javascript">
+$(document).ready(
+	function () {
+		$('a.closeEl').bind('click', toggleContent);
+		$('div.{/literal}{$className}{literal}').Sortable(
+			{
+				accept: 'groupItem',
+				helperclass: 'sortHelper',
+				activeclass : 	'sortableactive',
+				hoverclass : 	'sortablehover',
+				handle: 'div.itemHeader',
+				tolerance: 'pointer',
+				onChange : function(ser)
+				{
+				},
+				onStart : function()
+				{
+					$.iAutoscroller.start(this, document.getElementsByTagName('body'));
+				},
+				onStop : function()
+				{
+					$.iAutoscroller.stop();
+				}
+			}
+		);
+	}
+);
+var toggleContent = function(e)
+{
+	var targetContent = $('div.itemContent', this.parentNode.parentNode);
+	if (targetContent.css('display') == 'none') {
+		targetContent.slideDown(300);
+		$(this).html('[-]');
+	} else {
+		targetContent.slideUp(300);
+		$(this).html('[+]');
+	}
+	return false;
+};
+function serialize(s)
+{
+	serial = $.SortSerialize(s);
+	alert(serial.hash);
+};
+</script>
+{/literal}

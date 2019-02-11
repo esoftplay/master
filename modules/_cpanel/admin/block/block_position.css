@@ -1,0 +1,174 @@
+.block_gui_position
+{
+	min-height: 84px;
+	border: 1px solid #ccc;
+	background: #fff;
+}
+.block_gui_position h2
+{
+	float: left;
+	color: #BF4E4A;
+	padding: 0px 12px;
+}
+*html .block_gui_position h2 {
+	padding-bottom: 0px;
+}
+*:first-child+html .block_gui_position h2 {
+	padding-bottom: 0px;
+}
+.block_gui_position span.add_block
+{
+	float: right;
+	width: 16px;
+	height: 16px;
+	padding-right: 2px;
+	padding-bottom: 4px;
+	margin-top: 7px;
+	cursor: pointer;
+	background: url(../images/add.gif) no-repeat;
+}
+.block_gui_position span.hide_block
+{
+	float: right;
+	width: 16px;
+	height: 16px;
+	padding-right: 12px;
+	padding-bottom: 4px;
+	margin-top: 7px;
+	cursor: pointer;
+	background: url(../images/hide.gif) no-repeat;
+}
+span#show_hidden
+{
+	position: absolute;
+	position: fixed;
+	top: 25px;
+	right: 5px;
+	z-index: 99999;
+	cursor: pointer;
+	background: #ff0000;
+	color: #fff;
+	padding: 5px;
+	border: 1px solid #ccc;
+}
+.hide_this_block{
+	display: none;
+}
+.groupWrapper
+{
+	clear: both;
+	min-height: 23px;
+}
+.groupItem
+{
+	margin: 3px 3px 20px 3px;
+}
+.groupItem .itemHeader
+{
+	line-height: 31px;
+	background: #DFDFDF url(../images/gray-grad.png) repeat-x scroll left top;
+	text-shadow: 0 1px 0 #FFFFFF;
+	-moz-border-radius: 5px;
+	color: #808080;
+	padding: 1px 10px 0px 10px;
+	cursor: move;
+	font-size: 14px;
+	position: relative;
+}
+
+.groupItem .itemHeader a
+{
+	position: absolute;
+	right: 10px;
+	top: 0px;
+	font-weight: normal;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+.groupItem .itemHeader span
+{
+	position: absolute;
+	top: 8px;
+	cursor: pointer;
+	height: 16px;
+	width: 16px;
+	padding: 0px;
+	overflow: hidden;
+}
+*html .groupItem .itemHeader span
+{
+	top: 5px;
+}
+*:first-child+html .groupItem .itemHeader span
+{
+	top: 5px;
+}
+.groupItem .itemHeader span.info
+{
+	right: 8px;
+	background: url('../images/info.gif') no-repeat;
+	background-position: 0px 0px;
+}
+.groupItem .itemHeader span.edit
+{
+	right: 30px;
+	background: url('../images/edit.gif') no-repeat;
+	background-position: 0px 0px;
+}
+.groupItem .itemHeader span.delete
+{
+	right: 54px;
+	background: url('../images/delete.gif') no-repeat;
+	background-position: 0px 0px;
+}
+.groupItem .itemHeader span.info:hover, .groupItem .itemHeader span.edit:hover, .groupItem .itemHeader span.delete:hover
+{
+	background-position: 0px -16px;
+}
+.sortHelper
+{
+	border: 1px dotted #ccc;
+	width: auto !important;
+}
+.groupWrapper p
+{
+	height: 1px;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+.itemContent
+{
+	display: none;
+}
+
+table.block_info {
+	width: 96%;
+}
+table.block_info td {
+	width: 50%;
+	vertical-align: top;
+	text-align: left;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	padding: 5px;
+}
+#modal-body {
+	overflow: scroll !important;
+	-webkit-overflow-scrolling: touch !important;
+}
+.panel-footer {
+	margin: 0;
+	padding: 0;
+	height: 0px!important;
+	overflow: hidden;
+}
+.transferer2
+{
+	border: 1px solid #808080;
+	background-color: #ccc;
+	filter:alpha(opacity=30);
+	-moz-opacity: 0.3;
+	opacity: 0.3;
+}

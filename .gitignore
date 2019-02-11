@@ -1,0 +1,5 @@
+.DS_Store
+Thumbs.db
+images/cache/
+images/license.txt
+/config.php

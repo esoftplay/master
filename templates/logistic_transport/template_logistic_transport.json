@@ -1,0 +1,598 @@
+{
+    "theme": [
+        {
+            "id": "17",
+            "template_id": "2",
+            "name": "none",
+            "content": "[title][content]",
+            "active": "1"
+        },
+        {
+            "id": "18",
+            "template_id": "2",
+            "name": "search",
+            "content": "<div class=”block_search”>\r\n[<label>title<\/label>][content]\r\n<\/div>",
+            "active": "1"
+        },
+        {
+            "id": "19",
+            "template_id": "2",
+            "name": "menu top",
+            "content": "<div class=”block_menu_top”>\r\n  <div class=”navbar navbar-default” role=”navigation”>\r\n    <div class=”navbar-header”>\r\n      <button type=”button” class=”navbar-toggle” data-toggle=”collapse” data-target=”.navbar-collapse”>\r\n        <span class=”icon-bar”><\/span>\r\n        <span class=”icon-bar”><\/span>\r\n        <span class=”icon-bar”><\/span>\r\n      <\/button>\r\n      [<a class=”navbar-brand” href=”\/”>title<\/a>]\r\n    <\/div>\r\n    <div class=”collapse navbar-collapse”>\r\n        [content]\r\n    <\/div>\r\n  <\/div>\r\n<\/div>",
+            "active": "1"
+        },
+        {
+            "id": "20",
+            "template_id": "2",
+            "name": "info",
+            "content": "<div class=”panel panel-info”>\r\n  [<div class=”panel-heading”><h3 class=”panel-title”>title<\/h3> <\/div>]\r\n  <div class=”panel-body”>\r\n    [content]\r\n  <\/div>\r\n<\/div>",
+            "active": "1"
+        },
+        {
+            "id": "21",
+            "template_id": "2",
+            "name": "default",
+            "content": "<div class=”panel panel-default”>\r\n  [<div class=”panel-heading”><h3 class=”panel-title”>title<\/h3> <\/div>]\r\n  <div class=”panel-body”>\r\n    [content]\r\n  <\/div>\r\n<\/div>",
+            "active": "1"
+        }
+    ],
+    "block_ref": {
+        "1": "agenda",
+        "2": "contact",
+        "3": "content",
+        "4": "custom",
+        "5": "language",
+        "6": "layout",
+        "7": "links",
+        "8": "login",
+        "9": "logo",
+        "10": "menu",
+        "11": "survey",
+        "12": "statistic",
+        "13": "testimonial",
+        "14": "imageslider",
+        "15": "content_list",
+        "16": "content_tag"
+    },
+    "position": {
+        "1": "left",
+        "2": "right",
+        "3": "top",
+        "4": "bottom",
+        "5": "header",
+        "6": "footer",
+        "7": "logo",
+        "8": "content_top",
+        "9": "content_bottom",
+        "10": "intro",
+        "11": "debug",
+        "12": "content"
+    },
+    "block": [
+        {
+            "id": "42",
+            "template_id": "2",
+            "block_ref_id": "4",
+            "position_id": "10",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "17",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "content": "<h1>Ini adalah sample atau demo produk e-profile untuk Company Profile dari fisip.net. Design tampilan situs bisa diubah sesuai dengan permintaan anda.<\/h1>",
+                "type": "none"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "43",
+            "template_id": "2",
+            "block_ref_id": "3",
+            "position_id": "9",
+            "show_title": "1",
+            "link": "",
+            "cache": "0",
+            "theme_id": "21",
+            "group_ids": ",all,",
+            "menu_ids": ",-1,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "type_id": "1",
+                "cat_id": "1",
+                "ids": "",
+                "limit_title": "75",
+                "limit_title_by": "char",
+                "template": "default",
+                "title": "1",
+                "title_link": "1",
+                "intro": "intro",
+                "created": "1",
+                "modified": "1",
+                "author": "1",
+                "tag": "1",
+                "tag_link": "1",
+                "rating": "1",
+                "read_more": "0",
+                "tot_list": "2",
+                "thumbnail": "1"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "44",
+            "template_id": "2",
+            "block_ref_id": "10",
+            "position_id": "3",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "19",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "menu-horizontal",
+                "cat_id": "1",
+                "submenu": "bottom right"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "45",
+            "template_id": "2",
+            "block_ref_id": "9",
+            "position_id": "7",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "17",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "image": "templates\/logistic_transport\/images\/logo.gif",
+                "size": "",
+                "is_link": "1",
+                "link": "",
+                "title": ""
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "46",
+            "template_id": "2",
+            "block_ref_id": "10",
+            "position_id": "1",
+            "show_title": "1",
+            "link": "",
+            "cache": "0",
+            "theme_id": "20",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "cat_id": "1",
+                "layout": "vertical",
+                "submenu": "bottom right"
+            },
+            "orderby": "3",
+            "active": "0"
+        },
+        {
+            "id": "47",
+            "template_id": "2",
+            "block_ref_id": "6",
+            "position_id": "3",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "18",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "task": "searchForm",
+                "caption": "keyword here..."
+            },
+            "orderby": "2",
+            "active": "1"
+        },
+        {
+            "id": "48",
+            "template_id": "2",
+            "block_ref_id": "12",
+            "position_id": "1",
+            "show_title": "1",
+            "link": "",
+            "cache": "900",
+            "theme_id": "20",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "total_visit": "1",
+                "total_member": "1",
+                "member_online": "1",
+                "user_online": "1",
+                "active_days": "1",
+                "start_days": "07\/25\/2010",
+                "interval_time": "900"
+            },
+            "orderby": "8",
+            "active": "1"
+        },
+        {
+            "id": "49",
+            "template_id": "2",
+            "block_ref_id": "2",
+            "position_id": "1",
+            "show_title": "1",
+            "link": "",
+            "cache": "900",
+            "theme_id": "20",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": "",
+            "orderby": "6",
+            "active": "1"
+        },
+        {
+            "id": "50",
+            "template_id": "2",
+            "block_ref_id": "6",
+            "position_id": "8",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "17",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": ",-1,",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "task": "Navigation",
+                "caption": ""
+            },
+            "orderby": "2",
+            "active": "1"
+        },
+        {
+            "id": "51",
+            "template_id": "2",
+            "block_ref_id": "7",
+            "position_id": "1",
+            "show_title": "1",
+            "link": "",
+            "cache": "900",
+            "theme_id": "20",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "show": "0",
+                "limit": "4"
+            },
+            "orderby": "5",
+            "active": "1"
+        },
+        {
+            "id": "52",
+            "template_id": "2",
+            "block_ref_id": "10",
+            "position_id": "1",
+            "show_title": "1",
+            "link": "",
+            "cache": "0",
+            "theme_id": "20",
+            "group_ids": ",logged,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "menu-vertical",
+                "cat_id": "3",
+                "submenu": "bottom left"
+            },
+            "orderby": "2",
+            "active": "1"
+        },
+        {
+            "id": "53",
+            "template_id": "2",
+            "block_ref_id": "10",
+            "position_id": "4",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "17",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "menu-horizontal",
+                "cat_id": "2",
+                "submenu": "top right"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "54",
+            "template_id": "2",
+            "block_ref_id": "6",
+            "position_id": "11",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "17",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "task": "debug",
+                "caption": ""
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "55",
+            "template_id": "2",
+            "block_ref_id": "11",
+            "position_id": "1",
+            "show_title": "1",
+            "link": "",
+            "cache": "900",
+            "theme_id": "20",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "ids": [
+                    "2",
+                    "1"
+                ],
+                "limit": "1"
+            },
+            "orderby": "7",
+            "active": "1"
+        },
+        {
+            "id": "56",
+            "template_id": "2",
+            "block_ref_id": "6",
+            "position_id": "1",
+            "show_title": "1",
+            "link": "",
+            "cache": "0",
+            "theme_id": "20",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "task": "templates",
+                "caption": ""
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "57",
+            "template_id": "2",
+            "block_ref_id": "9",
+            "position_id": "5",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "17",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "image": "templates\/logistic_transport\/images\/header.jpg",
+                "size": "",
+                "is_link": "0",
+                "link": "",
+                "title": ""
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "58",
+            "template_id": "2",
+            "block_ref_id": "3",
+            "position_id": "8",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "20",
+            "group_ids": ",all,",
+            "menu_ids": "",
+            "menu_ids_blocked": ",-1,",
+            "module_ids_allowed": ",4,",
+            "module_ids_blocked": "",
+            "config": {
+                "type_id": "-1",
+                "cat_id": "-1",
+                "ids": "",
+                "limit_title": "75",
+                "limit_title_by": "char",
+                "template": "related",
+                "title": "1",
+                "title_link": "1",
+                "intro": "intro",
+                "created": "1",
+                "modified": "1",
+                "author": "1",
+                "tag": "0",
+                "tag_link": "0",
+                "rating": "1",
+                "read_more": "1",
+                "tot_list": "5",
+                "thumbnail": "1"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "59",
+            "template_id": "2",
+            "block_ref_id": "13",
+            "position_id": "9",
+            "show_title": "1",
+            "link": "",
+            "cache": "0",
+            "theme_id": "20",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "limit": "2",
+                "avatar": "1",
+                "orderby": "1",
+                "readmore": "0"
+            },
+            "orderby": "3",
+            "active": "1"
+        },
+        {
+            "id": "117",
+            "template_id": "2",
+            "block_ref_id": "3",
+            "position_id": "9",
+            "show_title": "1",
+            "link": "",
+            "cache": "900",
+            "theme_id": "21",
+            "group_ids": ",all,",
+            "menu_ids": ",-1,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "thumbnail-only",
+                "kind_id": "1",
+                "type_id": "1",
+                "cat_id": "-2",
+                "ids": "",
+                "popular": "",
+                "limit_title": "75",
+                "limit_title_by": "char",
+                "title": "0",
+                "title_link": "0",
+                "intro": "blank",
+                "created": "0",
+                "modified": "0",
+                "author": "0",
+                "tag": "0",
+                "tag_link": "0",
+                "rating": "0",
+                "read_more": "0",
+                "tot_list": "3",
+                "thumbnail": "0"
+            },
+            "orderby": "2",
+            "active": "1"
+        }
+    ],
+    "text": {
+        "42": {
+            "id": "Intro"
+        },
+        "43": {
+            "id": "Hotline News"
+        },
+        "44": {
+            "id": "Menu Top"
+        },
+        "45": {
+            "id": "Logo"
+        },
+        "46": {
+            "id": "Left Menu"
+        },
+        "47": {
+            "id": "Search :"
+        },
+        "48": {
+            "id": "Statistic"
+        },
+        "49": {
+            "id": "Online Support"
+        },
+        "50": {
+            "id": "Navigation"
+        },
+        "51": {
+            "id": "Links"
+        },
+        "52": {
+            "id": "User Menu"
+        },
+        "53": {
+            "id": "Menu Bottom"
+        },
+        "54": {
+            "id": "Debug"
+        },
+        "55": {
+            "id": "Polling"
+        },
+        "56": {
+            "id": "Pilih Template"
+        },
+        "57": {
+            "id": "Header"
+        },
+        "58": {
+            "id": "Artikel Berhubungan"
+        },
+        "59": {
+            "id": "Testimoni"
+        },
+        "117": {
+            "id": "Gallery"
+        }
+    }
+}

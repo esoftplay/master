@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<TITLE>Table with MultiCells</TITLE>
+<STYLE>
+BODY {font-family:"Times New Roman",serif}
+H2 {color:#4000A0}
+.st {font-weight:bold; color:#900000}
+</STYLE>
+</HEAD>
+<BODY>
+<H2>Table with MultiCells</H2>
+<H4 CLASS="st">Informations</H4>Author: <A HREF="mailto:olivier@fpdf.org?subject=Table%20with%20MultiCells">Olivier</A><BR>License: Freeware
+<H4 CLASS="st">Description</H4>The goal of this script is to show how to build a table from MultiCells.<BR>
+As MultiCells go to the next line after being output, the base idea consists in saving the
+current position, printing the MultiCell and resetting the position to its right.<BR>
+There is a difficulty, however, if the table is too long: page breaks. Before outputting a
+row, it is necessary to know whether it will cause a break or not. If it does overflow, a
+manual page break must be done first.<BR>
+To do so, the height of the row must be known in advance; it is the maximum of the heights of
+the MultiCells it is made up of. To know the height of a MultiCell, the NbLines() method is used:
+it returns the number of lines a MultiCell will occupy.
+</BODY>
+</HTML>

@@ -1,0 +1,16 @@
+<ul id="{$htmlid}">
+	{foreach key=id item=data from=$content}
+		<li class="sortableitem"><a href="#{$id}" class="tabs">{$id}</a></li>
+	{/foreach}
+</ul>
+{foreach key=id item=data from=$content}
+	<div id="{$id}">{$data}</div>
+{/foreach}
+{literal}
+<script type="text/javascript">
+	$(document).ready(
+		function() {
+			$('ul#{/literal}{$htmlid}{literal}').Sortable({/literal}{$param}{literal});
+		});
+</script>
+{/literal}

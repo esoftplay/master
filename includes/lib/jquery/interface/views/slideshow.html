@@ -1,0 +1,10 @@
+<div id="{$divid}" class="slideShow"></div>
+{literal}
+<script type="text/javascript">
+	$(document).ready(
+		function() {
+			$.slideshow({/literal}{$param}{literal});
+			$('a').ToolTip({className: 'inputsTooltip',position: 'mouse'});
+		});
+</script>
+{/literal}

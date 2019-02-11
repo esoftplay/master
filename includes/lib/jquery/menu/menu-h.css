@@ -1,0 +1,110 @@
+.menu_nav-h{
+font: bold 12px Verdana;
+background: #414141; /*background of menu bar (default state)*/
+width: 100%;
+}
+
+.menu_nav-h ul{
+z-index:100;
+margin: 0;
+padding: 0;
+list-style-type: none;
+}
+
+/*Top level list items*/
+.menu_nav-h ul li{
+position: relative;
+display: inline;
+float: left;
+}
+
+/*Top level menu link items style*/
+.menu_nav-h ul li a{
+display: block;
+background: #414141; /*background of menu items (default state)*/
+color: white;
+padding: 8px 10px;
+border-right: 1px solid #778;
+color: #2d2b2b;
+text-decoration: none;
+}
+
+* html .menu_nav-h ul li a{ /*IE6 hack to get sub menu links to behave correctly*/
+display: inline-block;
+}
+
+.menu_nav-h ul li a:link, .menu_nav-h ul li a:visited{
+color: white;
+}
+
+.menu_nav-h ul li a.selected{ /*CSS class that's dynamically added to the currently active menu items' LI A element*/
+background: black; 
+color: white;
+}
+
+.menu_nav-h ul li a:hover{
+background: black; /*background of menu items during onmouseover (hover state)*/
+color: white;
+}
+	
+/*1st sub level menu*/
+.menu_nav-h ul li ul{
+position: absolute;
+left: 0;
+display: none; /*collapse all sub menus to begin with*/
+visibility: hidden;
+}
+
+/*Sub level menu list items (undo style from Top level List Items)*/
+.menu_nav-h ul li ul li{
+display: list-item;
+float: none;
+}
+
+/*All subsequent sub menu levels vertical offset after 1st level sub menu */
+.menu_nav-h ul li ul li ul{
+top: 0;
+}
+
+/* Sub level menu links style */
+.menu_nav-h ul li ul li a{
+font: normal 13px Verdana;
+width: 160px; /*width of sub menus*/
+padding: 5px;
+margin: 0;
+border-top-width: 0;
+border-bottom: 1px solid gray;
+}
+
+/* Holly Hack for IE \*/
+* html .menu_nav-h{height: 1%;} /*Holly Hack for IE7 and below*/
+
+
+/* ######### CSS classes applied to down and right arrow images  ######### */
+
+.menu_nav-downrow{
+position: absolute;
+top: 12px;
+right: 7px;
+}
+
+.menu_nav-uprow{
+position: absolute;
+top: 6px;
+right: 5px;
+}
+
+/* ######### CSS for shadow added to sub menus  ######### */
+
+.menu_nav-shadow{
+position: absolute;
+left: 0;
+top: 0;
+width: 0;
+height: 0;
+background: silver;
+}
+
+.menu_nav-shadowtop{ /*shadow opacity. Doesn't work in IE*/
+opacity: 0.8;
+}

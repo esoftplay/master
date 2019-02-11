@@ -1,0 +1,65 @@
+#carousel
+{
+	width: 700px;
+	height: 150px;
+	left: 50%;
+	margin-left: -350px;
+}
+#carousel a
+{
+	position: absolute;
+	width: 110px;
+	border: 0px;
+}
+
+#ImageBoxOverlay
+{
+	background-color: #000;
+	z-index: 1000;
+}
+#ImageBoxOuterContainer{
+	z-index: 1000;
+}
+#ImageBoxCaption
+{
+	background-color: #F4F4EC;
+}
+#ImageBoxContainer
+{
+	width: 250px;
+	height: 250px;
+	background-color: #F4F4EC;
+}
+#ImageBoxCaptionText
+{
+	font-weight: bold;
+	padding-bottom: 5px;
+	font-size: 13px;
+	color: #000;
+}
+#ImageBoxCaptionImages
+{
+	margin: 0;
+}
+#ImageBoxNextImage
+{
+	background-image: url(../images/spacer.gif);
+	background-color: transparent;
+}
+#ImageBoxPrevImage
+{
+	background-image: url(../images/spacer.gif);
+	background-color: transparent;
+}
+#ImageBoxNextImage:hover
+{
+	background-image: url(../images/next_image.jpg);
+	background-repeat:	no-repeat;
+	background-position: right top;
+}
+#ImageBoxPrevImage:hover
+{
+	background-image: url(../images/prev_image.jpg);
+	background-repeat:	no-repeat;
+	background-position: left bottom;
+}

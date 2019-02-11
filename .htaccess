@@ -1,0 +1,19 @@
+#php_flag short_open_tag on
+#Options +FollowSymLinks
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
+RewriteRule ^(.*)$ - [E=BASE:%1]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (/|.htm|.php|.html|.xml|/[^.]*)$  [NC]
+RewriteRule !^((admin|blocks|images|includes|modules|templates)/?)*$ index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} (.css|.js)$  [NC]
+RewriteRule ^(.*)$ index.php?_loader=$1 [L]
+
+# fisip.net
+# Send all blocked request to homepage with 404 Not Found!
+ErrorDocument 404 file_not_found

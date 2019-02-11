@@ -1,0 +1,13 @@
+<a href="#" id="<?php echo $divid;?>_link" class="ui-state-default ui-corner-all"><?php echo lang($button);?></a>
+<div id="<?php echo $divid;?>" title="<?php echo $content['title'];?>">
+	<p><?php echo $content['content'];?></p>
+</div>
+<script type="text/javascript">
+	$(function() {
+		$("#<?php echo $divid;?>").dialog(<?php echo $param;?>);
+	});
+	$('#<?php echo $divid;?>_link').click(function(){
+		$('#<?php echo $divid;?>').dialog('open');
+		return false;
+	});
+</script>

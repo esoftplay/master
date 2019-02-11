@@ -1,0 +1,27 @@
+<div id="<?php echo $divid;?>">
+	<ul>
+		<?php
+		foreach($content AS $key => $data)
+		{
+			?>
+			<li><a href="#<?php echo $divid;?>-<?php echo $key;?>"><?php echo lang($data['title']);?></a></li>
+			<?php
+		}
+		?>
+	</ul>
+	<?php
+	foreach($content AS $key => $data)
+	{
+		?>
+		<div id="<?php echo $divid;?>-<?php echo $key;?>">
+			<p><?php echo $data['content'];?></p>
+		</div>
+		<?php
+	}
+	?>
+</div>
+<script type="text/javascript">
+	$(function() {
+		$("#<?php echo $divid;?>").tabs(<?php echo $param;?>);
+	});
+</script>

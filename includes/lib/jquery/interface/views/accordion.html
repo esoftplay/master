@@ -1,0 +1,14 @@
+<dl id="{$divid}">
+	{foreach key=key item=item from=$content}
+		<{$params.headerSelector} class="someClass">{$item.title}</{$params.headerSelector}>
+		<{$params.panelSelector}><p>{$item.content}</p></{$params.panelSelector}>
+	{/foreach}
+</dl>
+{literal}
+<script type="text/javascript">
+	$(document).ready(
+		function() {
+			$('#{/literal}{$divid}{literal}').Accordion({/literal}{$param}{literal});
+		});
+</script>
+{/literal}

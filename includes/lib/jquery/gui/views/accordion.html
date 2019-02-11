@@ -1,0 +1,20 @@
+<div id="<?php echo $divid;?>">
+	<?php
+	foreach($content AS $key => $data)
+	{
+		?>
+		<div>
+			<h3><a href="#"><?php echo $data['title'];?></a></h3>
+			<div>
+				<p><?php echo $data['content'];?></p>
+			</div>
+		</div>
+		<?php
+	}
+	?>
+</div>
+<script type="text/javascript">
+	$(function() {
+		$("#<?php echo $divid;?>").accordion(<?php echo $param;?>);
+	});
+</script>

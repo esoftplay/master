@@ -1,0 +1,596 @@
+{
+    "theme": [
+        {
+            "id": "27",
+            "template_id": "4",
+            "name": "none",
+            "content": "[title][content]",
+            "active": "1"
+        },
+        {
+            "id": "28",
+            "template_id": "4",
+            "name": "accountant style",
+            "content": "<div class=”accountant_style”>\r\n[<h3>title<\/h3>][content]\r\n<\/div>",
+            "active": "1"
+        },
+        {
+            "id": "29",
+            "template_id": "4",
+            "name": "search",
+            "content": "<div class=”block_search”>\r\n[<label>title<\/label>][content]\r\n<\/div>",
+            "active": "1"
+        },
+        {
+            "id": "30",
+            "template_id": "4",
+            "name": "top menu",
+            "content": "<div class=”block_menu_top”>\r\n  <nav class=”navbar navbar-default” role=”navigation”>\r\n    <div class=”navbar-header”>\r\n      <button type=”button” class=”navbar-toggle” data-toggle=”collapse” data-target=”.navbar-menu-top”>\r\n        <span class=”icon-bar”><\/span>\r\n        <span class=”icon-bar”><\/span>\r\n        <span class=”icon-bar”><\/span>\r\n      <\/button>\r\n      [<a class=”navbar-brand” href=””>title<\/a>]\r\n    <\/div>\r\n    <div class=”collapse navbar-collapse navbar-menu-top”>\r\n      [content]\r\n    <\/div>\r\n  <\/nav>\r\n<\/div>",
+            "active": "1"
+        }
+    ],
+    "block_ref": {
+        "1": "agenda",
+        "2": "contact",
+        "3": "content",
+        "4": "custom",
+        "5": "language",
+        "6": "layout",
+        "7": "links",
+        "8": "login",
+        "9": "logo",
+        "10": "menu",
+        "11": "survey",
+        "12": "statistic",
+        "13": "testimonial",
+        "14": "imageslider",
+        "15": "content_list",
+        "16": "content_tag"
+    },
+    "position": {
+        "1": "left",
+        "2": "right",
+        "3": "top",
+        "4": "bottom",
+        "5": "header",
+        "6": "footer",
+        "7": "logo",
+        "8": "content_top",
+        "9": "content_bottom",
+        "10": "intro",
+        "11": "debug",
+        "12": "content"
+    },
+    "block": [
+        {
+            "id": "81",
+            "template_id": "4",
+            "block_ref_id": "3",
+            "position_id": "12",
+            "show_title": "1",
+            "link": "",
+            "cache": "0",
+            "theme_id": "28",
+            "group_ids": ",all,",
+            "menu_ids": ",-1,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "default",
+                "type_id": "1",
+                "cat_id": "1",
+                "ids": "",
+                "limit_title": "75",
+                "limit_title_by": "char",
+                "title": "1",
+                "title_link": "1",
+                "intro": "intro",
+                "created": "1",
+                "modified": "1",
+                "author": "1",
+                "tag": "1",
+                "tag_link": "1",
+                "rating": "1",
+                "read_more": "0",
+                "tot_list": "2",
+                "thumbnail": "1"
+            },
+            "orderby": "2",
+            "active": "1"
+        },
+        {
+            "id": "82",
+            "template_id": "4",
+            "block_ref_id": "10",
+            "position_id": "3",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "30",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "cat_id": "1",
+                "layout": "horizontal",
+                "submenu": "bottom right"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "83",
+            "template_id": "4",
+            "block_ref_id": "9",
+            "position_id": "7",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "image": "templates\/green_accountant\/images\/logo.png",
+                "size": "",
+                "is_link": "1",
+                "link": "",
+                "title": ""
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "84",
+            "template_id": "4",
+            "block_ref_id": "6",
+            "position_id": "5",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "29",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "task": "searchForm",
+                "caption": "keyword here..."
+            },
+            "orderby": "2",
+            "active": "1"
+        },
+        {
+            "id": "85",
+            "template_id": "4",
+            "block_ref_id": "12",
+            "position_id": "2",
+            "show_title": "1",
+            "link": "",
+            "cache": "900",
+            "theme_id": "28",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "",
+                "total_visit": "1",
+                "total_member": "1",
+                "member_online": "1",
+                "user_online": "1",
+                "active_days": "1",
+                "start_days": "07\/25\/2010",
+                "interval_time": "900"
+            },
+            "orderby": "4",
+            "active": "1"
+        },
+        {
+            "id": "86",
+            "template_id": "4",
+            "block_ref_id": "2",
+            "position_id": "1",
+            "show_title": "1",
+            "link": "",
+            "cache": "900",
+            "theme_id": "28",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "",
+                "type": "default"
+            },
+            "orderby": "3",
+            "active": "1"
+        },
+        {
+            "id": "87",
+            "template_id": "4",
+            "block_ref_id": "6",
+            "position_id": "8",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": ",-1,",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "task": "Navigation",
+                "caption": ""
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "88",
+            "template_id": "4",
+            "block_ref_id": "7",
+            "position_id": "1",
+            "show_title": "1",
+            "link": "",
+            "cache": "900",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "",
+                "show": "0",
+                "limit": "3"
+            },
+            "orderby": "4",
+            "active": "1"
+        },
+        {
+            "id": "89",
+            "template_id": "4",
+            "block_ref_id": "1",
+            "position_id": "1",
+            "show_title": "0",
+            "link": "",
+            "cache": "900",
+            "theme_id": "28",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "",
+                "type": "6",
+                "show": "5"
+            },
+            "orderby": "2",
+            "active": "1"
+        },
+        {
+            "id": "90",
+            "template_id": "4",
+            "block_ref_id": "6",
+            "position_id": "11",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "task": "debug",
+                "caption": ""
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "91",
+            "template_id": "4",
+            "block_ref_id": "11",
+            "position_id": "2",
+            "show_title": "1",
+            "link": "",
+            "cache": "900",
+            "theme_id": "28",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "",
+                "ids": [
+                    "2",
+                    "1"
+                ],
+                "limit": "1"
+            },
+            "orderby": "3",
+            "active": "1"
+        },
+        {
+            "id": "92",
+            "template_id": "4",
+            "block_ref_id": "6",
+            "position_id": "2",
+            "show_title": "1",
+            "link": "",
+            "cache": "0",
+            "theme_id": "28",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "task": "templates",
+                "caption": ""
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "93",
+            "template_id": "4",
+            "block_ref_id": "9",
+            "position_id": "5",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "image": "templates\/green_accountant\/images\/img-header.jpg",
+                "size": "",
+                "is_link": "0",
+                "link": "",
+                "title": ""
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "94",
+            "template_id": "4",
+            "block_ref_id": "8",
+            "position_id": "2",
+            "show_title": "1",
+            "link": "",
+            "cache": "0",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "",
+                "forget": "1",
+                "register": "1"
+            },
+            "orderby": "2",
+            "active": "1"
+        },
+        {
+            "id": "95",
+            "template_id": "4",
+            "block_ref_id": "10",
+            "position_id": "4",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "menu-horizontal",
+                "cat_id": "2",
+                "submenu": "top right"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "96",
+            "template_id": "4",
+            "block_ref_id": "4",
+            "position_id": "10",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "content": "<h1>Ini adalah sample atau demo produk e-profile untuk Company Profile dari fisip.net. Design tampilan situs bisa diubah sesuai dengan permintaan anda.<\/h1>",
+                "type": "none"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "97",
+            "template_id": "4",
+            "block_ref_id": "3",
+            "position_id": "12",
+            "show_title": "1",
+            "link": "",
+            "cache": "0",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": "",
+            "menu_ids_blocked": ",-1,",
+            "module_ids_allowed": ",4,",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "related",
+                "type_id": "-1",
+                "cat_id": "-1",
+                "ids": "",
+                "limit_title": "75",
+                "limit_title_by": "char",
+                "title": "1",
+                "title_link": "1",
+                "intro": "intro",
+                "created": "1",
+                "modified": "1",
+                "author": "1",
+                "tag": "0",
+                "tag_link": "0",
+                "rating": "1",
+                "read_more": "0",
+                "tot_list": "5",
+                "thumbnail": "1"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "120",
+            "template_id": "4",
+            "block_ref_id": "3",
+            "position_id": "9",
+            "show_title": "0",
+            "link": "",
+            "cache": "900",
+            "theme_id": "27",
+            "group_ids": ",all,",
+            "menu_ids": ",-1,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "thumbnail-only",
+                "kind_id": "1",
+                "type_id": "1",
+                "cat_id": "-2",
+                "ids": "",
+                "popular": "",
+                "limit_title": "75",
+                "limit_title_by": "char",
+                "title": "0",
+                "title_link": "0",
+                "intro": "intro",
+                "created": "0",
+                "modified": "0",
+                "author": "0",
+                "tag": "0",
+                "tag_link": "0",
+                "rating": "0",
+                "read_more": "0",
+                "tot_list": "3",
+                "thumbnail": "0"
+            },
+            "orderby": "1",
+            "active": "1"
+        },
+        {
+            "id": "121",
+            "template_id": "4",
+            "block_ref_id": "10",
+            "position_id": "1",
+            "show_title": "0",
+            "link": "",
+            "cache": "0",
+            "theme_id": "27",
+            "group_ids": ",logged,",
+            "menu_ids": ",all,",
+            "menu_ids_blocked": "",
+            "module_ids_allowed": "",
+            "module_ids_blocked": "",
+            "config": {
+                "template": "menu-vertical",
+                "cat_id": "3",
+                "submenu": "bottom right"
+            },
+            "orderby": "1",
+            "active": "1"
+        }
+    ],
+    "text": {
+        "81": {
+            "id": "Hotline News"
+        },
+        "82": {
+            "id": "Menu Top"
+        },
+        "83": {
+            "id": "Logo"
+        },
+        "84": {
+            "id": "Search :"
+        },
+        "85": {
+            "id": "Statistic"
+        },
+        "86": {
+            "id": "Online Support"
+        },
+        "87": {
+            "id": "Navigation"
+        },
+        "88": {
+            "id": "Links"
+        },
+        "89": {
+            "id": "Agenda"
+        },
+        "90": {
+            "id": "Debug"
+        },
+        "91": {
+            "id": "Polling"
+        },
+        "92": {
+            "id": "Pilih Template"
+        },
+        "93": {
+            "id": "Header"
+        },
+        "94": {
+            "id": "Member Login"
+        },
+        "95": {
+            "id": "Bottom Menu"
+        },
+        "96": {
+            "id": "Intro"
+        },
+        "97": {
+            "id": "Artikel Berhubungan"
+        },
+        "120": {
+            "id": "Gallery"
+        },
+        "121": {
+            "id": "User menu"
+        }
+    }
+}

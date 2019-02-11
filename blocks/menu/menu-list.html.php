@@ -1,0 +1,1 @@
+<?php echo menu_ulli($menus, 0, 'class="list-group"', 'class="list-group-item"');

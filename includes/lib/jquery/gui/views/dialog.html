@@ -1,0 +1,8 @@
+<div id="<?php echo $divid;?>" title="<?php echo $content['title'];?>">
+	<p><?php echo $content['content'];?></p>
+</div>
+<script type="text/javascript">
+	$(function() {
+		$("#<?php echo $divid;?>").dialog(<?php echo $param;?>);
+	});
+</script>

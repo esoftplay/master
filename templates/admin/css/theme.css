@@ -1,0 +1,198 @@
+.ThemeOfficeMenu, .ThemeOfficeSubMenuTable {
+	font-family: tahoma, verdana, sans-serif;
+	font-size: 12px;
+	padding: 0;
+	white-space: nowrap;
+	cursor:	default;
+}
+.ThemeOfficeSubMenu {
+	position: absolute;
+	visibility:	hidden;
+	overflow: hidden;
+	padding: 0px;
+	border:	none;
+	background-color: transparent;
+}
+.ThemeOfficeSubMenuShadow {
+	z-index: -1;
+	position: absolute;
+	top: 9px;
+	left: 9px;
+	width: 100%;
+	height: 300em;
+	background-color: black;
+	opacity: 0.15;
+	border: 0;
+	margin: 0;
+}
+.ThemeOfficeSubMenuTable {}
+.ThemeOfficeMainItem, .ThemeOfficeMainItemHover, .ThemeOfficeMainItemActive, .ThemeOfficeMenuItem, .ThemeOfficeMenuItemHover, .ThemeOfficeMenuItemActive {
+	border: none;
+	cursor: default;
+	white-space: nowrap;
+}
+.ThemeOfficeMenu a, .ThemeOfficeSubMenuTable a {} 
+
+/* common background color to both horizontal and vertical menus */
+
+.ThemeOfficeMainItem {}
+.ThemeOfficeMainItemHover, .ThemeOfficeMainItemActive {}
+
+/* horizontal main menu */
+
+.ThemeOfficeMainItem {}
+td.ThemeOfficeMainItemHover, td.ThemeOfficeMainItemActive {}
+.ThemeOfficeMainFolderLeft, .ThemeOfficeMainItemLeft, .ThemeOfficeMainFolderText, .ThemeOfficeMainItemText, .ThemeOfficeMainFolderRight, .ThemeOfficeMainItemRight {}
+
+/* vertical main menu sub components */
+
+td.ThemeOfficeMainFolderLeft, td.ThemeOfficeMainItemLeft {}
+td.ThemeOfficeMainFolderText, td.ThemeOfficeMainItemText {}
+td.ThemeOfficeMainItemRight, td.ThemeOfficeMainFolderRight {}
+tr.ThemeOfficeMainItemHover td.ThemeOfficeMainFolderLeft, tr.ThemeOfficeMainItemActive td.ThemeOfficeMainFolderLeft, tr.ThemeOfficeMainItemHover td.ThemeOfficeMainItemLeft, tr.ThemeOfficeMainItemActive td.ThemeOfficeMainItemLeft {}
+tr.ThemeOfficeMainItemHover td.ThemeOfficeMainFolderText, tr.ThemeOfficeMainItemActive td.ThemeOfficeMainFolderText, tr.ThemeOfficeMainItemHover td.ThemeOfficeMainItemText, tr.ThemeOfficeMainItemActive td.ThemeOfficeMainItemText {}
+tr.ThemeOfficeMainItemHover td.ThemeOfficeMainFolderRight, tr.ThemeOfficeMainItemActive td.ThemeOfficeMainFolderRight, tr.ThemeOfficeMainItemHover td.ThemeOfficeMainItemRight, tr.ThemeOfficeMainItemActive td.ThemeOfficeMainItemRight {}
+
+/* sub menu sub components */
+
+.ThemeOfficeMenuItem {}
+.ThemeOfficeMenuItemHover,.ThemeOfficeMenuItemActive {}
+.ThemeOfficeMenuFolderLeft, .ThemeOfficeMenuItemLeft {}
+.ThemeOfficeMenuFolderText, .ThemeOfficeMenuItemText {}
+.ThemeOfficeMenuFolderRight, .ThemeOfficeMenuItemRight {} 
+.ThemeOfficeMenuItemHover .ThemeOfficeMenuFolderLeft, .ThemeOfficeMenuItemActive .ThemeOfficeMenuFolderLeft, .ThemeOfficeMenuItemHover .ThemeOfficeMenuItemLeft, .ThemeOfficeMenuItemActive .ThemeOfficeMenuItemLeft {}
+.ThemeOfficeMenuItemHover .ThemeOfficeMenuFolderText, .ThemeOfficeMenuItemActive .ThemeOfficeMenuFolderText, .ThemeOfficeMenuItemHover .ThemeOfficeMenuItemText, .ThemeOfficeMenuItemActive .ThemeOfficeMenuItemText {}
+.ThemeOfficeMenuItemHover .ThemeOfficeMenuFolderRight, .ThemeOfficeMenuItemActive .ThemeOfficeMenuFolderRight, .ThemeOfficeMenuItemHover .ThemeOfficeMenuItemRight, .ThemeOfficeMenuItemActive .ThemeOfficeMenuItemRight {}
+
+/* menu splits */
+td.ThemeOfficeMenuSplit {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+div.ThemeOfficeMenuSplit {
+	margin:	3px;
+	height:	0px;
+	overflow: hidden;
+	background-color: inherit;
+	border-top:	1px solid #C6C3BD;
+}
+
+.ThemeOfficeMenuItem img.seq1 {
+	display: inline;
+}
+.ThemeOfficeMenuItemHover seq2, .ThemeOfficeMenuItemActive seq2 {
+	display: inline;
+}
+.ThemeOfficeMenuItem .seq2, .ThemeOfficeMenuItemHover .seq1, .ThemeOfficeMenuItemActive .seq1 {
+	display: none;
+}
+/*=========================================
+ * DI SINI TEMPAT UNTUK CLASS MENU
+ *========================================*/
+.block_menu_bottom {
+	text-align: right;
+}
+.block_menu_bottom .ThemeOfficeMenu {
+	width: auto;
+	margin: 0px auto;
+	text-align: left;
+}
+.block_menu_bottom .ThemeOfficeMainItem, .block_menu_bottom .ThemeOfficeMainItem span {
+	
+}
+.block_menu_bottom td.ThemeOfficeMainItemHover, .block_menu_bottom td.ThemeOfficeMainItemActive, .block_menu_bottom td.ThemeOfficeMainItemHover span, .block_menu_bottom td.ThemeOfficeMainItemActive span {
+	cursor: pointer;
+}
+.block_menu_bottom .ThemeOfficeMainFolderText, .block_menu_bottom .ThemeOfficeMainItemText {
+	height: 20px;
+	overflow: hidden;
+	margin: 0px !important;
+	font-size: 12px;
+	padding: 0px;
+	color: #9aa6b8;
+	text-decoration: none;
+}
+.block_menu_bottom .ThemeOfficeMainFolderLeft, .block_menu_bottom .ThemeOfficeMainItemLeft {
+	display: none;
+}
+.block_menu_bottom .ThemeOfficeMainFolderRight, .block_menu_bottom .ThemeOfficeMainItemRight {
+	display: none;
+}
+.block_menu_bottom .ThemeOfficeMainItem a {
+	display: block;
+	padding: 10px 15px;
+	color: #9aa6b8;
+	text-decoration: none;
+}
+.block_menu_bottom td.ThemeOfficeMainItemHover a, .block_menu_bottom td.ThemeOfficeMainItemActive a {
+	display: block;
+	padding: 10px 15px;
+	color: #ccc;
+	text-decoration: none;
+}
+
+.block_menu_bottom .ThemeOfficeSubMenu {
+	margin-top: 0px;
+	margin-left: 0px;
+	width: 164px;
+	padding: 0px;
+	overflow: hidden;
+	background-color: #fff;
+	border: 1px solid #eee;
+	border-bottom: none;
+}
+.block_menu_bottom .ThemeOfficeMenuItem {
+	text-align: left;
+	width: 164px;
+	display: block;
+}
+.block_menu_bottom .ThemeOfficeMenuItemHover, .block_menu_bottom .ThemeOfficeMenuItemActive {
+	text-align: left;
+	width: 164px;
+	display: block;
+	cursor: pointer;	
+}
+.block_menu_bottom .ThemeOfficeMenuItem a, .block_menu_bottom .ThemeOfficeMenuItemHover a, .block_menu_bottom .ThemeOfficeMenuItemActive a {
+	font-size: 11px;
+	color: #253245;
+	text-decoration: none;
+}
+
+.block_menu_bottom .ThemeOfficeMenuFolderText, .block_menu_bottom .ThemeOfficeMenuItemText {
+	width: 164px;
+	display: block;
+	padding: 6px 10px;
+	border: none;
+	white-space: nowrap;
+	background-color: #fff;
+	border-bottom: 1px solid #eee;
+}
+
+.block_menu_bottom .ThemeOfficeMenuItemHover .ThemeOfficeMenuFolderText, .block_menu_bottom .ThemeOfficeMenuItemActive .ThemeOfficeMenuFolderText,
+.block_menu_bottom .ThemeOfficeMenuItemHover .ThemeOfficeMenuItemText, .block_menu_bottom .ThemeOfficeMenuItemActive .ThemeOfficeMenuItemText 
+{
+	width: 164px;
+	display: block;
+	padding: 6px 10px;
+	border: none;
+	white-space: nowrap;
+	background-color: #d0ebff;
+	border-bottom: 1px solid #eee;
+}
+.block_menu_bottom .ThemeOfficeMenuFolderLeft, .block_menu_bottom .ThemeOfficeMenuItemLeft,
+.block_menu_bottom .ThemeOfficeMenuItemHover .ThemeOfficeMenuFolderLeft, .block_menu_bottom .ThemeOfficeMenuItemActive .ThemeOfficeMenuFolderLeft,
+.block_menu_bottom .ThemeOfficeMenuItemHover .ThemeOfficeMenuItemLeft, .block_menu_bottom .ThemeOfficeMenuItemActive .ThemeOfficeMenuItemLeft,
+.block_menu_bottom .ThemeOfficeMenuFolderRight, .block_menu_bottom .ThemeOfficeMenuItemRight,
+.block_menu_bottom .ThemeOfficeMenuItemHover .ThemeOfficeMenuFolderRight, .block_menu_bottom .ThemeOfficeMenuItemActive .ThemeOfficeMenuFolderRight,
+.block_menu_bottom .ThemeOfficeMenuItemHover .ThemeOfficeMenuItemRight, .block_menu_bottom .ThemeOfficeMenuItemActive .ThemeOfficeMenuItemRight 
+{
+	display: none;
+}
+/* NEW MENU */
+.ThemeOfficeMenuFolderText, .ThemeOfficeMenuItemText,
+.ThemeOfficeMenuItemHover .ThemeOfficeMenuFolderText, .ThemeOfficeMenuItemActive .ThemeOfficeMenuFolderText,
+.ThemeOfficeMenuItemHover .ThemeOfficeMenuItemText, .ThemeOfficeMenuItemActive .ThemeOfficeMenuItemText
+{
+	position: relative;
+}

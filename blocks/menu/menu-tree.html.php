@@ -1,0 +1,1 @@
+<?php echo _func('tree', 'list', $menus, $block->title);

@@ -1,0 +1,11 @@
+.tooltip
+{
+	border: 3px solid #933;
+	background-color: #600;
+	padding: 10px;
+	color: #ccc;
+}
+.tooltip #tooltipTitle
+{
+	font-weight: bold;
+}

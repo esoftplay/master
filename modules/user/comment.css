@@ -1,0 +1,43 @@
+.form-smiley {
+  position: relative;
+}
+.form-smiley .smiley_link {
+  position: absolute;
+  right: 4px;
+  bottom: 0px;
+}
+.form-smiley .smiley_link a {
+  color: #808080;
+  text-decoration: none;
+  font-size: 18px;
+}
+.form-smiley .smiley_link a:hover {
+  color: #000;
+}
+.form-smiley .smiley_container {
+  position: absolute;
+  width: 308px;
+  right: 8px;
+  bottom: 22px;
+  padding-bottom: 6px;
+  border: 1px solid #E2E2E2;
+  background: #F8F8EE;
+  z-index: 300;
+  display: none;
+}
+.form-smiley .smiley_container img {
+  padding: 4px 8px;
+  cursor: pointer;
+  display: inline!important;
+}
+.input-group-addon > .glyphicon-refresh {
+	cursor: pointer;
+}
+.input-group-addon > .glyphicon-refresh:hover{
+	color: #000;
+}
+.page_ajax_more {
+  display: block;
+  padding: 10px;
+}
+.page_ajax_more:hover {}
