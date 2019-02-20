@@ -188,7 +188,7 @@ function editor_code($name, $value = '', $option = array(), $meta = true)
 						.	' data-config="'.htmlentities(json_encode($config)).'"'
 						.	' data-options="'.htmlentities(json_encode($option)).'"'
 						.	'></div>'
-							. '<script type="text/javascript">var editor'.$Bbc->editor_code_id.' = aceEditor(document.getElementById("editor_'.$index.'"));</script>';
+						. '<script type="text/javascript">if(typeof aceEditor!="undefined"){var editor'.$Bbc->editor_code_id.' = aceEditor(document.getElementById("editor_'.$index.'"));}</script>';
 	}
 	return $output;
 }

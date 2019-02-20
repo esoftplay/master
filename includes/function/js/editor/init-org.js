@@ -204,7 +204,9 @@ function aceEditor(element) {
 })("docReady", window);
 docReady(function(){
 	ace.require("ace/lib/dom").importCssString('.ace_editor.fullScreen{height:auto!important;width:auto;border:0;margin:0;position:fixed!important;top:0;bottom:0;left:0;right:0;z-index:10;} .fullScreen{overflow:hidden}');
-	// document.querySelectorAll('[rel="editor_code"]').forEach(function(element, i){
-	// 	window["editor"+(i+1)] = aceEditor(element);
-	// });
+	if (typeof editor1 == "undefined") {
+		document.querySelectorAll('[rel="editor_code"]').forEach(function(element, i){
+			window["editor"+(i+1)] = aceEditor(element);
+		});
+	}
 });
