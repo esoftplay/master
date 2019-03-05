@@ -9,7 +9,7 @@ class image_lib {
 	var $new_image			= '';
 	var $width				= '';
 	var $height				= '';
-	var $quality			= '90';
+	var $quality			= '100';
 	var $create_thumb		= FALSE;
 	var $thumb_marker		= '_thumb';
 	var $maintain_ratio		= TRUE;  	// Whether to maintain aspect ratio when resizing or use hard values
@@ -269,7 +269,7 @@ class image_lib {
 		$this->quality = trim(str_replace("%", "", $this->quality));
 
 		if ($this->quality == '' OR $this->quality == 0 OR ! is_numeric($this->quality))
-			$this->quality = 90;
+			$this->quality = 100;
 
 		// Set the x/y coordinates
 		$this->x_axis = ($this->x_axis == '' OR ! is_numeric($this->x_axis)) ? 0 : $this->x_axis;
