@@ -4,7 +4,7 @@
 /*
 $config based on: http://pdfmake.org/playground.html
 */
-function pdf($config, $title = 'new-file')
+function pdf_export($config, $title = 'new-file')
 {
 	global $sys;
 	$title = menu_save($title).'.pdf';
@@ -131,7 +131,7 @@ function pdf_write($param, $paper = 'a4', $layout = 'portrait')
 	{
 		unset($page['content'][1]);
 	}
-	pdf($page, $param['title']);
+	pdf_export($page, $param['title']);
 	/*
 	echo json_encode($page);
 	pr($page, $paper, $layout, __FILE__.':'.__LINE__);die();
