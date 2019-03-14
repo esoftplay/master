@@ -224,7 +224,12 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
 
 			// Create new ZIP file and open it for writing
 			$zipClass = PHPExcel_Settings::getZipClass();
-			$objZip = new $zipClass();
+			if (class_exists($zipClass))
+			{
+				$objZip = new $zipClass();
+			}else{
+				die("class {$zipClass} is not available, please install 'php-pecl-zip' in your server!");
+			}
 
 			//	Retrieve OVERWRITE and CREATE constants from the instantiated zip class
 			//	This method of accessing constant values from a dynamic class should work with all appropriate versions of PHP
@@ -273,7 +278,7 @@ class PHPExcel_Writer_Excel2007 extends PHPExcel_Writer_Abstract implements PHPE
 						$this->getWriterPart('RelsRibbonObjects')->writeRibbonRelationships($this->_spreadSheet));
 				}
 			}
-			
+
 			// Add relationships to ZIP file
 			$objZip->addFromString('_rels/.rels', 					$this->getWriterPart('Rels')->writeRelationships($this->_spreadSheet));
 			$objZip->addFromString('xl/_rels/workbook.xml.rels', 	$this->getWriterPart('Rels')->writeWorkbookRelationships($this->_spreadSheet));
