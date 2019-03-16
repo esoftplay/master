@@ -1,7 +1,7 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
 $url     = '';
-$helpURL = 'http://help.fisip.net/';
+$helpURL = '//help.fisip.net/';
 
 if (!empty($_GET['url']))
 {
