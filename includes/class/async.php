@@ -101,7 +101,7 @@ if (!defined('_VALID_BBC'))
 {
 	if (!empty($argv[1]))
 	{
-		$inputs = json_decode($argv[1], 1);
+		$inputs = json_decode(str_replace('&#39;', "'", $argv[1]), 1);
 		if (!empty($inputs))
 		{
 			define('_AsYnCtAsK', count($inputs));
