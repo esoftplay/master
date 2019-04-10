@@ -84,8 +84,8 @@ switch($Bbc->mod['task'])
 	case 'help':
 		include 'help.php';
 		break;
-	case 'fixsync':
-		include 'fixsync.php';
+	case 'async':
+		include 'async.php';
 		break;
 	case 'repair':
 		include 'repair.php';

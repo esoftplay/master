@@ -48,9 +48,10 @@ class bbcSQL
 	}
 	function __destruct()
 	{
-		if (!empty($this->link))
+		if (isset($this->link))
 		{
 			@mysqli_close($this->link);
+			unset($this->link);
 		}
 	}
 	function Connect($DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_TABLE)

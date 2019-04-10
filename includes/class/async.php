@@ -126,45 +126,65 @@ if (!defined('_VALID_BBC'))
 					$Bbc->no_log = 1;
 					require_once $_AsYnCtAsK['_ROOT'].'config.php';
 					include_once _ROOT.'includes/includes.php';
-					if (is_array($_AsYnCtAsK['_OBJ']))
-					{
-						$obj = _class($_AsYnCtAsK['_OBJ'][0]);
-						if ($obj)
+					try {
+						if (is_array($_AsYnCtAsK['_OBJ']))
 						{
-							if (method_exists($obj, $_AsYnCtAsK['_OBJ'][1]))
+							$obj = _class($_AsYnCtAsK['_OBJ'][0]);
+							if ($obj)
 							{
-								$_AsYnCtAsK['_OBJ'][0] = $obj;
+								if (method_exists($obj, $_AsYnCtAsK['_OBJ'][1]))
+								{
+									$_AsYnCtAsK['_OBJ'][0] = $obj;
+									call_user_func_array($_AsYnCtAsK['_OBJ'], $_AsYnCtAsK['_VAR']);
+								}
+							}
+						}else{
+							if (!function_exists($_AsYnCtAsK['_OBJ']))
+							{
+								$r = explode('_', $_AsYnCtAsK['_OBJ']);
+								$O = '';
+								foreach ($r as $o)
+								{
+									if (!empty($O))
+									{
+										$O .= '_';
+									}
+									$O .= $o;
+									_func($O);
+									if (function_exists($_AsYnCtAsK['_OBJ']))
+									{
+										break;
+									}
+								}
+							}
+							if (function_exists($_AsYnCtAsK['_OBJ']))
+							{
 								call_user_func_array($_AsYnCtAsK['_OBJ'], $_AsYnCtAsK['_VAR']);
-								echo $Bbc->debug;
 							}
 						}
-					}else{
-						if (!function_exists($_AsYnCtAsK['_OBJ']))
+						// echo $Bbc->debug;
+						$db->Execute("DELETE FROM `bbc_async` WHERE `id`=".$_AsYnCtAsK['_ID']);
+						$db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
+
+						$Bbc     = null;
+						$sys     = null;
+						$db      = null;
+						$user    = null;
+						$block   = null;
+						$_CONFIG = null;
+						$_LANG   = null;
+						unset($Bbc, $sys, $db, $user, $block, $_CONFIG, $_LANG);
+						$vars = array_keys(get_defined_vars());
+						for ($i = 0; $i < sizeOf($vars); $i++)
 						{
-							$r = explode('_', $_AsYnCtAsK['_OBJ']);
-							$O = '';
-							foreach ($r as $o)
-							{
-								if (!empty($O))
-								{
-									$O .= '_';
-								}
-								$O .= $o;
-								_func($O);
-								if (function_exists($_AsYnCtAsK['_OBJ']))
-								{
-									break;
-								}
-							}
+							unset($$vars[$i]);
 						}
-						if (function_exists($_AsYnCtAsK['_OBJ']))
-						{
-							call_user_func_array($_AsYnCtAsK['_OBJ'], $_AsYnCtAsK['_VAR']);
-							echo $Bbc->debug;
-						}
+						unset($vars,$i);
+						gc_collect_cycles();
+						die();
+					} catch (Exception $e) {
+						tm('Async caught exception: '.  $e->getMessage());
 					}
-					$db->Execute("DELETE FROM `bbc_async` WHERE `id`=".$_AsYnCtAsK['_ID']);
-					$db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
 				}
 			}
 		}

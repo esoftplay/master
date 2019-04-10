@@ -73,7 +73,7 @@ class FormMultiinput extends Form
 	{
 		if ($this->actionType == 'roll' || $this->actionType == 'search')
 		{
-			die('FormMultiinput:: maaf form field ini hanya bisa digunakan untuk tipe edit dan add saja');
+			die('FormMultiinput:: maaf setToogle hanya bisa digunakan untuk tipe edit dan add saja');
 		}else{
 			$this->isToogle   = true;
 			$this->showToogle = $show;
