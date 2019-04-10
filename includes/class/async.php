@@ -183,7 +183,7 @@ if (!defined('_VALID_BBC'))
 						gc_collect_cycles();
 						die();
 					} catch (Exception $e) {
-						tm('Async caught exception: '.  $e->getMessage());
+						die('Async: '.  $e->getMessage());
 					}
 				}
 			}
