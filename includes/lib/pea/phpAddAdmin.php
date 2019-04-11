@@ -61,7 +61,7 @@ class phpAddAdmin extends phpEasyAdminLib
 	{
 		if (empty($this->insertId))
 		{
-			$q = "SHOW TABLE STATUS FROM `$this->db->dbname` WHERE `name` LIKE '{$this->table}'";
+			$q = "SHOW TABLE STATUS FROM `{$this->db->dbname}` WHERE `name` LIKE '{$this->table}'";
 			$r = $this->db->getRow($q);
 			if (!empty($r['Auto_increment']))
 			{

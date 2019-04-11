@@ -32,17 +32,25 @@ class async
 				$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_async` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `function` varchar(255) DEFAULT '', `arguments` text, `created` datetime DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 			}
 			$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".json_encode($params)."', `created`=NOW()");
-
-			$client = new GearmanClient();
-			$client->addServer();
-			$result = $client->doBackground('esoftplay_async', json_encode(array(
-				$_SERVER,
-				_ROOT,
-				_ADMIN,
-				$object,
-				$db->Insert_ID(),
-				$params
-				)));
+			try {
+				$client = new GearmanClient();
+				$client->addServer();
+				$result = $client->doBackground('esoftplay_async', json_encode(array(
+					$_SERVER,
+					_ROOT,
+					_ADMIN,
+					$object,
+					$db->Insert_ID(),
+					$params
+					)));
+			} catch (Exception $e) {
+				$log = 'Async::'.$sync['function'].' '.  $e->getMessage();
+				echo $log;
+				if (function_exists('iLog'))
+				{
+					iLog($log);
+				}
+			}
 		}else{
 			if (is_array($object))
 			{
@@ -79,16 +87,25 @@ class async
 			$params = json_decode($sync['arguments'], 1);
 			if ($this->isExists)
 			{
-				$client = new GearmanClient();
-				$client->addServer();
-				$result = $client->doBackground('esoftplay_async', json_encode(array(
-					$_SERVER,
-					_ROOT,
-					_ADMIN,
-					$object,
-					$async_id,
-					$params
-					)));
+				try {
+					$client = new GearmanClient();
+					$client->addServer();
+					$result = $client->doBackground('esoftplay_async', json_encode(array(
+						$_SERVER,
+						_ROOT,
+						_ADMIN,
+						$object,
+						$async_id,
+						$params
+						)));
+				} catch (Exception $e) {
+					$log = 'Async::'.$sync['function'].' '.  $e->getMessage();
+					echo $log;
+					if (function_exists('iLog'))
+					{
+						iLog($log);
+					}
+				}
 			}else{
 				$db->Execute("DELETE FROM `bbc_async` WHERE `id`=".$async_id);
 				$db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
