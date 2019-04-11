@@ -192,11 +192,12 @@ if (!defined('_VALID_BBC'))
 						$_LANG   = null;
 						unset($Bbc, $sys, $db, $user, $block, $_CONFIG, $_LANG);
 						$vars = array_keys(get_defined_vars());
-						for ($i = 0; $i < sizeOf($vars); $i++)
+						foreach ($vars as $var)
 						{
-							unset($$vars[$i]);
+							$$var = null;
+							unset($$var);
 						}
-						unset($vars,$i);
+						unset($vars,$var);
 						gc_collect_cycles();
 						die();
 					} catch (Exception $e) {
