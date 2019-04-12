@@ -9,7 +9,6 @@ switch($Bbc->mod['task'])
 		else include 'index_1.php'; // select question...
 		break;
 	case 'index_2':
-		survey_sess('index', $db->getCol("SELECT id FROM survey_question WHERE checked=1 AND publish=1 ORDER BY orderby ASC"));
 		include 'index_2.php'; // select option...
 		break;
 	case 'index_3':
