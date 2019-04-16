@@ -19,5 +19,6 @@
 		<p>&nbsp;</p>
 	</div>
 </div>
+<script src="<?php echo _URL;?>templates/admin/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

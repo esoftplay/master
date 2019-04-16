@@ -38,23 +38,27 @@ if(isset($_POST['Submit']) && !empty($_POST['Submit']))
 // DISPLAY FORM...
 ?>
 <form action="" method="post">
-<?php
-foreach($question AS $id => $data)
-{
-?>
-	<div class="formItem">
-<?php		if(is_file(survey_path($data['file'],3)))
+	<?php
+	foreach($question AS $id => $data)
+	{
+		?>
+		<div class="formItem">
+		<?php
+		if(is_file(survey_path($data['file'],3)))
 		{
 			include survey_path($data['file'],3);
 		}
-?>
-	</div>
-<?php
-}
-if(!$valid) redirect($Bbc->mod['circuit'].'.index_4');
-?>
+		?>
+		</div>
+		<?php
+	}
+	if(!$valid)
+	{
+		redirect($Bbc->mod['circuit'].'.index_4');
+	}
+	?>
 	<p class="button">
-		<input type="Button" value="&#171; Back" class="btn" onClick="window.history.go(-1);" />
-		<input type="submit" name="Submit" value="Next &#187;" class="btn" />
+		<input type="Button" value="&#171; Back" class="btn btn-default" onClick="window.history.go(-1);" />
+		<input type="submit" name="Submit" value="Next &#187;" class="btn btn-default" />
 	</p>
 </form>

@@ -6,10 +6,20 @@ function survey_demografi_text($d, $i)
 	$text = lang($d);
 	return $text.'<input type="hidden" name="options['.$id.']['.$i.'][question]" value="'.htmlentities($text).'" style="display: none;" />';
 }
-function survey_demografi_input($i, $attr='')
+function survey_demografi_input($i, $text='', $pre_text = 0)
 {
 	global $id;
-	return '<input type="text" name="options['.$id.']['.$i.'][0]" value="'.@htmlentities($_POST['options'][$id][$i][0]).'"'.$attr.' />';
+	$out = '<input type="text" class="form-control" name="options['.$id.']['.$i.'][0]" value="'.@htmlentities($_POST['options'][$id][$i][0]).'" />';
+	if (!empty($text))
+	{
+		if ($pre_text)
+		{
+			$out = '<div class="input-group"> <span class="input-group-addon">'.$text.'</span> '.$out.' </div>';
+		}else{
+			$out = '<div class="input-group"> '.$out.' <span class="input-group-addon">'.$text.'</span> </div>';
+		}
+	}
+	return $out;
 }
 function survey_demografi_texts($n, $i, $attr='')
 {
@@ -19,9 +29,9 @@ function survey_demografi_texts($n, $i, $attr='')
 	for($j=0;$j < $n;$j++)
 	{
 		$k++;
-		$output[] = $k.'. <input type="text" name="options['.$id.']['.$i.']['.$j.']" value="'.@$_POST['options'][$id][$i][$j].'"'.$attr.' />';
+		$output[] = '<div class="input-group"> <span class="input-group-addon">'.money($k).'.</span> <input type="text" class="form-control" name="options['.$id.']['.$i.']['.$j.']" value="'.@$_POST['options'][$id][$i][$j].'"'.$attr.' /></div>';
 	}
-	return implode('<br />', $output);
+	return '<div class="form-group">'.implode('', $output).'</div>';
 }
 function survey_demografi_rangking($r, $i, $t)
 {
@@ -70,7 +80,7 @@ function survey_demogafi_ranking_check($arr, $i)
 function survey_demografi_select($r, $i)
 {
 	global $id;
-	return '<select name="options['.$id.']['.$i.'][0]" id="options['.$id.']['.$i.']">'.createOption(survey_demografi_array($r), @$_POST['options'][$id][$i][0]).'</select>';
+	return '<select name="options['.$id.']['.$i.'][0]" id="options['.$id.']['.$i.']" class="form-control">'.createOption(survey_demografi_array($r), @$_POST['options'][$id][$i][0]).'</select>';
 }
 function survey_demografi_option($r, $i)
 {
@@ -79,7 +89,7 @@ function survey_demografi_option($r, $i)
 	$r = is_array($r) ? $r : explode(';', $r);
 	if(!empty($r))
 	{
-		$sys->link_js($Bbc->mod['url'].'custom/demografi/script.js', false);
+		// $sys->link_js($Bbc->mod['url'].'custom/demografi/script.js', false);
 		$y = count($r) + 1;
 		foreach($r AS $j => $d)
 		{
@@ -95,13 +105,13 @@ function survey_demografi_option($r, $i)
 				if($is_text)
 				{
 					$value = !empty($add) ? @$_POST['options'][$id][$i]['text_'.$j] : '';
-					$text2 = $text.' : </label><input type="text" id="options_'.$id.'_'.$i.'_'.$j.'" name="options['.$id.']['.$i.'][text_'.$j.']" class="radio_others" value="'.$value.'" />';
-				}else $text2 = $text.'</label>';
-				$output[$j] = '<label><input type="radio" name="options['.$id.']['.$i.'][0]" id="options_'.$id.'_'.$i.'_'.$j.'_radio" value="'.$text.'"'.$add.' /> '.$text2;
+					$text2 = $text.' : <input type="text" id="options_'.$id.'_'.$i.'_'.$j.'" name="options['.$id.']['.$i.'][text_'.$j.']" class="form-control" value="'.$value.'" />';
+				}else $text2 = $text;
+				$output[$j] = '<div class="form-group checkbox"><label><input type="radio" name="options['.$id.']['.$i.'][0]" id="options_'.$id.'_'.$i.'_'.$j.'_radio" value="'.$text.'" class="form-control"'.$add.' /> '.$text2.'</label></div>';
 			}
 		}
 	}
-	return implode('<br />', $output);
+	return '<div class="form-inline">'.implode('<br />', $output).'</div>';
 }
 function survey_demografi_checkbox($r, $i)
 {
@@ -110,7 +120,7 @@ function survey_demografi_checkbox($r, $i)
 	$r = is_array($r) ? $r : explode(';', $r);
 	if(!empty($r))
 	{
-		$sys->link_js($Bbc->mod['url'].'custom/demografi/script.js', false);
+		// $sys->link_js($Bbc->mod['url'].'custom/demografi/script.js', false);
 		foreach($r AS $j => $d)
 		{
 			if(!empty($d))
@@ -119,14 +129,14 @@ function survey_demografi_checkbox($r, $i)
 				if($d == 'text')
 				{
 					$text = @$_POST['options'][$id][$i][$j];
-					$text2 = '</label><input type="text" id="options_'.$id.'_'.$i.'_'.$j.'" class="checked_others" value="'.$text.'" />';
-				}else $text2 = $text.'</label>';
+					$text2 = '<input type="text" id="options_'.$id.'_'.$i.'_'.$j.'" class="form-control" value="'.$text.'" />';
+				}else $text2 = $text.'';
 				$add = (!empty($_POST['options'][$id][$i][$j]) && $_POST['options'][$id][$i][$j] == $text) ? ' checked="checked"' : '';
-				$output[$j] = '<label><input type="checkbox" name="options['.$id.']['.$i.']['.$j.']" id="options_'.$id.'_'.$i.'_'.$j.'_checked" value="'.$text.'"'.$add.' /> '.$text2;
+				$output[$j] = '<div class="form-group checkbox"><label><input type="checkbox" name="options['.$id.']['.$i.']['.$j.']" id="options_'.$id.'_'.$i.'_'.$j.'_checked" value="'.$text.'"'.$add.' /> '.$text2.'</label></div>';
 			}
 		}
 	}
-	return implode('<br />', $output);
+	return implode('', $output);
 }
 function survey_demografi_array($r)
 {

@@ -8,7 +8,5 @@ if($Bbc->mod['task'] != 'polling')
 	{
 		$sys->link_set($Bbc->mod['root'].'templates/'.$config['template'].'/css/style.css');
 		$sys->set_layout($Bbc->mod['root'].'templates/'.$config['template'].'/index.php');
-	}else{
-		$sys->link_css($Bbc->mod['url'].'templates/style.css');
 	}
 }

@@ -16,21 +16,22 @@ $r = $db->getAll($q);
 if($db->Affected_rows())
 {
 	?>
-	<table border="0" cellspacing="0" cellpadding="0" class="questionary">
-		<tr style="font-weight: bold;text-align: center;padding: 5px;">
-			<td>#</td>
-			<td style="text-align: left;"><?php echo lang('Statements');?></td>
-			<td style="width:5px;">1</td>
-			<td style="width:5px;">2</td>
-			<td style="width:5px;">3</td>
-			<td style="width:5px;">4</td>
-			<td style="width:5px;">5</td>
+	<table border="0" class="table">
+		<tr>
+			<th>#</th>
+			<th><?php echo lang('Statements');?></th>
+			<th style="width:5px;">1</th>
+			<th style="width:5px;">2</th>
+			<th style="width:5px;">3</th>
+			<th style="width:5px;">4</th>
+			<th style="width:5px;">5</th>
 		</tr>
 	<?php	$i = 0;
 	foreach($r AS $d)
 	{
+		$i++;
 		?>
-		<tr<?php echo classtr($i);?>>
+		<tr>
 			<td><?php echo $i;?></td>
 			<td><?php echo $d['title'];?></td>
 			<?php echo survey_questionery_option($data['question_id'], $d['id'], 1, 'Sangat Tidak Setuju');?>

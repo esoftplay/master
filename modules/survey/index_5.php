@@ -42,7 +42,7 @@ if(isset($_POST['Submit']) && !empty($_POST['Submit']))
 	$db->Execute($q);
 	$posted_id = $db->Insert_ID();
 
-	// GET QUESTIONS... 
+	// GET QUESTIONS...
 	$question_ids		= implode(',', (array)$input['index']);
 	$q = "SELECT q.id, t.title FROM survey_question AS q LEFT JOIN survey_question_text AS t
 			ON (q.id=t.question_id AND t.lang_id=".lang_id().")
@@ -108,33 +108,29 @@ if(isset($_POST['Submit']) && !empty($_POST['Submit']))
 
 $data = $sess['index_4'];
 ?>
-<form action="" method="post">
-	<div class="formItem">
-		<h3><?php echo lang('Profile Detail');?></h3>
-		<table class="table">
-			<tr>
-				<td style="width: 150px;"><?php echo lang('Name');?></td>
-				<td><?php echo $data['name'];?></td>
-			</tr>
-			<?php
-			foreach((array)$data['params'] AS $field => $value)
-			{
-				?>
-				<tr>
-					<td><?php echo lang($field);?></td>
-					<td><?php echo $value;?></td>
-				</tr>
-				<?php
-			}
+<form action="" method="post" class="form">
+	<legend><?php echo lang('Profile Detail');?></legend>
+	<table class="table">
+		<tr>
+			<td style="width: 150px;"><?php echo lang('Name');?></td>
+			<td><?php echo $data['name'];?></td>
+		</tr>
+		<?php
+		foreach((array)$data['params'] AS $field => $value)
+		{
 			?>
 			<tr>
-				<td><?php echo lang('Email');?></td>
-				<td><?php echo $data['email'];?></td>
+				<td><?php echo lang($field);?></td>
+				<td><?php echo $value;?></td>
 			</tr>
-		</table>
-	</div>
-	<p class="button">
-		<input type="Button" value="&#171; Back" class="btn" onClick="window.history.go(-1);" />
-		<input type="submit" name="Submit" value="Submit &#187;" class="btn" />
-	</p>
+			<?php
+		}
+		?>
+		<tr>
+			<td><?php echo lang('Email');?></td>
+			<td><?php echo $data['email'];?></td>
+		</tr>
+	</table>
+	<input type="Button" value="&#171; Back" class="btn btn-default" onClick="window.history.go(-1);" />
+	<input type="submit" name="Submit" value="Submit &#187;" class="btn btn-default" />
 </form>

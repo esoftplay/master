@@ -48,44 +48,4 @@ foreach((array)$r AS $d)
 {
 	$question[$d['question_id']]['option'][] = $d;
 }
-?>
-<form action="" method="post">
-<?php
-foreach($question AS $id => $data)
-{
-?>
-	<div class="formItem">
-		<h3><?php echo $data['title'];?></h3>
-		<p><?php echo $data['description'];?></p>
-<?php
-		if(isset($output[$id]))
-		{
-			echo msg($output[$id], '');
-		}	?>
-		<div>
-<?php
-		$r_option = (isset($data['option']) && is_array($data['option'])) ? $data['option'] : array();
-		$filepath = survey_path($data['file'], 2);
-		if($data['type']=='custom' && is_file($filepath))
-		{
-			include $filepath;
-		}else{
-			survey_option($data['type'], $id, $r_option);
-		}	?>
-		</div>
-<?php if($data['is_note'])
-			{	?>
-				<p><?php echo lang('Insert Notes');?></p>
-				<div>
-					<textarea name="notes[<?php echo $id;?>]"><?php echo @$_POST['notes'][$id];?></textarea>			
-				</div>
-<?php }	?>
-	</div>
-<?php
-}
-?>
-	<p class="button">
-		<input type="Button" value="&#171; Back" class="btn" onClick="window.history.go(-1);" />
-		<input type="submit" name="Submit" value="Next &#187;" class="btn" />
-	</p>
-</form>
+include tpl('index_2.html.php');
