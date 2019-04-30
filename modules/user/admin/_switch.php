@@ -91,6 +91,9 @@ if($type == 1 || $type == 2 || $type == 3 || $type == 4)
     case 'link':
       include 'link.php';
       break;
+    case 'menu':
+      include 'menu.php';
+      break;
 
     case 'logout':
       user_logout($user->id);
@@ -145,6 +148,9 @@ if($type == 1 || $type == 2 || $type == 3 || $type == 4)
       break;
     case 'link':
       include 'link.php';
+      break;
+    case 'menu':
+      include 'menu.php';
       break;
     case 'logout': // link untuk user logout atau keluar dari mode admin
       user_logout($user->id);
