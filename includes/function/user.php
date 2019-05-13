@@ -48,7 +48,7 @@ function user_fetch($user_id)
 	if(!empty($output['params']))
 	{
 		$prm = config_decode($output['params']);
-		foreach(user_field() AS $dt)
+		foreach(user_field($user_id) AS $dt)
 		{
 			$tmp[$dt['title']] = @$prm[$dt['title']];
 		}
