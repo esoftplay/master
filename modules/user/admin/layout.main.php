@@ -37,8 +37,8 @@ if (!empty($Bbc->shortcut))
 $_SESSION[bbcAuth]['Alert'] = array();
 unset($_SESSION[bbcAuth]['Alert']);
 ?>
-<a id="x-powered" href="<?php echo _URL; ?>user/help" onclick="window.open(_URL + 'user/help', 'help', 'width=800, height=600, align=top, scrollbars=yes, status=no, resizable=yes');; return false;">
-	<img src="<?php echo $sys->template_url; ?>images/button-help.png" ext:qtip="display manual help" />
+<a id="x-powered" href="<?php echo _URL; ?>user/help" onclick="window.open(_URL + 'user/help', 'help', 'width=800, height=600, align=top, scrollbars=yes, status=no, resizable=yes'); return false;">
+	<img src="<?php echo $sys->template_url; ?>images/button-help.png" ext:qtip="display manual help (F1)" />
 </a>
 <script type="text/javascript">
 	var menuInfo=<?php echo $allmenus;?>;
