@@ -43,45 +43,45 @@ if(!@empty($_SESSION[bbcAuth]['username']))
 }
 ?>
 <center>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<table width="350" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td style="width: 13px; height: 19px;"><img src="<?php echo $sys->template_url;?>images/logintopcleft.gif" /></td>
-		<td style="width: 320px; height: 19px; background: url(<?php echo $sys->template_url;?>images/logintophline.gif) repeat-x left top;"><img src="<?php echo $sys->template_url;?>images/logintophline.gif" /></td>
-		<td style="width: 17px; height: 19px;"><img src="<?php echo $sys->template_url;?>images/logintopcright.gif" /></td>
-	</tr>
-	<tr>
-		<td style="width: 13px; height: 196px;"><img src="<?php echo $sys->template_url;?>images/loginvlineleft.gif" /></td>
-		<td style="width: 320px; height: 196px; background: url(<?php echo $sys->template_url;?>images/loginmiddlecenter.gif) repeat-x left top;" valign="top">
-		<div id="login-title"><img src="<?php echo $sys->template_url;?>images/loginform.gif" /></div>
-		<div id="login-error"><?php echo $msg;?></div>
-		<div id="login-form">
-		<form name="login_form" action="" method="POST" target='_parent'>
-			<input type="hidden" name="login" value="true" />
-			<div id="login-input">Username:</div>
-			<div id="login-input"><input type="text" name="usr" size="30"<?php echo $v['usr'];?> /></div>
-			<div id="login-input">Password:</div>
-			<div id="login-input"><input type="password" name="pwd" size="30"<?php echo $v['pwd'];?> /></div>
-			<div id="login-button"><input name="submit" id="submitButton" type="submit" value="Login" class="button" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" /></div>
-		</form>
-		</div>
-		<div id="login-loading">Loading...</div>
-		<div id="login-devby">Login with your <strong>password</strong>!</div>
-		</td>
-		<td style="width: 17px; height: 196px;"><img src="<?php echo $sys->template_url;?>images/loginvlineright.gif" /></td>
-	</tr>
-	<tr>
-		<td style="width: 13px; height: 15px;"><img src="<?php echo $sys->template_url;?>images/loginbottomcleft.gif" /></td>
-		<td style="width: 320px; height: 15px; background: url(<?php echo $sys->template_url;?>images/loginbottomhline.gif) repeat-x left top;"><img src="<?php echo $sys->template_url;?>images/loginbottomhline.gif" /></td>
-		<td style="width: 17px; height: 15px;"><img src="<?php echo $sys->template_url;?>images/loginbottomcright.gif" /></td>
-	</tr>
-</table>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<table width="350" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td style="width: 13px; height: 19px; background: url(<?php echo $sys->template_url;?>images/logintopcleft.gif) no-repeat;"></td>
+			<td style="width: 320px; height: 19px; background: url(<?php echo $sys->template_url;?>images/logintophline.gif) repeat-x left top;"></td>
+			<td style="width: 13px; height: 19px; background: url(<?php echo $sys->template_url;?>images/logintopcright.gif) no-repeat;"></td>
+		</tr>
+		<tr>
+			<td style="width: 13px; height: 196px; background: url(<?php echo $sys->template_url;?>images/loginvlineleft.gif) no-repeat;"></td>
+			<td style="width: 320px; height: 196px; background: url(<?php echo $sys->template_url;?>images/loginmiddlecenter.gif) repeat-x left top;" valign="top">
+				<div id="login-title"><img src="<?php echo $sys->template_url;?>images/loginform.gif" /></div>
+				<div id="login-error"><?php echo $msg;?></div>
+				<div id="login-form">
+					<form name="login_form" action="" method="POST" target='_parent'>
+						<input type="hidden" name="login" value="true" />
+						<div id="login-input">Username:</div>
+						<div id="login-input"><input type="text" name="usr" size="30"<?php echo $v['usr'];?> /></div>
+						<div id="login-input">Password:</div>
+						<div id="login-input"><input type="password" name="pwd" size="30"<?php echo $v['pwd'];?> /></div>
+						<div id="login-button"><input name="submit" id="submitButton" type="submit" value="Login" class="button" onmouseover="this.className='button-hover';" onmouseout="this.className='button';" /></div>
+					</form>
+				</div>
+				<div id="login-loading">Loading...</div>
+				<div id="login-devby">Login with your <strong>password</strong>!</div>
+			</td>
+			<td style="width: 13px; height: 196px; background: url(<?php echo $sys->template_url;?>images/loginvlineright.gif) no-repeat;"></td>
+		</tr>
+		<tr>
+			<td style="width: 13px; height: 15px; background: url(<?php echo $sys->template_url;?>images/loginbottomcleft.gif) no-repeat;"></td>
+			<td style="width: 320px; height: 15px; background: url(<?php echo $sys->template_url;?>images/loginbottomhline.gif) repeat-x left top;"></td>
+			<td style="width: 13px; height: 15px; background: url(<?php echo $sys->template_url;?>images/loginbottomcright.gif) no-repeat;"></td>
+		</tr>
+	</table>
 </center>
 <div style="display:none;"><img src="<?php echo _URL;?>templates/admin/images/wallpapers.jpg"></div>
 <?php

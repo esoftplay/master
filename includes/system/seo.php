@@ -2,14 +2,16 @@
 
 if (session_id() == '')
 {
+	session_write_close();
 	if(!empty($_SERVER['HTTP_HOST']))
 	{
-		$_seo['dom'] = ($_SERVER['HTTP_HOST'] == 'localhost') ? '' : '.'.preg_replace(array('~^((?:www|m|wap|mobile)\.)?~is', '~(:[0-9]+)?$~'), '', $_SERVER['HTTP_HOST']);
+		$_seo['dom']  = ($_SERVER['HTTP_HOST'] == 'localhost') ? '' : '.'.preg_replace(array('~^((?:www|m|wap|mobile)\.)?~is', '~(:[0-9]+)?$~'), '', $_SERVER['HTTP_HOST']);
+		$_seo['_URI'] = preg_replace('~[^a-z0-9]+~is', '', _URI);
 		if (preg_match('~([a-z0-9\-]+)\.~is', $_seo['dom'], $m))
 		{
-			session_name(_URI.$m[1]);
+			session_name($_seo['_URI'].$m[1]);
 		}else{
-			session_name(_URI);
+			session_name($_seo['_URI']);
 		}
 		session_set_cookie_params(0, '/', $_seo['dom'], false, false);
 		ini_set('session.cookie_domain', $_seo['dom']);
@@ -144,7 +146,6 @@ if (_SEO && _ADMIN == '')
 		seo_link_request('?menu_id=-1');
 	}elseif(!preg_match('~\.~s', @$_GET['mod']) && !empty($_GET['mod'])) $_GET['mod'] .= '.main';
 }
-
 $_URI = array_merge(array(substr(_URI, 1, -1)), explode('/', $_seo['URI']));unset($_seo);
 
 function site_url($string='', $add_URL = true)
