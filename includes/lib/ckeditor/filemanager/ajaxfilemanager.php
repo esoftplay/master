@@ -129,11 +129,11 @@
 	var supportedUploadExts = '<?php echo CONFIG_UPLOAD_VALID_EXTS; ?>'
 	var elementId = <?php  echo (!empty($_GET['elementId'])?"'" . $_GET['elementId'] . "'":'null'); ?>;
 	var files = {};
-$(document).ready(function(){
+	$(document).ready(function(){
 		jQuery(document).bind('keypress', function(event) {
 			var code=event.charCode || event.keyCode;
 			if(code && code == 13) {// if enter is pressed
-	  			event.preventDefault(); //prevent browser from following the actual href
+					event.preventDefault(); //prevent browser from following the actual href
 			};
 		});
 		if(typeof(cancelSelectFile) != 'undefined')
@@ -189,15 +189,15 @@ $(document).ready(function(){
 </head>
 <body>
 	<div id="wrapper">
-  	<div id="header">
-  		<dl id="currentFolderInfo">
-  			<dt><?php echo LBL_CURRENT_FOLDER_PATH; ?></dt>
-  			<dd id="currentFolderPath"></dd>
-  		</dl>
-    	<div id="viewList">
+		<div id="header">
+			<dl id="currentFolderInfo">
+				<dt><?php echo LBL_CURRENT_FOLDER_PATH; ?></dt>
+				<dd id="currentFolderPath"></dd>
+			</dl>
+			<div id="viewList">
 
 
-    			<label><?php echo LBL_BTN_VIEW_OPTIONS; ?></label>
+					<label><?php echo LBL_BTN_VIEW_OPTIONS; ?></label>
 					<?php
 						foreach($views as $k=>$v)
 						{
@@ -268,17 +268,17 @@ $(document).ready(function(){
 					<!-- <li><a href="#" id="actionClose" onclick="return cancelSelectFile();"><?php echo IMG_BTN_CLOSE; ?></a></li>
 					<li><a href="#" class="thickbox" id="actionInfo" onclick="return infoWin(this);"><span>Info</span></a></li> -->
 					<!-- thest functions will be added in the near future
- 					<li ><a href="#" id="actionZip"><span>Zip</span></a><li>
+					<li ><a href="#" id="actionZip"><span>Zip</span></a><li>
 					<li ><a href="#" id="actionUnzip"><span>Unzip</span></a><li>-->
 				</ul>
 <form action="" method="POST" name="formAction" id="formAction"><input type="hidden" name="currentFolderPath" id="currentFolderPathVal" value="" /><select name="selectedDoc[]" id="selectedDoc" style="display:none;" multiple="multiple"></select><input type="hidden" name="action_value" value="" id="action_value" /></form>
-    </div>
+		</div>
 
-    <div id="body">
+		<div id="body">
 
 
-      <div id="rightCol">
-	      	<?php
+			<div id="rightCol">
+					<?php
 			if(CONFIG_LOAD_DOC_LATTER )
 			{
 				$currentPath = getCurrentFolderPath();
@@ -308,47 +308,47 @@ $(document).ready(function(){
 			{
 				include_once(CONFIG_URL_LIST_LISTING);
 			}
-	      	 ?>
-      </div>
+					 ?>
+			</div>
 
-      <div id="leftCol">
+			<div id="leftCol">
 
-      	<?php
-      		if(CONFIG_OPTIONS_SEARCH)
-      		{
-      	?>
-      	<fieldset class="boxSearch">
-      		<legend><?php echo LBL_SEARCH; ?></legend>
+				<?php
+					if(CONFIG_OPTIONS_SEARCH)
+					{
+				?>
+				<fieldset class="boxSearch">
+					<legend><?php echo LBL_SEARCH; ?></legend>
 
 
 
-          <table cellpadding="0" cellspacing="0" class="tableSearch">
-          	<tbody>
-	          <tr>
-	          	<td>
-	          		<b><?php echo LBL_SEARCH_NAME; ?></b> <br />
-	            	<input type="text" class="input inputSearch" name="search_name" id="search_name" />
-	          	</td>
-	         </tr>
-	          <tr>
-	          	<td >
-	          	<b><?php echo LBL_SEARCH_FOLDER; ?></b><br />
-	          	<span id="searchFolderContainer">
-	          	<?php
-	          		if(CONFIG_LOAD_DOC_LATTER)
-	          		{
-	          			?>
-	          			<script type="text/javascript">
-	          				$(document).ready(
-	          					function()
-	          					{
-	          						ajaxStart('#searchFolderContainer');
-	          						$('#searchFolderContainer').load('<?php echo CONFIG_URL_LOAD_FOLDERS; ?>');
-	          					}
-	          				);
-	          			</script>
-	          			<?php
-	          		}else{
+					<table cellpadding="0" cellspacing="0" class="tableSearch">
+						<tbody>
+						<tr>
+							<td>
+								<b><?php echo LBL_SEARCH_NAME; ?></b> <br />
+								<input type="text" class="input inputSearch" name="search_name" id="search_name" />
+							</td>
+					 </tr>
+						<tr>
+							<td >
+							<b><?php echo LBL_SEARCH_FOLDER; ?></b><br />
+							<span id="searchFolderContainer">
+							<?php
+								if(CONFIG_LOAD_DOC_LATTER)
+								{
+									?>
+									<script type="text/javascript">
+										$(document).ready(
+											function()
+											{
+												ajaxStart('#searchFolderContainer');
+												$('#searchFolderContainer').load('<?php echo CONFIG_URL_LOAD_FOLDERS; ?>');
+											}
+										);
+									</script>
+									<?php
+								}else{
 									?>
 									<select class="input inputSearch" name="search_folder" id="search_folder">
 										<?php
@@ -368,23 +368,23 @@ $(document).ready(function(){
 										?>
 									</select>
 									<?php
-	          		}
-		      ?></span>
-	          </td>
-	         </tr>
-        		<tr>
-        			<td>
-        		<b><?php echo LBL_SEARCH_MTIME; ?></b><br />
-        		<input type="text" class="input inputMtime" name="search_mtime_from" id="search_mtime_from" value="<?php echo (!empty($_GET['search_mtime_from'])?$_GET['search_mtime_from']:''); ?>" />
-        		<span class="leftToRightArrow">&nbsp;</span>
-        		<input type="text" class="input inputMtime" name="search_mtime_to" id="search_mtime_to" value="<?php echo (!empty($_GET['search_mtime_to'])?$_GET['search_mtime_to']:''); ?>" />
-        	</td></tr>
+								}
+					?></span>
+						</td>
+					 </tr>
+						<tr>
+							<td>
+						<b><?php echo LBL_SEARCH_MTIME; ?></b><br />
+						<input type="text" class="input inputMtime" name="search_mtime_from" id="search_mtime_from" value="<?php echo (!empty($_GET['search_mtime_from'])?$_GET['search_mtime_from']:''); ?>" />
+						<span class="leftToRightArrow">&nbsp;</span>
+						<input type="text" class="input inputMtime" name="search_mtime_to" id="search_mtime_to" value="<?php echo (!empty($_GET['search_mtime_to'])?$_GET['search_mtime_to']:''); ?>" />
+					</td></tr>
 
 			<tr>
 				<td>
-          	<b><?php echo LBL_SEARCH_RECURSIVELY; ?></b>&nbsp;&nbsp;
-          	<input type="radio" name="search_recursively" value="1" id="search_recursively_1" class="radio" <?php echo (!empty($_GET['search_recursively'])?'checked="checked"':''); ?> /> <?php echo LBL_RECURSIVELY_YES; ?>
-          	<input type="radio" name="search_recursively" value="0" id="search_recursively_0" class="radio" <?php echo (empty($_GET['search_recursively'])?'checked="checked"':''); ?> /> <?php echo LBL_RECURSIVELY_NO; ?>
+						<b><?php echo LBL_SEARCH_RECURSIVELY; ?></b>&nbsp;&nbsp;
+						<input type="radio" name="search_recursively" value="1" id="search_recursively_1" class="radio" <?php echo (!empty($_GET['search_recursively'])?'checked="checked"':''); ?> /> <?php echo LBL_RECURSIVELY_YES; ?>
+						<input type="radio" name="search_recursively" value="0" id="search_recursively_0" class="radio" <?php echo (empty($_GET['search_recursively'])?'checked="checked"':''); ?> /> <?php echo LBL_RECURSIVELY_NO; ?>
 				</td>
 			</tr>
 		</tbody>
@@ -394,26 +394,26 @@ $(document).ready(function(){
 
 
 
-        <p class="searchButtons">
+				<p class="searchButtons">
 
 
-        		<table border="0" cellpadding="0" cellspacing="0" >
-        			<tr>
-    					<td width="99%">&nbsp;</td>
-        				<td width="1%" nowrap style="padding-right:16px;">
-        					<a href="#" onclick="return searchDocuments();" class="buttonLink"><span><?php echo BTN_SEARCH; ?></span></a>
+						<table border="0" cellpadding="0" cellspacing="0" >
+							<tr>
+							<td width="99%">&nbsp;</td>
+								<td width="1%" nowrap style="padding-right:16px;">
+									<a href="#" onclick="return searchDocuments();" class="buttonLink"><span><?php echo BTN_SEARCH; ?></span></a>
 
-        				</td>
-        			</tr>
-        		</table>
+								</td>
+							</tr>
+						</table>
 
-        	<div class="clear"></div>
+					<div class="clear"></div>
 
-        </p>
-        <div class="clear"></div>
-        </fieldset>
+				</p>
+				<div class="clear"></div>
+				</fieldset>
 	<?php
-      		}
+					}
 	?>
 
 				<fieldset id="folderFieldSet" >
@@ -494,248 +494,248 @@ $(document).ready(function(){
 					</tbody>
 				</table>
 
-        <p class="searchButtons" id="returnCurrentUrl">
-         		<table border="0" cellpadding="0" cellspacing="0" >
-        			<tr>
-    					<td width="99%">&nbsp;</td>
-        				<td width="1%" nowrap style="padding-right:16px;">
-        					<a href="#" id="selectCurrentUrl"  class="buttonLink"><span><?php echo MENU_SELECT; ?></span></a>
+				<p class="searchButtons" id="returnCurrentUrl">
+						<table border="0" cellpadding="0" cellspacing="0" >
+							<tr>
+							<td width="99%">&nbsp;</td>
+								<td width="1%" nowrap style="padding-right:16px;">
+									<a href="#" id="selectCurrentUrl"  class="buttonLink"><span><?php echo MENU_SELECT; ?></span></a>
 
-        				</td>
-        			</tr>
-        		</table>
+								</td>
+							</tr>
+						</table>
 
-        	<div class="clear"></div>
+					<div class="clear"></div>
 
 
-        </p>
+				</p>
 
 			</fieldset>
 
 
 
-      </div>
+			</div>
 
-      <div class="clear"></div>
-    </div>
-
-
-  </div>
-  <div class="clear"></div>
+			<div class="clear"></div>
+		</div>
 
 
-
-  <div id="ajaxLoading" style="display:none"><img class="ajaxLoadingImg" src="<?php echo DIR_AJAX_URL; ?>theme/<?php echo CONFIG_THEME_NAME; ?>/images/ajaxLoading.gif" /></div>
-  <div id="winUpload" style="display:none">
-  	<div class="jqmContainer">
-  		<div class="jqmHeader">
-  			<a href="#" onclick="tb_remove();"><?php echo LBL_ACTION_CLOSE; ?></a>
-  		</div>
-  		<div class="jqmBody">
-		  	<form id="formUpload" name="formUpload" method="POST" enctype="multipart/form-data" action="">
-		  	<table class="tableForm" cellpadding="0" cellspacing="0">
-		  		<thead>
-		  			<tr>
-		  				<th colspan="4"><?php echo FILE_FORM_TITLE; ?><a class="action" href="#" title="<?php echo FILE_LBL_MORE;  ?>" onclick="return addMoreFile();"><span class="addMore">&nbsp;</span></a></th>
-		  			</tr>
-		  		</thead>
-		  		<tbody id="fileUploadBody">
-		  			<tr style="display:none">
-		  				<th><label><?php echo FILE_LABEL_SELECT; ?></label></th>
-		  				<td><input type="file" style="font-size:12px" name="file"  /> </td>
-
-		  				<td>
-			        		<a href="#" class="buttonLink"><span><?php echo FILE_LBL_UPLOAD; ?></span></a>
-		  				</td>
-		  				<td> <a href="#" class="action" title="Cancel" style="display:none" ><span class="cancel">&nbsp;</span></a>  <span class="uploadProcessing" style="display:none">&nbsp;</span></td>
-		  			</tr>
-		  		</tbody>
-		  		<tfoot>
-		  			<tr>
-		  				<th>&nbsp;</th>
-		  				<td colspan="3"></td>
-		  			</tr>
-		  		</tfoot>
-		  	</table>
-		  	</form>
-  		</div>
-
-  	</div>
-  </div>
-  <div id="winNewFolder" style="display:none">
-  	<div class="jqmContainer">
-  		<div class="jqmHeader">
-  			<a href="#" onclick="return tb_remove();"><?php echo LBL_ACTION_CLOSE; ?></a>
-  		</div>
-  		<div class="jqmBody">
-	    	<form id="formNewFolder" name="formNewFolder" method="POST" action="">
-	  	<input type="hidden" name="currentFolderPath" value="" id="currentNewfolderPath" />
-	  	<table class="tableForm" cellpadding="0" cellspacing="0">
-	  		<thead>
-	  			<tr>
-	  				<th colspan="2" ><?php echo FOLDER_FORM_TITLE; ?></th>
-	  			</tr>
-	  		</thead>
-	  		<tbody>
-	  			<tr>
-	  				<th nowrap><label><?php echo FOLDER_LBL_TITLE; ?></label></th>
-	  				<td ><input type="text" name="new_folder" style="font-size:12px" id="new_folder"  value="" class="input"></td>
-	  			</tr>
-
-
-	  		</tbody>
-	  		<tfoot>
-	  			<tr>
-	  				<th >&nbsp;</th>
-
-		  				<td nowrap>
-		  					<table cellpadding="0" cellspacing="0" border="0">
-		  						<tr>
-		  							<td width="99%">&nbsp;</td>
-		  							<td nowrap width="1%"><a href="#" class="buttonLink" onclick="return doCreateFolder();" ><span><?php echo FOLDER_LBL_CREATE; ?></span></a>		</td>
-		  						</tr>
-		  					</table>
-
-		  				</td>
-
-	  			</tr>
-	  		</tfoot>
-	  	</table>
-	  	</form>
-  		</div>
+	</div>
+	<div class="clear"></div>
 
 
 
-  	</div>
-  </div>
-  <div id="winPlay" style="display:none">
-  	<div class="jqmContainer">
-  		<div class="jqmHeader">
-  			<a href="#" onclick="return closeWinPlay();"><?php echo LBL_ACTION_CLOSE; ?></a>
-  		</div>
-  		<div class="jqmBody">
-  			<div id="playGround"></div>
-  		</div>
-  	</div>
-  </div>
-  <div id="winRename" style="display:none">
-  	<div class="jqmContainer">
-  		<div class="jqmHeader">
-  			<a href="#" onclick="return tb_remove();"><?php echo LBL_ACTION_CLOSE; ?></a>
-  		</div>
-  		<div class="jqmBody">
-		  	<form id="formRename" name="formRename" method="POST" action="">
-		  	<input type="hidden" name="original_path" id="original_path" />
-		  	<input type="hidden" name="num" id="renameNum" value="" />
-		  	<table class="tableForm" cellpadding="0" cellspacing="0">
-		  		<thead>
-		  			<tr>
-		  				<th colspan="2"><?php echo RENAME_FORM_TITLE; ?></th>
-		  			</tr>
-		  		</thead>
-		  		<tbody>
-		  			<tr>
-		  				<th nowrap><label><?php echo RENAME_NEW_NAME; ?></label></th>
-		  				<td ><input type="name" id="renameName" style="font-size:12px"  class="input" name="name" style="width:250px" />
-		          </td>
-		  			</tr>
-		  		</tbody>
-		  		<tfoot>
-		  			<tr>
-		  				<th >&nbsp;</th>
-		  				<td nowrap>
-		  					<table cellpadding="0" cellspacing="0" border="0">
-		  						<tr>
-		  							<td width="99%">&nbsp;</td>
-		  							<td nowrap width="1%"><a href="#" class="buttonLink" onclick="return doRename();" ><span><?php echo RENAME_LBL_RENAME; ?></span></a>	</td>
-		  						</tr>
-		  					</table>
+	<div id="ajaxLoading" style="display:none"><img class="ajaxLoadingImg" src="<?php echo DIR_AJAX_URL; ?>theme/<?php echo CONFIG_THEME_NAME; ?>/images/ajaxLoading.gif" /></div>
+	<div id="winUpload" style="display:none">
+		<div class="jqmContainer">
+			<div class="jqmHeader">
+				<a href="#" onclick="tb_remove();"><?php echo LBL_ACTION_CLOSE; ?></a>
+			</div>
+			<div class="jqmBody">
+				<form id="formUpload" name="formUpload" method="POST" enctype="multipart/form-data" action="">
+				<table class="tableForm" cellpadding="0" cellspacing="0">
+					<thead>
+						<tr>
+							<th colspan="4"><?php echo FILE_FORM_TITLE; ?><a class="action" href="#" title="<?php echo FILE_LBL_MORE;  ?>" onclick="return addMoreFile();"><span class="addMore">&nbsp;</span></a></th>
+						</tr>
+					</thead>
+					<tbody id="fileUploadBody">
+						<tr style="display:none">
+							<th><label><?php echo FILE_LABEL_SELECT; ?></label></th>
+							<td><input type="file" style="font-size:12px" name="file"  /> </td>
 
-		  				</td>
+							<td>
+									<a href="#" class="buttonLink"><span><?php echo FILE_LBL_UPLOAD; ?></span></a>
+							</td>
+							<td> <a href="#" class="action" title="Cancel" style="display:none" ><span class="cancel">&nbsp;</span></a>  <span class="uploadProcessing" style="display:none">&nbsp;</span></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th>&nbsp;</th>
+							<td colspan="3"></td>
+						</tr>
+					</tfoot>
+				</table>
+				</form>
+			</div>
 
-		  			</tr>
-		  		</tfoot>
-		  	</table>
-		  	</form>
-  		</div>
-
-  	</div>
-
-  </div>
-  <div id="winInfo" style="display:none">
-  	<div class="jqmContainer">
-  		<div class="jqmHeader">
-  			<a href="#" onclick="tb_remove();"><?php echo LBL_ACTION_CLOSE; ?></a>
-  		</div>
-  		<div class="jqmBody">
-   	<table class="tableInfo" cellpadding="0" cellspacing="0">
-  		<tbody>
-  			<tr>
-	  			<th nowrap>
-	  				<label>Author:</label>
-	  			</th>
-	  			<td>
-	  				<a href="&#109;a&#105;l&#116;&#111;:&#99;&#97;&#105;&#108;&#111;&#110;&#103;&#113;&#117;&#110;&#64;&#121;&#97;&#104;&#111;&#111;&#46;&#99;&#111;&#109;&#46;&#99;&#110;">Logan Cai</a>
-	  			</td>
-  			</tr>
-  			<tr>
-  				<th nowrap>
-  					<label>Template Designer:</label>
-  				</th>
-  				<td>
-  					<a href="&#109;a&#105;l&#116;&#111;:&#71;&#97;&#98;&#114;&#105;&#101;&#108;&#64;&#52;&#118;&#46;&#99;&#111;&#109;&#46;&#98;&#114;">Gabriel</a>
-  				</td>
-  			</tr>
-  			<tr>
-  				<th  nowrap>
-  					<label>Official Website:</label>
-  				</th>
-  				<td>
-  					<a href="http://www.phpletter.com">http://www.phpletter.com</a>
-  				</td>
-  			</tr>
-  			<tr>
-  				<th  nowrap>
-  					<label>Support Forum:</label>
-  				</th>
-  				<td>
-  					<a href="http://forum.phpletter.com/">http://forum.phpletter.com/</a>
-  				</td>
-  			</tr>
-  			<tr>
-  				<th nowrap valign="top">
-  					<label>&copy;Copyright:</label>
-  				</th>
-  				<td>
-  					All copyright declarations in the source must remain unchange. Please contact us if you need to make changes to it, in order to avoid any Legal Issues.  We also offer website development service, please contact us at <a href="&#109;a&#105;l&#116;&#111;:&#99;&#97;&#105;&#108;&#111;&#110;&#103;&#113;&#117;&#110;&#64;&#121;&#97;&#104;&#111;&#111;&#46;&#99;&#111;&#109;&#46;&#99;&#110;">&#99;&#97;&#105;&#108;&#111;&#110;&#103;&#113;&#117;&#110;&#64;&#121;&#97;&#104;&#111;&#111;&#46;&#99;&#111;&#109;&#46;&#99;&#110;</a>
-  				</td>
-  			</tr>
-  		</tbody>
-  	</table>
-  		</div>
+		</div>
+	</div>
+	<div id="winNewFolder" style="display:none">
+		<div class="jqmContainer">
+			<div class="jqmHeader">
+				<a href="#" onclick="return tb_remove();"><?php echo LBL_ACTION_CLOSE; ?></a>
+			</div>
+			<div class="jqmBody">
+				<form id="formNewFolder" name="formNewFolder" method="POST" action="">
+			<input type="hidden" name="currentFolderPath" value="" id="currentNewfolderPath" />
+			<table class="tableForm" cellpadding="0" cellspacing="0">
+				<thead>
+					<tr>
+						<th colspan="2" ><?php echo FOLDER_FORM_TITLE; ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th nowrap><label><?php echo FOLDER_LBL_TITLE; ?></label></th>
+						<td ><input type="text" name="new_folder" style="font-size:12px" id="new_folder"  value="" class="input"></td>
+					</tr>
 
 
-  	</div>
-  </div>
-  <div id="contextMenu" style="display:none">
-  	<ul>
-  		<li><a href="#" class="contentMenuItem" id="menuSelect"><?php echo MENU_SELECT; ?></a></li>
-  		<li><a href="#" class="contentMenuItem"  id="menuPreview"><?php echo MENU_PREVIEW; ?></a></li>
-  		<li><a href="#" class="contentMenuItem"  id="menuDownload"><?php echo MENU_DOWNLOAD; ?></a></li>
-  		<li><a href="#" class="contentMenuItem"  id="menuRename"><?php echo MENU_RENAME; ?></a></li>
-  		<li><a href="#" class="contentMenuItem"  id="menuEdit"><?php echo MENU_EDIT; ?></a></li>
-  		<li><a href="#" class="contentMenuItem"  id="menuCut"><?php echo MENU_CUT; ?></a></li>
-  		<li><a href="#" class="contentMenuItem" id="menuCopy"><?php echo MENU_COPY; ?></a></li>
-  		<li><a href="#" class="contentMenuItem"  id="menuPaste"><?php echo MENU_PASTE; ?></a></li>
-  		<li><a href="#" class="contentMenuItem"  id="menuDelete"><?php echo MENU_DELETE; ?></a></li>
-  		<li><a href="#" class="contentMenuItem"  id="menuPlay"><?php echo MENU_PLAY; ?></a></li>
-  	</ul>
-  </div>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th >&nbsp;</th>
+
+							<td nowrap>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td width="99%">&nbsp;</td>
+										<td nowrap width="1%"><a href="#" class="buttonLink" onclick="return doCreateFolder();" ><span><?php echo FOLDER_LBL_CREATE; ?></span></a>		</td>
+									</tr>
+								</table>
+
+							</td>
+
+					</tr>
+				</tfoot>
+			</table>
+			</form>
+			</div>
+
+
+
+		</div>
+	</div>
+	<div id="winPlay" style="display:none">
+		<div class="jqmContainer">
+			<div class="jqmHeader">
+				<a href="#" onclick="return closeWinPlay();"><?php echo LBL_ACTION_CLOSE; ?></a>
+			</div>
+			<div class="jqmBody">
+				<div id="playGround"></div>
+			</div>
+		</div>
+	</div>
+	<div id="winRename" style="display:none">
+		<div class="jqmContainer">
+			<div class="jqmHeader">
+				<a href="#" onclick="return tb_remove();"><?php echo LBL_ACTION_CLOSE; ?></a>
+			</div>
+			<div class="jqmBody">
+				<form id="formRename" name="formRename" method="POST" action="">
+				<input type="hidden" name="original_path" id="original_path" />
+				<input type="hidden" name="num" id="renameNum" value="" />
+				<table class="tableForm" cellpadding="0" cellspacing="0">
+					<thead>
+						<tr>
+							<th colspan="2"><?php echo RENAME_FORM_TITLE; ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th nowrap><label><?php echo RENAME_NEW_NAME; ?></label></th>
+							<td ><input type="name" id="renameName" style="font-size:12px"  class="input" name="name" style="width:250px" />
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th >&nbsp;</th>
+							<td nowrap>
+								<table cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td width="99%">&nbsp;</td>
+										<td nowrap width="1%"><a href="#" class="buttonLink" onclick="return doRename();" ><span><?php echo RENAME_LBL_RENAME; ?></span></a>	</td>
+									</tr>
+								</table>
+
+							</td>
+
+						</tr>
+					</tfoot>
+				</table>
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+	<div id="winInfo" style="display:none">
+		<div class="jqmContainer">
+			<div class="jqmHeader">
+				<a href="#" onclick="tb_remove();"><?php echo LBL_ACTION_CLOSE; ?></a>
+			</div>
+			<div class="jqmBody">
+		<table class="tableInfo" cellpadding="0" cellspacing="0">
+			<tbody>
+				<tr>
+					<th nowrap>
+						<label>Author:</label>
+					</th>
+					<td>
+						<a href="&#109;a&#105;l&#116;&#111;:&#99;&#97;&#105;&#108;&#111;&#110;&#103;&#113;&#117;&#110;&#64;&#121;&#97;&#104;&#111;&#111;&#46;&#99;&#111;&#109;&#46;&#99;&#110;">Logan Cai</a>
+					</td>
+				</tr>
+				<tr>
+					<th nowrap>
+						<label>Template Designer:</label>
+					</th>
+					<td>
+						<a href="&#109;a&#105;l&#116;&#111;:&#71;&#97;&#98;&#114;&#105;&#101;&#108;&#64;&#52;&#118;&#46;&#99;&#111;&#109;&#46;&#98;&#114;">Gabriel</a>
+					</td>
+				</tr>
+				<tr>
+					<th  nowrap>
+						<label>Official Website:</label>
+					</th>
+					<td>
+						<a href="http://www.phpletter.com">http://www.phpletter.com</a>
+					</td>
+				</tr>
+				<tr>
+					<th  nowrap>
+						<label>Support Forum:</label>
+					</th>
+					<td>
+						<a href="http://forum.phpletter.com/">http://forum.phpletter.com/</a>
+					</td>
+				</tr>
+				<tr>
+					<th nowrap valign="top">
+						<label>&copy;Copyright:</label>
+					</th>
+					<td>
+						All copyright declarations in the source must remain unchange. Please contact us if you need to make changes to it, in order to avoid any Legal Issues.  We also offer website development service, please contact us at <a href="&#109;a&#105;l&#116;&#111;:&#99;&#97;&#105;&#108;&#111;&#110;&#103;&#113;&#117;&#110;&#64;&#121;&#97;&#104;&#111;&#111;&#46;&#99;&#111;&#109;&#46;&#99;&#110;">&#99;&#97;&#105;&#108;&#111;&#110;&#103;&#113;&#117;&#110;&#64;&#121;&#97;&#104;&#111;&#111;&#46;&#99;&#111;&#109;&#46;&#99;&#110;</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="contextMenu" style="display:none">
+		<ul>
+			<li><a href="#" class="contentMenuItem" id="menuSelect"><?php echo MENU_SELECT; ?></a></li>
+			<li><a href="#" class="contentMenuItem"  id="menuPreview"><?php echo MENU_PREVIEW; ?></a></li>
+			<li><a href="#" class="contentMenuItem"  id="menuDownload"><?php echo MENU_DOWNLOAD; ?></a></li>
+			<li><a href="#" class="contentMenuItem"  id="menuRename"><?php echo MENU_RENAME; ?></a></li>
+			<li><a href="#" class="contentMenuItem"  id="menuEdit"><?php echo MENU_EDIT; ?></a></li>
+			<li><a href="#" class="contentMenuItem"  id="menuCut"><?php echo MENU_CUT; ?></a></li>
+			<li><a href="#" class="contentMenuItem" id="menuCopy"><?php echo MENU_COPY; ?></a></li>
+			<li><a href="#" class="contentMenuItem"  id="menuPaste"><?php echo MENU_PASTE; ?></a></li>
+			<li><a href="#" class="contentMenuItem"  id="menuDelete"><?php echo MENU_DELETE; ?></a></li>
+			<li><a href="#" class="contentMenuItem"  id="menuPlay"><?php echo MENU_PLAY; ?></a></li>
+		</ul>
+	</div>
 	<script src="<?php echo _URL;?>templates/admin/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="<?php echo _URL;?>templates/admin/js/index.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	_Bbc(function($){
-		$(window).on("resize", function(){
+		var onResize = function(){
 			if (!window.header_height) {
 				window.header_height = $("#header").height();
 			};
@@ -744,11 +744,12 @@ $(document).ready(function(){
 			};
 			var a = $(this).height()-window.header_height-window.pagination_height;
 			$("#content").height(a).css({"max-height":a,"overflow":"auto"});
-		}).trigger("resize");
+		};
+		$(window).on("resize", onResize);
 	});
 	function ajaxStop(selectorOfAnimation) {
-	  $(selectorOfAnimation).remove();
-	  BS3(window).trigger("resize");
+		$(selectorOfAnimation).remove();
+		BS3(window).trigger("resize");
 	};
 	</script>
 </body>

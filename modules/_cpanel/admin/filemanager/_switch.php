@@ -1,5 +1,7 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
+// diarahin langsung biar script untuk menangkap F1, F2... bisa jalan di admin
+redirect(_URL.'user/files/?filemanagerPath=');
 ?>
 <html>
 	<head></head>
