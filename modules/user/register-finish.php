@@ -2,7 +2,8 @@
 
 if(@$_GET['pending'])
 {
-	echo msg(lang('register finish pending'));
+	$output = msg(lang('register finish pending'));
 }else{
-	echo msg(lang('register finish auto'));
+	$output = msg(lang('register finish auto'));
 }
+include tpl('register-finish.html.php');

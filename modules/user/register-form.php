@@ -60,8 +60,11 @@ if($id)
 }
 $form->set($params);
 $form->set_encode(false);
-echo '<h1>'.lang('Registration Form').'</h1>';
-echo $form->show();
+$output = array(
+	'title' => lang('Registration Form'),
+	'form'  => $form->show()
+	);
+include tpl('register-form.html.php');
 
 function _is_email_unique(&$form)
 {

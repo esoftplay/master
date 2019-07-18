@@ -1,5 +1,6 @@
 <?php defined( '_VALID_BBC' ) or die( 'Restricted access' );
 
+$output = '';
 if(!empty($_GET['id']))
 {
 	$Msg = '';
@@ -59,7 +60,10 @@ if(!empty($_GET['id']))
 		$db->Execute($q);
 	}
 	if(!empty($Msg))
-	echo msg($Msg);
+	{
+		$output = $Msg;
+	}
 	$q = "DELETE FROM bbc_account_temp WHERE `date` < NOW()";
 	$db->Execute($q);
 }
+include tpl('register-validate.html.php');
