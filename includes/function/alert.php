@@ -343,6 +343,7 @@ function alert_push_send($id, $last_id=0)
 					'to'    => $to['token'],
 					'title' => $data['title'],
 					'body'  => $data['message'],
+					'sound' => 'default',
 					'data'  => array(
 						'id'      => $data['id'],
 						'action'  => $params['action'],
