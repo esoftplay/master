@@ -8,7 +8,8 @@ switch( $Bbc->mod['task'] )
 		include 'contact-form.php';
 		break;
 	case 'finished' :
-		echo msg(@$_SESSION['contact']);
+		$output = msg(@$_SESSION['contact']);
+		include 'finished.html.php';
 		break;
 	case 'chat':
 		include 'chat.php';
