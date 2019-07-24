@@ -47,7 +47,7 @@ $form->edit->input->image->setRequire();
 $form->edit->input->image->setAllowedExtension(array('jpg', 'gif', 'png', 'bmp'));
 
 $form->edit->addInput('link', 'text');
-$form->edit->input->link->setRequire('url', false);
+// $form->edit->input->link->setRequire('url', false);
 $form->edit->input->link->addTip('This is the real link in the system, normal format will be index.php?mod=[module_name].[task_name] you can also copy from URL bar and the system will automatically find out the real Link is.');
 
 $form->edit->addInput('orderby', 'orderby');
