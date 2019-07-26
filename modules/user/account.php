@@ -58,8 +58,8 @@ $params['config_post'] = array(
 	);
 $form->set($params);
 $form->set_encode(false);
-// echo '<h1>'.lang('My Profile').'</h1>';
-echo $form->show();
+$output = $form->show();
+include tpl('account.html.php');
 
 function _is_email_unique($form)
 {
