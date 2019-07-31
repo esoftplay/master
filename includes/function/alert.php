@@ -235,8 +235,9 @@ $to:
 function alert_push($to, $title, $message, $module = 'content', $arguments = array(), $action = 'default')
 {
 	global $db, $sys;
-	$ids = array();
-	$out = false;
+	$ids      = array();
+	$out      = false;
+	$group_id = 0;
 	if ($to == 0)
 	{
 		$ids[] = $to;
@@ -256,7 +257,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 			$group_id = substr($to, 6, strlen($to)-1);
 			if (!empty($group_id))
 			{
-				$ids = $db->getCol("SELECT `id` FROM `bbc_user` WHERE `group_ids` LIKE '%,{$group_id},%' WHERE `active`=1");
+				$ids = $db->getCol("SELECT `user_id` FROM `bbc_user_push` WHERE `group_ids` LIKE '%,{$group_id},%' WHERE `active`=1");
 			}
 		}else{
 			$id = $db->getOne("SELECT `id` FROM `bbc_user` WHERE `username`='{$to}'");
@@ -272,18 +273,20 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 		if (empty($exist))
 		{
 			$db->Execute("CREATE TABLE `bbc_user_push_notif` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `user_id` int(11) DEFAULT NULL,
-			  `title` varchar(150) DEFAULT '',
-			  `message` varchar(255) DEFAULT '',
-			  `params` text COMMENT 'variable yang akan di proses dalam mobile app field wajib action, module, argument',
-			  `return` text COMMENT 'data return dari API notifikasi',
-			  `status` tinyint(1) DEFAULT '0' COMMENT '0=belum terkirim, 1=berhasil terkirim, 2=sudah terbaca, 3=gagal terkirim',
-			  `created` datetime DEFAULT CURRENT_TIMESTAMP,
-			  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-			  PRIMARY KEY (`id`),
-			  KEY `user_id` (`user_id`),
-			  KEY `status` (`status`)
+				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`user_id` bigint(20) DEFAULT '0',
+				`group_id` int(11) DEFAULT '0',
+				`title` varchar(150) DEFAULT '',
+				`message` varchar(255) DEFAULT '',
+				`params` text COMMENT 'variable yang akan di proses dalam mobile app field wajib action, module, argument',
+				`return` text COMMENT 'data return dari API notifikasi',
+				`status` tinyint(1) DEFAULT '0' COMMENT '0=belum terkirim, 1=berhasil terkirim, 2=sudah terbaca, 3=gagal terkirim',
+				`created` datetime DEFAULT CURRENT_TIMESTAMP,
+				`updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `user_id` (`user_id`),
+				KEY `group_id` (`group_id`),
+				KEY `status` (`status`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table untuk menyimpan data notifikasi yang dikirim ke para pengguna mobile app'");
 		}else{
 			$timestamp = date('Y-m-d H:i:s', strtotime('-2 MONTH'));
@@ -303,8 +306,9 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 			);
 		foreach ($ids as $id)
 		{
-			$data['user_id'] = $id;
-			$i = $db->Insert('bbc_user_push_notif', $data);
+			$data['user_id']  = $id;
+			$data['group_id'] = $group_id;
+			$i                = $db->Insert('bbc_user_push_notif', $data);
 			if ($i)
 			{
 				_class('async')->run('alert_push_send', [$i, 0]);
@@ -396,27 +400,42 @@ function alert_push_send($id, $last_id=0)
 	return $output;
 }
 
-function alert_push_signup($token, $user_id, $username, $device, $push_id = 0)
+// Example: modules/user/push-token.php
+function alert_push_signup($token, $user_id, $group_ids, $username, $device, $push_id = 0)
 {
 	global $db;
 	$exist = $db->getOne("SHOW TABLES LIKE 'bbc_user_push'");
 	if (empty($exist))
 	{
 		$db->Execute("CREATE TABLE `bbc_user_push` (
-		  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-		  `user_id` bigint(20) DEFAULT '0',
-		  `username` varchar(120) DEFAULT '',
-		  `token` varchar(255) DEFAULT '',
-		  `device` varchar(255) DEFAULT '',
-		  `ipaddress` varchar(20) DEFAULT '',
-		  `created` datetime DEFAULT CURRENT_TIMESTAMP,
-		  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'setiap mengirim pesan ke table bbc_user_push_notif maka field ini akan di update',
-		  PRIMARY KEY (`id`),
-		  KEY `user_id` (`user_id`)
+			`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			`user_id` bigint(20) DEFAULT '0',
+			`group_ids` varchar(120) DEFAULT '0' COMMENT 'comma separated like repairImplode()',
+			`username` varchar(120) DEFAULT '',
+			`token` varchar(255) DEFAULT '',
+			`device` varchar(255) DEFAULT '',
+			`ipaddress` varchar(20) DEFAULT '',
+			`created` datetime DEFAULT CURRENT_TIMESTAMP,
+			`updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'setiap mengirim pesan ke table bbc_user_push_notif maka field ini akan di update',
+			PRIMARY KEY (`id`),
+			KEY `user_id` (`user_id`),
+			KEY `group_ids` (`group_ids`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table untuk menyimpan token dari para pengguna mobile app';");
 	}
-	$input = array(
+	if (!empty($group_ids))
+	{
+		if (!is_array($group_ids))
+		{
+			$group_ids = explode(',', trim($group_ids, ','));
+		}
+		$group_ids = array_map('intval', array_unique($group_ids));
+	}else{
+		$group_ids = array(0);
+	}
+	$group_ids = repairImplode($group_ids);
+	$input     = array(
 		'user_id'   => $user_id,
+		'group_id'  => $group_ids,
 		'username'  => $username,
 		'token'     => $token,
 		'device'    => $device,
@@ -426,7 +445,7 @@ function alert_push_signup($token, $user_id, $username, $device, $push_id = 0)
 	$output = $db->Update('bbc_user_push', $input, $push_id);
 	if ($output)
 	{
-		user_call_func(__FUNCTION__, $token, $user_id, $username, $output);
+		user_call_func(__FUNCTION__, $token, $user_id, $group_ids, $username, $output);
 	}
 	return $output;
 }

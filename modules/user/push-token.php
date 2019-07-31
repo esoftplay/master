@@ -4,9 +4,12 @@
 UNTUK MEMPOSTING TOKEN PUSH DARI MOBILE APP (Method: POST)
 ARGUMENTS:
 $user_id   = [opsional]
+$group_id  = [opsional] comma separated or Array
 $username  = [opsional]
 $token     = [wajib]
-$old_id    = [optional] ID dari hasil return push-token sebelumnya untuk dihapus pada system
+$push_id   = [optional] ID dari hasil return push-token sebelumnya untuk diupdate
+$old_id    = [optional] ID dari hasil return push-token sebelumnya untuk dihapus
+$device    = [optional] nama atau jenis device yang digunakan untuk membuka app
 $secretkey = _class('crypt')->encode(_SALT.'|'.date()'Y-m-d H:i:s');
 */
 
@@ -19,6 +22,7 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 {
 	$token     = $_POST['token'];
 	$user_id   = @intval($_POST['user_id']);
+	$group_ids = @$_POST['group_id'];
 	$push_id   = @intval($_POST['push_id']);
 	$username  = @$_POST['username'];
 	$device    = @$_POST['device'];
@@ -33,7 +37,7 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 			if ($time > $stamp)
 			{
 				_func('alert');
-				$out = alert_push_signup($token, $user_id, $username, $device, $push_id);
+				$out = alert_push_signup($token, $user_id, $group_ids, $username, $device, $push_id);
 				if($out)
 				{
 					if (!empty($_POST['old_id']))

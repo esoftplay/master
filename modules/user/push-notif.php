@@ -4,6 +4,7 @@
 UNTUK MELIHAT DAFTAR NOTIFIKASI BERDASARKAN USER_ID MAUPUN GLOBAL (Method: POST)
 ARGUMENTS:
 $user_id   = [opsional]
+$group_id  = [opsional]
 $last_id   = [opsional] ID notifikasi yang paling terakhir diambil (Method: GET)
 $secretkey = _class('crypt')->encode(_SALT.'|'.date()'Y-m-d H:i:s');
 */
@@ -16,6 +17,7 @@ $output = array(
 if (!empty($_POST['secretkey']))
 {
 	$user_id   = @intval($_POST['user_id']);
+	$group_id  = @intval($_POST['group_id']);
 	$last_id   = @intval($_GET['last_id']);
 	$secretkey = _class('crypt')->decode($_POST['secretkey']);
 	if (!empty($secretkey))
@@ -31,12 +33,13 @@ if (!empty($_POST['secretkey']))
 				{
 					$user_id .= ',0';
 				}
-				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}) AND `id`>{$last_id} ORDER BY `id` ASC LIMIT 6");
+				$sql = !empty($group_id) ? ' AND `group_id`='.$group_id : '';
+				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}) AND {$sql}`id`>{$last_id} ORDER BY `id` ASC LIMIT 6");
 				$next = '';
 				if (!empty($data))
 				{
 					$dt = end($data);
-					$is = $db->getOne("SELECT 1 FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}) AND `id`>{$dt['id']} ORDER BY `id`");
+					$is = $db->getOne("SELECT 1 FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}) AND {$sql}`id`>{$dt['id']} ORDER BY `id`");
 					if (!empty($is))
 					{
 						$next = _URL.'user/push-notif?last_id='.$dt['id'];
