@@ -9,7 +9,7 @@ switch( $Bbc->mod['task'] )
 		break;
 	case 'finished' :
 		$output = msg(@$_SESSION['contact']);
-		include 'finished.html.php';
+		include tpl('finished.html.php');
 		break;
 	case 'chat':
 		include 'chat.php';
