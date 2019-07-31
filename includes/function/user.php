@@ -102,6 +102,7 @@ return user_id
 function user_create($params)
 {
 	$params = is_array($params) ? $params : config_decode($params);
+	$params = _class('params')->clean_newline($params);
 	if(isset($params['params'])
 		&& !empty($params['name'])
 		&& isset($params['email'])

@@ -57,7 +57,7 @@ $params['config_post'] = array(
 		)
 	);
 $form->set($params);
-$form->set_encode(false);
+$form->set_encode(true);
 $output = $form->show();
 include tpl('account.html.php');
 

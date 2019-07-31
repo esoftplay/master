@@ -137,6 +137,19 @@ class params
 		}
 		return $output;
 	}
+	function clean_newline($input)
+	{
+		if (is_array($input))
+		{
+			foreach ($input as $key => $value)
+			{
+				$input[$key] = call_user_func([$this, __METHOD__], $value);
+			}
+		}else{
+			$input = preg_replace("~\r?\n+~s", '\r\n', $input);
+		}
+		return $input;
+	}
 	function show()
 	{
 		if(!$this->init) return false;
@@ -145,7 +158,9 @@ class params
 		{
 			$q = "SELECT * FROM ".$this->table." WHERE ".$this->primary."=".$this->table_id;
 			$this->default = $this->db->getRow($q);
-			$this->default[$this->name] = $this->db->Affected_rows() ? @json_decode($this->default[$this->name],1) : array();
+			$this->default[$this->name] = $this->db->Affected_rows() ? $this->default[$this->name] : array();
+			$this->default[$this->name] = $this->clean_newline($this->default[$this->name]);
+			$this->default[$this->name] = @json_decode($this->default[$this->name], 1);
 			if($this->text_id)
 			{
 				$q = "SELECT * FROM ".$this->table."_text WHERE $this->text_id=$this->table_id";
@@ -397,6 +412,7 @@ class params
 						{
 							$input .= $value.' ('.round(filesize($data['path'].$value)/1000).' Kb) '
 										 .	'<label><input type="checkbox" name="_delete'.$this->set_field_name($name, $id).'" value="1"> Delete File</label><br />';
+							$data['attr'] = preg_replace('~(\s?req=".*?")~', '', $data['attr']);
 						}
 						$input .= '<input type="file" name="'.$this->set_field_name($name, $id).'" value="" class="form-control"'.$data['attr'].' />';
 					break;
@@ -431,14 +447,14 @@ class params
 							{
 								$input .= '<div class="input-group-addon">'.$data['add'].'</div>';
 							}
-		        	$input = '<div class="input-group">'.$input.'</div>';
+							$input = '<div class="input-group">'.$input.'</div>';
 						}
 						echo '<div class="form-group"><label>'.$text.'</label><div class="'.$cls.'">'.$input.'</div>'.$add.'</div>';
 					}else{
 						if (!empty($data['add']))
 						{
 							$input .= '<div class="input-group-addon">'.$data['add'].'</div>';
-		        	$input = '<div class="input-group">'.$input.'</div>';
+							$input = '<div class="input-group">'.$input.'</div>';
 						}
 						echo '<div class="'.$cls.'"><label>'.$text.'</label>'.$input.$add.'</div>';
 					}
@@ -457,7 +473,9 @@ class params
 			$q = "SELECT * FROM ".$this->table." WHERE ".$this->primary."=".$this->table_id;
 			$this->default = $this->db->getRow($q);
 			$this->table_id = @intval($this->default[$this->primary]);
-			$this->default[$this->name] = $this->db->Affected_rows() ? @json_decode($this->default[$this->name],1) : array();
+			$this->default[$this->name] = $this->db->Affected_rows() ? $this->default[$this->name] : array();
+			$this->default[$this->name] = $this->clean_newline($this->default[$this->name]);
+			$this->default[$this->name] = @json_decode($this->default[$this->name], 1);
 			if($this->is_encode)
 			{
 				$this->default[$this->name]	= urldecode_r($this->default[$this->name]);
@@ -524,11 +542,12 @@ class params
 								$query_text[$l_id][] = "`$field`='$v'";
 							}
 						}else{
-							$query[] = "`$field`='$value'";
+							$value = $this->clean_newline($value);
+							$query[] = "`{$field}`='{$value}'";
 						}
 					}
-					$set_query= implode(', ', $query);
-					$success	= false;
+					$set_query = implode(', ', $query);
+					$success   = false;
 					if($this->table_id)
 					{
 						$q = "UPDATE ".$this->table." SET $set_query WHERE ".$this->primary."=".$this->table_id;
@@ -558,7 +577,8 @@ class params
 					else $output = msg('Failed to Update Data.');
 					$this->is_updated = $success;
 				}
-				if(!empty($msg) && !$this->is_updated) {
+				if(!empty($msg) && !$this->is_updated)
+				{
 					$output = msg($msg, 'danger');
 					$this->default = array_merge($this->default, $_POST);
 				}
