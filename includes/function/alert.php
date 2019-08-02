@@ -226,11 +226,13 @@ function _cpanel_check_link($link)
 	}
 	return $output;
 }
+
 /*
 $to:
 	- $user_id           = Integer dari field ID di table `bbc_user`
 	- $user_ids          = Array yang berisi Integer dari field ID di table `bbc_user`
 	- 'group:'.$group_id = String yang di awali dengan 'group:' kemudian diikuti Integer dari field ID di table `bbc_user_group`
+	- $user_id-$group_id = Integer dari field ID di table `bbc_user` dengan ID dari table `bbc_user_group`
 */
 function alert_push($to, $title, $message, $module = 'content', $arguments = array(), $action = 'default')
 {
@@ -238,20 +240,31 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 	$ids      = array();
 	$out      = false;
 	$group_id = 0;
+	// Jika 0 maka akan dikirim ke semua user
 	if ($to == 0)
 	{
 		$ids[] = $to;
 	}else
+	// Jika berupa angka maka akan terkirim ke user_id tersebut (gak perduli di group apapun)
 	if (is_numeric($to))
 	{
 		$ids[] = intval($to);
 	}else
+	// Jika formatnya user_id-group_id maka akan dikirimkan ke user_id tersebut khusus untuk group tersebut
+	// contoh kasus user tersebut register sebagai driver sekaligus sebagai penumpang (sedangkan aplikasi driver & penumpang beda app)
+	if (preg_match('~^[0-9]+\-[0-9]+$~is', $to))
+	{
+		$ids[] = $to
+	}else
+	// Jika dikirim ke banyak user_id (atau user_id yang di group tertentu misal beberapa user yang di aplikasi driver)
 	if (is_array($to))
 	{
 		$ids = $to;
 	}else
+	// Jika tujuan dalam format string
 	if (!empty($to) && is_string($to))
 	{
+		// Jika ingin mengirim untuk semua user yang ada di group tertentu
 		if (substr($to, 0, 6) == 'group:')
 		{
 			$group_id = substr($to, 6, strlen($to)-1);
@@ -260,6 +273,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 				$ids = $db->getCol("SELECT `user_id` FROM `bbc_user_push` WHERE `group_ids` LIKE '%,{$group_id},%' WHERE `active`=1");
 			}
 		}else{
+			// Jika mengirim notif ke username tertentu
 			$id = $db->getOne("SELECT `id` FROM `bbc_user` WHERE `username`='{$to}'");
 			if (!empty($id))
 			{
@@ -306,15 +320,22 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 			);
 		foreach ($ids as $id)
 		{
-			$data['user_id']  = $id;
-			$data['group_id'] = $group_id;
-			$i                = $db->Insert('bbc_user_push_notif', $data);
-			if ($i)
+			$r = explode('-', $id);
+			if (is_numeric($r[0]))
 			{
-				_class('async')->run('alert_push_send', [$i, 0]);
-				if (!$out)
+				$user_id = $r[0];
+				$gID     = (!empty($r[1]) && is_numeric($r[1])) ? $r[1] : $group_id;
+
+				$data['user_id']  = $user_id;
+				$data['group_id'] = $gID;
+				$push_notif_id    = $db->Insert('bbc_user_push_notif', $data);
+				if ($push_notif_id)
 				{
-					$out = $i;
+					_class('async')->run('alert_push_send', [$push_notif_id, 0]);
+					if (!$out)
+					{
+						$out = $push_notif_id;
+					}
 				}
 			}
 		}
@@ -326,24 +347,28 @@ function alert_push_send($id, $last_id=0)
 {
 	global $db, $sys;
 	$output = false;
+	$limit  = 100;
 	$data   = $db->getRow("SELECT * FROM `bbc_user_push_notif` WHERE id={$id}");
 	if (!empty($data))
 	{
-		$last_id = intval($last_id);
-		$to = array();
+		$tos      = array();
+		$last_id  = intval($last_id);
+		$updatedb = 0;
+		$add_sql  = !empty($data['group_id']) ? ' AND `group_ids` LIKE \'%,'.$data['group_id'].',%\'' : '';
 		if (empty($data['user_id']))
 		{
-			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE `id` > {$last_id} ORDER BY `id` ASC LIMIT 5");
+			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE `id` > {$last_id}{$add_sql} ORDER BY `id` ASC LIMIT {$limit}");
 		}else{
-			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE `user_id`={$data['user_id']} AND `id` > {$last_id} ORDER BY `id` ASC LIMIT 5");
+			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE `user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql} ORDER BY `id` ASC LIMIT {$limit}");
 		}
 		if (!empty($tos))
 		{
 			$params    = json_decode($data['params'], 1);
 			$timestamp = date('Y-m-d H:i:s');
+			$messages  = array();
 			foreach ($tos as $to)
 			{
-				$msg = array(
+				$messages[] = array(
 					'to'    => $to['token'],
 					'title' => $data['title'],
 					'body'  => $data['message'],
@@ -358,43 +383,72 @@ function alert_push_send($id, $last_id=0)
 						)
 					);
 				$last_id = $to['id'];
-				$return  = $sys->curl('https://exp.host/--/api/v2/push/send', $msg);
-				try {
-					$json = @json_decode($return, 1);
-					if (!$output && !empty($json['data']))
+			}
+			$return  = $sys->curl('https://exp.host/--/api/v2/push/send', $messages);
+			try {
+				$json = @json_decode($return, 1);
+				if (!empty($json['data']) && is_array($json['data']))
+				{
+					$i = 0;
+					foreach ($json['data'] as $out)
 					{
-						if (!empty($json['data']['status']))
+						$to = $tos[$i];
+						$i++;
+						if (!empty($out['status']))
 						{
-							if ($json['data']['status'] == 'ok')
+							if ($out['status'] == 'ok')
 							{
 								$output = true;
 							}else{
-								// remove data if no longer available
-								if (preg_match('~DeviceNotRegistered~is', $return))
+								switch (@$out['details']['error'])
 								{
-									$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$to['id']}");
+									// the device cannot receive push notifications anymore and you should stop sending messages to the corresponding Expo push token.
+									case 'DeviceNotRegistered':
+										$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$to['id']}");
+										break;
+									// the total notification payload was too large. On Android and iOS the total payload must be at most 4096 bytes.
+									case 'MessageTooBig':
+										break;
+									// you are sending messages too frequently to the given device. Implement exponential backoff and slowly retry sending messages.
+									case 'MessageRateExceeded':
+										break;
+									// your push notification credentials for your standalone app are invalid (ex: you may have revoked them). Run `expo build:ios -c` to regenerate new push notification credentials for iOS.
+									case 'InvalidCredentials':
+										/*
+										When your push notification credentials have expired, simply run expo build:ios -c --no-publish
+										to clear your expired credentials and generate new ones. The new credentials will take effect within a few minutes of being generated.
+										You do not have to submit a new build!
+										*/
+										break;
 								}
-								// if (!empty($json['data']['details']['sns']['statusCode']))
-								// {
-								// 	if ($json['data']['details']['sns']['statusCode']=='400')
-								// 	{
-								// 		$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$to['id']}");
-								// 	}
-								// }
 							}
 						}
 					}
-				} catch (Exception $e) {}
-			}
+				}
+			} catch (Exception $e) {}
+			// Jika status masih belum terkirim
 			if ($data['status']==0)
 			{
-				$db->Update('bbc_user_push_notif', array(
-						'status' => ($output ? 1 : 3),
-						'return' => $return
-					),
-				$data['id']);
+				// check apakah masih ada data setelah $last_id
+				$dtpush = $db->getRow("SELECT * FROM `bbc_user_push` WHERE `id`>{$last_id} ORDER BY `id` ASC LIMIT 1");
+				// Jika data setelah yang terakhir diproses sudah tidak ada lagi maka update row di `alert_push_send`
+				if (empty($dtpush))
+				{
+					$updatedb = 1;
+				}
 			}
-			_class('async')->run('alert_push_send', [$data['id'], $last_id]);
+			if (!$updatedb)
+			{
+				_class('async')->run('alert_push_send', [$data['id'], $last_id]);
+			}
+		}
+		if ($updatedb)
+		{
+			$db->Update('bbc_user_push_notif', array(
+					'status' => ($output ? 1 : 3),
+					'return' => $return
+				),
+			$data['id']);
 		}
 	}
 	return $output;

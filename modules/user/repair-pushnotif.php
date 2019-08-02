@@ -62,7 +62,7 @@ if (empty($exist))
 	if (!in_array('group_id', $fields))
 	{
 		$db->Execute("ALTER TABLE `bbc_user_push_notif` CHANGE `user_id` `user_id` bigint(20)");
-		$db->Execute("ALTER TABLE `bbc_user_push_notif` ADD `group_id` int(11) AFTER `user_id`");
+		$db->Execute("ALTER TABLE `bbc_user_push_notif` ADD `group_id` INT(11)  NULL  DEFAULT '0'  AFTER `user_id`;");
 		$db->Execute("ALTER TABLE `bbc_user_push_notif` ADD INDEX (`group_id`)");
 	}
 }
