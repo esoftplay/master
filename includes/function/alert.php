@@ -489,7 +489,7 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $pu
 	$group_ids = repairImplode($group_ids);
 	$input     = array(
 		'user_id'   => $user_id,
-		'group_id'  => $group_ids,
+		'group_ids' => $group_ids,
 		'username'  => $username,
 		'token'     => $token,
 		'device'    => $device,
