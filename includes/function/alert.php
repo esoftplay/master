@@ -254,7 +254,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 	// contoh kasus user tersebut register sebagai driver sekaligus sebagai penumpang (sedangkan aplikasi driver & penumpang beda app)
 	if (preg_match('~^[0-9]+\-[0-9]+$~is', $to))
 	{
-		$ids[] = $to
+		$ids[] = $to;
 	}else
 	// Jika dikirim ke banyak user_id (atau user_id yang di group tertentu misal beberapa user yang di aplikasi driver)
 	if (is_array($to))
