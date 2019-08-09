@@ -15,6 +15,9 @@ switch( $Bbc->mod['task'] )
 		echo $form->edit->getForm();
 		$sys->nav_add('Edit');
 		break;
+	case 'share': // membuat link dalam bentuk QR code untuk diiklankan agar bisa dimonitor brp kali link tsb diakses
+		include 'share.php';
+		break;
 
 	default:
 		echo 'Invalid action <b>'.$Bbc->mod['task'].'</b> has been received...';

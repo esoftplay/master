@@ -641,7 +641,8 @@ function rating($value, $table='', $table_id='', $string_voter = 'voter', $strin
   {
     $r = explode(',', $value);
     $total_voters = array_sum($r);
-    foreach($r AS $i => $voters) {
+    foreach($r AS $i => $voters)
+    {
       $grade += $voters * ($i + 1);
     }
     $grade = ($grade > 0) ? round($grade / $total_voters, 1) : 0;

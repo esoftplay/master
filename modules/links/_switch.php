@@ -12,6 +12,6 @@ switch( $Bbc->mod['task'] )
 		break;
 
 	default:
-		echo 'Invalid action <b>'.$Bbc->mod['task'].'</b> has been received...';
+		include 'default.php';
 		break;
 }
