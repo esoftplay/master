@@ -19,8 +19,17 @@ if (!$db->getOne($q))
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 	$db->Execute($q);
 }
+$form = _lib('pea',  'links_share');
+$form->initSearch();
 
-$form = _lib('pea', 'links_share');
+$form->search->addInput('keyword','keyword');
+$form->search->input->keyword->addSearchField('title,description,link', false);
+
+$add_sql = $form->search->action();
+$keyword = $form->search->keyword();
+
+echo $form->search->getForm();
+
 $form->initEdit('');
 
 $form->edit->addInput('header', 'header');
@@ -47,7 +56,10 @@ $form->edit->onSave('links_share');
 $form->edit->action();
 
 
-$form->initRoll('WHERE 1 ORDER BY id DESC', 'id');
+$form->initRoll($add_sql.' ORDER BY id DESC', 'id');
+
+$form->roll->addInput('header', 'header');
+$form->roll->input->header->setTitle('Share Links in QR Code');
 
 $form->roll->addInput('image', 'file');
 $form->roll->input->image->setTitle('QR');
