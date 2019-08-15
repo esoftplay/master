@@ -70,9 +70,13 @@ class oNav extends oDebug
 	// secara default menggunakan $db
 	function setDB($db = '')
 	{
-		if ($db == '')
+		if (empty($db))
 		{
 			global $db;
+		}else
+		if (is_string($db))
+		{
+			$db = $GLOBALS[$db];
 		}
 		$this->db = $db;
 	}
