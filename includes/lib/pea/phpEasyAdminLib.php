@@ -82,9 +82,13 @@ class phpEasyAdminLib
 	// untuk ngeset nama instance dari objectDB yg mau digunakan
 	function setDB( $db = '' )
 	{
-		if ( $db == '' )
+		if (empty($db))
 		{
 			global $db;
+		}else
+		if (is_string($db))
+		{
+			$db = $GLOBALS[$db];
 		}
 		$this->db = $db;
 	}

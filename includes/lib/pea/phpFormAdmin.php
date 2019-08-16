@@ -67,17 +67,20 @@ class Form
 	}
 	function setDB($string_db)
 	{
-		if (!empty($string_db))
+		$str = 'db';
+		if (empty($string_db))
 		{
-			$db = $GLOBALS[$string_db];
-			if (!empty($db) && !empty($db->timestamp_sec))
-			{
-				$this->db = $db;
-				$this->db_str = $string_db;
-			}else{
-				die(__CLASS__.'::setDB($parameter) -> $parameter nya harus berupa string dari variable database, semisal jika anda PUNYA $db1 maka masukkan paramater nya "db1" sebagai string');
-			}
+			global $db;
+		}else
+		if (is_string($string_db))
+		{
+			$str = $string_db;
+			$db  = $GLOBALS[$string_db];
+		}else{
+			die(__CLASS__.'::setDB($parameter) -> $parameter nya harus berupa string dari variable database, semisal jika anda PUNYA $db1 maka masukkan paramater nya "db1" sebagai string');
 		}
+		$this->db     = $db;
+		$this->db_str = $str;
 	}
 
 	/**
