@@ -34,12 +34,12 @@ if (!empty($_POST['secretkey']))
 					$user_id .= ',0';
 				}
 				$sql = !empty($group_id) ? ' AND `group_id`='.$group_id : '';
-				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}) AND {$sql}`id`>{$last_id} ORDER BY `id` ASC LIMIT 6");
+				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}) {$sql}`id`>{$last_id} ORDER BY `id` ASC LIMIT 6");
 				$next = '';
 				if (!empty($data))
 				{
 					$dt = end($data);
-					$is = $db->getOne("SELECT 1 FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}) AND {$sql}`id`>{$dt['id']} ORDER BY `id`");
+					$is = $db->getOne("SELECT 1 FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}) {$sql}`id`>{$dt['id']} ORDER BY `id`");
 					if (!empty($is))
 					{
 						$next = _URL.'user/push-notif?last_id='.$dt['id'];
