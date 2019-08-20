@@ -12,8 +12,8 @@ $tabs[$menuText] = $form->roll->getForm();
 $tabs['Add '.$menuText] = $formMenu['add_'];
 
 /* CHECK MENU YANG PERTAMA GAK POSISI PROTECTED */
-$q        = "SELECT * FROM bbc_menu AS m LEFT JOIN bbc_menu_text AS t ON (m.id=t.menu_id AND lang_id=".lang_id().") WHERE is_admin=0 AND active=1 ORDER BY cat_id, par_id, orderby";
-$file     = 'lang/menu_'.lang_id().'.cfg';
+$q    = "SELECT * FROM bbc_menu AS m LEFT JOIN bbc_menu_text AS t ON (m.id=t.menu_id AND lang_id=".lang_id().") WHERE is_admin=0 AND active=1 ORDER BY cat_id, par_id, orderby";
+$file = 'lang/menu_'.lang_id().'.cfg';
 if($is_admin)
 {
   $r = $db->getAll($q);
@@ -42,8 +42,12 @@ if(empty($menu_id))
 	if (!empty($is_admin))
 	{
 		echo $sys->button(_URL.'admin/index.php?mod=_cpanel.menu&act=shortcut&return='.urlencode(seo_uri()), 'Create Admin Shortcuts', 'link');
+    echo '&nbsp;';
+    echo $sys->button(_URL.'admin/index.php?mod=_cpanel.menu&act=backup&return='.urlencode(seo_uri()), 'Backup & Restore', 'fa-hdd-o');
 	}else{
 		echo $sys->button(_URL.'admin/index.php?mod=_cpanel.menu&act=clean&return='.urlencode(seo_uri()), 'clean sorting menus!', 'wrench');
+    echo '&nbsp;';
+    echo $sys->button(_URL.'admin/index.php?mod=_cpanel.menu&act=backup&return='.urlencode(seo_uri()), 'Backup & Restore', 'fa-hdd-o');
 	}
 }
 echo '</div>';

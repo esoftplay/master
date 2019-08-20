@@ -20,6 +20,12 @@ switch($_GET['act'])
 	case 'check_seo':
 		include 'check_seo.php';
 		break;
+	case 'backup':
+		include 'backup.php';
+		break;
+	case 'restore':
+		include 'restore.php';
+		break;
 	default:
 		$is_admin= @intval($_GET['is_admin']);
 		$menu_id = @intval($_GET['id']);

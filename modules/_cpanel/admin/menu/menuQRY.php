@@ -206,3 +206,40 @@ function menu_update_insert($id=0)
     $db->cache_clean();
   }
 }
+
+function menu_builder()
+{
+  global $db;
+  $r0   = $db->getAssoc("SELECT * FROM `bbc_menu` WHERE `is_admin`=0 ORDER BY `orderby`, `id` ASC");
+  $r1   = $db->getAssoc("SELECT * FROM `bbc_menu` WHERE `is_admin`=1 ORDER BY `orderby`, `id` ASC");
+  $r2   = $db->getAll("SELECT * FROM `bbc_menu_text` WHERE 1");
+  $text = array();
+  foreach ($r2 as $d)
+  {
+    $text[$d['menu_id']][$d['lang_id']] = $d['title'];
+  }
+  $out  = array(
+    'module' => $db->getAssoc("SELECT `id`, `name` FROM `bbc_module` ORDER BY `id` ASC"),
+    'cat'    => $db->getAssoc("SELECT * FROM `bbc_menu_cat` ORDER BY `orderby` ASC"),
+    'group'  => $db->getAssoc("SELECT * FROM `bbc_user_group` ORDER BY `id` ASC"),
+    'public' => _menu_builder($r0, $text),
+    'admin'  => _menu_builder($r1, $text),
+    );
+  return $out;
+}
+function _menu_builder($r_menu, $text, $par_id = 0)
+{
+  $output = array();
+  foreach ($r_menu as $id => $menu)
+  {
+    if ($par_id == $menu['par_id'])
+    {
+      $menu['id']      = $id;
+      $menu['title']   = $text[$id];
+      $menu['submenu'] = call_user_func(__FUNCTION__, $r_menu, $text, $id);
+
+      $output[$menu['cat_id']][] = $menu;
+    }
+  }
+  return $output;
+}
