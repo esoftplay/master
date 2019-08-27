@@ -384,7 +384,14 @@ function alert_push_send($id, $last_id=0)
 					);
 				$last_id = $to['id'];
 			}
-			$return  = $sys->curl('https://exp.host/--/api/v2/push/send', $messages);
+
+			$ch = curl_init();			
+			curl_setopt($ch, CURLOPT_URL,"https://exp.host/--/api/v2/push/send");
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messages));           
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
+			$return = curl_exec($ch);
 			try {
 				$json = @json_decode($return, 1);
 				if (!empty($json['data']) && is_array($json['data']))
