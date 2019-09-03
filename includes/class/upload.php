@@ -29,7 +29,7 @@ class upload {
 
 	function __construct($props = array())
 	{
-		@include_once(_CONF.'permission.php')
+		@include_once(_CONF.'permission.php');
 		if (count($props) > 0)
 		{
 			$this->initialize($props);
