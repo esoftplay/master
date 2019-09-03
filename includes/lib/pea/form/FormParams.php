@@ -33,6 +33,7 @@ class FormParams extends Form
 	{
 		$this->type   = 'params';
 		$this->lang_r = lang_assoc();
+		$this->form   = _class('params');
 		$this->setIsNeedDbObject( true );
 		$this->setIsIncludedInReport(false);
 		$this->setIsInsideCell(false);
@@ -131,9 +132,8 @@ class FormParams extends Form
 		{
 			$this->getDataFromReferenceTable();
 		}
-		$form     = _class('params');
-		$form->db = $this->db;
-		$params   = $form->set_param($this->params);
+		$this->form->db = $this->db;
+		$params   = $this->form->set_param($this->params);
 		foreach ($params as $field)
 		{
 			if (!empty($field['mandatory']))
@@ -149,27 +149,33 @@ class FormParams extends Form
 		{
 			$values = urldecode_r($values);
 		}
-		$form->show_param($params, $values, $this->name);
+		$this->form->show_param($params, $values, $this->name);
 		$output = ob_get_contents();
 		ob_end_clean();
 		return $output;
 	}
+	function getPost()
+	{
+		$fields                 = array();
+		$params                 = $this->form->set_param($this->params);
+		$this->form->is_encode  = $this->isEncode;
+		$this->form->is_updated = 1;
+		$this->form->action_query($fields, $params, @$_POST[$this->name], $this->name);
+	}
 	function getRollUpdateSQL( $i = '' )
 	{
+		$this->getPost();
 		if ( $i == '' && !is_int($i) )
-			$val	= $_POST[$this->name];
+			$val	= $this->form->post[$this->name];
 		else
-			$val	= $_POST[$this->name][$i];
-		if ($this->isEncode)
-		{
-			$val = urlencode_r($val);
-		}
-		return $query = "`". $this->fieldName ."` = '". $this->cleanSQL(json_encode($val)) ."', ";
+			$val	= $this->form->post[$this->name][$i];
+		return $query = "`". $this->fieldName ."` = '". $this->cleanSQL($val) ."', ";
 	}
 	function getAddSQL()
 	{
+		$this->getPost();
 		$out['into']	= '`'.$this->fieldName .'`, ';
-		$out['value']	= "'".$this->cleanSQL(json_encode($_POST[$this->name]))."', ";
+		$out['value']	= "'".$this->cleanSQL($this->form->post[$this->name])."', ";
 		return $out;
 	}
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

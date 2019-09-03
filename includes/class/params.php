@@ -17,6 +17,7 @@ class params
 	var $isFormRequire = false;
 	var $row_count     = 0;
 	var $def_files_tot = 5;
+	var $post          = array();
 
 	function __construct($params=array(), $db = '')
 	{
@@ -74,7 +75,8 @@ class params
 					$field['max'] = (intval($dt['max']) > 0) ? $dt['max'] : $this->def_files_tot;
 				case 'file':
 					$path = empty($dt['path']) ? _ROOT.'images/uploads/' : $dt['path'];
-					if(!empty($dt['option'])) {
+					if(!empty($dt['option']))
+					{
 						if(is_dir($dt['option']))	$path = $dt['option'];
 						elseif(is_dir(_ROOT.$dt['option']))	$path = _ROOT.$dt['option'];
 					}
@@ -201,23 +203,23 @@ class params
 		}else $footer = '';
 		$cls = $this->isFormRequire ? ' class="formIsRequire"' : '';
 		$output .='
-<form action="" method="post" enctype="multipart/form-data" role="form"'.$cls.'>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">'.$title.'</h3>
-		</div>
-		<div class="panel-body">
-			'.$form.'
-		</div>
-		<div class="panel-footer">
-			'.$footer.'
-			<button type="submit" name="params_'.$this->table.'_submit" value="'.lang('SAVE')
-			.	'" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-floppy-disk"></span> '. lang('SAVE') .'</button>
-			<button type="reset" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-repeat"></span> '.lang('Reset').'</button>
-		</div>
-	</div>
-</form>
-';
+		<form action="" method="post" enctype="multipart/form-data" role="form"'.$cls.'>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">'.$title.'</h3>
+				</div>
+				<div class="panel-body">
+					'.$form.'
+				</div>
+				<div class="panel-footer">
+					'.$footer.'
+					<button type="submit" name="params_'.$this->table.'_submit" value="'.lang('SAVE')
+					.	'" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-floppy-disk"></span> '. lang('SAVE') .'</button>
+					<button type="reset" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-repeat"></span> '.lang('Reset').'</button>
+				</div>
+			</div>
+		</form>
+		';
 		return $output;
 	}
 
@@ -388,6 +390,7 @@ class params
 							$style = (!empty($images) || $i == $count_r) ? '' : ' style="display: none;"';
 							$input .= '<div id="'.$files_prefix.$files_i.'ID"'.$style.'>';
 							$input .= '<input type="file" name="'.$files_field.'['.$files_i.']" onChange="addFiles(\''.$files_field.'\', '.$files_i.', \''.$files_prefix.'\');" class="form-control">';
+							$input .= '<input type="hidden" name="'.$files_field.'['.$files_i.']" value="'.$image.'" />';
 							if(!empty($images))
 							{
 								$files_text	= $image.' ('.@round(filesize($data['path'].$image)/1000).' Kb)';
@@ -395,7 +398,7 @@ class params
 							}
 							if(is_file($data['path'].$image))
 							{
-								$input .= '<label><input type="checkbox" name="_delete'.$files_field.'['.$files_i.']" value="1"> Delete File</label>';
+								$input .= '<label><input type="checkbox" name="_delete'.$files_field.'['.$files_i.']" value="1" /> Delete File</label>';
 							}
 							$input .= '</div>';
 						}
@@ -415,6 +418,7 @@ class params
 							$data['attr'] = preg_replace('~(\s?req=".*?")~', '', $data['attr']);
 						}
 						$input .= '<input type="file" name="'.$this->set_field_name($name, $id).'" value="" class="form-control"'.$data['attr'].' />';
+						$input .= '<input type="hidden" name="'.$this->set_field_name($name, $id).'" value="'.$value.'" />';
 					break;
 					case 'captcha':
 						$input .= '<div class="g-recaptcha" data-sitekey="6LdjLAkTAAAAAJi4m2cz_8akfTE0rDT0jd5pKO2n"></div><script src="https://www.google.com/recaptcha/api.js"></script>';
@@ -755,15 +759,18 @@ class params
 				&& !empty($post[$name]))
 				{
 					$this->is_updated = $this->action_query_check($post[$name], @$param['checked']);
-					if(!$this->is_updated) {
+					if(!$this->is_updated)
+					{
 						$output .= $param['text'].lang(' is not a valid').' '.$param['checked'].'<br />';
 					}
 				}
 			}
-			if(empty($prefix)) {
+			if(empty($prefix))
+			{
 				$post_out = array_merge($post_out, $post);
 			}else{
-				if($this->is_encode) {
+				if($this->is_encode)
+				{
 					$post = urlencode_r($post);
 				}
 				if(!empty($post))
@@ -772,13 +779,15 @@ class params
 				}
 			}
 		}
+		$this->post = $post_out;
 		return $output;
 	}
 	function action_query_check($field, $type)
 	{
 		if(is_array($field))
 		{
-			foreach($field AS $f) {
+			foreach($field AS $f)
+			{
 				return $this->action_query_check($f, $type);
 			}
 		}else{

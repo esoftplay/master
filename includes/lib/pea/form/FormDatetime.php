@@ -74,7 +74,7 @@ class FormDatetime extends FormDate
 
 	function getAddSQL()
 	{
-		$out['into']	= $this->fieldName.', ';
+		$out['into']	= $this->getFieldName().', ';
 		if(empty($_POST[$this->name]))
 		{
 			$out['value']	= "'".$this->defaultValue."', ";

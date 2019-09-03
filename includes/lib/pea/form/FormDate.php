@@ -108,7 +108,7 @@ class FormDate extends Form
 	function getAddSQL()
 	{
 		$name			= $this->name;
-		$out['into']	= $this->fieldName .", ";
+		$out['into']	= $this->getFieldName().", ";
 		$out['value']	= "'". $this->formatDateIndo2Mysql( $_POST[$name] ) ."', ";
 
 		return $out;
