@@ -38,31 +38,32 @@ class upload {
 
 	function initialize($config = array())
 	{
+		global $Bbc;
 		$defaults = array(
-							'max_size'			=> 0,
-							'max_width'			=> 0,
-							'max_height'		=> 0,
-							'max_filename'		=> 0,
-							'allowed_types'		=> "",
-							'file_temp'			=> "",
-							'file_name'			=> "",
-							'orig_name'			=> "",
-							'file_type'			=> "",
-							'file_size'			=> "",
-							'file_ext'			=> "",
-							'upload_path'		=> "",
-							'overwrite'			=> FALSE,
-							'encrypt_name'		=> FALSE,
-							'is_image'			=> FALSE,
-							'image_width'		=> '',
-							'image_height'		=> '',
-							'image_type'		=> '',
-							'image_size_str'	=> '',
-							'error_msg'			=> array(),
-							'mimes'				=> array(),
-							'remove_spaces'		=> TRUE,
-							'xss_clean'			=> FALSE,
-							'temp_prefix'		=> "temp_file_"
+							'max_size'       => 0,
+							'max_width'      => 0,
+							'max_height'     => 0,
+							'max_filename'   => 0,
+							'allowed_types'  => "",
+							'file_temp'      => "",
+							'file_name'      => "",
+							'orig_name'      => "",
+							'file_type'      => "",
+							'file_size'      => "",
+							'file_ext'       => "",
+							'upload_path'    => !empty($Bbc->mod['dir']) ? $Bbc->mod['dir'] : _ROOT.'images/uploads/',
+							'overwrite'      => FALSE,
+							'encrypt_name'   => FALSE,
+							'is_image'       => FALSE,
+							'image_width'    => '',
+							'image_height'   => '',
+							'image_type'     => '',
+							'image_size_str' => '',
+							'error_msg'      => array(),
+							'mimes'          => array(),
+							'remove_spaces'  => TRUE,
+							'xss_clean'      => FALSE,
+							'temp_prefix'    => "temp_file_"
 						);
 
 
@@ -107,7 +108,6 @@ class upload {
 		if ( ! is_uploaded_file($_FILES[$field]['tmp_name']))
 		{
 			$error = ( ! isset($_FILES[$field]['error'])) ? 4 : $_FILES[$field]['error'];
-
 			switch($error)
 			{
 				case 1:	// UPLOAD_ERR_INI_SIZE
@@ -629,12 +629,6 @@ class upload {
 			return FALSE;
 		}
 
-		if ( ! is_really_writable($this->upload_path))
-		{
-			$this->set_error('upload_not_writable');
-			return FALSE;
-		}
-
 		$this->upload_path = preg_replace("/(.+?)\/*$/", "\\1/",  $this->upload_path);
 		return TRUE;
 	}
@@ -829,7 +823,7 @@ class upload {
 
 		if (count($this->mimes) == 0)
 		{
-			if (@require_once(APPPATH.'config/mimes'.EXT))
+			if (@require_once(_CONF.'mimes.php'))
 			{
 				$this->mimes = $mimes;
 				unset($mimes);

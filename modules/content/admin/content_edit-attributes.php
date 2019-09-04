@@ -199,7 +199,7 @@ include_once _ROOT.'modules/content/constants.php';
         </ul>
       </div>
       <input type="file" id="file_type0" class="form-control" name="file" data-path="<?php echo $temp; ?>" data-params="<?php echo (encode(json_encode($tmp))); ?>" placeholder="Upload file for download" />
-      <input type="text" id="file_type1" class="form-control" name="file_url" value="<?php echo $data['file_url']; ?>" placeholder="Insert Download URL" />
+      <input type="text" id="file_type1" class="form-control" name="file_url" value="<?php echo @$data['file_url']; ?>" placeholder="Insert Download URL" />
       <div class="input-group-btn">
       	<input type="hidden" value="<?php echo @$data['file_format']; ?>" name="file_format" />
         <button type="button" value="<?php echo @$data['file_format']; ?>" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extension <span class="caret"></span></button>
