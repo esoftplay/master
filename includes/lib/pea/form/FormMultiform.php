@@ -123,6 +123,11 @@ class FormMultiform extends FormMultiinput
 
 	function addInput( $inputName, $inputType = 'text', $inputTitle='' )
 	{
+		$realName = $inputName;
+		if (!empty($this->parent->input->$inputName))
+		{
+			$inputName = $this->objectName.'_'.$inputName;
+		}
 		$this->parent->addInput($inputName, $inputType);
 		$this->parent->input->$inputName->setIsMultiInput( true );
 		$this->parent->input->$inputName->tmpisIncludedInSelectQuery = $this->parent->input->$inputName->isIncludedInSelectQuery;
@@ -143,9 +148,10 @@ class FormMultiform extends FormMultiinput
 					break;
 			}
 		}
+		$this->parent->input->$inputName->setFieldName(strtolower($realName));
+		$this->parent->input->$inputName->setName($this->objectName.'_'.$this->parent->input->$inputName->objectName);
 		$this->parent->input->$inputName->name .= '[]';
-		// $this->parent->input->$inputName->setName($this->parent->input->$inputName->objectName.'[]');
-		$this->elements->$inputName = $this->parent->input->$inputName;
+		$this->elements->$realName = $this->parent->input->$inputName;
 	}
 
 	function addExtraField( $field = '', $value = '', $formType='' )
@@ -265,8 +271,8 @@ class FormMultiform extends FormMultiinput
 				$input->name = preg_replace('~\[\]$~is', '', $input->name);
 			}
 			$datas = $this->getElements('data', 'update');
-			$ids   = $_POST[$this->formName.'_'.$this->fieldName.'_'.$this->referenceField['tbl_id']];
-			foreach ($ids as $j => $id)
+			$ids   = @$_POST[$this->formName.'_'.$this->fieldName.'_'.$this->referenceField['tbl_id']];
+			foreach ((array)$ids as $j => $id)
 			{
 				$is_filled = $id ? true : false;
 				$sql_query = array();
@@ -284,7 +290,7 @@ class FormMultiform extends FormMultiinput
 					if (!empty($sql))
 					{
 						$sql_query[] = $sql;
-						if (!$is_filled && preg_match("~'[^']+'~is", $sql))
+						if (!$is_filled && preg_match("~'[^']+'~is", $sql) && !empty($_POST[$input->name]))
 						{
 							$is_filled = true;
 						}
@@ -334,8 +340,8 @@ class FormMultiform extends FormMultiinput
 			$input->isIncludedInUpdateQuery = $input->tmpisIncludedInUpdateQuery;
 			$input->name = preg_replace('~\[\]$~is', '', $input->name);
 		}
-		$ids = $_POST[$this->formName.'_'.$this->fieldName.'_'.$this->referenceField['tbl_id']];
-		foreach ($ids as $i => $id)
+		$ids = @$_POST[$this->formName.'_'.$this->fieldName.'_'.$this->referenceField['tbl_id']];
+		foreach ((array)$ids as $i => $id)
 		{
 			$is_filled   = false;
 			$sql_query   = array();
@@ -350,7 +356,7 @@ class FormMultiform extends FormMultiinput
 				if (!empty($sql))
 				{
 					$sql_query[] = $sql;
-					if (!$is_filled && preg_match("~'[^']+'~is", $sql))
+					if (!$is_filled && preg_match("~'[^']+'~is", $sql) && !empty($_POST[$input->name]))
 					{
 						$is_filled = true;
 					}
