@@ -616,12 +616,29 @@ function createOption($arr, $select='')
 	return $output;
 }
 
-function classtr(&$i)
+function debug()
 {
-	$i++;
-	$j = $i % 2;
-	$output = ' class="row'.$j.'"';
-	return $output;
+	global $db;
+	$output = func_get_args();
+	$files  = array();
+	foreach(debug_backtrace() AS $dt)
+	{
+		if(!empty($dt['file']))
+		{
+			if (!empty($dt['file']))
+			{
+				$dt['file'] = $db->fixPath($dt['file']);
+				if ($dt['file'] != 'includes/system/layout.modules.php')
+				{
+					$files[] = $dt['file'].':'.$dt['line'];
+				}else{
+					break;
+				}
+			}
+		}
+	}
+	$output[] = $files;
+	call_user_func_array('pr', $output);
 }
 
 function is_checked($data, $value = '1', $def_checked = false)
