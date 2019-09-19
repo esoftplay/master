@@ -511,7 +511,7 @@ class FormMultiform extends FormMultiinput
 							</div>
 						</div>
 					</div>
-				</div>'
+				</div>';
 		}else{
 			$out = preg_replace('~(<div[^>]+class=")(form-control)~is', '$1input-group', $allFields);
 		}
