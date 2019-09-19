@@ -52,7 +52,7 @@ $r_param = urldecode_r(config_decode($data['params']));
 	<tfoot>
 		<tr>
 			<td colspan="2">
-				<span type="button" class="btn btn-default btn-sm" onclick="document.location.href='<?php echo $Bbc->mod['circuit'].'.posted';?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
+				<span type="button" class="btn btn-default btn-secondary btn-sm" onclick="document.location.href='<?php echo $Bbc->mod['circuit'].'.posted';?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
 			</td>
 		</tr>
 	</tfoot>

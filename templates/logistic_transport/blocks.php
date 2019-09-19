@@ -60,7 +60,7 @@
 						<div class="block_search">
 							<form method="post" class="form-inline" action="/search/result" role="form">
 								<div class="col-xs-12 input-group">
-									<input type="text" class="form-control input-sm" name="keyword" placeholder="keyword here...">					
+									<input type="text" class="form-control input-sm" name="keyword" placeholder="keyword here...">
 									<span class="input-group-btn">
 										<button class="btn btn-default btn-sm" type="button">
 											<span class="glyphicon glyphicon-search" title="search"></span>
@@ -74,12 +74,12 @@
 							<div class="col-md-3">
 								<label for="inputEmail" class="sr-only">Username</label>
 		  					<input id="inputEmail" class="form-control" placeholder="Username" required="" type="username" name="usr">
-		  
+
 							</div>
 							<div class="col-md-3">
 								<label for="inputPassword" class="sr-only">Password</label>
 		  					<input id="inputPassword" class="form-control" placeholder="Password" required="" type="password" name="pwd">
-		  
+
 							</div>
 							<div class="col-md-2">
 								<div class="checkbox">
@@ -96,7 +96,7 @@
 											<a href="http://localhost/master/user/forget-password">Forget Password ?</a>
 											<a href="http://localhost/master/user/register">Register</a>
 									</label>
-								
+
 							</div>
 </form>
 
@@ -115,7 +115,7 @@
 						    <form name="template_form" id="template_form73" action="http://localhost/master/user/option" method="POST" target="_parent">
 									<p class="text text-justify">
 										Gantilah opsi di bawah untuk melihat website dalam tampilan lain<br>
-									</p> 
+									</p>
 									<select class="form-control" name="template" onchange="document.forms['template_form'].submit();return false;">
 										<option value="campus_blue">Campus Blue</option><option value="logistic_transport">Logistic Transport</option><option value="dark_blogs">Dark Blogs</option><option value="cloudy_season" selected="selected">Cloudy Season</option><option value="green_accountant">Green Accountant</option><option value="dark_style">Dark Style</option><option value="cobweb_blue">Cobweb Blue</option>	</select>
 									<input type="hidden" name="back" value="http://localhost/master/">
@@ -176,7 +176,7 @@
 
   <div class="panel-body">
 
-    
+
 
   </div>
 
@@ -254,7 +254,7 @@
 
   <div class="panel-body">
 
-    <table class="table table-striped table-condensed">
+    <table class="table table-striped table-condensed table-sm">
 	<tbody><tr>
 		<td>Total Pengunjung</td>
 		<td>: 912 Pengunjung</td>
@@ -388,7 +388,7 @@
 
 # FOOTER #
 
-Copyright © 2010 E-Profile Enterprise - All rights reserved. Power by <a href="http://fisip.net/">fisip.net</a>						
+Copyright © 2010 E-Profile Enterprise - All rights reserved. Power by <a href="http://fisip.net/">fisip.net</a>
 
 # DEBUG #
 

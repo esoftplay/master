@@ -92,30 +92,30 @@ function image_size($sizes, $in_resize = false)
 
 function image_transform($x,$y,$x1,$y1)
 {
-  $input_landscape  = ($x > $y) ? true : false;
-  $output_landscape = ($x1 > $y1) ? true : false;
-  $x2 = $y2 = 0;
-  if($input_landscape)
-  {
-    if($output_landscape)
-    {
-      $x2 = $x1;
-      $y2 = ceil($y/$x*$x2);
-    }else{
-      $y2 = $y1;
-      $x2 = ceil($y/$x*$y2);
-    }
-  }else{
-    if($output_landscape)
-    {
-      $x2 = $x1;
-      $y2 = ceil($y/$x*$x2);
-    }else{
-      $x2 = $x1;
-      $y2 = ceil($y/$x*$x2);
-    }
-  }
-  return array($x2,$y2);
+	$input_landscape  = ($x > $y) ? true : false;
+	$output_landscape = ($x1 > $y1) ? true : false;
+	$x2 = $y2 = 0;
+	if($input_landscape)
+	{
+		if($output_landscape)
+		{
+			$x2 = $x1;
+			$y2 = ceil($y/$x*$x2);
+		}else{
+			$y2 = $y1;
+			$x2 = ceil($y/$x*$y2);
+		}
+	}else{
+		if($output_landscape)
+		{
+			$x2 = $x1;
+			$y2 = ceil($y/$x*$x2);
+		}else{
+			$x2 = $x1;
+			$y2 = ceil($y/$x*$x2);
+		}
+	}
+	return array($x2,$y2);
 }
 function icon($value='edit',$alt='',$extra='')
 {
@@ -213,16 +213,15 @@ function table($data, $header = array(), $title='')
 		$output = '<table class="table table-striped table-bordered table-hover">'.$tHead.$tBody.'</table>';
 		if (!empty($title))
 		{
-			$output = <<<EOT
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">{$title}</h3>
-	</div>
-	<div class="panel-body">
-		{$output}
-	</div>
-</div>
-EOT;
+			$output = '
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">'.$title.'</h3>
+					</div>
+					<div class="panel-body">
+						'.$output.'
+					</div>
+				</div>';
 		}
 	}
 	return $output;
@@ -307,24 +306,24 @@ function page_ajax($tot_items, $tot_items_perpage, $baseurl, $use_number=false, 
 	$output   = '';
 	$nav      = '';
 	$tot_page = intval($tot_items/$tot_items_perpage);
-  $tot_page += (($tot_items % $tot_items_perpage) > 0) ? 1 : 0;
+	$tot_page += (($tot_items % $tot_items_perpage) > 0) ? 1 : 0;
 	if ($tot_page > 1)
 	{
-  	if ($use_number)
-  	{
-	  	$nav .= '<ul class="pagination">';
-	  	for ($i=0; $i < $tot_page; $i++)
-	  	{
-	  		$nav .= '<li><a href="#'.$i.'">'.($i+1).'</a></li>';
-	  	}
-	  	$nav .= '</ul>';
-  	}else{
-  		$nav .= '<a href="#0" class="page_ajax_more" data-max="'.$tot_page.'">'.icon('fa-angle-double-down').' '.lang('load more').'</a>';
-  	}
+		if ($use_number)
+		{
+			$nav .= '<ul class="pagination">';
+			for ($i=0; $i < $tot_page; $i++)
+			{
+				$nav .= '<li><a href="#'.$i.'">'.($i+1).'</a></li>';
+			}
+			$nav .= '</ul>';
+		}else{
+			$nav .= '<a href="#0" class="page_ajax_more" data-max="'.$tot_page.'">'.icon('fa-angle-double-down').' '.lang('load more').'</a>';
+		}
 	}
-  // Define $id_page
-  if (empty($id_page))
-  {
+	// Define $id_page
+	if (empty($id_page))
+	{
 		if (empty($Bbc->page_ajax))
 		{
 			$Bbc->page_ajax = 1;
@@ -333,10 +332,10 @@ function page_ajax($tot_items, $tot_items_perpage, $baseurl, $use_number=false, 
 		}
 		$id_page = 'page_ajax'.$Bbc->page_ajax;
 		$output  = '<div><div id="'.$id_page.'"></div><div class="page_ajax" data-target="#'.$id_page.'" rel="'.$baseurl.'">'.$nav.'</div></div>';
-  }else{
-  	// Use only if target element in the other side
-  	$output = '<div class="page_ajax" data-target="'.$id_page.'" rel="'.$baseurl.'">'.$nav.'</div>';
-  }
+	}else{
+		// Use only if target element in the other side
+		$output = '<div class="page_ajax" data-target="'.$id_page.'" rel="'.$baseurl.'">'.$nav.'</div>';
+	}
 	if (empty($Bbc->load_page_script))
 	{
 		$Bbc->load_page_script = 1;
@@ -347,87 +346,85 @@ function page_ajax($tot_items, $tot_items_perpage, $baseurl, $use_number=false, 
 
 function page_list($found, $show, $curr=0, $var='', $link='', $maxpage=12, $interval=0, $attr = '' )
 {
-  $output    = '';
-  $totalpage = ceil($found/$show);
-  if($totalpage > 1)
-  {
-    if(intval($interval)==0) $interval = intval($maxpage / 2);
-    $link = !empty($link) ? $link : seo_uri($var);
-    if(_SEO && _ADMIN == '')
-    {
-      if(preg_match('~\?mod\=~', $link))
-      {
-        if(!empty($var))
-        {
-          $link .= (preg_match('/\?/', $link)) ? '&' : '?';
-          $link .= $var.'=';
-        }
-        $s = '&';
-      }else{
-      	$s = preg_match('~[\?]~s', $link) ? '&' : '/';
-        $p = ($s=='&') ? '=' : ',';
-        $link .= $s;
-        if (!($var=='id' && $p==','))
-        {
-          $link .= $var.$p;
-        }
-      }
-    }else{
-      if(!empty($var))
-      {
-        $link .= (preg_match('/\?/', $link)) ? '&' : '?';
-        $link .= $var.'=';
-      }
-      $s = '&';
-    }
-    $output .= '<form action="'.$link.'" method="GET" class="form-inline" role="form" '
-            . 'onSubmit="if(parseInt(this.page.value) <= '. $totalpage
-            . ' && parseInt(this.page.value) > 0){document.location.href=\''.$link
-            . '\'+(parseInt(this.page.value) - 1);}else{alert(\'invalid page number\');}return false;">';
-    $output .= '<div class="form-group"><ul class="pagination">';
+	$output    = '';
+	$totalpage = ceil($found/$show);
+	if($totalpage > 1)
+	{
+		if(intval($interval)==0) $interval = intval($maxpage / 2);
+		$link = !empty($link) ? $link : seo_uri($var);
+		if(_SEO && _ADMIN == '')
+		{
+			if(preg_match('~\?mod\=~', $link))
+			{
+				if(!empty($var))
+				{
+					$link .= (preg_match('/\?/', $link)) ? '&' : '?';
+					$link .= $var.'=';
+				}
+				$s = '&';
+			}else{
+				$s = preg_match('~[\?]~s', $link) ? '&' : '/';
+				$p = ($s=='&') ? '=' : ',';
+				$link .= $s;
+				if (!($var=='id' && $p==','))
+				{
+					$link .= $var.$p;
+				}
+			}
+		}else{
+			if(!empty($var))
+			{
+				$link .= (preg_match('/\?/', $link)) ? '&' : '?';
+				$link .= $var.'=';
+			}
+			$s = '&';
+		}
+		$output .= '<form action="'.$link.'" method="GET" class="form-inline" role="form" '
+						. 'onSubmit="if(parseInt(this.page.value) <= '. $totalpage
+						. ' && parseInt(this.page.value) > 0){document.location.href=\''.$link
+						. '\'+(parseInt(this.page.value) - 1);}else{alert(\'invalid page number\');}return false;">';
+		$output .= '<div class="form-group"><ul class="pagination">';
 
-    if($curr > 0)
-    {
-      $output .= '<li><a href="'.$link.($curr - 1).'"'.$attr.'>&laquo;</a></li>';
-    }
-    if(($interval+$curr) > $maxpage)
-    {
-      $iend   = ($curr + $interval);
-      $istart = $iend - $maxpage;
-    } else {
-      $istart = 0;
-      $iend   = $istart + $maxpage;
-    }
-    if($iend > $totalpage) $iend = $totalpage;
-    for ($i = $istart; $i < $iend; $i++)
-    {
-      $class = ($curr==$i) ? ' class="active"' : '';
-      $j = $i + 1;
-      $href = $i ? $link.$i : substr($link, 0, strrpos($link, $s));
-      $output .= '<li'.$class.'><a href="'.$href.'"'.$attr.'>'.$j.'</a></li>';
-    }
-    if(($curr + 1) < $totalpage)
-    {
-      $output .= '<li><a href="'.$link.($curr + 1).'"'.$attr.'> &raquo;</a></li>';
-    }
+		if($curr > 0)
+		{
+			$output .= '<li><a href="'.$link.($curr - 1).'"'.$attr.'>&laquo;</a></li>';
+		}
+		if(($interval+$curr) > $maxpage)
+		{
+			$iend   = ($curr + $interval);
+			$istart = $iend - $maxpage;
+		} else {
+			$istart = 0;
+			$iend   = $istart + $maxpage;
+		}
+		if($iend > $totalpage) $iend = $totalpage;
+		for ($i = $istart; $i < $iend; $i++)
+		{
+			$class = ($curr==$i) ? ' class="active"' : '';
+			$j = $i + 1;
+			$href = $i ? $link.$i : substr($link, 0, strrpos($link, $s));
+			$output .= '<li'.$class.'><a href="'.$href.'"'.$attr.'>'.$j.'</a></li>';
+		}
+		if(($curr + 1) < $totalpage)
+		{
+			$output .= '<li><a href="'.$link.($curr + 1).'"'.$attr.'> &raquo;</a></li>';
+		}
 
-    $output .= '</ul></div>';
-    if($totalpage > $maxpage)
-    {
-      $curr += 1;
-      $output .=
-<<<EOT
-<div class="form-group">&nbsp;</div>
-<div class="form-group">
-  <input type="number" class="form-control input input-sm" name="page" maxvalue="{$totalpage}" placeholder="Jump To" onClick="this.select();">
-  <label>of {$totalpage} </label>
-</div>
-<button type="submit" class="btn btn-default btn-sm">Go</button>
-EOT;
-    }
-    $output .= '</form>';
-  }
-  return $output;
+		$output .= '</ul></div>';
+		if($totalpage > $maxpage)
+		{
+			$curr += 1;
+			$output .= '
+				<div class="form-group">&nbsp;</div>
+				<div class="form-group">
+					<input type="number" class="form-control input-sm form-control-sm" name="page" maxvalue="'.$totalpage.'" placeholder="Jump To" onClick="this.select();">
+					<label>of '.$totalpage.' </label>
+				</div>
+				<button type="submit" class="btn btn-default btn-secondary btn-sm">Go</button>';
+		}
+		$output .= '</form>';
+	}
+	return $output;
 }
 /*===============================================
  * various browser '../config/agents.php'
@@ -575,13 +572,13 @@ function msg($Msg, $title='info' /*success|info|warning|danger*/)
 function explain($Msg, $title='')
 {
 	$out = '
-<div class="alert alert-warning alert-dismissible" role="alert">
-  <button type="button" class="close" data-dismiss="alert">
-	  <span aria-hidden="true">&times;</span>
-	  <span class="sr-only">Close</span>
-  </button>
-  <strong>'.$title.'</strong> '.$Msg.'
-</div>';
+	<div class="alert alert-warning alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert">
+			<span aria-hidden="true">&times;</span>
+			<span class="sr-only">Close</span>
+		</button>
+		<strong>'.$title.'</strong> '.$Msg.'
+	</div>';
 	return $out;
 }
 
@@ -654,28 +651,28 @@ function is_checked($data, $value = '1', $def_checked = false)
 function rating($value, $table='', $table_id='', $string_voter = 'voter', $string_db = '')
 {
 	$total_voters = $grade = 0;
-  if(!empty($value))
-  {
-    $r = explode(',', $value);
-    $total_voters = array_sum($r);
-    foreach($r AS $i => $voters)
-    {
-      $grade += $voters * ($i + 1);
-    }
-    $grade = ($grade > 0) ? round($grade / $total_voters, 1) : 0;
-    $grade = floor($grade * 2) / 2;
-  }
+	if(!empty($value))
+	{
+		$r = explode(',', $value);
+		$total_voters = array_sum($r);
+		foreach($r AS $i => $voters)
+		{
+			$grade += $voters * ($i + 1);
+		}
+		$grade = ($grade > 0) ? round($grade / $total_voters, 1) : 0;
+		$grade = floor($grade * 2) / 2;
+	}
 	ob_start();
 	if (empty($table_id) || empty($table) ||
 		!empty($_SESSION['bbc_rating'][$table][$table_id]))
 	{
 		echo '<span class="rating">';
-    for ($i=0; $i < 5; $i++)
-    {
-      $c = $grade <= $i ? '-o' : ($grade < ($i+1) ? '-half-o' : '');
-      echo icon('fa-star'.$c);
-    }
-    echo '&nbsp;'.items($total_voters, $string_voter).'</span>';
+		for ($i=0; $i < 5; $i++)
+		{
+			$c = $grade <= $i ? '-o' : ($grade < ($i+1) ? '-half-o' : '');
+			echo icon('fa-star'.$c);
+		}
+		echo '&nbsp;'.items($total_voters, $string_voter).'</span>';
 	}else{
 		icon('fa-star');
 		$token = array(

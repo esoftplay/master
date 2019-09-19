@@ -70,7 +70,7 @@ link_css(tpl('comment.css'), false);
 					<input type="hidden" name="user_id" value="<?php echo $user->id; ?>" />
 					<input type="hidden" name="image" value="<?php echo @$user->image; ?>" />
 	        <span class="dropdown" id="comment_login">
-					  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-sm">
+					  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-secondary btn-sm">
 							<?php echo icon('send');?>
 							<?php echo lang('Send');?>
 					    <span class="caret"></span>
@@ -84,12 +84,12 @@ link_css(tpl('comment.css'), false);
 					  	<!-- <li><a href="user/comment_login/yahoo"><?php echo icon('fa-yahoo'); ?> Yahoo</a></li> -->
 					  </ul>
 					</span>
-					<button type="submit" name="submit_comment" class="btn btn-default btn-sm" id="comment_send">
+					<button type="submit" name="submit_comment" class="btn btn-default btn-secondary btn-sm" id="comment_send">
 						<?php echo icon('send');?>
 						<?php echo lang('Send');?>
 						<b>(<?php echo @$user->name; ?>)</b>
 					</button>
-					<button type="reset" class="btn btn-default btn-sm">
+					<button type="reset" class="btn btn-default btn-secondary btn-sm">
 						<?php echo icon('repeat');?>
 						<?php echo lang('Reset');?>
 					</button>

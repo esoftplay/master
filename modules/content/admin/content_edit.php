@@ -105,7 +105,7 @@ if($form_act == 'edit')
 				if (!empty($_GET['return']))
 				{
 					?>
-					<span type="button" class="btn btn-default" onclick="document.location.href='<?php echo $_GET['return'] ?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
+					<span type="button" class="btn btn-default btn-secondary" onclick="document.location.href='<?php echo $_GET['return'] ?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
 					<?php
 				}
 				?>

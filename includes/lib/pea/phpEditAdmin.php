@@ -283,17 +283,16 @@ class phpEditAdmin extends phpAddAdmin
 		}else{
 			$cls = '';
 		}
-		$out = <<<EOT
-<form method="{$this->methodForm}" action="{$this->actionUrl}" name="{$this->formName}"{$cls} enctype="multipart/form-data" role="form">
-	<div class="panel panel-default">
-		{$formHeader}
-		<div class="panel-body">{$out}</div>
-		<div class="panel-footer">
-			{$footer}
-		</div>
-	</div>
-</form>
-EOT;
+		$out = '
+			<form method="'.$this->methodForm.'" action="'.$this->actionUrl.'" name="'.$this->formName.'"'.$cls.' enctype="multipart/form-data" role="form">
+				<div class="panel panel-default">
+					'.$formHeader.'
+					<div class="panel-body">'.$out.'</div>
+					<div class="panel-footer">
+						'.$footer.'
+					</div>
+				</div>
+			</form>';
 		return $this->getHideFormToolStart().$out.$this->getHideFormToolEnd();
 	}
 

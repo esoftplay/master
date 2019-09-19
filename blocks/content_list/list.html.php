@@ -9,9 +9,9 @@ foreach ($output['data'] as $data)
 			<?php echo $data['title']; ?>
 		</a>
 	</li>
-	<?php 
+	<?php
 }
 ?>
 </ul>
-<a href="<?php echo $output['href'];?>" title="<?php echo $output['title'];?>" class="btn btn-default btn-xs pull-right"><?php echo $output['title'];?></a>
+<a href="<?php echo $output['href'];?>" title="<?php echo $output['title'];?>" class="btn btn-default btn-secondary btn-xs pull-right"><?php echo $output['title'];?></a>
 <div class="clearfix"></div>

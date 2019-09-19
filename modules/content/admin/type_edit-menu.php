@@ -40,7 +40,7 @@ if (count($r_lang) == 1) {
 			<label>SEO Link</label>
 			<input type="text" id="menu_seo" class="form-control menu_create" />
 		</div>
-		<input type="button" value="Create" onClick="menu_create('', <?php echo $data['id'];?>);" class="btn btn-default" />
+		<input type="button" value="Create" onClick="menu_create('', <?php echo $data['id'];?>);" class="btn btn-default btn-secondary" />
 		<div id="menu_exists">
 			<?php
 			$q	= "SELECT id, cat_id FROM bbc_menu

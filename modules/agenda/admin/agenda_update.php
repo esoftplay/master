@@ -190,7 +190,7 @@ if (!empty($_GET['return']))
 			</div>
 		</div>
 		<div class="panel-footer">
-			<span type="button" class="btn btn-default btn-sm" onclick="document.location.href='<?php echo $return_url;?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
+			<span type="button" class="btn btn-default btn-secondary btn-sm" onclick="document.location.href='<?php echo $return_url;?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
 			<button type="submit" name="submit_update" value="SAVE" class="btn btn-primary btn-sm">
 				<span class="glyphicon glyphicon-floppy-disk"></span>
 				SAVE

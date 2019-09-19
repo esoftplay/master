@@ -32,7 +32,7 @@ $data['id'] = @intval($data['id']);
 			<label>SEO Link</label>
 			<input type="text" id="<?php echo $prefix;?>menu_seo" class="form-control menu_create" data-prefix="<?php echo $prefix; ?>" data-id="<?php echo $data['id']; ?>" />
 		</div>
-		<input type="button" value="Create" onclick="return menu_create('<?php echo $prefix;?>', <?php echo $data['id'];?>);" class="btn btn-default" />
+		<input type="button" value="Create" onclick="return menu_create('<?php echo $prefix;?>', <?php echo $data['id'];?>);" class="btn btn-default btn-secondary" />
 		<div id="<?php echo $prefix;?>menus">
 			<?php
 			$q="SELECT id, cat_id FROM bbc_menu

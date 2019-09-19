@@ -204,7 +204,7 @@ $r_cpanel = repairImplodeVar(array_option($r, 0, ''), @repairExplode($data['cpan
 			{
 				$sys->nav_add("Edit User Group");
 				?>
-				<span type="button" class="btn btn-default btn-sm" onclick="document.location.href='<?php echo $_GET['return'] ?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
+				<span type="button" class="btn btn-default btn-secondary btn-sm" onclick="document.location.href='<?php echo $_GET['return'] ?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
 				<?php
 			} ?>
 			<button name="user_update" type="submit" value="&nbsp;SAVE&nbsp;" class="btn btn-primary btn-sm">

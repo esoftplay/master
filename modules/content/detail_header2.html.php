@@ -19,7 +19,7 @@ if (!empty($data['file_url']) || !empty($data['file']))
 		$format = !empty($data['file_format']) ? '-'.$data['file_format'] : '';
 		$value  = ($data['file_register']) ? '' : ' value="'.$data['id'].'"';
 		?>
-		<button type="button" class="btn btn-default btn-lg btn-block" id="download_button"<?php echo $value; ?>><?php echo icon('fa-file'.$format.'-o'); ?> <?php echo lang('Download Now'); ?></button>
+		<button type="button" class="btn btn-default btn-secondary btn-lg btn-block" id="download_button"<?php echo $value; ?>><?php echo icon('fa-file'.$format.'-o'); ?> <?php echo lang('Download Now'); ?></button>
 		<div class="text text-muted">
 			<?php echo ($data['file_hit'] > 0) ? '<span class="author pull-left">'.lang('Downloaded').': '.items($data['file_hit'], 'time').'</span>' : '';?>
 			<?php echo (strtotime($data['file_hit_time']) > 0) ? '<span class="created pull-right">'.lang('Last Download').': '.content_date($data['file_hit_time']).'</span>' : '';?>

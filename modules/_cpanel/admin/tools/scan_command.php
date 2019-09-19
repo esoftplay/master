@@ -29,7 +29,7 @@ if(!isset($_POST['Submit']))
 								<input type="text" name="group" class="form-control" />
 							</div>
 							<?php echo $sys->button(@$_GET['return']); ?>
-							<button type=submit name="Submit" value="get command" class="btn btn-default">
+							<button type=submit name="Submit" value="get command" class="btn btn-default btn-secondary">
 								<?php echo icon('fa-terminal'); ?>
 								Get Command
 							</button>

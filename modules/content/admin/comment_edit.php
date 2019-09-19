@@ -43,7 +43,7 @@ $form->edit->addInput('website', 'text');
 $form->edit->addInput('content', 'textarea');
 $form->edit->input->content->setTitle('Message');
 $form->edit->input->content->setNl2br( false );
-$form->edit->input->content->addTip('<button type="button" onclick="return i_reply('.$id.');" class="btn btn-default btn-sm">'.icon('fa-reply').' reply</button>');
+$form->edit->input->content->addTip('<button type="button" onclick="return i_reply('.$id.');" class="btn btn-default btn-secondary btn-sm">'.icon('fa-reply').' reply</button>');
 
 $form->edit->addInput('publish', 'checkbox');
 $form->edit->input->publish->setTitle('Publish');

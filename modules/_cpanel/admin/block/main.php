@@ -256,10 +256,10 @@ $arr = !empty($_SESSION['block_edit_field']) ? $_SESSION['block_edit_field'] : a
 		</div>
 	</div>
 	<input type="hidden" name="return" value="<?php echo htmlentities(seo_uri()); ?>" />
-	<button type="submit" name="block_edit_field" value="EDIT" class="btn btn-default">
+	<button type="submit" name="block_edit_field" value="EDIT" class="btn btn-default btn-secondary">
 		<span class="glyphicon glyphicon-edit"></span>
 	</button>
-	<button type="submit" name="block_edit_field" value="RESET" class="btn btn-default">
+	<button type="submit" name="block_edit_field" value="RESET" class="btn btn-default btn-secondary">
 		<span class="glyphicon glyphicon-remove-circle"></span>
 	</button>
 </form>
@@ -293,12 +293,12 @@ function block_repair()
 }
 link_js(_PEA_URL.'includes/formIsRequire.js', false);
 ?>
-<button type="button" class="btn btn-default btn-sm" data-href="<?php echo seo_uri(); ?>&backup=1" id="backup">
+<button type="button" class="btn btn-default btn-secondary btn-sm" data-href="<?php echo seo_uri(); ?>&backup=1" id="backup">
 	<span class="glyphicon glyphicon-cloud-download" title="Backup All Blocks"></span>
 	Backup All Blocks
 </button>
 &nbsp;
-<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">
+<button type="button" class="btn btn-default btn-secondary btn-sm" data-toggle="modal" data-target="#myModal">
 	<span class="glyphicon glyphicon-cloud-upload" title="Restore All Blocks"></span>
 	Restore All Blocks
 </button>

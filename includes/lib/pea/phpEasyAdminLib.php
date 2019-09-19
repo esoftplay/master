@@ -610,19 +610,18 @@ class phpEasyAdminLib
 				$this->hideToolTitle = 'Form '.ucwords(str_replace('_', ' ', strtolower($this->table)));
 			}
 			$display = strtolower($this->HideToolInit)=='hide' ? 'on' : 'in';
-			$out = <<<EOT
-<div class="panel-group" id="accordion{$this->formName}">
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h4 class="panel-title">
-	      <a data-toggle="collapse" data-parent="#accordion{$this->formName}" href="#pea_isHideToolOn{$this->formName}">
-	        {$this->hideToolTitle}
-	      </a>
-	    </h4>
-	  </div>
-	  <div id="pea_isHideToolOn{$this->formName}" class="panel-collapse collapse {$display}">
-	    <div class="panel-body">
-EOT;
+			$out = '
+				<div class="panel-group" id="accordion'.$this->formName.'">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion'.$this->formName.'" href="#pea_isHideToolOn'.$this->formName.'">
+									'.$this->hideToolTitle.'
+								</a>
+							</h4>
+						</div>
+						<div id="pea_isHideToolOn'.$this->formName.'" class="panel-collapse collapse '.$display.'">
+							<div class="panel-body">';
 		}
 		return $out;
 	}
@@ -632,12 +631,11 @@ EOT;
 		$out	= '';
 		if ( $this->isHideToolOn )
 		{
-			$out	.= <<<EOT
-			</div>
-	  </div>
-	</div>
-</div>
-EOT;
+			$out	.= '
+							</div>
+						</div>
+					</div>
+				</div>';
 		}
 		return $out;
 	}

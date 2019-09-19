@@ -6,7 +6,7 @@
 		<li>
 			<div class="blockquote">
 				<div class="col-md-2 no-left">
-					<?php if($conf['avatar']) echo image($data['image'], '', ' class="img-responsive img-thumbnail"');	?>
+					<?php if($conf['avatar']) echo image($data['image'], '', ' class="img-responsive img-thumbnail img-fluid"');	?>
 				</div>
 				<div class="col-md-10 no-left">
 					<b><?php echo $data['name'];?></b>

@@ -34,8 +34,8 @@ if(empty($data))
 			<form method="post" name="reset">
 				Are you sure want to reset this question ?
 				<p><?php echo $data['title'];?></p>
-				<input type="submit" name="submit" value="Yes" class="btn btn-default">
-				<input type="submit" name="submit" value="Repair Only" class="btn btn-default">
+				<input type="submit" name="submit" value="Yes" class="btn btn-default btn-secondary">
+				<input type="submit" name="submit" value="Repair Only" class="btn btn-default btn-secondary">
 			</form>
 			<?php		}
 		$text = ob_get_contents();

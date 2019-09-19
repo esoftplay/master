@@ -60,7 +60,7 @@ if( !empty($config['rating'])
 			if(!empty($edit_data))
 			{
 				?>
-				<a href="<?php echo $Bbc->mod['circuit'].'.posted_form&id='.$data['id'];?>" class="btn btn-default btn-sm">
+				<a href="<?php echo $Bbc->mod['circuit'].'.posted_form&id='.$data['id'];?>" class="btn btn-default btn-secondary btn-sm">
 					<?php echo icon('edit',lang('edit content')); ?>
 				</a>
 				<?php
@@ -68,7 +68,7 @@ if( !empty($config['rating'])
 			if (!empty($config['pdf']))
 			{
 				?>
-				<a class="btn btn-default btn-sm" id="icon_pdf">
+				<a class="btn btn-default btn-secondary btn-sm" id="icon_pdf">
 					<?php echo icon('fa-file-pdf-o',lang('convert to pdf')); ?>
 				</a>
 				<?php
@@ -76,7 +76,7 @@ if( !empty($config['rating'])
 			if (!empty($config['email']))
 			{
 				?>
-				<a class="btn btn-default btn-sm" id="icon_mail">
+				<a class="btn btn-default btn-secondary btn-sm" id="icon_mail">
 					<?php echo icon('fa-envelope',lang('tell friend')); ?>
 				</a>
 				<?php
@@ -84,7 +84,7 @@ if( !empty($config['rating'])
 			if (!empty($config['print']))
 			{
 				?>
-				<a class="btn btn-default btn-sm" id="icon_print">
+				<a class="btn btn-default btn-secondary btn-sm" id="icon_print">
 					<?php echo icon('fa-print',lang('print preview')); ?>
 				</a>
 				<?php

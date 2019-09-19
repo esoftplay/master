@@ -53,7 +53,7 @@ if(content_posted_permission())
 		}
 	}
 	?>
-	<button type="button" class="btn btn-default" onclick="document.location.href='<?php echo $Bbc->mod['circuit'].'.posted_form'; ?>'"><?php echo lang('Add Entry'); ?></button>
+	<button type="button" class="btn btn-default btn-secondary" onclick="document.location.href='<?php echo $Bbc->mod['circuit'].'.posted_form'; ?>'"><?php echo lang('Add Entry'); ?></button>
 	<?php
 }else{
 	$sys->denied();

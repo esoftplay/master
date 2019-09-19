@@ -41,7 +41,7 @@ $form->edit->input->title->setLanguage();
 $form->edit->addInput('module','multiinput');
 $form->edit->input->module->setTitle('Select Module');
 $form->edit->input->module->addInput('module_id', 'select');
-$form->edit->input->module->addInput('options', 'plaintext', '<button type="button" class="btn btn-default module_task" rel="'.$form->edit->formName.'">'.icon('fa-info-circle').'</button>');
+$form->edit->input->module->addInput('options', 'plaintext', '<button type="button" class="btn btn-default btn-secondary module_task" rel="'.$form->edit->formName.'">'.icon('fa-info-circle').'</button>');
 
 $r = array();
 $p = $is_admin ? '/admin' : '';

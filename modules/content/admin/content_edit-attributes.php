@@ -114,19 +114,19 @@ include_once _ROOT.'modules/content/constants.php';
 </div>
 <div class="form-group">
 	<div class="btn-group btn-group-justified" data-toggle="buttons" style="width: 100%;">
-	  <label class="btn btn-default">
+	  <label class="btn btn-default btn-secondary">
 	    <input type="radio" name="kind_id" value="0" <?php echo is_checked($data['kind_id'], '0'); ?> class="content_kind" autocomplete="off" title="Content article"> <?php echo icon('fa-newspaper-o'); ?>
 	  </label>
-	  <label class="btn btn-default">
+	  <label class="btn btn-default btn-secondary">
 	    <input type="radio" name="kind_id" value="1" <?php echo is_checked($data['kind_id'], '1'); ?> class="content_kind" autocomplete="off" title="Gallery multiple images"> <?php echo icon('fa-file-picture-o'); ?>
 	  </label>
-	  <label class="btn btn-default">
+	  <label class="btn btn-default btn-secondary">
 	    <input type="radio" name="kind_id" value="2" <?php echo is_checked($data['kind_id'], '2'); ?> class="content_kind" autocomplete="off" title="Upload file for download"> <?php echo icon('fa-upload'); ?>
 	  </label>
-	  <label class="btn btn-default">
+	  <label class="btn btn-default btn-secondary">
 	    <input type="radio" name="kind_id" value="3" <?php echo is_checked($data['kind_id'], '3'); ?> class="content_kind" autocomplete="off" title="Video from youtube.com"> <?php echo icon('fa-file-video-o'); ?>
 	  </label>
-	  <label class="btn btn-default">
+	  <label class="btn btn-default btn-secondary">
 	    <input type="radio" name="kind_id" value="4" <?php echo is_checked($data['kind_id'], '4'); ?> class="content_kind" autocomplete="off" title="Audio from soundcloud.com"> <?php echo icon('fa-file-audio-o'); ?>
 	  </label>
 	</div>
@@ -192,7 +192,7 @@ include_once _ROOT.'modules/content/constants.php';
 		<div class="input-group">
       <div class="input-group-btn">
       	<input type="hidden" value="<?php echo $data['file_type']; ?>" id="file_type_hidden" name="file_type" />
-        <button type="button" value="<?php echo $data['file_type']; ?>" id="file_type" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Type <span class="caret"></span></button>
+        <button type="button" value="<?php echo $data['file_type']; ?>" id="file_type" class="btn btn-default btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Type <span class="caret"></span></button>
         <ul class="dropdown-menu dropdown-menu-left">
           <li><a href="#0"<?php echo is_checked($data['file_type'], '0') ?>>Upload</a></li>
           <li><a href="#1"<?php echo is_checked($data['file_type'], '1') ?>>URL</a></li>
@@ -202,7 +202,7 @@ include_once _ROOT.'modules/content/constants.php';
       <input type="text" id="file_type1" class="form-control" name="file_url" value="<?php echo @$data['file_url']; ?>" placeholder="Insert Download URL" />
       <div class="input-group-btn">
       	<input type="hidden" value="<?php echo @$data['file_format']; ?>" name="file_format" />
-        <button type="button" value="<?php echo @$data['file_format']; ?>" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extension <span class="caret"></span></button>
+        <button type="button" value="<?php echo @$data['file_format']; ?>" class="btn btn-default btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extension <span class="caret"></span></button>
         <ul class="dropdown-menu dropdown-menu-right">
         	<?php
         	$formats = array_keys($rext);
@@ -259,11 +259,11 @@ include_once _ROOT.'modules/content/constants.php';
 							      <tfoot>
 							        <tr>
 							          <td colspan="5">
-							            <a href="#" class="btn btn-default onload">
+							            <a href="#" class="btn btn-default btn-secondary onload">
 							              <span class="glyphicon glyphicon-chevron-down"></span>
 							              Load more
 							            </a>
-							            <a href="index.php?mod=content.content_downloader&id=<?php echo $content_id; ?>" class="btn btn-default">
+							            <a href="index.php?mod=content.content_downloader&id=<?php echo $content_id; ?>" class="btn btn-default btn-secondary">
 							              <?php echo icon('fa-file-excel-o'); ?>
 							              Download Registrant
 							            </a>
@@ -304,7 +304,7 @@ include_once _ROOT.'modules/content/constants.php';
 		      </div>
 		      <div class="modal-body">
 		      	<h3 class="text-danger">Open your video in youtube and then :</h3>
-		      	<img src="http://fisip.net/images/howto_video.png" class="img img-responsive" />
+		      	<img src="http://fisip.net/images/howto_video.png" class="img img-responsive img-fluid" />
 		      </div>
 		    </div>
 		  </div>
@@ -338,7 +338,7 @@ include_once _ROOT.'modules/content/constants.php';
 		      </div>
 		      <div class="modal-body">
 		      	<h3 class="text-danger">After click share button, go to "Embed" tab</h3>
-		      	<img src="http://fisip.net/images/howto_audio.png" class="img img-responsive" />
+		      	<img src="http://fisip.net/images/howto_audio.png" class="img img-responsive img-fluid" />
 		      </div>
 		    </div>
 		  </div>
@@ -386,7 +386,7 @@ include_once _ROOT.'modules/content/constants.php';
 			        <h4 class="modal-title" id="img_popup_label"><?php echo $data['image'].$data['image_size']; ?></h4>
 			      </div>
 			      <div class="modal-body">
-			      	<center><img src="<?php echo $src; ?>" class="img img-responsive" /></center>
+			      	<center><img src="<?php echo $src; ?>" class="img img-responsive img-fluid" /></center>
 			      	<br />
 			      </div>
 			    </div>
@@ -410,7 +410,7 @@ include_once _ROOT.'modules/content/constants.php';
 				data-path="<?php echo $temp; ?>"
 				data-params="<?php echo $imgs; ?>" />
 			<span class="input-group-btn" id="image_input_browse">
-				<button class="btn btn-default" type="button">Browse server!</button>
+				<button class="btn btn-default btn-secondary" type="button">Browse server!</button>
 			</span>
 		</div>
 		<textarea class="form-control" name="caption" placeholder="image caption..." rows="1"><?php echo @$data['caption']; ?></textarea>
@@ -461,7 +461,7 @@ if (config('manage','webtype') == '1' && empty($data['prune']))
 			?>
 			<div class="input-group">
 	      <div class="input-group-btn">
-	        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $txt; ?> <span class="caret"></span></button>
+	        <button type="button" class="btn btn-default btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $txt; ?> <span class="caret"></span></button>
 	        <input type="hidden" name="schedule[action][]" value="<?php echo $s['action']; ?>"/>
 	        <ul class="dropdown-menu">
 	          <li><a href="#" rel="1" onclick="return schedule_action(this);">Publish</a></li>
@@ -482,7 +482,7 @@ if (config('manage','webtype') == '1' && empty($data['prune']))
 	<script type="text/template" id="schedule_tpl">
 		<div class="input-group">
       <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+        <button type="button" class="btn btn-default btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
         <input type="hidden" name="schedule[action][]" value="0"/>
         <ul class="dropdown-menu">
           <li><a href="#" rel="1" onclick="return schedule_action(this);">Publish</a></li>

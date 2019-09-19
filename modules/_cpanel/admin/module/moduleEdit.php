@@ -45,8 +45,8 @@ $form->edit->addInput('active', 'checkbox');
 $form->edit->input->active->setTitle('Status');
 $form->edit->input->active->setCaption('Activate');
 
-$txt = '<a href="'.$Bbc->mod['circuit'].'.module&act=download&module_id='.$id.'" class="btn btn-default btn-xs">'.icon('cloud-download', 'Download Parameter').'</a>
-<a data-toggle="modal" href="#module-upload" class="btn btn-default btn-xs">'.icon('cloud-upload', 'Upload Parameter').'</a>';
+$txt = '<a href="'.$Bbc->mod['circuit'].'.module&act=download&module_id='.$id.'" class="btn btn-default btn-secondary btn-xs">'.icon('cloud-download', 'Download Parameter').'</a>
+<a data-toggle="modal" href="#module-upload" class="btn btn-default btn-secondary btn-xs">'.icon('cloud-upload', 'Upload Parameter').'</a>';
 $form->edit->input->active->addTip('Module Parameter : '.$txt);
 
 $form->edit->action();

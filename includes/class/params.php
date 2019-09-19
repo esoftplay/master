@@ -406,7 +406,7 @@ class params
 					break;
 					case 'file':
 						$data['path']	= $this->repair_path(@$data['path']);
-						$images = image($data['path'].$value, '', ' class="img-responsive img-thumbnail"');
+						$images = image($data['path'].$value, '', ' class="img-responsive img-thumbnail img-fluid"');
 						if(!empty($images))
 						{
 							$input .= '<br />'.$images.'<br />';

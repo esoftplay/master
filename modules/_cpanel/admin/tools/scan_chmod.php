@@ -22,7 +22,7 @@ if(!isset($_POST['Submit']))
 						<input type="text" name="path" value="<?php echo _ROOT; ?>" class="form-control" />
 					</div>
 					<?php echo $sys->button(@$_GET['return']); ?>
-					<button type=submit name="Submit" value="Execute" class="btn btn-default">
+					<button type=submit name="Submit" value="Execute" class="btn btn-default btn-secondary">
 						<?php echo icon('fa-lock'); ?>
 						Execute
 					</button>

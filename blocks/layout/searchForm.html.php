@@ -10,9 +10,9 @@ if (!empty($_SESSION['currSearch']))
 ?>
 <form method="post" class="form-inline" id="block_search<?php echo $block->id ?>" action="" role="form">
 	<div class="input-group">
-    <input type="text" class="form-control input-sm" name="keyword" value="<?php echo $value; ?>" placeholder="<?php echo $placeholder;?>" />
+    <input type="text" class="form-control input-sm  form-control-sm" name="keyword" value="<?php echo $value; ?>" placeholder="<?php echo $placeholder;?>" />
     <span class="input-group-btn">
-	    <button class="btn btn-default input-sm" type="submit"><?php echo icon('search');?></button>
+	    <button class="btn btn-default btn-secondary input-sm form-control-sm" type="submit"><?php echo icon('search');?></button>
 	  </span>
   </div>
 </form>

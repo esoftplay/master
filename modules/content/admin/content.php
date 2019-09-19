@@ -198,7 +198,7 @@ _Bbc(function($) {
 	<div class="form-group">
 		<input id="input_content_id" type="text" value="" class="form-control" title="Insert Content ID or URL you want to edit" placeholder="Insert ID or URL to edit" />
 	</div>
-	<button type="submit" name="Submit" value="EDIT" class="btn btn-default">
+	<button type="submit" name="Submit" value="EDIT" class="btn btn-default btn-secondary">
 		<?php echo icon('edit');?>
 	</button>
 </form>

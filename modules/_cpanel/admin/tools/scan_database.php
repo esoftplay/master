@@ -18,7 +18,7 @@ if(!isset($_POST['Submit']))
 		<tr>
 			<td>
 				<?php echo $sys->button(@$_GET['return']); ?>
-				<button type="submit" name="Submit" value="Commit the action" class="btn btn-default">
+				<button type="submit" name="Submit" value="Commit the action" class="btn btn-default btn-secondary">
 					<?php echo icon('fa-database'); ?>
 					Repair Database
 				</button>

@@ -114,7 +114,7 @@ class oNav extends oDebug
 		$compileResult['all_limit'] = (!empty($result['limitClause'])) ? " LIMIT ". $result['limitClause'] : '';
 		$compileResult['distinct'] 	= (!empty($result['selectOption'])) ? true : false;
 		$compileResult['after_from_no_limit']	= $compileResult['all_table'] .' '. $compileResult['all_where'] .' '
-												  . $compileResult['all_order'] .' ';
+													. $compileResult['all_order'] .' ';
 		$compileResult['all_before_from'] = $result['fieldClause'];
 		$this->query	= array_merge($result, $compileResult);
 	}
@@ -139,7 +139,7 @@ class oNav extends oDebug
 				$pos = strpos($this->query['field'][0], " as ");
 				if (is_integer($pos))
 				{
-				   $first_field	= substr($this->query['field'][0], 0, $pos);
+					 $first_field	= substr($this->query['field'][0], 0, $pos);
 				}else{
 					$first_field	= $this->query['field'][0];
 				}
@@ -152,7 +152,7 @@ class oNav extends oDebug
 				// karena as menyebabkan error saat count
 				$pos = strpos($this->query['field'][1], " as ");
 				if (is_integer($pos)) {
-				   $first_field	= substr($this->query['field'][1], 0, $pos);
+					 $first_field	= substr($this->query['field'][1], 0, $pos);
 				}else{
 					$first_field	= $this->query['field'][1];
 				}
@@ -401,15 +401,14 @@ class oNav extends oDebug
 				}
 			}
 			$total = money($this->int_tot_page);
-			$form .= <<<EOT
-	  <span class="input-group-addon">go to</span>
-	  <input type="text" name="{$this->string_name}" class="form-control" value="{$this->int_cur_page}">
-	  <span class="input-group-addon">of</span>
-	  <span class="input-group-addon">{$total}</span>
-	  <span class="input-group-btn">
-	    <button class="btn btn-default" type="submit">Go!</button>
-	  </span>
-EOT;
+			$form .= '
+				<span class="input-group-addon">go to</span>
+				<input type="text" name="'.$this->string_name.'" class="form-control" value="'.$this->int_cur_page.'">
+				<span class="input-group-addon">of</span>
+				<span class="input-group-addon">'.$total.'</span>
+				<span class="input-group-btn">
+					<button class="btn btn-default btn-secondary" type="submit">Go!</button>
+				</span>';
 			if ($withFormTag)
 				$form	.= '</div></form>';
 		}
@@ -457,7 +456,7 @@ EOT;
 		$textName = $this->string_name.'_search';
 		$form     = '<form method="post" action="'. $this->string_cur_uri .'" name="'. $formName .'" class="form-inline" role="form">';
 		$form    .= '<div class="form-group"><input type="text" size="5" name="'.$textName.'" value="search" onclick="'.$formName.'.'.$textName.'.value=\'\'" ></div>';
-		$form    .= '<div class="form-group"><input type="submit" value="Go" class="btn btn-default"></div>';
+		$form    .= '<div class="form-group"><input type="submit" value="Go" class="btn btn-default btn-secondary"></div>';
 		$form    .= '</form>';
 
 		return $this->cleanNav($form);

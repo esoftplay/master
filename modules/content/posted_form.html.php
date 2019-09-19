@@ -81,19 +81,19 @@ if ($id > 0)
 			<div class="form-group">
 				<input type="hidden" name="tmp_dir" value="<?php echo $tmp_dir; ?>" />
 				<div class="btn-group btn-group-justified" data-toggle="buttons" style="width: 100%;">
-				  <label class="btn btn-default">
+				  <label class="btn btn-default btn-secondary">
 				    <input type="radio" name="kind_id" value="0" <?php echo is_checked($data['kind_id'], '0'); ?> class="content_kind" autocomplete="off" title="Content article"> <?php echo icon('fa-newspaper-o'); ?>
 				  </label>
-				  <label class="btn btn-default">
+				  <label class="btn btn-default btn-secondary">
 				    <input type="radio" name="kind_id" value="1" <?php echo is_checked($data['kind_id'], '1'); ?> class="content_kind" autocomplete="off" title="Gallery multiple images"> <?php echo icon('fa-file-picture-o'); ?>
 				  </label>
-				  <label class="btn btn-default">
+				  <label class="btn btn-default btn-secondary">
 				    <input type="radio" name="kind_id" value="2" <?php echo is_checked($data['kind_id'], '2'); ?> class="content_kind" autocomplete="off" title="Upload file for download"> <?php echo icon('fa-upload'); ?>
 				  </label>
-				  <label class="btn btn-default">
+				  <label class="btn btn-default btn-secondary">
 				    <input type="radio" name="kind_id" value="3" <?php echo is_checked($data['kind_id'], '3'); ?> class="content_kind" autocomplete="off" title="Video from youtube.com"> <?php echo icon('fa-file-video-o'); ?>
 				  </label>
-				  <label class="btn btn-default">
+				  <label class="btn btn-default btn-secondary">
 				    <input type="radio" name="kind_id" value="4" <?php echo is_checked($data['kind_id'], '4'); ?> class="content_kind" autocomplete="off" title="Audio from soundcloud.com"> <?php echo icon('fa-file-audio-o'); ?>
 				  </label>
 				</div>
@@ -159,7 +159,7 @@ if ($id > 0)
 					<div class="input-group">
 			      <div class="input-group-btn">
 			      	<input type="hidden" value="<?php echo $data['file_type']; ?>" id="file_type_hidden" name="file_type" />
-			        <button type="button" value="<?php echo $data['file_type']; ?>" id="file_type" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Type <span class="caret"></span></button>
+			        <button type="button" value="<?php echo $data['file_type']; ?>" id="file_type" class="btn btn-default btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Type <span class="caret"></span></button>
 			        <ul class="dropdown-menu dropdown-menu-left">
 			          <li><a href="#0"<?php echo is_checked($data['file_type'], '0') ?>>Upload</a></li>
 			          <li><a href="#1"<?php echo is_checked($data['file_type'], '1') ?>>URL</a></li>
@@ -169,7 +169,7 @@ if ($id > 0)
 			      <input type="text" id="file_type1" class="form-control" name="file_url" placeholder="Insert Download URL" />
 			      <div class="input-group-btn">
 			      	<input type="hidden" value="<?php echo @$data['file_format']; ?>" name="file_format" />
-			        <button type="button" value="<?php echo @$data['file_format']; ?>" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extension <span class="caret"></span></button>
+			        <button type="button" value="<?php echo @$data['file_format']; ?>" class="btn btn-default btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extension <span class="caret"></span></button>
 			        <ul class="dropdown-menu dropdown-menu-right">
 			        	<?php
 			        	$formats = array_keys($rext);
@@ -226,11 +226,11 @@ if ($id > 0)
 										      <tfoot>
 										        <tr>
 										          <td colspan="5">
-										            <a href="#" class="btn btn-default onload">
+										            <a href="#" class="btn btn-default btn-secondary onload">
 										              <span class="glyphicon glyphicon-chevron-down"></span>
 										              Load more
 										            </a>
-										            <a href="<?php echo _URL; ?>posted_downloader.htm/<?php echo $content_id; ?>" class="btn btn-default">
+										            <a href="<?php echo _URL; ?>posted_downloader.htm/<?php echo $content_id; ?>" class="btn btn-default btn-secondary">
 										              <?php echo icon('fa-file-excel-o'); ?>
 										              Download Registrant
 										            </a>
@@ -271,7 +271,7 @@ if ($id > 0)
 					      </div>
 					      <div class="modal-body">
 					      	<h3 class="text-danger">Open your video in youtube and then :</h3>
-					      	<img src="http://fisip.net/images/howto_video.png" class="img img-responsive" />
+					      	<img src="http://fisip.net/images/howto_video.png" class="img img-responsive img-fluid" />
 					      </div>
 					    </div>
 					  </div>
@@ -305,7 +305,7 @@ if ($id > 0)
 					      </div>
 					      <div class="modal-body">
 					      	<h3 class="text-danger">After click share button, go to "Embed" tab</h3>
-					      	<img src="http://fisip.net/images/howto_audio.png" class="img img-responsive" />
+					      	<img src="http://fisip.net/images/howto_audio.png" class="img img-responsive img-fluid" />
 					      </div>
 					    </div>
 					  </div>
@@ -353,7 +353,7 @@ if ($id > 0)
 						        <h4 class="modal-title" id="img_popup_label"><?php echo $data['image']; ?></h4>
 						      </div>
 						      <div class="modal-body">
-						      	<center><img src="<?php echo $src; ?>" class="img img-responsive" /></center>
+						      	<center><img src="<?php echo $src; ?>" class="img img-responsive img-fluid" /></center>
 						      	<br />
 						      </div>
 						    </div>

@@ -523,7 +523,7 @@ class Form
 			}
 			$c = '';
 			// $c = preg_match('~(?:radio|checkbox)~is', $this->type) ? ' checkbox' : '';
-			return '<div class="form-control-static'.$c.'">'.$value.'</div>';
+			return '<div class="form-control-static form-control-plaintext'.$c.'">'.$value.'</div>';
 		}else{
 			return '';
 		}

@@ -24,11 +24,10 @@ foreach($r_tpl AS $i => $dt)
 	if (empty($sync))
 	{
 		$add = ($checked) ? '" class="admin_link' : '&template_id='.$i;
-		$action .= <<<EOT
-<a href="{$link}{$add}" title="Block Manager"> <img src="{$path}block.png" /> </a>
-<a href="{$link}&act=block_position{$add}" title="Block Position"> <img src="{$path}block_position.png" /> </a>
-<a href="{$link}&act=theme{$add}" title="Block Themes"> <img src="{$path}theme.png" /> </a>
-EOT;
+		$action .= '
+			<a href="'.$link.$add.'" title="Block Manager"> <img src="'.$path.'block.png" /> </a>
+			<a href="'.$link.'&act=block_position'.$add.'" title="Block Position"> <img src="'.$path.'block_position.png" /> </a>
+			<a href="'.$link.'&act=theme'.$add.'" title="Block Themes"> <img src="'.$path.'theme.png" /> </a>';
 	}
 	$body[]  = array(
 		'<input type="radio" name="template_name" value="'.$dt['name'].'"'.$checked.' id="template'.$i.'" />'
@@ -43,5 +42,5 @@ EOT;
 	<?php echo table($body, $header); ?>
 	<button type="submit" class="btn btn-primary"><?php echo icon('save'); ?> Set Default Template</button>
 	<button type="reset" class="btn btn-warning"><?php echo icon('repeat'); ?> RESET</button>
-	<button type="button" class="btn btn-default" onclick="document.location.href='<?php echo $Bbc->mod['circuit']; ?>.template&act=scan'"><?php echo icon('import'); ?> Scan New Template</button>
+	<button type="button" class="btn btn-default btn-secondary" onclick="document.location.href='<?php echo $Bbc->mod['circuit']; ?>.template&act=scan'"><?php echo icon('import'); ?> Scan New Template</button>
 </form>

@@ -82,8 +82,8 @@ if (!empty($data['email']))
 					</div>
 				</div>
 				<div class="panel-footer">
-					<button type="submit" name="submit" value="submit" class="btn btn-default"><?php echo icon('fa-floppy-o').' '.lang('Submit'); ?></button>
-					<button type="submit" name="submit" value="skip" class="btn btn-default pull-right"><?php echo lang('Skip').' '.icon('fa-angle-double-right'); ?></button>
+					<button type="submit" name="submit" value="submit" class="btn btn-default btn-secondary"><?php echo icon('fa-floppy-o').' '.lang('Submit'); ?></button>
+					<button type="submit" name="submit" value="skip" class="btn btn-default btn-secondary pull-right"><?php echo lang('Skip').' '.icon('fa-angle-double-right'); ?></button>
 				</div>
 			</div>
 		</form>

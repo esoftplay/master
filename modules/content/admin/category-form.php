@@ -79,7 +79,7 @@ if($prefix == 'edit_')
 							?>
 							<div class="form-group">
 								<label>Type</label>
-								<div class="form-control-static">
+								<div class="form-control-static form-control-plaintext">
 									<?php echo $type; ?>
 								</div>
 							</div>
@@ -97,7 +97,7 @@ if($prefix == 'edit_')
 				?>
 				<div class="form-group">
 					<label>Parent Category</label>
-					<div class="form-control-static">
+					<div class="form-control-static form-control-plaintext">
 						<?php
 						if($prefix == 'edit_')
 						{
@@ -245,7 +245,7 @@ if($prefix == 'edit_')
 				<?php
 				if($category_id > 0)
 				{
-					echo '<span type="button" class="btn btn-default btn-sm" onclick="document.location.href=\''.$base_link.'\';"><span class="glyphicon glyphicon-chevron-left"></span></span> ';
+					echo '<span type="button" class="btn btn-default btn-secondary btn-sm" onclick="document.location.href=\''.$base_link.'\';"><span class="glyphicon glyphicon-chevron-left"></span></span> ';
 				}
 				?>
 				<button type="submit" name="submit_<?php echo $prefix;?>update" default="true" value="&nbsp;SAVE&nbsp;" class="btn btn-primary btn-sm">

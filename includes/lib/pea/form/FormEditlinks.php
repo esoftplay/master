@@ -121,7 +121,7 @@ class FormEditlinks extends Form
 			ob_start();
 			?>
       <span class="dropdown">
-			  <button id="editlinks<?php echo $Bbc->FormEditlinks; ?>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-xs">
+			  <button id="editlinks<?php echo $Bbc->FormEditlinks; ?>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-secondary btn-xs">
 					<?php echo $this->caption;?>
 			    <span class="caret"></span>
 			  </button>

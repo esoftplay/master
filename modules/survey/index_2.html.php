@@ -31,7 +31,7 @@
 	}
 	?>
 	<p class="button">
-		<input type="Button" value="&#171; Back" class="btn btn-default" onClick="window.history.go(-1);" />
-		<input type="submit" name="Submit" value="Next &#187;" class="btn btn-default" />
+		<input type="Button" value="&#171; Back" class="btn btn-default btn-secondary" onClick="window.history.go(-1);" />
+		<input type="submit" name="Submit" value="Next &#187;" class="btn btn-default btn-secondary" />
 	</p>
 </form>

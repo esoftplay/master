@@ -89,7 +89,7 @@ class FormFile extends Form
 	{
 		$sizes = image_size($sizes, true);
 		$this->thumb_cfg = array(
-		  'width'		=>	$sizes[0]
+			'width'		=>	$sizes[0]
 		, 'height'	=>	$sizes[1]
 		);
 		$prefix .= $is_dir ? '/' : '_';
@@ -101,7 +101,7 @@ class FormFile extends Form
 		if(is_file($image))
 		{
 			$arr = array(
-			  'wm_type'					=> 'overlay'
+				'wm_type'					=> 'overlay'
 			, 'wm_overlay_path' => $image
 			);
 			$this->watermark_param = array_merge($arr, $params);
@@ -276,7 +276,7 @@ class FormFile extends Form
 						}
 					}
 					$title = " <em>". $fileName .$size .'</em>';
-					$cls   = $this->isImageClick ? ' class="img-thumbnail img-responsive formFile-clickable"' : ' class="img-thumbnail img-responsive"';
+					$cls   = $this->isImageClick ? ' class="img-thumbnail img-responsive formFile-clickable img-fluid"' : ' class="img-thumbnail img-responsive img-fluid"';
 					$out  .= '<img src="'.$fileUrl.'"'.$cls.' title="'.trim(strip_tags($title)).'" />';
 				}	else
 				if ( $fileExt == 'swf' )
@@ -290,7 +290,7 @@ class FormFile extends Form
 					$out  .= '</object>';
 					if ($this->isImageClick)
 					{
-						$out = '<button type="button" class="btn btn-default btn-sm formFile-clickable" data-modal="'.htmlentities($out).'" title="'.htmlentities($title).'"><span class="glyphicon glyphicon-film"></span></button>';
+						$out = '<button type="button" class="btn btn-default btn-secondary btn-sm formFile-clickable" data-modal="'.htmlentities($out).'" title="'.htmlentities($title).'"><span class="glyphicon glyphicon-film"></span></button>';
 					}
 				}	else {
 					$i = _func('content', 'format', $fileExt);
@@ -303,15 +303,14 @@ class FormFile extends Form
 				}
 				if (!$this->isPlaintext)
 				{
-					$btn = <<<EOT
-<input type="hidden" name="id_image_{$func_name}" value="0">
-<input type="hidden" name="{$fieldName}" value="{$fileName}">
-<input type="hidden" name="{$this->formName}_file_delete_image{$add_input}" value="0">
-<button type="button" name="submit_delete_{$this->name}" class="btn btn-danger btn-sm" value="{$this->deleteButton->value}"
- onclick="if(confirm('Are you sure want to delete this file ?')){this.form.id_image_{$func_name}.value=1;this.form.reset();this.form.submit();return false;} return false;">
-	<span class="glyphicon glyphicon-trash"></span>
-</button>
-EOT;
+					$btn = '
+						<input type="hidden" name="id_image_'.$func_name.'" value="0">
+						<input type="hidden" name="'.$fieldName.'" value="'.$fileName.'">
+						<input type="hidden" name="'.$this->formName.'_file_delete_image'.$add_input.'" value="0">
+						<button type="button" name="submit_delete_'.$this->name.'" class="btn btn-danger btn-sm" value="'.$this->deleteButton->value.'"
+						 onclick="if(confirm(\'Are you sure want to delete this file ?\')){this.form.id_image_'.$func_name.'.value=1;this.form.reset();this.form.submit();return false;} return false;">
+							<span class="glyphicon glyphicon-trash"></span>
+						</button>';
 				}else $btn = '';
 				if($this->isImageHover)
 				{
@@ -326,7 +325,8 @@ EOT;
 						$out .= $btn.$title;
 					}else{
 						link_js(_PEA_URL.'includes/FormFile.js', false);
-						if (!$this->isPlaintext) {
+						if (!$this->isPlaintext)
+						{
 							$out .= $btn.$title;
 						}
 					}

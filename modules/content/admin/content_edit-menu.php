@@ -30,7 +30,7 @@
 			<label>SEO Link</label>
 			<input type="text" id="menu_seo" class="form-control menu_create" data-prefix="<?php echo $form_act; ?>" data-id="<?php echo $data['id']; ?>" />
 		</div>
-		<input type="button" value="Create" onClick="menu_create('<?php echo $form_act;?>', <?php echo @intval($data['id']);?>);" class="btn btn-default" />
+		<input type="button" value="Create" onClick="menu_create('<?php echo $form_act;?>', <?php echo @intval($data['id']);?>);" class="btn btn-default btn-secondary" />
 		<hr />
 		<div id="menu_exists">
 			<?php

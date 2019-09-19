@@ -290,7 +290,7 @@ function content_src($src, $is_imgsrc = false, $is_large_image = false)
 	}
 	if ($is_imgsrc)
 	{
-		$tag = is_string($is_imgsrc) ? $is_imgsrc : ' class="img-thumbnail img-responsive"';
+		$tag = is_string($is_imgsrc) ? $is_imgsrc : ' class="img-thumbnail img-responsive img-fluid"';
 		$output = image($output, '', $tag);
 	}
 	return $output;

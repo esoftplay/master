@@ -163,7 +163,7 @@ if (empty($zoom))
       ?>
       <input type="text" class="form-control" id="latitude" placeholder="Latitude" value="<?php echo $lat;?>" readonly />
       <input type="text" class="form-control" id="longitude" placeholder="Longitude" value="<?php echo $lng;?>" readonly />
-      <button onclick="return pick();" class="btn btn-default" id="btn_picker">Pilih Posisi!</button>
+      <button onclick="return pick();" class="btn btn-default btn-secondary" id="btn_picker">Pilih Posisi!</button>
       <div class="help-block">scroll untuk zoom, double click untuk fokus area, single click untuk tandai</div>
     </div>
     <script src="<?php echo _URL; ?>templates/admin/bootstrap/js/bootstrap.min.js"></script>

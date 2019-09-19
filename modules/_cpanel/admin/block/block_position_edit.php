@@ -289,7 +289,7 @@ if (!empty($data['help']))
 			if (!empty($_GET['return']))
 			{
 				?>
-				<span type="button" class="btn btn-default btn-sm" onclick="document.location.href='<?php echo $_GET['return'];?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
+				<span type="button" class="btn btn-default btn-secondary btn-sm" onclick="document.location.href='<?php echo $_GET['return'];?>';"><span class="glyphicon glyphicon-chevron-left"></span></span>
 				<?php
 			}
 			?>

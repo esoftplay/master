@@ -63,11 +63,11 @@ function tree_list($arr, $title = '', $cookie = true, $all_active_link = true, $
 	?>
 	<div class="expand-collapse">
 		<div class="btn-group" data-toggle="buttons">
-		  <label class="btn btn-xs btn-default" onclick="d.openAll();">
+		  <label class="btn btn-xs btn-default btn-secondary" onclick="d.openAll();">
 		  	<input type="radio" autocomplete="off">
 		    <?php echo icon('chevron-down'); ?>
 		  </label>
-		  <label class="btn btn-xs btn-default" onclick="d.closeAll();">
+		  <label class="btn btn-xs btn-default btn-secondary" onclick="d.closeAll();">
 		  	<input type="radio" autocomplete="off">
 		    <?php echo icon('chevron-up'); ?>
 		  </label>

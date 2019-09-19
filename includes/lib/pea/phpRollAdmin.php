@@ -388,10 +388,10 @@ class phpRollAdmin extends phpEasyAdminLib
 					$done = $page ? intval(($page+1)/$max*100) : 0;
 					?>
 					<div class="progress">
-					  <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $done ?>"
-					  aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $done ?>%">
-					    <?php echo $done ?>%
-					  </div>
+						<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $done ?>"
+						aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $done ?>%">
+							<?php echo $done ?>%
+						</div>
 					</div>
 					<?php
 					die();
@@ -419,22 +419,22 @@ class phpRollAdmin extends phpEasyAdminLib
 		{
 			link_js(_PEA_ROOT . 'includes/optionalColumn.js', false);
 			$out .= sprintf('<div class="btn-group input-group-addon show_hide_column%s">', (($this->nav->int_num_rows_this_page >= 8) ? ' dropup' : ''));
-			$out .= sprintf('<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> %s <span class="caret"></span> </button> <ul class="dropdown-menu">', lang('Show/Hide Columns'));
+			$out .= sprintf('<button type="button" class="btn btn-default btn-secondary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> %s <span class="caret"></span> </button> <ul class="dropdown-menu">', lang('Show/Hide Columns'));
 			foreach ($this->optionalColumn as $key => $toogle)
 			{
 				$checked = $toogle ? ' checked' : '';
 				$out .= '<li> <a href="#"> <label><input type="checkbox" value="'.$key.'"'.$checked.' /> '.$this->optionalCaption[$key].'</label> </a> </li>';
 			}
-			$out .= '<li role="separator" class="divider"></li>
+			$out .= '<li role="separator" class="divider dropdown-divider"></li>
 								<li>
 										<div class="btn-group btn-group-justified" role="group" aria-label="...">
 											<div class="btn-group" role="group">
-												<button type="button" rel="btn_ColView" data-name="'.$this->formName.'_ColView" value="EDIT" class="btn btn-default">
+												<button type="button" rel="btn_ColView" data-name="'.$this->formName.'_ColView" value="EDIT" class="btn btn-default btn-secondary">
 													Submit
 												</button>
 											</div>
 											<div class="btn-group" role="group">
-												<button type="button" rel="btn_ColView" data-name="'.$this->formName.'_ColView" value="RESET" class="btn btn-default">
+												<button type="button" rel="btn_ColView" data-name="'.$this->formName.'_ColView" value="RESET" class="btn btn-default btn-secondary">
 													Reset
 												</button>
 											</div>
@@ -709,26 +709,25 @@ class phpRollAdmin extends phpEasyAdminLib
 			$nav = '<span class="input-group-addon">'.$nav.'</span>';
 		}
 		$nav .= $this->nav->getGoToForm(false);
-    $out .= '<form method="get" action="" role="form" style="margin-top:-20px;margin-bottom: 20px;">'
-    		.	'<div class="input-group">'.$this->getReport($this->nav->int_cur_page).'<span class="input-group-addon">'
-    		. $this->nav->getStatus().'</span>'.$nav.'</div></form>';
+		$out .= '<form method="get" action="" role="form" style="margin-top:-20px;margin-bottom: 20px;">'
+				.	'<div class="input-group">'.$this->getReport($this->nav->int_cur_page).'<span class="input-group-addon">'
+				. $this->nav->getStatus().'</span>'.$nav.'</div></form>';
 
-    /* Form Panel */
+		/* Form Panel */
 		$formHeader = $this->getHeaderType();
 		if (!empty($formHeader))
 		{
-			$out = <<<EOT
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">{$formHeader}</h3>
-	</div>
-	<div class="panel-body">
-		{$out}
-	</div>
-</div>
-EOT;
+			$out = '
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">'.$formHeader.'</h3>
+					</div>
+					<div class="panel-body">
+						'.$out.'
+					</div>
+				</div>';
 		}
-    $out = $this->getHideFormToolStart().$out.$this->getHideFormToolEnd();
+		$out = $this->getHideFormToolStart().$out.$this->getHideFormToolEnd();
 		return $out;
 	}
 

@@ -44,6 +44,6 @@ $f = $db->getCol("SHOW TABLES LIKE 'bbc_content_ad'");
 if (empty($f))
 {
 	?>
-	<a class="btn btn-default btn-lg" href="index.php?mod=_cpanel.application&act=contentads" role="button"><?php echo icon('fa-mobile'); ?> Activate Mobile Content Ads</a>
+	<a class="btn btn-default btn-secondary btn-lg" href="index.php?mod=_cpanel.application&act=contentads" role="button"><?php echo icon('fa-mobile'); ?> Activate Mobile Content Ads</a>
 	<?php
 }

@@ -183,22 +183,21 @@ class FormMultiinput extends Form
 				$title .= ' '.help('<span style="font-weight: normal;">'.$this->parent->help->value[$this->name].'</span>');
 			}
 			$inputField = implode('', $out);
-			$out = <<<EOT
-<div class="panel-group" id="accordion{$this->name}">
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion{$this->name}" href="#pea_isHideToolOn{$this->name}" style="cursor: pointer;">
-	    	{$title}
-	    </h4>
-	  </div>
-	  <div id="pea_isHideToolOn{$this->name}" class="panel-collapse collapse {$display}">
-	    <div class="panel-body">
-	    	{$inputField}
-			</div>
-	  </div>
-	</div>
-</div>
-EOT;
+			$out = '
+				<div class="panel-group" id="accordion'.$this->name.'">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title" data-toggle="collapse" data-parent="#accordion'.$this->name.'" href="#pea_isHideToolOn'.$this->name.'" style="cursor: pointer;">
+								'.$title.'
+							</h4>
+						</div>
+						<div id="pea_isHideToolOn'.$this->name.'" class="panel-collapse collapse '.$display.'">
+							<div class="panel-body">
+								'.$inputField.'
+							</div>
+						</div>
+					</div>
+				</div>';
 		}else{
 			$out = implode($this->delimiter, $out);
 			$out = preg_replace('~(<div[^>]+class=")(form-control)~is', '$1input-group', $out);

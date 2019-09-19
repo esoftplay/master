@@ -29,9 +29,9 @@ contoh table:
 
 	TABLE MAIN            TABLE RELATION     TABLE REFERENCE
 
- 	id <----------------> content_id         title
- 	title            			cat_id <---------> id
- 	description
+	id <----------------> content_id         title
+	title            			cat_id <---------> id
+	description
 */
 include_once( _PEA_ROOT.'form/FormMulticheckbox.php' );
 
@@ -197,15 +197,14 @@ class FormMultiselect extends FormMulticheckbox
 			}else{
 				$json = '';
 			}
-			$out   = <<<EOT
-<div class="{$cls}">
-	<select name="{$name}[]" multiple size="{$this->size}"{$extra}>{$input}</select>
-	<div class="input-group-addon">
-		<input onclick="var v=$(this).parent().prev().get(0);for(i=0; i < v.options.length; i++)v.options[i].selected=this.checked;" type="checkbox">
-	</div>
-	{$json}
-</div>
-EOT;
+			$out   = '
+				<div class="'.$cls.'">
+					<select name="'.$name.'[]" multiple size="'.$this->size.'"'.$extra.'>'.$input.'</select>
+					<div class="input-group-addon">
+						<input onclick="var v=$(this).parent().prev().get(0);for(i=0; i < v.options.length; i++)v.options[i].selected=this.checked;" type="checkbox">
+					</div>
+					'.$json.'
+				</div>';
 		}else{
 			$out = $this->getReturn(implode($this->delimiter, $output));
 		}

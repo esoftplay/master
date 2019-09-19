@@ -371,7 +371,7 @@ class FormOrderby extends Form
 			$id     = @intval($id);
 			$is_min = $str_value > $this->getMin($id) ? 0 : 1;
 			$is_max = $str_value < $this->getMax($id) ? 0 : 1;
-			$txt    = '<button type="%s" class="btn btn-default btn-xs btn-orderby"><span class="glyphicon glyphicon-arrow-%s"></span></button>';
+			$txt    = '<button type="%s" class="btn btn-default btn-secondary btn-xs btn-orderby"><span class="glyphicon glyphicon-arrow-%s"></span></button>';
 			$arr    = array(
 				'submit" name="'.$str_name.'[$to]" value="[$to]|$to',
 				'button|$to text-muted'

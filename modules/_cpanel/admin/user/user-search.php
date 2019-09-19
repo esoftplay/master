@@ -39,10 +39,10 @@ $r_group_array = $db->getAll($q);
 		<input name="keyword" type="text" value="<?php echo @htmlentities($keyword['keyword']);?>" class="form-control" title="keyword" placeholder="keyword">
 	</div>
 		<input type="hidden" name="<?php echo $_search['keyword'];?>" value="1">
-	<button type="submit" name="Submit" value="search" class="btn btn-default">
+	<button type="submit" name="Submit" value="search" class="btn btn-default btn-secondary">
 		<span class="glyphicon glyphicon-search" title="rch"></span>
 	</button>
-	<button type="submit" name="Submit" value="reset" class="btn btn-default">
+	<button type="submit" name="Submit" value="reset" class="btn btn-default btn-secondary">
 		<span class="glyphicon glyphicon-remove-circle" title="ove circle"></span>
 	</button>
 </form>

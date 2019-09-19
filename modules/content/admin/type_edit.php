@@ -222,7 +222,7 @@ $link = 'index.php?mod=content.config_default';
 				<?php
 				if(!empty($_GET['return']))
 				{
-					echo '<span type="button" class="btn btn-default btn-sm" onclick="document.location.href=\''.$_GET['return'].'\';"><span class="glyphicon glyphicon-chevron-left"></span></span> ';
+					echo '<span type="button" class="btn btn-default btn-secondary btn-sm" onclick="document.location.href=\''.$_GET['return'].'\';"><span class="glyphicon glyphicon-chevron-left"></span></span> ';
 				}
 				?>
 				<button type="submit" name="submit_update" default="true" value="&nbsp;SAVE&nbsp;" class="btn btn-primary btn-sm">

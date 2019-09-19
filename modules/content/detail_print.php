@@ -32,7 +32,7 @@ if($data['publish'] && @$config['print'])
 	$image = (!empty($data['is_popimage']) && !empty($data['image'])) ? content_src($data['image'], false, true) : '';
 	if(!empty($image))
 	{
-		echo image($image, '', ' class="img img-responsive" alt="'.$data['title'].'" title="'.$data['title'].'"');
+		echo image($image, '', ' class="img img-responsive img-fluid" alt="'.$data['title'].'" title="'.$data['title'].'"');
 	}
 	echo '<div class="text text-justify">'.$data['content'].'</div>';
 	echo ($config['modified']) ? '<span class="text text-muted pull-right">'.lang('Last modified').' : '.content_date($data['modified']).'</span>' : '';

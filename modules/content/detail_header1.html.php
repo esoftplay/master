@@ -20,7 +20,7 @@ if (!empty($data['images']))
 				}
 				$indicate .= '<li data-target="#content-gallery" data-slide-to="'.$i.'" class="'.$isActive.'"></li>';
 				$inner .= '<div class="item '.$isActive.'">';
-				$inner .= '<center><img src="'._URL.$path.$d['image'].'" alt="'.$d['title'].'" class="img-thumbnail img-responsive"></center>';
+				$inner .= '<center><img src="'._URL.$path.$d['image'].'" alt="'.$d['title'].'" class="img-thumbnail img-responsive img-fluid"></center>';
 				if (!empty($d['title']) || !empty($d['description']))
 				{
 					$inner .= '<div class="carousel-caption">';

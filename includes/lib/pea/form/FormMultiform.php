@@ -482,7 +482,7 @@ class FormMultiform extends FormMultiinput
 				$out[] = $thisField;
 			}
 			$icon     = !empty($arrResult) ? 'trash' : 'plus';
-			$out[]    = '<button type="button" class="btn btn-default btn-multiform">'.icon($icon).'</button>';
+			$out[]    = '<button type="button" class="btn btn-default btn-secondary btn-multiform">'.icon($icon).'</button>';
 			$output[] = implode($this->delimiter, $out);
 		}
 
@@ -497,22 +497,21 @@ class FormMultiform extends FormMultiinput
 			{
 				$title .= ' '.help('<span style="font-weight: normal;">'.$this->parent->help->value[$this->name].'</span>');
 			}
-			$out = <<<EOT
-<div class="panel-group" id="accordion{$this->name}">
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion{$this->name}" href="#pea_isHideToolOn{$this->name}" style="cursor: pointer;">
-	    	{$title}
-	    </h4>
-	  </div>
-	  <div id="pea_isHideToolOn{$this->name}" class="panel-collapse collapse {$display}">
-	    <div class="panel-body">
-	    	{$allFields}
-			</div>
-	  </div>
-	</div>
-</div>
-EOT;
+			$out = '
+				<div class="panel-group" id="accordion'.$this->name.'">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title" data-toggle="collapse" data-parent="#accordion'.$this->name.'" href="#pea_isHideToolOn'.$this->name.'" style="cursor: pointer;">
+								'.$title.'
+							</h4>
+						</div>
+						<div id="pea_isHideToolOn'.$this->name.'" class="panel-collapse collapse '.$display.'">
+							<div class="panel-body">
+								'.$allFields.'
+							</div>
+						</div>
+					</div>
+				</div>'
 		}else{
 			$out = preg_replace('~(<div[^>]+class=")(form-control)~is', '$1input-group', $allFields);
 		}

@@ -5,7 +5,7 @@ $_setting = array(
 		'text' => 'Image URL',
 		'type' => 'text',
 		'attr' => 'id="txtUrl"',
-		'tips' => '<span class="btn btn-default" onclick="return browse(this);">Browse</span> or leave it blank to sycronize image logo with site main logo'
+		'tips' => '<span class="btn btn-default btn-secondary" onclick="return browse(this);">Browse</span> or leave it blank to sycronize image logo with site main logo'
 		),
 	'size'	=> array(
 		'text' => 'Size Display',

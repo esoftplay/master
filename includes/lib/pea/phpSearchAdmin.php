@@ -139,21 +139,20 @@ class phpSearchAdmin extends phpEasyAdminLib
 		if	($this->saveTool)
 		{
 			$mainForm .='<button type="submit" name="'.$this->saveButton->name.'" value="'.$this->saveButton->value
-								.	'" class="btn btn-default"><span class="glyphicon glyphicon-'.$this->saveButton->icon.'"></span>'
+								.	'" class="btn btn-default btn-secondary"><span class="glyphicon glyphicon-'.$this->saveButton->icon.'"></span>'
 								.	$this->saveButton->label .'</button> ';
 		}
 		if ($this->resetTool)
 		{
 			$mainForm .= '<button type="submit" name="'.$this->resetButton->name.'" value="'.$this->resetButton->value
-								.	'" class="btn btn-default"><span class="glyphicon glyphicon-'.$this->resetButton->icon
+								.	'" class="btn btn-default btn-secondary"><span class="glyphicon glyphicon-'.$this->resetButton->icon
 								.	'"></span>'.$this->resetButton->label.'</button> ';
 		}
-		$out         = <<<EOT
-<form method="{$this->methodForm}" action="{$this->actionUrl}" name="{$this->formName}" class="form-inline pull-right" role="form">
-	{$mainForm}
-</form>
-<div class="clearfix"></div>
-EOT;
+		$out = '
+			<form method="'.$this->methodForm.'" action="'.$this->actionUrl.'" name="'.$this->formName.'" class="form-inline pull-right" role="form">
+				'.$mainForm.'
+			</form>
+			<div class="clearfix"></div>';
 		return $out;
 	}
 
@@ -237,39 +236,39 @@ EOT;
 		if(preg_match('~^(.*?)(?:\?(.*?))?$~s',$_SERVER['REQUEST_URI'], $m))
 		{
 			$url = $m[1];
-		  if(!empty($m[2]))
-		  {
-		  	parse_str($m[2], $r);
-		  	foreach ($r as $key => $value)
-		  	{
-		  		if (in_array($this->formName.'_'.$key, $search_key))
-		  		{
-		  			unset($r[$key]);
-		  		}
-		  	}
-		    if (!empty($r))
-		    {
-		    	$url .= '?'.http_build_query($r);
-		    }
-		  }
-		  if (_ADMIN=='')
-		  {
-		  	global $Bbc;
-		  	if (!empty($Bbc->menu) && !empty($Bbc->menu->all_array))
-		  	{
-		  		$uri = preg_replace('~^'._URI.'~', '', $url);
-			  	foreach ($Bbc->menu->all_array as $d)
-			  	{
-			  		if ($d['link']==$uri)
-			  		{
-			  			$url = _URL.$d['seo'].'.html';
-			  			break;
-			  		}
-			  	}
-		  	}
-		  }
+			if(!empty($m[2]))
+			{
+				parse_str($m[2], $r);
+				foreach ($r as $key => $value)
+				{
+					if (in_array($this->formName.'_'.$key, $search_key))
+					{
+						unset($r[$key]);
+					}
+				}
+				if (!empty($r))
+				{
+					$url .= '?'.http_build_query($r);
+				}
+			}
+			if (_ADMIN=='')
+			{
+				global $Bbc;
+				if (!empty($Bbc->menu) && !empty($Bbc->menu->all_array))
+				{
+					$uri = preg_replace('~^'._URI.'~', '', $url);
+					foreach ($Bbc->menu->all_array as $d)
+					{
+						if ($d['link']==$uri)
+						{
+							$url = _URL.$d['seo'].'.html';
+							break;
+						}
+					}
+				}
+			}
 		}else{
-		  $url = _URL;
+			$url = _URL;
 		}
 		redirect($url);
 	}

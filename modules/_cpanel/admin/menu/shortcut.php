@@ -122,7 +122,7 @@ $sys->nav_add('Create Desktop Shortcut');
 			</div>
 		</div>
 		<div class="panel-footer">
-			<span type="button" class="btn btn-default btn-sm" onclick="document.location.href='<?php echo $return; ?>';">
+			<span type="button" class="btn btn-default btn-secondary btn-sm" onclick="document.location.href='<?php echo $return; ?>';">
 				<span class="glyphicon glyphicon-chevron-left"></span>
 			</span>
 			<button type="submit" name="shortcut_submit_update" value="SAVE" class="btn btn-primary btn-sm">

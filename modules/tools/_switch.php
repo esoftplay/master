@@ -28,7 +28,7 @@ if(file_exists($M_DIR) && ini_get('display_errors')==1 && !empty($_SESSION[$key]
 	chdir($M_DIR);
 	$sys->stop();
 	$sys->set_layout('blank');
-	$_URL = _URL.$Bbc->mod['name'].'/'.$Bbc->mod['task'].'/';
+	$_URL = _URL.$Bbc->mod['name'].'/'.$Bbc->mod['task'];
 	// Module ini hanya digunakan untuk programmer maupun developer saja, jangan menampilkan module ini di menu apalagi untuk user public !
 	switch( $Bbc->mod['task'] )
 	{

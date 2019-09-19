@@ -131,6 +131,6 @@ $data = $sess['index_4'];
 			<td><?php echo $data['email'];?></td>
 		</tr>
 	</table>
-	<input type="Button" value="&#171; Back" class="btn btn-default" onClick="window.history.go(-1);" />
-	<input type="submit" name="Submit" value="Submit &#187;" class="btn btn-default" />
+	<input type="Button" value="&#171; Back" class="btn btn-default btn-secondary" onClick="window.history.go(-1);" />
+	<input type="submit" name="Submit" value="Submit &#187;" class="btn btn-default btn-secondary" />
 </form>

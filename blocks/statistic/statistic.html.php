@@ -1,6 +1,6 @@
 <?php  if ( ! defined('_VALID_BBC')) exit('No direct script access allowed');?>
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed table-sm">
 	<tr>
 		<td><?php echo lang('Total Visitor');?></td>
 		<td>: <?php echo total($output['total_visit'], 'visitor');?></td>
