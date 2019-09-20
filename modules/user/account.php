@@ -29,7 +29,7 @@ $params['config_pre'] = array(
   </button>
 	<ul class="dropdown-menu pull-right" id="imgLogin">
     <li><a href="#facebook">'.icon('fa-facebook-square').' Facebook</a></li>
-    <li><a href="#google">'.icon('fa-google-plus-square').' Google</a></li>
+    <li><a href="#google">'.icon('fa-google').' Google</a></li>
     <li><a href="#twitter">'.icon('fa-twitter-square').' Twitter</a></li>
     <li><a href="#linkedin">'.icon('fa-linkedin-square').' LinkedIn</a></li>
     <li><a href="#instagram">'.icon('fa-instagram').' Instagram</a></li>

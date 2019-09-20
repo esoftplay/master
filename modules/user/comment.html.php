@@ -77,7 +77,7 @@ link_css(tpl('comment.css'), false);
 					  </button>
 					  <ul class="dropdown-menu" aria-labelledby="dLabel">
 					  	<li><a href="user/comment_login/facebook"><?php echo icon('fa-facebook-square'); ?> Facebook</a></li>
-					  	<li><a href="user/comment_login/google"><?php echo icon('fa-google-plus-square'); ?> Google+</a></li>
+					  	<li><a href="user/comment_login/google"><?php echo icon('fa-google'); ?> Google</a></li>
 					  	<li><a href="user/comment_login/twitter"><?php echo icon('fa-twitter-square'); ?> Twitter</a></li>
 					  	<li><a href="user/comment_login/linkedin"><?php echo icon('fa-linkedin-square'); ?> LinkedIn</a></li>
 					  	<li><a href="user/comment_login/instagram"><?php echo icon('fa-instagram'); ?> Instagram</a></li>

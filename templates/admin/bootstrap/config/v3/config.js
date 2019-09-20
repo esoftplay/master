@@ -9,7 +9,7 @@ module.exports = {
 	scss: [],
 	font: [
 		"github/bootstrap3/dist/fonts/*",
-		// "github/Font-Awesome/webfonts/*"
+		"github/Font-Awesome/fonts/*"
 		],
 	js: [
 		"custom/bootstrap-pre.js",
@@ -27,7 +27,7 @@ module.exports = {
 			// COPY AND COMPRESS
 			{
 				"bootstrap-theme.min.css": "github/bootstrap3/dist/css/bootstrap-theme.css",
-				"font-awesome.min.css": "github/Font-Awesome/css/all.css",
+				"font-awesome.min.css": "github/Font-Awesome/css/font-awesome.css",
 				"colorpicker.css": "github/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css"
 			}
 		],
@@ -44,9 +44,6 @@ module.exports = {
 		"img": [
 			"img/spinner.gif",
 			"github/bootstrap-colorpicker/dist/img/**"
-		],
-		"webfonts":[
-			"github/Font-Awesome/webfonts/*"
 		]
 	},
 	source: "/Users/me/Sites/php/bootstrap/",

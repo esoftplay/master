@@ -12,7 +12,7 @@ $url.= 'id=';
 echo '<center><div class="btn-group" role="group">';
 echo $sys->button($url.'facebook', 'Facebook', 'fa-facebook-official');
 echo $sys->button($url.'twitter', 'Twitter', 'fa-twitter-square');
-echo $sys->button($url.'google', 'Google', 'fa-google-plus-square');
+echo $sys->button($url.'google', 'Google', 'fa-google');
 echo $sys->button($url.'linkedin', 'Linkedin', 'fa-linkedin-square');
 echo $sys->button($url.'yahoo', 'Yahoo', 'fa-yahoo');
 echo '</div></center>';

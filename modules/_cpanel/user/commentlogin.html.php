@@ -59,7 +59,7 @@ if (empty($id) || $id == 'commentlogin')
 	?>
 	<ul class="list-group">
   	<li class="list-group-item"><a href="<?php echo $url; ?>/facebook"><?php echo icon('fa-facebook-square'); ?> Facebook</a></li>
-  	<li class="list-group-item"><a href="<?php echo $url; ?>/google"><?php echo icon('fa-google-plus-square'); ?> Google+</a></li>
+  	<li class="list-group-item"><a href="<?php echo $url; ?>/google"><?php echo icon('fa-google'); ?> Google</a></li>
   	<li class="list-group-item"><a href="<?php echo $url; ?>/twitter"><?php echo icon('fa-twitter-square'); ?> Twitter</a></li>
   	<li class="list-group-item"><a href="<?php echo $url; ?>/linkedin"><?php echo icon('fa-linkedin-square'); ?> LinkedIn</a></li>
   	<li class="list-group-item"><a href="<?php echo $url; ?>/instagram"><?php echo icon('fa-instagram'); ?> Instagram</a></li>
