@@ -4,5 +4,5 @@ $id = @intval($_GET['id']);
 $q = "SELECT 1 FROM bbc_user WHERE id=$id";
 if($db->getOne($q))
 {
-	redirect(_URL.'user/force2Login/'.urlencode(urlencode(encode($id))));
+	redirect(_URL.'user/force2Login/'.urlencode(urlencode(encode(strtotime('+30 SECOND').'-'.$id))));
 }
