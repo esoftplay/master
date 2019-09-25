@@ -70,6 +70,11 @@ if (!empty($msg))
 			$data_output['message'] = $msg;
 		}
 	}else{
-		$data_output['message'] = 'Please insert username along with password';
+		if (!empty($_POST['email']))
+		{
+			$data_output['message'] = 'Sorry, your email address is not listed in our member list';
+		}else{
+			$data_output['message'] = 'Please insert username along with password';
+		}
 	}
 }
