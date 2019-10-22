@@ -20,8 +20,10 @@ function sendmail($to, $subj, $msg, $f = array(), $param = array())
 	if(empty($mail->Mailer))
 	{
 		$mail = _lib('phpmailer');
+		$nocc = 0;
 		if (defined('SMTP_HOST') && defined('SMTP_USERNAME') && defined('SMTP_PASSWORD'))
 		{
+			$nocc = 1;
 			$mail->IsSMTP();
 			// $mail->SMTPDebug  = true;
 			$mail->SMTPAuth   = true;
@@ -37,21 +39,33 @@ function sendmail($to, $subj, $msg, $f = array(), $param = array())
 			$mail->IsMail();
 		}
 	}
-	$from = is_array($f) ? array_values($f) : array($f);
+	$from           = is_array($f) ? array_values($f) : array($f);
+	$recipient      = 0;
 	$mail->From     = (isset($from[0]) && is_email($from[0])) ?  $from[0] : config('email','address');
 	$mail->FromName = isset($from[1]) ?  $from[1] : config('email','name');
-	if(!empty($to)){
+	if(!empty($to))
+	{
 		if(is_array($to))
 		{
 			foreach($to AS $email)
 			{
-				$mail->AddAddress($email);
+				if ($nocc && $email==$mail->From)
+				{
+					// email yang sama dengan pengirim jangan ditambahkan
+				}else{
+					$recipient++;
+					$mail->AddAddress($email);
+				}
 			}
-		}else
-		{
+		}else{
+			$recipient++;
 			$mail->AddAddress($to);
 		}
 	}else return false;
+	if (!$recipient)
+	{
+		return false;
+	}
 	if(!empty($param))
 	{
 		foreach((array)$param AS $obj => $value)
@@ -77,8 +91,8 @@ function sendmail($to, $subj, $msg, $f = array(), $param = array())
 			}
 		}
 	}
-	$mail->Subject 	= $subj;
-	$mail->Body 	= $msg;
+	$mail->Subject = $subj;
+	$mail->Body    = $msg;
 	$mail->Send();
 	$mail->ClearAddresses();
 	return true;
