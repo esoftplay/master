@@ -469,18 +469,7 @@ function link_js($file, $is_meta = true, $browser = '', $version = '', $math = '
 	if(browser($browser, $version, $math))
 	{
 		global $sys, $Bbc;
-		if (defined('_MST'))
-		{
-			$r = explode('|', _MST);
-			foreach ($r as $p)
-			{
-				$p = trim($p);
-				if (!empty($p))
-				{
-					$file = preg_replace('~^'.preg_quote($p, '~').'~s', '', $file);
-				}
-			}
-		}
+		$file = _mst($file);
 		if (is_url($file))
 		{
 			$js = $file;
@@ -514,18 +503,7 @@ function link_css($file, $is_meta = true, $browser = '', $version = '', $math = 
 	if(browser($browser, $version, $math))
 	{
 		global $sys, $Bbc;
-		if (defined('_MST'))
-		{
-			$r = explode('|', _MST);
-			foreach ($r as $p)
-			{
-				$p = trim($p);
-				if (!empty($p))
-				{
-					$file = preg_replace('~^'.preg_quote($p, '~').'~s', '', $file);
-				}
-			}
-		}
+		$file = _mst($file);
 		if(is_file($sys->template_dir.'css/'.$file))
 			$css = $sys->template_url.'css/'.$file;
 		else
@@ -726,18 +704,7 @@ function tpl_scan($path='', $template='')
 	}
 	$path = str_replace(_ROOT, '', $path);
 	$path.= substr($path, -1)!='/' ? '/':'';
-	if (defined('_MST'))
-	{
-		$r = explode('|', _MST);
-		foreach ($r as $p)
-		{
-			$p = trim($p);
-			if (!empty($p))
-			{
-				$path = preg_replace('~^'.preg_quote($p, '~').'~s', '', $path);
-			}
-		}
-	}
+	$path = _mst($path);
 	_func('path');
 	$r = path_list(_ROOT.$path);
 	foreach ($r as $f)

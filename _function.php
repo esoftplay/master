@@ -121,17 +121,9 @@ function _ext(&$file, $ext = '.php')
 {
 	if(substr($file, (strlen($ext)*-1)) != $ext) $file .= $ext;
 }
-function tpl($file, $default_file='')
+function _mst($path)
 {
-	global $sys;
-	$output = _SYS.'none.html.php';
-	if (empty($file) && empty($default_file))
-	{
-		return $output;
-	}
-	$bt     = debug_backtrace();
-	$path   = str_replace(_ROOT, '', dirname($bt[0]['file'])).'/';
-	$path   = str_replace('templates/'.config('template').'/', '', $path);
+	$path = str_replace(array('\\', _ROOT), array('/', ''), $path);
 	if (defined('_MST'))
 	{
 		$r = explode('|', _MST);
@@ -144,6 +136,20 @@ function tpl($file, $default_file='')
 			}
 		}
 	}
+	return $path;
+}
+function tpl($file, $default_file='')
+{
+	global $sys;
+	$output = _SYS.'none.html.php';
+	if (empty($file) && empty($default_file))
+	{
+		return $output;
+	}
+	$bt   = debug_backtrace();
+	$path = str_replace(_ROOT, '', dirname($bt[0]['file'])).'/';
+	$path = str_replace('templates/'.config('template').'/', '', $path);
+	$path = _mst($path);
 	if (!preg_match('~\.[a-z0-9]+$~is', $file))
 	{
 		$file .= '.html.php';
