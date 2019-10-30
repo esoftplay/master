@@ -126,7 +126,8 @@ if (!empty($data['publish']))
 		'comment_total' => intval($comment_total),
 		'tags'          => $data['tags'],
 		'cats'          => $data['cats'],
-		'related'       => $data['related']
+		'related'       => $data['related'],
+		'config'        => $config
 		);
 	$data_output = _cpanel_result($output);
 }
