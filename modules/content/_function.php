@@ -539,7 +539,7 @@ function content_restore()
 		$r_cat  = $db->getCol("SELECT id FROM bbc_content_cat WHERE 1");
 		foreach($params AS $data)
 		{
-			$r = json_encode($data, 1);
+			$r = json_decode($data, 1);
 			$fields = array();
 			foreach($r['content'] AS $field => $value)
 			{
@@ -618,6 +618,10 @@ function content_trash_delete($ids = array())
 			$q = "DELETE FROM `bbc_content_comment` WHERE `content_id` IN ({$c_ids})";
 			$db->Execute($q);
 			$q = "DELETE FROM `bbc_content_registrant` WHERE `content_id` IN ({$c_ids})";
+			$db->Execute($q);
+			$q = "DELETE FROM `bbc_content_related` WHERE `content_id` IN ({$c_ids})";
+			$db->Execute($q);
+			$q = "DELETE FROM `bbc_content_schedule` WHERE `content_id` IN ({$c_ids})";
 			$db->Execute($q);
 			$q = "DELETE FROM `bbc_content_trash` WHERE `id` IN ({$ids})";
 			$db->Execute($q);
