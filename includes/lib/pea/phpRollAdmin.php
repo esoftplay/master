@@ -238,8 +238,18 @@ class phpRollAdmin extends phpEasyAdminLib
 			// hanya untuk validasi aja
 			$_GET[$this->formName . '_asc']	= (isset($_GET[$this->formName . '_asc'])) ? $_GET[$this->formName . '_asc'] : '1';
 			$_GET[$this->formName . '_asc']	= ($_GET[$this->formName . '_asc'] == '0' || $_GET[$this->formName . '_asc'] == '1') ? $_GET[$this->formName . '_asc'] : '1';
-			$asc	= ($_GET[$this->formName . '_asc'] == '0') ? 'DESC' : 'ASC';
-			$orderQuery	= 'ORDER BY '. $_GET[$this->formName . '_order'] . ' ' . $asc;
+
+			$asc   = ($_GET[$this->formName . '_asc'] == '0') ? 'DESC' : 'ASC';
+			$field = $_GET[$this->formName . '_order'];
+			foreach ($this->input as $key => $dt)
+			{
+				if (@$dt->name == $this->formName.'_'.$field)
+				{
+					$field = $key;
+					break;
+				}
+			}
+			$orderQuery = 'ORDER BY '. $field . ' ' . $asc;
 
 			if (preg_match('~order by ~is', $query))
 				$query	= preg_replace("/order by.*?\$/is", $orderQuery, $query);
