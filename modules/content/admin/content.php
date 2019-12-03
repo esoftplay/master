@@ -132,16 +132,10 @@ $form->roll->input->privilege->setDisplayColumn(false);
 $form->roll->input->privilege->textTip='';
 
 $tbl = array(
-		'Author'   => '{created_by_alias}',
-		// 'Hit'      => '{hits}',
+		'Author'    => '{created_by_alias}',
 		'Last Open' => '{last_hits}',
-		'Modified' => '{modified}',
+		'Modified'  => '{modified}',
 		);
-// if (in_array('hits', (array)@$_SESSION['ColView'][menu_save(@$_GET['mod'].$form->roll->formName)]))
-// {
-// 	unset($tbl['Hit']);
-// }
-
 $form->roll->addInput( 'created', 'texttip' );
 $form->roll->input->created->setTitle( 'Date' );
 $form->roll->input->created->setDateFormat();

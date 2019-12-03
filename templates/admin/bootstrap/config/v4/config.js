@@ -11,7 +11,7 @@ module.exports = {
 	js: [
 		"custom/bootstrap-pre.js",
 		"github/jquery/node_modules/jquery/dist/jquery.min.js",
-		"github/bootstrap4/dist/js/bootstrap.js",
+		"github/bootstrap4/dist/js/bootstrap.bundle.js",
 		"custom/bootstrap-post.js",
 		],
 	source: "/Users/me/Sites/php/bootstrap/",

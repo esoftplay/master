@@ -3,19 +3,18 @@
 module.exports = {
 	css: [
 		"custom/bootstrap-pre.css",
-		"github/bootstrap3/dist/css/bootstrap.css",
+		"337/dist/css/bootstrap.css",
 		"custom/bootstrap-post.css"
 		],
 	scss: [],
 	font: [
-		"github/bootstrap3/dist/fonts/*",
+		"337/dist/fonts/*",
 		"github/Font-Awesome/fonts/*"
 		],
 	js: [
 		"custom/bootstrap-pre.js",
-		// "custom/jquery.js",
-		"github/bootstrap3/js/tests/vendor/jquery.min.js",
-		"github/bootstrap3/dist/js/bootstrap.js",
+		"337/dist/js/jquery.min.js",
+		"337/dist/js/bootstrap.js",
 		"custom/bootstrap-post.js",
 		],
 	copy: {
