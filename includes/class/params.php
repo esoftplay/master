@@ -600,9 +600,16 @@ class params
 		if(is_array($config) && $this->is_updated)
 		{
 			$post = array();
+			if (empty($default))
+			{
+				$default = array();
+			}
 			foreach((array)$config AS $name => $param)
 			{
-				if(empty($default[$name])) $default[$name] = @$param['default'];
+				if(empty($default[$name]))
+				{
+					$default[$name] = @$param['default'];
+				}
 				switch($param['type'])
 				{
 					case 'files':
@@ -741,7 +748,7 @@ class params
 						}
 					case 'custom':
 					default:
-						$post[$name] =(empty($prefix)) ? $_POST[$name] : $_POST[$prefix][$name];
+						$post[$name] =(empty($prefix)) ? @$_POST[$name] : @$_POST[$prefix][$name];
 					break;
 				}
 				if($param['type']!='plain' && $param['mandatory'] && empty($post[$name]))

@@ -91,6 +91,10 @@ function sendmail($to, $subj, $msg, $f = array(), $param = array())
 			}
 		}
 	}
+	if ($mail->ContentType == 'text/plain')
+	{
+		$msg = preg_replace(array('~<br.*/?>\r\n~is', '~<br.*/?>~is'), array("\r\n", ''), $msg);
+	}
 	$mail->Subject = $subj;
 	$mail->Body    = $msg;
 	$mail->Send();
