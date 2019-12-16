@@ -369,18 +369,19 @@ function alert_push_send($id, $last_id=0)
 			foreach ($tos as $to)
 			{
 				$messages[] = array(
-					'to'    => $to['token'],
-					'title' => $data['title'],
-					'body'  => $data['message'],
-					'sound' => 'default',
-					'data'  => array(
-						'id'      => $data['id'],
-						'action'  => $params['action'],
-						'module'  => $params['module'],
-						'title'   => $data['title'],
-						'message' => $data['message'],
-						'params'  => $params['arguments']
-						)
+					'to'        => $to['token'],
+					'title'     => $data['title'],
+					'body'      => $data['message'],
+					'sound'     => 'default',
+					'channelId' => 'android',
+					'data'      => array(
+													'id'      => $data['id'],
+													'action'  => $params['action'],
+													'module'  => $params['module'],
+													'title'   => $data['title'],
+													'message' => $data['message'],
+													'params'  => $params['arguments']
+												)
 					);
 				$last_id = $to['id'];
 			}
