@@ -41,8 +41,8 @@ function sendmail($to, $subj, $msg, $f = array(), $param = array())
 	}
 	$from           = is_array($f) ? array_values($f) : array($f);
 	$recipient      = 0;
-	$mail->From     = (isset($from[0]) && is_email($from[0])) ?  $from[0] : config('email','address');
-	$mail->FromName = isset($from[1]) ?  $from[1] : config('email','name');
+	$mail->From     = (!empty($from[0]) && is_email($from[0])) ?  $from[0] : config('email','address');
+	$mail->FromName = !empty($from[1]) ?  $from[1] : config('email','name');
 	if(!empty($to))
 	{
 		if(is_array($to))
