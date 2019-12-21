@@ -20,10 +20,20 @@ $exist = $db->getOne("SHOW TABLES LIKE 'bbc_async'");
 if (!empty($exist))
 {
 	$form = _lib('pea',  'bbc_async');
-	$form->initRoll("WHERE 1 ORDER BY id ASC");
+	$form->initSearch();
+
+	$form->search->addInput('keyword','keyword');
+	$form->search->input->keyword->addSearchField('function,arguments', false);
+
+	$add_sql = $form->search->action();
+	$keyword = $form->search->keyword();
+
+	echo $form->search->getForm();
+
+	$form->initRoll("{$add_sql} ORDER BY id ASC");
 
 	$form->roll->setSaveTool(false);
-	$form->roll->setDeleteTool(false);
+	$form->roll->setDeleteTool(true);
 
 	$form->roll->addInput('col1', 'multiinput');
 	$form->roll->input->col1->setTitle('ID');
@@ -32,12 +42,13 @@ if (!empty($exist))
 
 	$form->roll->input->idx->setFieldName('id AS idx');
 	$form->roll->input->idx2->setFieldName('id AS idx2');
-	$form->roll->input->idx2->setLinks(
-		array(
-		$Bbc->mod['circuit'].'.'.$Bbc->mod['task']            => icon('console').' Execute',
-		$Bbc->mod['circuit'].'.'.$Bbc->mod['task'].'&act=del' => icon('trash').' Delete',
-		)
-	);
+	$form->roll->input->idx2->setLinks($Bbc->mod['circuit'].'.'.$Bbc->mod['task'], icon('console').' Execute');
+	// $form->roll->input->idx2->setLinks(
+	// 	array(
+	// 	$Bbc->mod['circuit'].'.'.$Bbc->mod['task']            => icon('console').' Execute',
+	// 	$Bbc->mod['circuit'].'.'.$Bbc->mod['task'].'&act=del' => icon('trash').' Delete',
+	// 	)
+	// );
 
 	$form->roll->addInput('function', 'sqlplaintext');
 	$form->roll->input->function->setDisplayFunction('json_decode');
@@ -59,15 +70,5 @@ if (!empty($exist))
 	<div class="container-fluid">
 		<?php echo $form->roll->getForm(); ?>
 	</div>
-	<script type="text/javascript">
-		_Bbc(function($){
-			$(".glyphicon-trash").parent().on("click", function(e){
-				e.preventDefault();
-				if (confirm("Apakah anda ingin menghapus proses ini?")) {
-					document.location.href = $(this).attr("href")
-				}
-			});
-		});
-	</script>
 	<?php
 }
