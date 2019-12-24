@@ -122,7 +122,7 @@ class FormSqllinks extends FormSqlplaintext
 				link_js(_LIB.'pea/includes/formLinkModal.js', false);
 				icon('fa-ok');
 			}
-			$out   = '<a href="'.$link.'" '.$extra.'>'. $arr_value[0] .'</a>';
+			$out   = '<a href="'.$link.'" '.$extra.'>'. $this->getReturn($arr_value[0]) .'</a>';
 		}
 		return $out;
 	}

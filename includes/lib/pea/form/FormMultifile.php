@@ -581,26 +581,26 @@ class FormMultifile extends FormMulticheckbox
 			$extra .= ' data-action="'.$this->actionURL.'"';
 		}
 		?>
-<div class="file-uploader"<?php echo $extra; ?>>
-	<noscript> <p>Please enable JavaScript to use file uploader.</p> </noscript>
-	<div class="hidden">
-		<?php
-		foreach ($values as $data)
-		{
-			$extra = '';
-			if ($this->isFieldTitleExist)
-			{
-				$extra .= ' data-title="'.htmlentities($data['title']).'"';
-			}
-			if ($this->isFieldDescriptionExist)
-			{
-				$extra .= ' data-description="'.htmlentities($data['description']).'"';
-			}
-			echo '<img src="'.$this->folderUrl.$data['image'].'"'.$extra.' />';
-		}
-		?>
-	</div>
-</div>
+		<div class="file-uploader"<?php echo $extra; ?>>
+			<noscript> <p>Please enable JavaScript to use file uploader.</p> </noscript>
+			<div class="hidden">
+				<?php
+				foreach ($values as $data)
+				{
+					$extra = '';
+					if ($this->isFieldTitleExist)
+					{
+						$extra .= ' data-title="'.htmlentities($data['title']).'"';
+					}
+					if ($this->isFieldDescriptionExist)
+					{
+						$extra .= ' data-description="'.htmlentities($data['description']).'"';
+					}
+					echo '<img src="'.$this->folderUrl.$data['image'].'"'.$extra.' />';
+				}
+				?>
+			</div>
+		</div>
 		<?php
 		$output = ob_get_contents();
 		ob_end_clean();
