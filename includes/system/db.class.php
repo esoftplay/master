@@ -209,9 +209,9 @@ class bbcSQL
 	{
 		$this->Execute($sql);
 		$row = array();
-		if($this->resid)
+		if($this->resid && !is_bool($this->resid))
 		{
-			$row = mysqli_fetch_array($this->resid);
+			$row = @mysqli_fetch_array($this->resid);
 		}
 		return @$row[0];
 	}
