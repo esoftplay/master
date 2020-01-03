@@ -32,7 +32,7 @@ $r_group_array = $db->getAll($q);
 	<div class="form-group">
 		<select name="group_id" class="form-control">
 		<option value="">select user group</option>
-		<?php echo createOption($r_group_array, $keyword['group_id']);?>
+		<?php echo createOption($r_group_array, @$keyword['group_id']);?>
 		</select>
 	</div>
 	<div class="form-group">

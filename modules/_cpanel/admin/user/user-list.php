@@ -24,6 +24,13 @@ $form->roll->addInput( 'username', 'sqllinks' );
 $form->roll->input->username->setTitle( 'Username' );
 $form->roll->input->username->setLinks( $Bbc->mod['circuit'].'.user&act=edit' );
 
+$form->roll->addInput('name', 'selecttable');
+$form->roll->input->name->setTitle('Name');
+$form->roll->input->name->setFieldName('id AS name');
+$form->roll->input->name->setReferenceTable('bbc_account');
+$form->roll->input->name->setReferenceField( 'name', 'user_id' );
+$form->roll->input->name->setPlainText(true);
+
 $form->roll->addInput('group_ids','multicheckbox');
 $form->roll->input->group_ids->setTitle('Group');
 $form->roll->input->group_ids->setReferenceTable('bbc_user_group');
