@@ -410,7 +410,7 @@ class bbcSQL
 		$output = array();
 		if (!empty($data))
 		{
-			foreach ($data as $key => $value)
+			foreach ((array)$data as $key => $value)
 			{
 				if (!in_array($key, $exclude))
 				{

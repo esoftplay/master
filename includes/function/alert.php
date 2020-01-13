@@ -250,16 +250,16 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 	{
 		$ids[] = intval($to);
 	}else
+	// Jika dikirim ke banyak user_id (atau user_id yang di group tertentu misal beberapa user yang di aplikasi driver)
+	if (is_array($to))
+	{
+		$ids = $to;
+	}else
 	// Jika formatnya user_id-group_id maka akan dikirimkan ke user_id tersebut khusus untuk group tersebut
 	// contoh kasus user tersebut register sebagai driver sekaligus sebagai penumpang (sedangkan aplikasi driver & penumpang beda app)
 	if (preg_match('~^[0-9]+\-[0-9]+$~is', $to))
 	{
 		$ids[] = $to;
-	}else
-	// Jika dikirim ke banyak user_id (atau user_id yang di group tertentu misal beberapa user yang di aplikasi driver)
-	if (is_array($to))
-	{
-		$ids = $to;
 	}else
 	// Jika tujuan dalam format string
 	if (!empty($to) && is_string($to))
@@ -331,6 +331,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 				$push_notif_id    = $db->Insert('bbc_user_push_notif', $data);
 				if ($push_notif_id)
 				{
+					// pr($push_notif_id, __FILE__.':'.__LINE__);
 					_class('async')->run('alert_push_send', [$push_notif_id, 0]);
 					if (!$out)
 					{
@@ -361,6 +362,7 @@ function alert_push_send($id, $last_id=0)
 		}else{
 			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE `user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql} ORDER BY `id` ASC LIMIT {$limit}");
 		}
+		// pr($data, $tos, "SELECT * FROM `bbc_user_push` WHERE `user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql} ORDER BY `id` ASC LIMIT {$limit}", __FILE__.':'.__LINE__);
 		if (!empty($tos))
 		{
 			$params    = json_decode($data['params'], 1);
@@ -385,14 +387,16 @@ function alert_push_send($id, $last_id=0)
 					);
 				$last_id = $to['id'];
 			}
+			// pr($data, $messages, __FILE__.':'.__LINE__);die();
 
-			$ch = curl_init();			
+			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL,"https://exp.host/--/api/v2/push/send");
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messages));           
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messages));
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
 			$return = curl_exec($ch);
+			// pr($data, $messages, $return, __FILE__.':'.__LINE__);
 			try {
 				$json = @json_decode($return, 1);
 				if (!empty($json['data']) && is_array($json['data']))
