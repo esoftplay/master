@@ -362,7 +362,6 @@ function alert_push_send($id, $last_id=0)
 		}else{
 			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE `user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql} ORDER BY `id` ASC LIMIT {$limit}");
 		}
-		// pr($data, $tos, "SELECT * FROM `bbc_user_push` WHERE `user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql} ORDER BY `id` ASC LIMIT {$limit}", __FILE__.':'.__LINE__);
 		if (!empty($tos))
 		{
 			$params    = json_decode($data['params'], 1);
@@ -370,74 +369,84 @@ function alert_push_send($id, $last_id=0)
 			$messages  = array();
 			foreach ($tos as $to)
 			{
-				$messages[] = array(
-					'to'        => $to['token'],
-					'title'     => $data['title'],
-					'body'      => $data['message'],
-					'sound'     => 'default',
-					'channelId' => 'android',
-					'data'      => array(
-													'id'      => $data['id'],
-													'action'  => $params['action'],
-													'module'  => $params['module'],
-													'title'   => $data['title'],
-													'message' => $data['message'],
-													'params'  => $params['arguments']
-												)
-					);
+				$group_ids = repairExplode($to['group_ids']);
+				foreach ($group_ids as $g_id)
+				{
+					$messages[$g_id][] = array(
+						'id'        => $to['id'],
+						'to'        => $to['token'],
+						'title'     => $data['title'],
+						'body'      => $data['message'],
+						'sound'     => 'default',
+						'channelId' => 'android',
+						'data'      => array(
+														'id'      => $data['id'],
+														'action'  => $params['action'],
+														'module'  => $params['module'],
+														'title'   => $data['title'],
+														'message' => $data['message'],
+														'params'  => $params['arguments']
+													)
+						);
+				}
 				$last_id = $to['id'];
 			}
-			// pr($data, $messages, __FILE__.':'.__LINE__);die();
 
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL,"https://exp.host/--/api/v2/push/send");
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messages));
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
-			$return = curl_exec($ch);
-			// pr($data, $messages, $return, __FILE__.':'.__LINE__);
-			try {
-				$json = @json_decode($return, 1);
-				if (!empty($json['data']) && is_array($json['data']))
-				{
-					$i = 0;
-					foreach ($json['data'] as $out)
+			foreach ($messages as $g_id => $message)
+			{
+				$to_id = $message['id'];
+				unset($message['id']);
+				$message = json_encode($message);
+				$ch      = curl_init();
+				curl_setopt($ch, CURLOPT_URL,"https://exp.host/--/api/v2/push/send");
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $message);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
+				$return = curl_exec($ch);
+				try {
+					$json = @json_decode($return, 1);
+					if (!empty($json['data']) && is_array($json['data']))
 					{
-						$to = $tos[$i];
-						$i++;
-						if (!empty($out['status']))
+						$i = 0;
+						foreach ($json['data'] as $out)
 						{
-							if ($out['status'] == 'ok')
+							$to = $tos[$i];
+							$i++;
+							if (!empty($out['status']))
 							{
-								$output = true;
-							}else{
-								switch (@$out['details']['error'])
+								if ($out['status'] == 'ok')
 								{
-									// the device cannot receive push notifications anymore and you should stop sending messages to the corresponding Expo push token.
-									case 'DeviceNotRegistered':
-										$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$to['id']}");
-										break;
-									// the total notification payload was too large. On Android and iOS the total payload must be at most 4096 bytes.
-									case 'MessageTooBig':
-										break;
-									// you are sending messages too frequently to the given device. Implement exponential backoff and slowly retry sending messages.
-									case 'MessageRateExceeded':
-										break;
-									// your push notification credentials for your standalone app are invalid (ex: you may have revoked them). Run `expo build:ios -c` to regenerate new push notification credentials for iOS.
-									case 'InvalidCredentials':
-										/*
-										When your push notification credentials have expired, simply run expo build:ios -c --no-publish
-										to clear your expired credentials and generate new ones. The new credentials will take effect within a few minutes of being generated.
-										You do not have to submit a new build!
-										*/
-										break;
+									$output = true;
+								}else{
+									switch (@$out['details']['error'])
+									{
+										// the device cannot receive push notifications anymore and you should stop sending messages to the corresponding Expo push token.
+										case 'DeviceNotRegistered':
+											$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$to['id']}");
+											break;
+										// the total notification payload was too large. On Android and iOS the total payload must be at most 4096 bytes.
+										case 'MessageTooBig':
+											break;
+										// you are sending messages too frequently to the given device. Implement exponential backoff and slowly retry sending messages.
+										case 'MessageRateExceeded':
+											break;
+										// your push notification credentials for your standalone app are invalid (ex: you may have revoked them). Run `expo build:ios -c` to regenerate new push notification credentials for iOS.
+										case 'InvalidCredentials':
+											/*
+											When your push notification credentials have expired, simply run expo build:ios -c --no-publish
+											to clear your expired credentials and generate new ones. The new credentials will take effect within a few minutes of being generated.
+											You do not have to submit a new build!
+											*/
+											break;
+									}
 								}
 							}
 						}
 					}
-				}
-			} catch (Exception $e) {}
+				} catch (Exception $e) {}
+			}
+
 			// Jika status masih belum terkirim
 			if ($data['status']==0)
 			{
