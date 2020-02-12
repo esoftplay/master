@@ -381,7 +381,7 @@ class FormSelecttable extends FormMulticheckbox
 				$out = $this->option[$i];
 			}
 		}
-		return $out;
+		return Form::getReportOutput($out);
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

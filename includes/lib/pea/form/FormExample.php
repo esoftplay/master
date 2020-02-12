@@ -52,7 +52,7 @@ class FormExample extends Form
 	// dieksekusi ketika ingin menampilkan tombol export jika $this->isIncludedInReport==true
 	function getReportOutput( $str_value = '' )
 	{
-		return $str_value;
+		return Form::getReportOutput($str_value);
 	}
 	// dieksekusi ketika ingin menampilkan output di form jika $this->isPlaintext==true
 	function getPlaintexOutput( $str_value = '', $str_name = '', $str_extra = '' )

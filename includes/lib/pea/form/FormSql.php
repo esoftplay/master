@@ -78,8 +78,8 @@ class FormSql extends Form
 	}
 	function getReportOutput( $str_value = '' )
 	{
-		$out = $this->getOutput($str_value);
-		return $out;
+		$str_value = $this->getOutput($str_value);
+		return Form::getReportOutput($str_value);
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

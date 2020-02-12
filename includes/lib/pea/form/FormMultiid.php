@@ -279,7 +279,8 @@ class FormMultiid extends FormMulticheckbox
 	{
 		$out = $this->getDataFromRelationTable($str_value);
 		$out = $this->getIDsFromReferenceTable($out);
-		return implode($this->delimiter.' ', $out);
+		$out = implode($this->delimiter.' ', $out);
+		return Form::getReportOutput($out);
 	}
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )
 	{

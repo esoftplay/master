@@ -349,15 +349,6 @@ class FormOrderby extends Form
 		return $out;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
-	// karena getReportOutput udah sama dengan plaintext yang plain text tidak di set
-	/////////////////////////////////////////////////////////////////////////////////
-	function getReportOutput( $str_value = '' )
-	{
-			$out=$str_value;
-			return $out;
-	}
-
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )
 	{
 		//untuk men set plain text

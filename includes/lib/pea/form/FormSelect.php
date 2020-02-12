@@ -42,12 +42,13 @@ class FormSelect extends FormSelecttable
 	}
 	function getReportOutput( $str_value = '', $str_name = '', $str_extra = '' )
 	{
+		$out = '';
 		if (in_array($str_value, $this->optionValue))
 		{
 			$i = array_search($str_value, $this->optionValue);
-			return @$this->option[$i];
+			$out = @$this->option[$i];
 		}
-		return '';
+		return Form::getReportOutput($out);
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

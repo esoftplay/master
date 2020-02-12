@@ -117,7 +117,7 @@ class FormDate extends Form
 	function getReportOutput( $str_value = '' )
 	{
 		$out	= $this->formatDateMysql2Indo( $str_value );
-		return $out;
+		return Form::getReportOutput($out);
 	}
 	function getSearchQuery()
 	{

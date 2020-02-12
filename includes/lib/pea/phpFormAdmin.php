@@ -14,6 +14,7 @@ class Form
 	var $type;
 	var $actionType;
 	var $displayFunction         = null;
+	var $reportFunction          = false;
 	var $formName                = '';
 	var $isHeader                = false;// apakah suatu element itu merupakan header atau bukan, krn kl header, maka tr nya make background header, default false
 	var $isHidden                = false;// apakah suatu element itu sama sekali tidak ditampilkan
@@ -214,9 +215,10 @@ class Form
 	*
 	* @access public
 	*/
-	function setDisplayFunction($obj_func)
+	function setDisplayFunction($obj_func, $use_in_report=true)
 	{
 		$this->displayFunction = $obj_func;
+		$this->reportFunction = $use_in_report ? true : false;
 	}
 	/**
 	* set the element to fill the column number of form
@@ -500,6 +502,10 @@ class Form
 		if (is_array($str_value))
 		{
 			$str_value = current($str_value);
+		}
+		if ($this->reportFunction && is_callable($this->displayFunction))
+		{
+			$str_value = call_user_func_array($this->displayFunction, array($str_value));
 		}
 		return $str_value;
 	}

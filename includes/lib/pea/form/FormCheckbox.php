@@ -88,7 +88,7 @@ class FormCheckbox extends Form
 	{
 		$label = ( $this->caption == '' ) ? $str_value : $this->caption;
 		$out   = ( $str_value == $this->value[0] ) ? $label : "-";
-		return $out;
+		return Form::getReportOutput($out);
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

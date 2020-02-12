@@ -235,7 +235,7 @@ class FormDateInterval extends FormMultiinput
 				$output .= '<script type="text/javascript">var BS3load_popover = 1;</script>';
 			}
 		}
-		return $output;
+		return Form::getReportOutput($output);
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

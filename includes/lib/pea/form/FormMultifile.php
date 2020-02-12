@@ -535,7 +535,7 @@ class FormMultifile extends FormMulticheckbox
 			$fields = array_keys(reset($out));
 			$out    = table($out, $fields);
 		}
-		return $out;
+		return Form::getReportOutput($out);
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )
