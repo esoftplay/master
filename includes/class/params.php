@@ -718,7 +718,7 @@ class params
 						}
 					case 'text':
 					case 'textarea':
-						$post[$name] =(empty($prefix)) ? $_POST[$name] : $_POST[$prefix][$name];
+						$post[$name] =(empty($prefix)) ? @$_POST[$name] : @$_POST[$prefix][$name];
 						if($param['language'])
 						{
 							$last = ''; $t_p = array();
