@@ -542,7 +542,10 @@ class phpRollAdmin extends phpEasyAdminLib
 					}
 					$arrResult[$input->objectName] = $this->getDefaultValue($input, $arrResult, $i);
 					// dapatkan array data report
-					if ($this->isReportOn && $input->isIncludedInReport) $arrData[$i][]	= $input->getReportOutput($arrResult[$input->objectName]);
+					if ($this->isReportOn && $input->isIncludedInReport)
+					{
+						$arrData[$i][]	= $input->getReportOutput($arrResult[$input->objectName]);
+					}
 
 					if ($input->isInsideRow)
 					{
@@ -720,7 +723,9 @@ class phpRollAdmin extends phpEasyAdminLib
 		}
 		$nav .= $this->nav->getGoToForm(false);
 		$out .= '<form method="get" action="" role="form" style="margin-top:-20px;margin-bottom: 20px;">'
-				.	'<div class="input-group">'.$this->getReport($this->nav->int_cur_page).'<span class="input-group-addon">'
+				.	'<div class="input-group">'
+				. $this->getReport($this->nav->int_cur_page)
+				. '<span class="input-group-addon">'
 				. $this->nav->getStatus().'</span>'.$nav.'</div></form>';
 
 		/* Form Panel */

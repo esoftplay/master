@@ -48,7 +48,7 @@ class FormSelect extends FormSelecttable
 			$i = array_search($str_value, $this->optionValue);
 			$out = @$this->option[$i];
 		}
-		return Form::getReportOutput($out);
+		return $out;
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

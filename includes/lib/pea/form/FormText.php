@@ -164,7 +164,7 @@ class FormText extends Form
 		{
 			$str_value = $this->doDateFormat($str_value);
 		}
-		return Form::getReportOutput($str_value);
+		return $str_value;
 	}
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )
 	{

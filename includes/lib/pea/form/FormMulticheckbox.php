@@ -486,7 +486,7 @@ class FormMulticheckbox extends FormCheckbox
 			}
 		}
 		$out = implode($this->delimiter, $out);
-		return Form::getReportOutput($out);
+		return $out;
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

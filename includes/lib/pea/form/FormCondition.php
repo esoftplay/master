@@ -57,7 +57,7 @@ class FormCondition extends Form
 	function getReportOutput( $str_value = '')
 	{
 		$out = $this->getOutput( $str_value );
-		return Form::getReportOutput($out);
+		return $out;
 	}
 
 	function getOutput( $arr_value = '', $str_name = '', $str_extra = '' )

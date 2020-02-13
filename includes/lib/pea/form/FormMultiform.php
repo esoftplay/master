@@ -415,7 +415,7 @@ class FormMultiform extends FormMultiinput
 			}
 		}
 		$out = implode($this->delimiter, $output);
-		return Form::getReportOutput($out);
+		return $out;
 	}
 
 	// $objects berisi object dari memanggi method di class phpEasyAdminLib bernama: getMultiElementObject( $input, $arrResult, $i );

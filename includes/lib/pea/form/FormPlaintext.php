@@ -29,7 +29,7 @@ class FormPlaintext extends FormSqlplaintext
 
 	function getReportOutput( $str_value = '' )
 	{
-		return parent::getReportOutput($this->value);
+		return $this->value;
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

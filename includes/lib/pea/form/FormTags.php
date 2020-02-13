@@ -413,7 +413,7 @@ class FormTags extends FormMulticheckbox
 		$relation_ids = $this->getDataFromRelationTable($str_value);
 		$output       = $this->getDataOfReferenceTable($relation_ids);
 		$str_value    = implode($this->delimiter.' ', $output);
-		return Form::getReportOutput($str_value);
+		return $str_value;
 	}
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )
 	{

@@ -97,7 +97,7 @@ class FormDatetime extends FormDate
 	function getReportOutput( $str_value = '' )
 	{
 		$out = date($this->dateFormat, strtotime($str_value));
-		return Form::getReportOutput($out);
+		return $out;
 	}
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )

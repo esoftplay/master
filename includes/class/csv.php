@@ -106,6 +106,13 @@ class csv
 			}
 			if (!empty($rows))
 			{
+				foreach ($rows as $i => $row)
+				{
+					if (is_array($row))
+					{
+						$rows[$i] = current($row);
+					}
+				}
 				$this->rows[] = $rows;
 				$output       = true;
 			}
@@ -135,12 +142,10 @@ class csv
 	}
 	function save($filePath, $mode = 'w')
 	{
-		// pr($this->rows, __FILE__.':'.__LINE__);
 		if (($fp = fopen($filePath, $mode)) !== FALSE)
 		{
 			foreach ($this->rows as $row)
 			{
-				// pr(array_values($row), __FILE__.':'.__LINE__);
 				fputcsv($fp, $row, $this->delimiter);
 			}
 			fclose($fp);
