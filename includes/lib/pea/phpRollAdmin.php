@@ -291,7 +291,7 @@ class phpRollAdmin extends phpEasyAdminLib
 		// proccess optional colom
 		if ($this->isOptionalColumn)
 		{
-			$sesKey = menu_save(@$_GET['mod'].$this->formName);
+			$sesKey = menu_save(@$_GET['mod'].$this->formName.session_id());
 			// save post in session
 			if (!empty($_POST[$this->formName.'_ColView']))
 			{
@@ -365,7 +365,7 @@ class phpRollAdmin extends phpEasyAdminLib
 			$out  .= '<span class="input-group-addon checkbox roll-export">';
 			$out  .= 'Export: ';
 			$link  = _PEA_URL . 'report/phpReportGenerator.php?formName='. $this->formName .'&formType=roll&reportType=';
-			$file  = menu_save(@$_GET['mod'].$this->formName);
+			$file  = menu_save(@$_GET['mod'].$this->formName.session_id());
 			$file .= $export_all ? '' : $page;
 			$file  = _CACHE.implode('/', str_split($file, 2)).'.cfg';
 			$name  = substr(str_replace('/', '', preg_replace('~^'.preg_quote(_CACHE, '~').'~s', '', $file)), 0, -4);
@@ -544,7 +544,12 @@ class phpRollAdmin extends phpEasyAdminLib
 					// dapatkan array data report
 					if ($this->isReportOn && $input->isIncludedInReport)
 					{
-						$arrData[$i][]	= $input->getReportOutput($arrResult[$input->objectName]);
+						$irow = $input->getReportOutput($arrResult[$input->objectName]);
+						if ($input->reportFunction && is_callable($input->displayFunction))
+						{
+							$irow = call_user_func_array($input->displayFunction, array($irow));
+						}
+						$arrData[$i][]	= $irow;
 					}
 
 					if ($input->isInsideRow)
