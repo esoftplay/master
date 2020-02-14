@@ -590,7 +590,10 @@ class phpRollAdmin extends phpEasyAdminLib
 			$i++;
 		}
 		$out .= '</tbody>';
-		if ($this->isReportOn) $this->reportData['data'] = $arrData;
+		if ($this->isReportOn)
+		{
+			$this->reportData['data'] = $arrData;
+		}
 		return $out;
 	} // eof function getMainForm()
 

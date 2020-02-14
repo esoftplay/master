@@ -164,6 +164,10 @@ class FormText extends Form
 		{
 			$str_value = $this->doDateFormat($str_value);
 		}
+		if (is_array($str_value))
+		{
+			$str_value = current($str_value);
+		}
 		return $str_value;
 	}
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )
