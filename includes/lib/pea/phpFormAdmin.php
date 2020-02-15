@@ -503,10 +503,11 @@ class Form
 		{
 			$str_value = current($str_value);
 		}
-		if ($this->reportFunction && is_callable($this->displayFunction))
-		{
-			$str_value = call_user_func_array($this->displayFunction, array($str_value));
-		}
+		/* JANGAN DIEKSEKUSI LAGI KARENA SUDAH ADA DI getReturn untuk fileexport dieksekusi di dalam peRollAdmin */
+		// if ($this->reportFunction && is_callable($this->displayFunction))
+		// {
+		// 	$str_value = call_user_func_array($this->displayFunction, array($str_value));
+		// }
 		return $str_value;
 	}
 
