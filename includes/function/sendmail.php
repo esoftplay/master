@@ -17,10 +17,10 @@
 function sendmail($to, $subj, $msg, $f = array(), $param = array())
 {
 	global $mail;
+	$nocc = 0;
 	if(empty($mail->Mailer))
 	{
 		$mail = _lib('phpmailer');
-		$nocc = 0;
 		if (defined('SMTP_HOST') && defined('SMTP_USERNAME') && defined('SMTP_PASSWORD'))
 		{
 			$nocc = 1;
