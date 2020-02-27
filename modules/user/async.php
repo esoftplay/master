@@ -20,7 +20,9 @@ $exist = $db->getOne("SHOW TABLES LIKE 'bbc_async'");
 if (!empty($exist))
 {
 	$form = _lib('pea',  'bbc_async');
+
 	$form->initSearch();
+	$form->search->setFormName('search_async');
 
 	$form->search->addInput('keyword','keyword');
 	$form->search->input->keyword->addSearchField('function,arguments', false);

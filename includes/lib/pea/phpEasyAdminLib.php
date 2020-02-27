@@ -76,8 +76,14 @@ class phpEasyAdminLib
 			$string_form_name=$this->formType;
 		}
 		$this->formName	= $string_form_name;
-		$this->setSaveButton();
-		$this->setDeleteButton();
+		if (empty($this->saveButton->value))
+		{
+			$this->setSaveButton();
+		}
+		if (empty($this->deleteButton->value))
+		{
+			$this->setDeleteButton();
+		}
 	}
 	// untuk ngeset nama instance dari objectDB yg mau digunakan
 	function setDB( $db = '' )
