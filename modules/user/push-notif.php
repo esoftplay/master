@@ -31,11 +31,12 @@ if (!empty($_POST['secretkey']))
 			{
 				if (!empty($user_id))
 				{
-					$user_id .= ',0';
+					$user_id  .= ',0';
+					$group_id .= ',0';
 				}
-				$sql = !empty($group_id) ? ' AND `group_id`='.$group_id : '';
-				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id`>{$last_id} ORDER BY `id` ASC LIMIT 6");
-				$next = '';
+				$sql       = !empty($group_id) ? ' AND `group_id` IN ('.$group_id.')' : '';
+				$data      = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id`>{$last_id} ORDER BY `id` ASC LIMIT 6");
+				$next      = '';
 				if (!empty($data))
 				{
 					$dt = end($data);
