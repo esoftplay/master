@@ -517,7 +517,13 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $pu
 		'ipaddress' => @$_SERVER['REMOTE_ADDR'],
 		'updated'   => date('Y-m-d H:i:s')
 		);
-	$output = $db->Update('bbc_user_push', $input, $push_id);
+	$id = $db->getOne("SELECT `id` FROM `bbc_user_push` WHERE `id`={$push_id}");
+	if (!empty($id))
+	{
+		$output = $db->Update('bbc_user_push', $input, $push_id);
+	}else{
+		$output = $db->Insert('bbc_user_push', $input);
+	}
 	if ($output)
 	{
 		user_call_func(__FUNCTION__, $token, $user_id, $group_ids, $username, $output);
