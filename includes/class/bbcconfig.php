@@ -257,10 +257,11 @@ class bbcconfig
 					break;
 					case 'file':
 						$data['path'] = isset($data['path']) ? $data['path'] : 'images/';
-						$images = image($data['path'].$value);
+						$images = image($data['path'].$value, '', ' class="img-thumbnail img-responsive formFile-clickable img-fluid" title="'.$value.'"');
 						$input .= '<div class="clearfix"></div>';
 						if(!empty($images))
 						{
+							link_js(_URL.'includes/lib/pea/includes/FormFile.js', false);
 							$input .= $images.'<br />';
 						}
 						if(!preg_match('~^'.addslashes(_ROOT).'~s', $data['path']))

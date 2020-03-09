@@ -406,9 +406,10 @@ class params
 					break;
 					case 'file':
 						$data['path']	= $this->repair_path(@$data['path']);
-						$images = image($data['path'].$value, '', ' class="img-responsive img-thumbnail img-fluid"');
+						$images = image($data['path'].$value, '', ' class="img-thumbnail img-responsive formFile-clickable img-fluid" title="'.$value.'"');
 						if(!empty($images))
 						{
+							link_js(_URL.'includes/lib/pea/includes/FormFile.js', false);
 							$input .= '<br />'.$images.'<br />';
 						}
 						if(is_file($data['path'].$value))
