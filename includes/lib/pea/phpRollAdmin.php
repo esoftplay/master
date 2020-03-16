@@ -720,8 +720,8 @@ class phpRollAdmin extends phpEasyAdminLib
 		{
 			$out .= '<tfoot><tr>'.implode('', $footerTD).'</tr></tfoot>';
 		}
-		$out .= '</form>';
 		$out .= '</table>';
+		$out .= '</form>';
 
 		/* Export Tool, Page Status, Form Navigate */
 		$nav = $this->nav->getViewAllLink();

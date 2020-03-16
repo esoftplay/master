@@ -56,7 +56,10 @@ class FormDateInterval extends FormMultiinput
 
 	function setParam($params = array())
 	{
-		$this->params = array_merge($this->params, $params);
+		if (!empty($params) && is_array($params))
+		{
+			$this->params = array_merge($this->params, $params);
+		}
 	}
 
 	function getParam()

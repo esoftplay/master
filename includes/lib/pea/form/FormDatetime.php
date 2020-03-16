@@ -15,7 +15,6 @@ class FormDatetime extends FormDate
 	function __construct()
 	{
 		$this->type = 'datetime';
-		$this->setDateFormat();
 		// https://bootstrap-datepicker.readthedocs.io/en/1.3.1/options.html#
 		$this->params = array(
 			'autoclose'                => true,	// Boolean. Default: false -- Whether or not to close the datepicker immediately when a date is selected #autoclose
@@ -38,14 +37,29 @@ class FormDatetime extends FormDate
 			'today-highlight'          => true,	// Boolean. Default: false -- If true, highlights the current date.
 			// 'week-start'            => '',	// Integer. Default: 0 -- Day of the week start. 0 (Sunday) to 6 (Saturday)
 			);
+		$this->setDateFormat();
 	}
 
 	function setDateFormat($format = 'Y-m-d H:i:s')
 	{
-		$this->dateFormat = $format;
-		$format = str_replace('Y', 'yy', $format);
-		$format = preg_replace('~([a-z])~s', '$1$1', strtolower($format));
-		$this->jsDateFormat = $format;
+		$js2php = array(
+			'Y' => 'yyyy',
+			'm' => 'mm',
+			'd' => 'dd',
+			'H' => 'hh',
+			'i' => 'ii',
+			's' => 'ss'
+			);
+		$this->dateFormat       = $format;
+		$this->jsDateFormat     = str_replace(array_keys($js2php), array_values($js2php), $format);
+		$this->setParam(['format' => $this->jsDateFormat]);
+		if (!preg_match('~dd~is', $this->jsDateFormat))
+		{
+			$this->setParam([
+				'today-btn'       => false,
+				'today-highlight' => false
+				]);
+		}
 		$this->setDefaultValue($this->defaultValue);
 	}
 
@@ -58,7 +72,7 @@ class FormDatetime extends FormDate
 
 	function getDateFormat($value)
 	{
-		return date('Y-m-d H:i:s', strtotime($value));
+		return date($this->dateFormat, strtotime($value));
 	}
 
 	function getRollUpdateSQL( $i='' )
