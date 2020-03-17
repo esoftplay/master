@@ -39,6 +39,11 @@ class phpEasyAdmin extends oDebug
 			$i++;
 		}
 
+		if (!preg_match('~ order by ~is', $str_sql_condition))
+		{
+			$str_sql_condition .= ' ORDER BY `'.$str_table_id.'` DESC';
+		}
+
 		$this->roll	= new phpRollAdmin( $this->table, $str_sql_condition, $str_table_id, $arrFolder);
 		$this->roll->setDB( $this->db );
 	}
