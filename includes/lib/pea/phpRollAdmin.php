@@ -103,9 +103,13 @@ class phpRollAdmin extends phpEasyAdminLib
 
 	function getDeletedId()
 	{
-		$arrDeletedId	= array();
-		$checkName		= $this->formName . '_delete';
-		$idName		= $this->formName . '_'. $this->tableId;
+		if (!empty($this->arrDeletedId))
+		{
+			return $this->arrDeletedId;
+		}
+		$arrDeletedId = array();
+		$checkName    = $this->formName . '_delete';
+		$idName       = $this->formName . '_'. $this->tableId;
 		if (isset($_POST[$checkName]))
 		{
 			foreach($_POST[$checkName] as $id=>$true)
@@ -128,6 +132,7 @@ class phpRollAdmin extends phpEasyAdminLib
 				}
 			}
 		}
+		$this->arrDeletedId = $arrDeletedId;
 		return $arrDeletedId;
 	}
 
@@ -556,7 +561,8 @@ class phpRollAdmin extends phpEasyAdminLib
 					{
 						$out	.= '<td>';
 					}
-					$tmp = $input->getOutput($arrResult[$input->objectName], $input->name.'['.$i.']', $this->setDefaultExtra($input));
+					$str_value = in_array($input->objectName, ['system_delete_tool']) ? $arrResult[$this->tableId] : $arrResult[$input->objectName];
+					$tmp       = $input->getOutput($str_value, $input->name.'['.$i.']', $this->setDefaultExtra($input));
 					if (!empty($this->disableInput[$input->objectName]))
 					{
 						$is_disable = false;
@@ -814,19 +820,28 @@ class phpRollAdmin extends phpEasyAdminLib
 	// INI UNTUK MENGAMANKAN INPUT UNTUK JAGA2 JIKA DIUBAH OLEH USER
 	function actionSecurity()
 	{
-		$nav = new oNav('SELECT '.$this->tableId.' FROM '.$this->table.' '.$this->sqlCondition, $this->tableId , $this->intNumRows, 10, 'page', $this->db);
-		$q   = $this->getOrderQuery($nav->completeQuery);
-		if (preg_match('~ order by ~is', $q))
+		if (!empty($_POST[$this->input->system_id->name]))
 		{
-			$nav->int_cur_page = !empty($_GET[$nav->string_name]) ? $_GET[$nav->string_name] : 1;
-			$nav->cur_sql_pos  = ($nav->int_cur_page-1)*$nav->int_max_rows;
-
-			$q .= ' LIMIT '.$nav->cur_sql_pos.', '.$nav->int_max_rows;
-			$r  = $this->db->getCol($q);
-
-			foreach ($r as $i => $d)
+			$ids = array();
+			$nav = new oNav('SELECT '.$this->tableId.' FROM '.$this->table.' '.$this->sqlCondition, $this->tableId , $this->intNumRows, 10, 'page', $this->db);
+			$q   = $this->getOrderQuery($nav->completeQuery);
+			if (preg_match('~ order by ~is', $q))
 			{
-				$_POST[$this->input->system_id->name][$i] = $d;
+				$nav->int_cur_page = !empty($_GET[$nav->string_name]) ? $_GET[$nav->string_name] : 1;
+				$nav->cur_sql_pos  = ($nav->int_cur_page-1)*$nav->int_max_rows;
+
+				$q .= ' LIMIT '.$nav->cur_sql_pos.', '.$nav->int_max_rows;
+				$r  = $this->db->getCol($q);
+
+				foreach ($r as $i => $d)
+				{
+					$ids[] = $d;
+				}
+			}
+			if ($_POST[$this->input->system_id->name] != $ids)
+			{
+				$this->setActionExecute(false, 'please try again, it looks like another user has made changes to the data');
+				$this->error = true;
 			}
 		}
 	}
@@ -841,6 +856,10 @@ class phpRollAdmin extends phpEasyAdminLib
 		if (empty($this->arrInput)) $this->arrInput	= get_object_vars($this->input);
 		// untuk menandai apakah form perlu validasi
 		$this->setIsFormRequire();
+		if ($this->isActionExecute)
+		{
+			$this->actionSecurity();
+		}
 
 		if ($this->isActionExecute)
 		{
@@ -849,7 +868,6 @@ class phpRollAdmin extends phpEasyAdminLib
 			// aksi yang dilakukan saat delete button di klik
 			if (isset($_POST[$this->deleteButton->name]))
 			{
-				$this->actionSecurity();
 				$this->error = !$this->actionOnDelete(false);
 				if ($this->isActionExecute)
 				{
@@ -942,9 +960,7 @@ class phpRollAdmin extends phpEasyAdminLib
 					$this->debug($ok, "", "BBC", "Class phpEasyAdmin query error on rollAction method(DELETE), please check your arguments when initiate phpEasyAdmin Class : ".mysqli_error($this->db->link));
 				}
 			}else
-			if (isset($_POST[$this->saveButton->name])
-				|| isset($_POST[$this->formName.'_orderby'])
-				|| isset($_POST[$this->formName.'_file_delete_image']))
+			if (isset($_POST[$this->saveButton->name]) || isset($_POST[$this->formName.'_orderby']) || isset($_POST[$this->formName.'_file_delete_image']))
 			{
 				$formExecute = true;
 				if ($this->isFormRequire && isset($_POST[$this->saveButton->name]))
@@ -1023,8 +1039,6 @@ class phpRollAdmin extends phpEasyAdminLib
 				{
 					if (!empty($_POST[$this->input->system_id->name]))
 					{
-						// amankan input ID sebelum lakukan eksekusi
-						$this->actionSecurity();
 						if (!empty($_POST[$this->formName.'_orderby']))
 						{
 							$query = '';
@@ -1116,11 +1130,11 @@ class phpRollAdmin extends phpEasyAdminLib
 								{
 									$this->error = !$this->actionOnSave(true);
 								}
-							} // else if (!empty($_POST[$this->formName.'_orderby']))
-						} // eo if ($this->isActionExecute)
+							} // eo if ($this->isActionExecute)
+						} // else if (!empty($_POST[$this->formName.'_orderby']))
 					} // eo if (!empty($_POST[$this->input->system_id->name]))
-				} // eo if ($formExecute)
-			} // eo elseif (isset($_POST[$this->saveButton->name]) || isset($_POST[$this->formName.'_file_delete_image']))
+				} // eo if ($this->isActionExecute)
+			} // eo if (isset($_POST[$this->saveButton->name]) || isset($_POST[$this->formName.'_orderby']) || isset($_POST[$this->formName.'_file_delete_image']))
 		} // eo if ($this->isActionExecute)
 	} // eo action() method
 } // eo class
