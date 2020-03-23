@@ -55,7 +55,7 @@ if($type == 1 || $type == 2 || $type == 3 || $type == 4)
       <div class="container">
         <div class="jumbotron">
           <h1><?php echo $msg; ?></h1>
-          <p>Please contact administrator to get privilege to login. Or if you want to try another shot to sign in, you may want to click the button below.</p>
+          <p>Please contact administrator to get privilege to login for email <?php echo $email; ?>. Or if you want to try another shot to sign in, you may want to click the button below.</p>
           <p><?php echo $sys->button($MAINURL, 'Relogin', 'repeat'); ?></p>
         </div>
       </div>
