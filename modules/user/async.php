@@ -126,7 +126,7 @@ if (!empty($exist))
 							e.preventDefault();
 							var a = $(".executeOne");
 							if (a.length > 0) {
-								var b = a.attr("href").match(/\/async\/([0-9]+)/);
+								var b = a.attr("href").match(/\/([0-9]+)[\/\?]/);
 								sessionStorage.setItem("executeAll", b[1]);
 								$(this).text('Loading...');
 								document.location.href = a.attr("href");
@@ -144,7 +144,7 @@ if (!empty($exist))
 						executesync(c);
 					}
 					if ($(".executeOne").length == 0) {
-						// $("#executeAll").hide();
+						$("#executeAll").hide();
 					}
 				});
 			</script>
