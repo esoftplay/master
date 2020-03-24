@@ -84,7 +84,7 @@ if (!empty($exist))
 		if (empty($_GET['page']) || @$_GET['page']==1)
 		{
 			?>
-			<button type="button" class="btn btn-default btn-sm pull-left" id="executeAll">Execute All</button>
+			<button type="button" class="btn btn-default pull-left" id="executeAll">Execute All</button>
 			<script type="text/javascript">
 				function executesync(x) {
 					$.ajax({
@@ -144,7 +144,7 @@ if (!empty($exist))
 						executesync(c);
 					}
 					if ($(".executeOne").length == 0) {
-						$("#executeAll").hide();
+						// $("#executeAll").hide();
 					}
 				});
 			</script>
