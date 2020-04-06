@@ -20,6 +20,9 @@ if(!empty($keyword))
 $form = _lib('pea',  $str_table = "bbc_user" );
 $form->initRoll( $add_sql, 'id' );
 
+$form->roll->setDeleteTool(config('rules', 'disable_user_del') ? false : true);
+
+
 $form->roll->addInput( 'username', 'sqllinks' );
 $form->roll->input->username->setTitle( 'Username' );
 $form->roll->input->username->setLinks( $Bbc->mod['circuit'].'.user&act=edit' );

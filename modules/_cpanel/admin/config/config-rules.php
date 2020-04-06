@@ -50,6 +50,12 @@ $_setting = array(
 		'type'   => 'checkbox',
 		'option' => $db->getAssoc($q1)
 	),
+	'disable_user_del' => array(
+		'text'   => 'Disable user delete',
+		'tips'   => 'to secure human error for deleting user in <a href="index.php?mod=_cpanel.user" rel="admin_link">Control Panel / User Manager</a>',
+		'type'   => 'checkbox',
+		'option' => 'Disable'
+	),
 	'lang_default' => array(
 		'text'   => 'Language Default',
 		'tips'   => 'Select default language from available languages',
