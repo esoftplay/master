@@ -474,13 +474,10 @@ class phpRollAdmin extends phpEasyAdminLib
 		$csv->save($file, 'a');
 	}
 
-	// getMainForm() mengembalikan form complete, tapi tanpa submit button, tanpa navigasi, tanpa header title
-	function getMainForm()
+	function getMainQuery()
 	{
-		$this->arrInput   = get_object_vars($this->input);
-
-		$out				= '<tbody>';
-		$strField2Select	= array($this->tableId);
+		$this->arrInput  = get_object_vars($this->input);
+		$strField2Select = array($this->tableId);
 
 		//Buat query untuk select, buat ngambil data yang mau ditampilkan di input
 		$strField2Lang = array();
@@ -510,11 +507,17 @@ class phpRollAdmin extends phpEasyAdminLib
 		$query	= $this->getOrderQuery($query);
 
 		$this->nav->completeQuery	= $query;
+	}
 
+	// getMainForm() mengembalikan form complete, tapi tanpa submit button, tanpa navigasi, tanpa header title
+	function getMainForm()
+	{
 		// mendapatkan form-form nya row per row.
 		// dan kemudian memasukkan value dari query database kedalam input form masing2 yang sesuai
-		$i 		= 0;
-		$arrData = array();
+		$i                = 0;
+		$arrData          = array();
+		$out              = '<tbody>';
+		$this->arrInput   = get_object_vars($this->input);
 		while ($arrResult = $this->nav->fetch())
 		{
 			$this->arrResult = $arrResult;
@@ -613,6 +616,7 @@ class phpRollAdmin extends phpEasyAdminLib
 	// ini untuk ngambil form ROll Secara complete, beserta action2nya
 	function getForm()
 	{
+		$this->getMainQuery();
 		$this->action();
 		$mainForm	= $this->getMainForm();
 		if($this->isFormRequire)
@@ -822,22 +826,7 @@ class phpRollAdmin extends phpEasyAdminLib
 	{
 		if (!empty($_POST[$this->input->system_id->name]))
 		{
-			$ids = array();
-			$nav = new oNav('SELECT '.$this->tableId.' FROM '.$this->table.' '.$this->sqlCondition, $this->tableId , $this->intNumRows, 10, 'page', $this->db);
-			$q   = $this->getOrderQuery($nav->completeQuery);
-			if (preg_match('~ order by ~is', $q))
-			{
-				$nav->int_cur_page = !empty($_GET[$nav->string_name]) ? $_GET[$nav->string_name] : 1;
-				$nav->cur_sql_pos  = ($nav->int_cur_page-1)*$nav->int_max_rows;
-
-				$q .= ' LIMIT '.$nav->cur_sql_pos.', '.$nav->int_max_rows;
-				$r  = $this->db->getCol($q);
-
-				foreach ($r as $i => $d)
-				{
-					$ids[] = $d;
-				}
-			}
+			$ids = $this->db->getCol($this->nav->completeQuery);
 			if ($_POST[$this->input->system_id->name] != $ids)
 			{
 				$this->setActionExecute(false, 'please try again, it looks like another user has made changes to the data');
