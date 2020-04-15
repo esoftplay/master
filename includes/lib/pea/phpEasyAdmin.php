@@ -38,7 +38,10 @@ class phpEasyAdmin extends oDebug
 			$arrFolder[$field]	= $arr_folder[$i];
 			$i++;
 		}
-
+		if (empty($str_sql_condition))
+		{
+			$str_sql_condition = 'WHERE 1';
+		}
 		if (!preg_match('~ order by ~is', $str_sql_condition))
 		{
 			$str_sql_condition .= ' ORDER BY `'.$str_table_id.'` DESC';
