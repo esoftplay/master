@@ -11,9 +11,20 @@ if (!empty($id))
 			break;
 
 		case 'last':
-			$out = array(
+			$first = $db->getRow("SELECT * FROM `bbc_async` WHERE 1 ORDER BY `id` ASC");
+			$fID   = 0;
+			if (!empty($first))
+			{
+				$overdue = strtotime('-2 minutes');
+				$created = strtotime($first['created']);
+				if ($created < $overdue)
+				{
+					$fID = $first['id'];
+				}
+			}
+			$out    = array(
 				'ok'     => 1,
-				'lastID' => intval($db->getOne("SELECT `id` FROM `bbc_async` WHERE 1 ORDER BY `id` ASC"))
+				'lastID' => $fID
 				);
 			output_json($out);
 			break;
@@ -55,12 +66,6 @@ if (!empty($exist))
 	$form->roll->input->idx2->setFieldName('id AS idx2');
 	$form->roll->input->idx2->setLinks($Bbc->mod['circuit'].'.'.$Bbc->mod['task'], icon('console').' Execute');
 	$form->roll->input->idx2->setExtra(' class="executeOne"');
-	// $form->roll->input->idx2->setLinks(
-	// 	array(
-	// 	$Bbc->mod['circuit'].'.'.$Bbc->mod['task']            => icon('console').' Execute',
-	// 	$Bbc->mod['circuit'].'.'.$Bbc->mod['task'].'&act=del' => icon('trash').' Delete',
-	// 	)
-	// );
 
 	$form->roll->addInput('function', 'sqlplaintext');
 	$form->roll->input->function->setDisplayFunction('json_decode');
