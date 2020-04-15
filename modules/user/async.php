@@ -11,7 +11,7 @@ if (!empty($id))
 			break;
 
 		case 'last':
-			$first = $db->getRow("SELECT * FROM `bbc_async` WHERE 1 ORDER BY `id` ASC");
+			$first = $db->getRow("SELECT * FROM `bbc_async` WHERE 1 ORDER BY `id` ASC LIMIT 1");
 			$fID   = 0;
 			if (!empty($first))
 			{
