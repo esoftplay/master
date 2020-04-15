@@ -501,10 +501,18 @@ class phpRollAdmin extends phpEasyAdminLib
 
 		// ini untuk mendapatkan suatu query, berdasarkan order link
 		$this->nav->sqlCondition	= $this->getOrderQuery($this->sqlCondition);
-
-		$table	= $this->table .' '. $this->sqlCondition;
-		$query	= "SELECT $strField2Select FROM $table";
-		$query	= $this->getOrderQuery($query);
+		// ini untuk jaga2 jika ada view_all yg di panggil di $this->nav->getData()
+		if (isset($_GET[$this->nav->string_name . '_viewAll']))
+		{
+			if ($_GET[$this->nav->string_name . '_viewAll'] == '1')
+			{
+				$this->nav->setNumMaxRows('500');
+			}
+		}
+		$table = $this->table .' '. $this->sqlCondition;
+		$query = "SELECT $strField2Select FROM $table";
+		$query = $this->getOrderQuery($query);
+		$query .= " LIMIT ". intval($this->nav->cur_sql_pos) .", ". intval($this->nav->int_max_rows);
 
 		$this->nav->completeQuery	= $query;
 	}
@@ -616,7 +624,6 @@ class phpRollAdmin extends phpEasyAdminLib
 	// ini untuk ngambil form ROll Secara complete, beserta action2nya
 	function getForm()
 	{
-		$this->getMainQuery();
 		$this->action();
 		$mainForm	= $this->getMainForm();
 		if($this->isFormRequire)
@@ -826,6 +833,7 @@ class phpRollAdmin extends phpEasyAdminLib
 	{
 		if (!empty($_POST[$this->input->system_id->name]))
 		{
+			$ids = array();
 			$ids = $this->db->getCol($this->nav->completeQuery);
 			if ($_POST[$this->input->system_id->name] != $ids)
 			{
@@ -841,6 +849,7 @@ class phpRollAdmin extends phpEasyAdminLib
 
 		//menambah input hidden id dan delete tool
 		$this->addSystemInput();
+		$this->getMainQuery();
 
 		if (empty($this->arrInput)) $this->arrInput	= get_object_vars($this->input);
 		// untuk menandai apakah form perlu validasi

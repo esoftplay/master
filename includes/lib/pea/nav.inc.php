@@ -52,6 +52,7 @@ class oNav extends oDebug
 		$this->string_name            = $string_name;
 		$this->arr_result             = array();
 		$this->int_pointer            = 0;
+		$this->cur_sql_pos            = 0;
 		$this->is_loaded['get_data']  = false;
 		$this->is_loaded['get_array'] = false;
 		$this->layout['prev_word']    = '&laquo;';
