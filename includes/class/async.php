@@ -113,6 +113,10 @@ class async
 			}
 		}
 	}
+	public function restart()
+	{
+		return shell_exec('/bin/sh /usr/local/bin/ars');
+	}
 }
 if (!defined('_VALID_BBC'))
 {

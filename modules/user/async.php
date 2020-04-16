@@ -22,7 +22,7 @@ if (!empty($id))
 					$fID = $first['id'];
 				}
 			}
-			$out    = array(
+			$out = array(
 				'ok'     => 1,
 				'lastID' => $fID
 				);
@@ -34,6 +34,17 @@ if (!empty($id))
 			break;
 	}
 	redirect();
+}else{
+	switch ($_GET['act'])
+	{
+		case 'restart':
+			$out = array(
+				'ok'     => 1,
+				'result' => _class('async')->restart()
+				);
+			output_json($out);
+			break;
+	}
 }
 $exist = $db->getOne("SHOW TABLES LIKE 'bbc_async'");
 if (!empty($exist))
