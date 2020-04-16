@@ -35,7 +35,7 @@ if (!empty($id))
 	}
 	redirect();
 }else{
-	switch ($_GET['act'])
+	switch (@$_GET['act'])
 	{
 		case 'restart':
 			$out = array(
