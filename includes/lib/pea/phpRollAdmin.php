@@ -480,13 +480,13 @@ class phpRollAdmin extends phpEasyAdminLib
 		$strField2Select = array($this->tableId);
 
 		//Buat query untuk select, buat ngambil data yang mau ditampilkan di input
-		$strField2Lang = array();
+		$this->strField2Lang = array();
 
 		foreach($this->arrInput as $input)
 		{
 			if ($input->isMultiLanguage)
 			{
-				$strField2Lang[] = $input->fieldName; // gak perlu di cleanSQL krn untuk nama key array dan sudah di clean pas diquery
+				$this->strField2Lang[] = $input->fieldName; // gak perlu di cleanSQL krn untuk nama key array dan sudah di clean pas diquery
 			}else
 			if ($input->isIncludedInSelectQuery)
 			{
@@ -543,14 +543,14 @@ class phpRollAdmin extends phpEasyAdminLib
 							$this->tableId=$match[3];
 						}
 					}
-					if ($this->isMultiLanguage && !isset($this->load_lang[$i]) && !empty($strField2Lang))
+					if ($this->isMultiLanguage && !isset($this->load_lang[$i]) && !empty($this->strField2Lang))
 					{
-						$q = "SELECT `lang_id`, `".implode('`, `', $strField2Lang)."` FROM `$this->LanguageTable` WHERE `$this->LanguageTableId`={$tableId}".$this->LanguageTableWhere;
+						$q = "SELECT `lang_id`, `".implode('`, `', $this->strField2Lang)."` FROM `$this->LanguageTable` WHERE `$this->LanguageTableId`={$tableId}".$this->LanguageTableWhere;
 						$this->load_lang[$i] = 1;
 						$r = $this->db->getAll($q);
 						foreach($r AS $d)
 						{
-							foreach($strField2Lang AS $f)
+							foreach($this->strField2Lang AS $f)
 							{
 								$arrResult[$f][$d['lang_id']] = $d[$f];
 							}
