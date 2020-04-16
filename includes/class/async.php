@@ -117,6 +117,63 @@ class async
 	{
 		return shell_exec('/bin/sh /usr/local/bin/ars');
 	}
+	public function status()
+	{
+		$status = array();
+		try {
+			$handle = fsockopen('127.0.0.1', 4730, $errorNumber, $errorString, 30);
+			if($handle!=null)
+			{
+				fwrite($handle,"status\n");
+				while (!feof($handle))
+				{
+					$line = fgets($handle, 4096);
+					if( $line==".\n")
+					{
+						break;
+					}
+					if (empty($status['operations']))
+					{
+						$status['operations'] = array();
+					}
+					if( preg_match("~^(.*)[ \t](\d+)[ \t](\d+)[ \t](\d+)~",$line,$matches) )
+					{
+						$function = $matches[1];
+						$status['operations'][$function] = array(
+							'function'         => $function,
+							'total'            => $matches[2],
+							'running'          => $matches[3],
+							'connectedWorkers' => $matches[4],
+						);
+					}
+				}
+				fwrite($handle,"workers\n");
+				while (!feof($handle))
+				{
+					$line = fgets($handle, 4096);
+					if( $line==".\n")
+					{
+						break;
+					}
+					// FD IP-ADDRESS CLIENT-ID : FUNCTION
+					if( preg_match("~^(\d+)[ \t](.*?)[ \t](.*?) : ?(.*)~",$line,$matches) )
+					{
+						$fd = $matches[1];
+						$status['connections'][$fd] = array(
+							'fd'       => $fd,
+							'ip'       => $matches[2],
+							'id'       => $matches[3],
+							'function' => $matches[4],
+						);
+					}
+				}
+				fclose($handle);
+			}
+		} catch (Exception $e) {
+			// print_r($e);
+		}
+		return $status;
+	}
 }
 if (!defined('_VALID_BBC'))
 {

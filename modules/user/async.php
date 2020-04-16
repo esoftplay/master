@@ -44,6 +44,13 @@ if (!empty($id))
 				);
 			output_json($out);
 			break;
+		case 'status':
+			$out = array(
+				'ok'     => 1,
+				'result' => _class('async')->status()
+				);
+			output_json($out);
+			break;
 	}
 }
 $exist = $db->getOne("SHOW TABLES LIKE 'bbc_async'");
