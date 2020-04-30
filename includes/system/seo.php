@@ -226,14 +226,14 @@ function site_url($string='', $add_URL = true)
 		}
 		if($match[1]=='content')
 		{
-			if($match[2] == 'detail' || $match[2] == 'list')
+			if(in_array($match[2], ['detail', 'list']))
 			{
 				$s = $match[2] == 'detail' ? '_' : '-';
 				if (empty($get['title']))
 				{
 					$get['title'] = '';
 				}
-				$output .= menu_save($get['title']).$s.$get['id'].'.htm';
+				$output .= menu_save($get['title']).$s.@intval($get['id']).'.htm';
 				unset($get['title'], $get['id']);
 			}else{
 				$output .= $match[2].'.htm';
