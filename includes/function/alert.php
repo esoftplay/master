@@ -130,7 +130,7 @@ function alert_add($title, $description, $params = array(), $user_id='none', $gr
 				`created`     = NOW()";
 			if (!$db->Execute($q_alert))
 			{
-				include _ROOT.'modules/user/repair-comment.php';
+				// include _ROOT.'modules/user/repair-comment.php'; # sudah tidak terpakai lagi
 				$db->Execute($q_alert);
 			}
 			$alert_id = $db->Insert_ID();
@@ -352,17 +352,18 @@ function alert_push_send($id, $last_id=0)
 	$data   = $db->getRow("SELECT * FROM `bbc_user_push_notif` WHERE id={$id}");
 	if (!empty($data))
 	{
-		$unread   = $db->getOne("SELECT count(id) FROM `bbc_user_push_notif` WHERE `user_id`={$data['user_id']} AND `status` IN(0,1)"); // status 1 = berhasil terkirim, 0 = gagal terkirim (tetapi pada mobile app tetap bisa di list)
-		$unread   = intval($unread) + 1; // Untuk menampilkan badge total unread di icon aplikasinya. Dibuat +1 karena prosesnya curl dulu baru insert data ke tabel `bbc_user_push_notif` jadi untuk insert selanjutnya dianggap berhasil saja. Di mobile app dicek jika jumlah bagde notif != jumlah unread ini, maka akan diset sama dengan jumlah bagde notif
+		$unread   = $db->getOne("SELECT count(id) FROM `bbc_user_push_notif` WHERE `user_id`={$data['user_id']} AND `status` IN(0,1)"); // status 1 = berhasil terkirim, 0 = belum terkirim (tetapi pada mobile app tetap bisa di list)
 		$tos      = array();
 		$last_id  = intval($last_id);
 		$updatedb = 0;
 		$add_sql  = !empty($data['group_id']) ? ' AND `group_ids` LIKE \'%,'.$data['group_id'].',%\'' : '';
 		if (empty($data['user_id']))
 		{
-			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE `id` > {$last_id}{$add_sql} ORDER BY `id` ASC LIMIT {$limit}");
+			$sql = "`id` > {$last_id}{$add_sql}"; // digunakan untuk pencarian device selanjutnya jika device per user lebih dari 100
+			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
 		}else{
-			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE `user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql} ORDER BY `id` ASC LIMIT {$limit}");
+			$sql = "`user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql}";
+			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
 		}
 		if (!empty($tos))
 		{
@@ -397,8 +398,6 @@ function alert_push_send($id, $last_id=0)
 
 			foreach ($messages as $g_id => $message)
 			{
-				$to_id = $message['id'];
-				unset($message['id']);
 				$message = json_encode($message);
 				$ch      = curl_init();
 				curl_setopt($ch, CURLOPT_URL,"https://exp.host/--/api/v2/push/send");
@@ -454,7 +453,7 @@ function alert_push_send($id, $last_id=0)
 			if ($data['status']==0)
 			{
 				// check apakah masih ada data setelah $last_id
-				$dtpush = $db->getRow("SELECT * FROM `bbc_user_push` WHERE `id`>{$last_id} ORDER BY `id` ASC LIMIT 1");
+				$dtpush = $db->getRow("SELECT * FROM `bbc_user_push` WHERE `id`>{$last_id} AND {$sql} ORDER BY `id` ASC LIMIT 1");
 				// Jika data setelah yang terakhir diproses sudah tidak ada lagi maka update row di `alert_push_send`
 				if (empty($dtpush))
 				{
