@@ -352,7 +352,7 @@ function alert_push_send($id, $last_id=0)
 	$data   = $db->getRow("SELECT * FROM `bbc_user_push_notif` WHERE id={$id}");
 	if (!empty($data))
 	{
-		$unread   = $db->getOne("SELECT count(id) FROM `bbc_user_push_notif` WHERE `user_id`={$data['user_id']} AND `status`=1"); // status 1 = berhasil terkirim
+		$unread   = $db->getOne("SELECT count(id) FROM `bbc_user_push_notif` WHERE `user_id`={$data['user_id']} AND `status` IN(0,1)"); // status 1 = berhasil terkirim, 0 = gagal terkirim (tetapi pada mobile app tetap bisa di list)
 		$unread   = intval($unread) + 1; // Untuk menampilkan badge total unread di icon aplikasinya. Dibuat +1 karena prosesnya curl dulu baru insert data ke tabel `bbc_user_push_notif` jadi untuk insert selanjutnya dianggap berhasil saja. Di mobile app dicek jika jumlah bagde notif != jumlah unread ini, maka akan diset sama dengan jumlah bagde notif
 		$tos      = array();
 		$last_id  = intval($last_id);
