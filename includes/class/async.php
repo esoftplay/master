@@ -118,10 +118,10 @@ class async
 		$act_file = _ROOT.'images/tmp.sh';
 		if (file_exists($act_file))
 		{
-			$data = '/etc/init.d/esoftplay_async restart'
-			."\n".'/usr/local/bin/tm "restart async di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808'
+			$data = "\n".'/etc/init.d/esoftplay_async restart'
+			."\n".'/usr/local/bin/tm "restart async via tm di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808'
 			."\n".'/bin/rm -f /tmp/async-tmp.txt';
-			file_write($act_file, $data);
+			file_write($act_file, $data, 'a');
 			$out = true;
 		}else{
 			tm(@$_SERVER['HTTP_HOST'].' belum dibuatkan file images/tmp.sh tp sudah direquest `cd '._ROOT.'images/` && ln -s /tmp/tmp.sh ./');
