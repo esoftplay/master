@@ -115,7 +115,19 @@ class async
 	}
 	public function restart()
 	{
-		return shell_exec('/bin/sh /usr/local/bin/ars');
+		$act_file = _ROOT.'images/tmp.sh';
+		if (file_exists($act_file))
+		{
+			$data = '/etc/init.d/esoftplay_async restart'
+			."\n".'/usr/local/bin/tm "restart async di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808'
+			."\n".'/bin/rm -f /tmp/async-tmp.txt';
+			file_write($act_file, $data);
+			$out = true;
+		}else{
+			tm(@$_SERVER['HTTP_HOST'].' belum dibuatkan file images/tmp.sh tp sudah direquest `cd '._ROOT.'images/` && ln -s /tmp/tmp.sh ./');
+			$out = false;
+		}
+		return $out;
 	}
 	public function status()
 	{
