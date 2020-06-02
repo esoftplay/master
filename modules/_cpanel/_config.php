@@ -8,6 +8,7 @@ if (isset($_seo['URI']) && _ADMIN=='')
 		$_seo['break']   = 1;
 		$_seo['tmp_URI'] = $_seo['URI'];
 		$_seo['URI']     = preg_replace('~\?.*?$~', '', $_seo['URI']); // bersihkan URI dari simbol ?
+		$Bbc->no_log     = 1;
 		$r               = explode('/', $_seo['URI']);
 
 		if (preg_match('~^(.*?)\.(html?)$~is', $r[0], $o))

@@ -1,7 +1,8 @@
 <?php  if ( ! defined('_VALID_BBC')) exit('No direct script access allowed');
 
-$user = new stdClass();
+$user     = new stdClass();
 $user->id = 0;
+$_CONFIG  = get_config(0);
 if (empty($Bbc->no_log))
 {
 	/*===================================================
@@ -20,7 +21,6 @@ if (empty($Bbc->no_log))
 	}else{
 		$is_login = false;
 	}
-	$_CONFIG = get_config(0);
 	$suffix  = (_ADMIN != '') ? '_admin' : '';
 	$dur     = @$_CONFIG['logged']['duration'.$suffix];
 	$per     = @$_CONFIG['logged']['period'.$suffix];
