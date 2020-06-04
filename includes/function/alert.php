@@ -306,7 +306,10 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 			$timestamp = date('Y-m-d H:i:s', strtotime('-2 MONTH'));
 			$db->Execute("DELETE FROM `bbc_user_push_notif` WHERE `created`<'{$timestamp}'");
 		}
-		$data = array(
+		$title   = strip_tags($title);
+		$message = strip_tags($message, '<br>');
+		$message = preg_replace('~<br(?:\s+?/?)?>~is', "\n", $message);
+		$data    = array(
 			'title'   => $title,
 			'message' => $message,
 			'status'  => 0,
