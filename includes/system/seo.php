@@ -29,11 +29,6 @@ if (_SEO && _ADMIN == '')
 	$_seo          = array();
 	$_seo['break'] = false;
 	$_seo['URI']   = preg_replace('#^'._URI.'#is', '', $_SERVER['REQUEST_URI']);
-	// ini halaman untuk diakses oleh mobile app yang tidak butuh output apapun
-	if ($_seo['URI'] == 'dummyPageToBypassCORS')
-	{
-		die('mobile access');
-	}
 	$q = "SELECT name FROM bbc_module WHERE is_config=1 AND active=1 ORDER BY id ASC";
 	$r = $db->cacheGetCol($q);
 	foreach($r AS $f)

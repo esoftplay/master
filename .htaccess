@@ -1,6 +1,7 @@
 #php_flag short_open_tag on
 #Options +FollowSymLinks
 RewriteEngine On
+RewriteRule ^dummyPageToBypassCORS$ /_setting.php [L]
 
 RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
 RewriteRule ^(.*)$ - [E=BASE:%1]
