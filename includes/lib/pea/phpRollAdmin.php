@@ -509,10 +509,12 @@ class phpRollAdmin extends phpEasyAdminLib
 				$this->nav->setNumMaxRows('500');
 			}
 		}
+		$page  = !empty($_GET[$this->nav->string_name]) ? intval($_GET[$this->nav->string_name])-1 : 0;
+		$start = $page * intval($this->nav->int_max_rows);
 		$table = $this->table .' '. $this->sqlCondition;
 		$query = "SELECT $strField2Select FROM $table";
 		$query = $this->getOrderQuery($query);
-		$query .= " LIMIT ". intval($this->nav->cur_sql_pos) .", ". intval($this->nav->int_max_rows);
+		$query .= " LIMIT ". $start .", ". intval($this->nav->int_max_rows);
 
 		$this->nav->completeQuery	= $query;
 	}
