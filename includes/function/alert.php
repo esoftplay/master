@@ -481,7 +481,7 @@ function alert_push_send($id, $last_id=0)
 }
 
 // Example: modules/user/push-token.php
-function alert_push_signup($token, $user_id, $group_ids, $username, $device, $push_id = 0)
+function alert_push_signup($token, $user_id, $group_ids, $username, $device, $os, $push_id = 0)
 {
 	global $db;
 	$exist = $db->getOne("SHOW TABLES LIKE 'bbc_user_push'");
@@ -494,13 +494,22 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $pu
 			`username` varchar(120) DEFAULT '',
 			`token` varchar(255) DEFAULT '',
 			`device` varchar(255) DEFAULT '',
+			`os` varchar(60) DEFAULT '',
 			`ipaddress` varchar(20) DEFAULT '',
 			`created` datetime DEFAULT CURRENT_TIMESTAMP,
 			`updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'setiap mengirim pesan ke table bbc_user_push_notif maka field ini akan di update',
 			PRIMARY KEY (`id`),
 			KEY `user_id` (`user_id`),
-			KEY `group_ids` (`group_ids`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table untuk menyimpan token dari para pengguna mobile app';");
+			KEY `group_ids` (`group_ids`),
+			KEY `os` (`os`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table untuk menyimpan token dari para pengguna mobile app'");
+	}
+	/* TEMPORARILYWILLBEDELETEDBYDANANG */
+	$fields = $db->getCol("SHOW FIELDS FROM `bbc_user_push`");
+	if (!in_array('os', $fields))
+	{
+		$db->Execute("ALTER TABLE `bbc_user_push` ADD `os` VARCHAR(60)  NULL  DEFAULT ''  AFTER `device`");
+		$db->Execute("ALTER TABLE `bbc_user_push` ADD INDEX (`os`)");
 	}
 	if (!empty($group_ids))
 	{
@@ -519,6 +528,7 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $pu
 		'username'  => $username,
 		'token'     => $token,
 		'device'    => $device,
+		'os'        => $os,
 		'ipaddress' => @$_SERVER['REMOTE_ADDR'],
 		'updated'   => date('Y-m-d H:i:s')
 		);

@@ -45,7 +45,6 @@ class async
 					)));
 			} catch (Exception $e) {
 				$log = 'Async::'.json_encode($object).' '.  $e->getMessage();
-				echo $log;
 				if (function_exists('iLog'))
 				{
 					iLog($log);
@@ -100,7 +99,6 @@ class async
 						)));
 				} catch (Exception $e) {
 					$log = 'Async::'.$sync['function'].' '.  $e->getMessage();
-					echo $log;
 					if (function_exists('iLog'))
 					{
 						iLog($log);

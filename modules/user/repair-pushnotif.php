@@ -11,13 +11,15 @@ if (empty($exist))
 		`username` varchar(120) DEFAULT '',
 		`token` varchar(255) DEFAULT '',
 		`device` varchar(255) DEFAULT '',
+		`os` varchar(60) DEFAULT '',
 		`ipaddress` varchar(20) DEFAULT '',
 		`created` datetime DEFAULT CURRENT_TIMESTAMP,
 		`updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'setiap mengirim pesan ke table bbc_user_push_notif maka field ini akan di update',
 		PRIMARY KEY (`id`),
 		KEY `user_id` (`user_id`),
-		KEY `group_ids` (`group_ids`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table untuk menyimpan token dari para pengguna mobile app';");
+		KEY `group_ids` (`group_ids`),
+		KEY `os` (`os`)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table untuk menyimpan token dari para pengguna mobile app'");
 }else{
 	/* UPDATE SEMUA USER DI bbc_user_push TAMBAHIN FIELD group_ids */
 	$fields = $db->getCol("SHOW FIELDS FROM `bbc_user_push`");
@@ -34,6 +36,11 @@ if (empty($exist))
 				$db->Update('bbc_user_push', array('group_ids' => $group_ids), $d['id']);
 			}
 		}
+	}
+	if (!in_array('os', $fields))
+	{
+		$db->Execute("ALTER TABLE `bbc_user_push` ADD `os` VARCHAR(60)  NULL  DEFAULT ''  AFTER `device`");
+		$db->Execute("ALTER TABLE `bbc_user_push` ADD INDEX (`os`)");
 	}
 }
 

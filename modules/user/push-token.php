@@ -26,6 +26,7 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 	$push_id   = @intval($_POST['push_id']);
 	$username  = @$_POST['username'];
 	$device    = @$_POST['device'];
+	$os        = @$_POST['os'];
 	$secretkey = _class('crypt')->decode($_POST['secretkey']);
 	if (!empty($secretkey))
 	{
@@ -37,7 +38,7 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 			if ($time > $stamp)
 			{
 				_func('alert');
-				$out = alert_push_signup($token, $user_id, $group_ids, $username, $device, $push_id);
+				$out = alert_push_signup($token, $user_id, $group_ids, $username, $device, $os, $push_id);
 				if($out)
 				{
 					if (!empty($_POST['old_id']))
