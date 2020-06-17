@@ -12,10 +12,20 @@
 */
 class async
 {
+	public $client;
 	private $isExists = false;
 	function __construct()
 	{
 		$this->isExists = class_exists('GearmanClient');
+		if ($this->isExists)
+		{
+			$this->client = new GearmanClient();
+			$this->client->addServer();
+		}
+	}
+	function __destruct()
+	{
+		$this->client->runTasks();
 	}
 	public function run($object, $params=array())
 	{
@@ -33,9 +43,7 @@ class async
 			}
 			$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".json_encode($params)."', `created`=NOW()");
 			try {
-				$client = new GearmanClient();
-				$client->addServer();
-				$result = $client->doBackground('esoftplay_async', json_encode(array(
+				$result = $this->client->addTaskBackground('esoftplay_async', json_encode(array(
 					$_SERVER,
 					_ROOT,
 					_ADMIN,
@@ -87,9 +95,7 @@ class async
 			if ($this->isExists)
 			{
 				try {
-					$client = new GearmanClient();
-					$client->addServer();
-					$result = $client->doBackground('esoftplay_async', json_encode(array(
+					$result = $this->client->addTaskBackground('esoftplay_async', json_encode(array(
 						$_SERVER,
 						_ROOT,
 						_ADMIN,
