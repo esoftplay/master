@@ -20,7 +20,9 @@ class async
 		if ($this->isExists)
 		{
 			$this->client = new GearmanClient();
-			$this->client->addServer();
+			$host = defined('_ASYNC_HOST') ? _ASYNC_HOST : '127.0.0.1';
+			$port = defined('_ASYNC_PORT') ? _ASYNC_PORT : 4730;
+			$this->client->addServer($host, $port);
 		}
 	}
 	function __destruct()
