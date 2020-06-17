@@ -587,6 +587,7 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $os
 		$group_ids = array(0);
 	}
 	$group_ids = repairImplode($group_ids);
+	$db->Execute("DELETE FROM `bbc_user_push` WHERE `token`='{$token}' AND `id`!={$push_id} AND `user_id` IN (0,{$user_id})");
 	$input     = array(
 		'user_id'   => $user_id,
 		'group_ids' => $group_ids,
