@@ -399,6 +399,7 @@ function alert_push_send($id, $last_id=0)
 				$last_id = $to['id'];
 			}
 
+			$r_ch = array();
 			foreach ($messages as $g_id => $message)
 			{
 				$message = json_encode($message);
@@ -408,7 +409,69 @@ function alert_push_send($id, $last_id=0)
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $message);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
-				$return = curl_exec($ch);
+				$r_ch[] = $ch;
+				// TEMPORARILYWILLBEDELETEDBYDANANG
+				// $return = curl_exec($ch);
+				// try {
+				// 	$json = @json_decode($return, 1);
+				// 	if (!empty($json['data']) && is_array($json['data']))
+				// 	{
+				// 		$i = 0;
+				// 		foreach ($json['data'] as $out)
+				// 		{
+				// 			$to = $tos[$i];
+				// 			$i++;
+				// 			if (!empty($out['status']))
+				// 			{
+				// 				if ($out['status'] == 'ok')
+				// 				{
+				// 					$output = true;
+				// 				}else{
+				// 					switch (@$out['details']['error'])
+				// 					{
+				// 						// the device cannot receive push notifications anymore and you should stop sending messages to the corresponding Expo push token.
+				// 						case 'DeviceNotRegistered':
+				// 							$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$to['id']}");
+				// 							break;
+				// 						// the total notification payload was too large. On Android and iOS the total payload must be at most 4096 bytes.
+				// 						case 'MessageTooBig':
+				// 							break;
+				// 						// you are sending messages too frequently to the given device. Implement exponential backoff and slowly retry sending messages.
+				// 						case 'MessageRateExceeded':
+				// 							break;
+				// 						// your push notification credentials for your standalone app are invalid (ex: you may have revoked them). Run `expo build:ios -c` to regenerate new push notification credentials for iOS.
+				// 						case 'InvalidCredentials':
+				// 							/*
+				// 							When your push notification credentials have expired, simply run expo build:ios -c --no-publish
+				// 							to clear your expired credentials and generate new ones. The new credentials will take effect within a few minutes of being generated.
+				// 							You do not have to submit a new build!
+				// 							*/
+				// 							break;
+				// 					}
+				// 				}
+				// 			}
+				// 		}
+				// 	}
+				// } catch (Exception $e) {}
+			}
+
+			// create the multiple cURL handle
+			$mh = curl_multi_init();
+			foreach ($r_ch as $ch)
+			{
+				curl_multi_add_handle($mh, $ch);
+			}
+			// execute the multi handle
+			do {
+				$status = curl_multi_exec($mh, $active);
+				if ($active)
+				{
+					curl_multi_select($mh);
+				}
+			} while ($active && $status == CURLM_OK);
+			foreach ($r_ch as $ch)
+			{
+				$return = curl_multi_getcontent($ch);
 				try {
 					$json = @json_decode($return, 1);
 					if (!empty($json['data']) && is_array($json['data']))
@@ -450,7 +513,9 @@ function alert_push_send($id, $last_id=0)
 						}
 					}
 				} catch (Exception $e) {}
+				curl_multi_remove_handle($mh, $ch);
 			}
+			curl_multi_close($mh);
 
 			// Jika status masih belum terkirim
 			if ($data['status']==0)
