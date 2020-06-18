@@ -14,6 +14,8 @@ class async
 {
 	public $client;
 	private $isExists = false;
+	private $host;
+	private $port;
 	function __construct()
 	{
 		$this->isExists = class_exists('GearmanClient');
@@ -133,7 +135,7 @@ class async
 	{
 		$status = array();
 		try {
-			$handle = fsockopen('127.0.0.1', 4730, $errorNumber, $errorString, 30);
+			$handle = fsockopen($this->host, $this->port, $errorNumber, $errorString, 30);
 			if($handle!=null)
 			{
 				fwrite($handle,"status\n");

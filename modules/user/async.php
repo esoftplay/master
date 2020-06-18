@@ -1,5 +1,10 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
+if (@$_GET['id'] == 'cron')
+{
+	include 'async-cron.php';
+	die();
+}
 $sys->set_layout('blank');
 $id = @intval($_GET['id']);
 if (!empty($id))
@@ -37,10 +42,21 @@ if (!empty($id))
 }else{
 	switch (@$_GET['act'])
 	{
-		case 'restart':
+		case 'async':
+			$data = $db->getRow("SELECT * FROM `bbc_async` WHERE 1 ORDER BY `id` ASC LIMIT 1");
+			if (!empty($data['created']))
+			{
+				_func('date');
+				$data['created'] .= ' ('.timespan(strtotime($data['created'])).')';
+			}
+			$result    = array(
+				'function' => @$data['function'],
+				'created'  => @$data['created'],
+				'total'    => intval($db->getOne("SELECT COUNT(*) FROM `bbc_async` WHERE 1")),
+				);
 			$out = array(
 				'ok'     => 1,
-				'result' => _class('async')->restart()
+				'result' => $result
 				);
 			output_json($out);
 			break;
@@ -48,6 +64,13 @@ if (!empty($id))
 			$out = array(
 				'ok'     => 1,
 				'result' => _class('async')->status()
+				);
+			output_json($out);
+			break;
+		case 'restart':
+			$out = array(
+				'ok'     => 1,
+				'result' => _class('async')->restart()
 				);
 			output_json($out);
 			break;
