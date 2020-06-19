@@ -96,7 +96,7 @@ if (!empty($data))
 		{
 			_func('date');
 			$url = str_replace(['://', '/', '?', '=', '&'], ['_sc_s_s_', '_slash_', '_questionmark_', '_equalto_', '_andthe_'], _URL.'user/async?act=');
-			$msg = @$_SERVER['HTTP_HOST']."\n".' : '.$pending.' - '.$process.' - '.$worker
+			$msg = '#'.@$_SERVER['HTTP_HOST']."\n".' : '.$pending.' - '.$process.' - '.$worker
 				."\nfunction: ".$data['function']
 				."\ncreated: ".$data['created'].' ('.timespan(strtotime($data['created'])).')'
 				."\ntotal: ".money($db->getOne("SELECT COUNT(*) FROM `bbc_async` WHERE 1"));
