@@ -3,6 +3,7 @@
 $fileasync   = '/opt/async/bin/manager.php';
 $filecheck   = _CACHE.'async.cfg';
 $fileexecute = _CACHE.'async-execute.cfg';
+$filefailed  = _CACHE.'async-failed.cfg';
 $num_worker  = 5; // check file /opt/async/bin/manager.php for $config['worker_num']
 $notify      = '';
 $data        = $db->getRow("SELECT * FROM `bbc_async` WHERE 1 ORDER BY id ASC LIMIT 1");
@@ -26,6 +27,10 @@ if (!empty($data))
 		$gearadmin = shell_exec('gearadmin --status');
 		if (!empty($gearadmin) && preg_match('~esoftplay_async\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)~is', $gearadmin, $status))
 		{
+			if (file_exists($filefailed))
+			{
+				@unlink($filefailed);
+			}
 			$pending = @intval($status[1]);
 			$process = @intval($status[2]);
 			$worker  = @intval($status[3]);
@@ -72,6 +77,19 @@ if (!empty($data))
 					}
 				}
 			} // jika worker masih dibawah config bisa jd msh dalam proses restart, jd tdk perlu notify
+		}else{
+			if (!file_exists($filefailed))
+			{
+				file_write($filefailed, strtotime('now'));
+			}else{
+				$lastfailed  = file_read($filefailed);
+				$limitfailed = strtotime('-1 HOUR');
+				if ($lastfailed < $limitfailed)
+				{
+					$async->restart();
+					unlink($filefailed);
+				}
+			}
 		}
 		if ($notify)
 		{
