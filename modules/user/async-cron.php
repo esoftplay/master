@@ -88,6 +88,7 @@ if (!empty($data))
 				{
 					$async->restart();
 					unlink($filefailed);
+					$notify = 'check async gagal selama 1jam akan direstart';
 				}
 			}
 		}
