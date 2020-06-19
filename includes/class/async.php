@@ -13,6 +13,7 @@
 class async
 {
 	public $client;
+	private $tasks    = 0;
 	private $isExists = false;
 	private $host;
 	private $port;
@@ -29,7 +30,10 @@ class async
 	}
 	function __destruct()
 	{
-		$this->client->runTasks();
+		if ($this->tasks > 0)
+		{
+			$this->client->runTasks();
+		}
 	}
 	public function run($object, $params=array())
 	{
@@ -47,6 +51,7 @@ class async
 			}
 			$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".json_encode($params)."', `created`=NOW()");
 			try {
+				$this->tasks++;
 				$result = $this->client->addTaskBackground('esoftplay_async', json_encode(array(
 					$_SERVER,
 					_ROOT,
@@ -99,6 +104,7 @@ class async
 			if ($this->isExists)
 			{
 				try {
+					$this->tasks++;
 					$result = $this->client->addTaskBackground('esoftplay_async', json_encode(array(
 						$_SERVER,
 						_ROOT,
