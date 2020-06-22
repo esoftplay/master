@@ -70,7 +70,7 @@ if (!empty($id))
 		case 'restart':
 			$out = array(
 				'ok'     => 1,
-				'result' => _class('async')->restart()
+				'result' => _class('async')->restart('via tm') ? 'segera direstart' : 'sepertinya masih dalam proses'
 				);
 			output_json($out);
 			break;

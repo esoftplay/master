@@ -334,7 +334,6 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 				$push_notif_id    = $db->Insert('bbc_user_push_notif', $data);
 				if ($push_notif_id)
 				{
-					// pr($push_notif_id, __FILE__.':'.__LINE__);
 					_class('async')->run('alert_push_send', [$push_notif_id, 0]);
 					if (!$out)
 					{

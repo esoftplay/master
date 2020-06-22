@@ -32,7 +32,7 @@ class async
 	{
 		if ($this->tasks > 0)
 		{
-			$this->client->runTasks();
+			@$this->client->runTasks();
 		}
 	}
 	public function run($object, $params=array())
@@ -127,13 +127,20 @@ class async
 			}
 		}
 	}
-	public function restart()
+	public function restart($txt = '')
 	{
 		$act_file = '/tmp/tmp.sh';
-		$data = "\n".'/etc/init.d/esoftplay_async restart'
-		."\n".'/usr/local/bin/tm "restart async via tm di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808'
-		."\n".'/bin/rm -f /tmp/async-tmp.txt';
-		file_write($act_file, $data, 'a');
+		$tmp_file = '/tmp/async-tmp.txt';
+		if (file_exists($tmp_file))
+		{
+			return false;
+		}else{
+			$data = "\n".'/etc/init.d/esoftplay_async restart'
+			."\n".'/usr/local/bin/tm "restart async '.$txt.' di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808'
+			."\n".'/bin/rm -f /tmp/async-tmp.txt';
+			file_write($act_file, $data, 'a');
+			file_write($tmp_file, date('r'));
+		}
 		$out = true;
 		return $out;
 	}

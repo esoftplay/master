@@ -37,7 +37,7 @@ if (!empty($data))
 			/* JIKA JUMLAH WORKER DIBAWAH DARI CONFIG MAKA RESTART ASYNC SAJA */
 			if ($worker < $num_worker)
 			{
-				$async->restart();
+				$async->restart('karena jumlah worker hanya: '.money($worker).' yang seharusnya '.money($num_worker));
 				user_async_cron_clean();
 			}
 			/* JIKA JUMLAH WORKER MASIH UTUH MAKA EKSEKUSI SAJA TASK PERTAMA SEJUMLAH WORKER AKTIF */
@@ -86,7 +86,7 @@ if (!empty($data))
 				$limitfailed = strtotime('-1 HOUR');
 				if ($lastfailed < $limitfailed)
 				{
-					$async->restart();
+					$async->restart('karena gagal check lebih dari 1jam');
 					unlink($filefailed);
 					$notify = 'check async gagal selama 1jam akan direstart';
 				}
