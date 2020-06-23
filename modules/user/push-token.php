@@ -63,5 +63,8 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 	}else{
 		// $output['message'] = '$secretkey kosong';
 	}
+}else{
+	// $output['result'] = $db->getAll("SELECT *, COUNT(*) AS tot FROM `bbc_user_push` WHERE 1 GROUP BY `token` having tot>1 ORDER BY tot DESC LIMIT 10");
+	$output['result'] = [];
 }
 output_json($output);

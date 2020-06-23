@@ -60,7 +60,7 @@ if (!empty($data))
 					}
 					foreach ($r_stuck as $dt)
 					{
-						if (!in_array($t['id'], $arr_execute))
+						if (!in_array($dt['id'], $arr_execute))
 						{
 							$async->fix($dt['id']);
 							$on_execute[] = $dt['id'];
