@@ -63,7 +63,7 @@ if (!empty($_GET['q']) && !empty($_GET['token']))
 				echo implode('|', $r)."\n";
 			}
 		}else{
-			$name = preg_replace('~[^a-z0-9\s\.]~is', '', $_GET['q']);
+			$name = preg_replace('~[^a-z0-9\s\.\,]~is', '', $_GET['q']);
 			$q    = "SELECT {$format} AS `format`, {$field} AS `title`, {$field_id} AS `id` FROM {$table} {$field} LIKE '%{$name}%' {$sql} ORDER BY {$field} ASC LIMIT 1000";
 			$r    = $db->cacheGetAll($q);
 			foreach ($r as $d)

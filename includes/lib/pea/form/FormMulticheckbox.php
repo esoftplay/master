@@ -543,7 +543,7 @@ class FormMulticheckbox extends FormCheckbox
 			}
 			$out = '';
 			$x   = floor(12/$this->column);
-			foreach ($r as $col)
+			foreach ((array)@$r as $col)
 			{
 				$out .= '<div class="col-md-'.$x.' col-sm-'.$x.'">'.implode($this->delimiter, $col).'</div>';
 			}
