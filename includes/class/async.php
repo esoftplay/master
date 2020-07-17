@@ -23,9 +23,9 @@ class async
 		if ($this->isExists)
 		{
 			$this->client = new GearmanClient();
-			$host = defined('_ASYNC_HOST') ? _ASYNC_HOST : '127.0.0.1';
-			$port = defined('_ASYNC_PORT') ? _ASYNC_PORT : 4730;
-			$this->client->addServer($host, $port);
+			$this->host = defined('_ASYNC_HOST') ? _ASYNC_HOST : '127.0.0.1';
+			$this->port = defined('_ASYNC_PORT') ? _ASYNC_PORT : 4730;
+			$this->client->addServer($this->host, $this->port);
 		}
 	}
 	function __destruct()
@@ -174,26 +174,26 @@ class async
 						);
 					}
 				}
-				fwrite($handle,"workers\n");
-				while (!feof($handle))
-				{
-					$line = fgets($handle, 4096);
-					if( $line==".\n")
-					{
-						break;
-					}
-					// FD IP-ADDRESS CLIENT-ID : FUNCTION
-					if( preg_match("~^(\d+)[ \t](.*?)[ \t](.*?) : ?(.*)~",$line,$matches) )
-					{
-						$fd = $matches[1];
-						$status['connections'][$fd] = array(
-							'fd'       => $fd,
-							'ip'       => $matches[2],
-							'id'       => $matches[3],
-							'function' => $matches[4],
-						);
-					}
-				}
+				// fwrite($handle,"workers\n");
+				// while (!feof($handle))
+				// {
+				// 	$line = fgets($handle, 4096);
+				// 	if( $line==".\n")
+				// 	{
+				// 		break;
+				// 	}
+				// 	// FD IP-ADDRESS CLIENT-ID : FUNCTION
+				// 	if( preg_match("~^(\d+)[ \t](.*?)[ \t](.*?) : ?(.*)~",$line,$matches) )
+				// 	{
+				// 		$fd = $matches[1];
+				// 		$status['connections'][$fd] = array(
+				// 			'fd'       => $fd,
+				// 			'ip'       => $matches[2],
+				// 			'id'       => $matches[3],
+				// 			'function' => $matches[4],
+				// 		);
+				// 	}
+				// }
 				fclose($handle);
 			}
 		} catch (Exception $e) {

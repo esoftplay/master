@@ -17,9 +17,12 @@ if (!empty($data))
 	$thresmax  = strtotime('-35 minutes');
 	if ($last < $threshold)
 	{
-		$async     = _class('async');
+		$async   = _class('async');
 		if ($last < $thresmax)
 		{
+			$pending   = '?';
+			$process   = '?';
+			$worker    = '?';
 			$notify = 'ada async yang umur lebih dari 35 menit';
 			// $async->restart($notify);
 		}else{
@@ -102,8 +105,8 @@ if (!empty($data))
 		if ($notify)
 		{
 			_func('date');
-			$url = str_replace(['://', '/', '?', '=', '&'], ['_sc_s_s_', '_slash_', '_questionmark_', '_equalto_', '_andthe_'], _URL.'user/async?act=');
-			$msg = '#'.@$_SERVER['HTTP_HOST']."\n".' : '.$pending.' - '.$process.' - '.$worker
+			$url = _URL.'user/async?act=';
+			$msg = '#'.@$_SERVER['HTTP_HOST'].' : '.$pending.' - '.$process.' - '.$worker
 				."\nfunction: ".$data['function']
 				."\ncreated: ".$data['created'].' ('.timespan(strtotime($data['created'])).')'
 				."\ntotal: ".money($db->getOne("SELECT COUNT(*) FROM `bbc_async` WHERE 1"));
@@ -127,7 +130,8 @@ if (!empty($data))
 			if (function_exists('tm'))
 			{
 				$chatID = defined('_ASYNC_CHAT') ? _ASYNC_CHAT : -345399808;
-				tm($msg, $chatID);
+				$out = tm($msg, $chatID);
+				// pr($out, $msg, __FILE__.':'.__LINE__);
 			}
 		}
 	}else{
