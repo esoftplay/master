@@ -57,7 +57,8 @@ if (!empty($data))
 					/* TAPI JIKA YANG DIEKSEKUSI SEBELUMNYA MSH BELUM HILANG MAKA NOTIF DEVELOPER */
 					if ($checknow == $checklast)
 					{
-						$notify = 'fix sebelumnya masih belum selesai';
+						// fix sebelumnya masih belum selesai
+						$notify = '';
 					}else{
 						/* EKSEKUSI ASYNC YANG MACET LALU SIMPAN APA AJA YANG SUDAH DIEKSEKUSI  */
 						$arr_execute = @json_decode(file_read($fileexecute), 1);

@@ -28,7 +28,8 @@ class params
 	function set($params, $db = '')
 	{
 		if(!is_array($params) || empty($params)) return false;
-		if(empty($db)) {
+		if(empty($db))
+		{
 			global $db;
 		}
 		$this->db					= $db;
@@ -58,17 +59,17 @@ class params
 		{
 			$dt['title'] = isset($dt['title']) ? $dt['title'] : $title;
 			$field = array(
-				'type' => strtolower(@$dt['type'])
-			,	'text' => isset($dt['text']) ? lang($dt['text']) : @lang($dt['title'])
-			,	'add'	 => @lang($dt['add'])
-			,	'tips' => @lang($dt['tips'])
-			,	'help' => @lang($dt['help'])
-			,	'attr' => (isset($dt['attr']) && substr($dt['attr'],0,1) != ' ') ? ' '.$dt['attr'] : @$dt['attr']
-			,	'language'	=> (isset($dt['language']) && $dt['language']) ? true : false
-			,	'default'		=> trim(@$dt['default'])
-			,	'mandatory' => @intval($dt['mandatory'])
-			,	'checked'		=> isset($dt['checked']) ? strtolower($dt['checked']) : 'any'
-			);
+				'type' => strtolower(@$dt['type']),
+				'text' => isset($dt['text']) ? lang($dt['text']) : @lang($dt['title']),
+				'add'	 => @lang($dt['add']),
+				'tips' => @lang($dt['tips']),
+				'help' => @lang($dt['help']),
+				'attr' => (isset($dt['attr']) && substr($dt['attr'],0,1) != ' ') ? ' '.$dt['attr'] : @$dt['attr'],
+				'language'	=> (isset($dt['language']) && $dt['language']) ? true : false,
+				'default'		=> trim(@$dt['default']),
+				'mandatory' => @intval($dt['mandatory']),
+				'checked'		=> isset($dt['checked']) ? strtolower($dt['checked']) : 'any'
+				);
 			switch($dt['type'])
 			{
 				case 'files':
@@ -84,22 +85,24 @@ class params
 				break;
 				case 'checkbox':
 					$dt['option'] = isset($dt['option']) ? $dt['option'] : array('1' => $field['text']);
-					if (!is_array($dt['option'])) {
-						$dt['option'] = array(1 => $dt['option']);
-					}
 				case 'radio':
 				case 'select':
-					$field['is_arr']= isset($dt['is_arr']) ? $dt['is_arr'] : false;
-					$field['delim']	= isset($dt['delim']) ? $dt['delim'] : '<br />';
+					$field['is_arr'] = isset($dt['is_arr']) ? $dt['is_arr'] : false;
+					$field['delim']  = isset($dt['delim']) ? $dt['delim'] : '<br />';
 					$field['option'] = $this->set_param_option($dt['option']);
-					if(strstr($field['default'], ';')) {
+					if(strstr($field['default'], ';'))
+					{
 						$r = explode(';', $field['default']);
-						if(count($r) > 0) {
+						if(count($r) > 0)
+						{
 							$field['default'] = array();
-							foreach($r AS $value) {
+							foreach($r AS $value)
+							{
 								$value = trim($value);
 								if(!empty($value))
+								{
 									$field['default'][] = $value;
+								}
 							}
 						}
 					}
@@ -122,16 +125,22 @@ class params
 	function set_param_option($option)
 	{
 		if(is_string($option))	$option = trim($option);
-		if(is_array($option)) {
+		if(is_array($option))
+		{
 			$output = $option;
-		}elseif(preg_match('#select .*? from #is', $option)) {
+		}else
+		if(preg_match('#select .*? from #is', $option))
+		{
 			$output = $this->db->getAll($option);
-		}elseif(is_array(json_decode($option,1))) {
+		}else
+		if(is_array(json_decode($option,1)))
+		{
 			$output = json_decode($option,1);
 		}else{
 			$r = explode(';', $option);
 			$output = array();
-			foreach((array)$r AS $value) {
+			foreach((array)$r AS $value)
+			{
 				$value = trim($value);
 				if($value != '')
 					$output[] = $value;
@@ -253,7 +262,7 @@ class params
 							if(empty($opt))	$opt = ($key!=0) ? 'key' : 'value';
 							$key = ($opt == 'key') ? $key : $val;
 							$select	= ($key==$value) ? ' checked="checked"' : '';
-							$out[] = '<label><input type="radio" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key).'" id="'.$id.$key.'"'.$select.$data['attr'].' />'.$val.'</label>';
+							$out[] = '<label><input type="radio" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key).'" id="'.menu_save($id.$key).'"'.$select.$data['attr'].' />'.$val.'</label>';
 						}
 						$input .= implode($data['delim'], $out);
 					break;
@@ -281,12 +290,14 @@ class params
 						$cls = 'checkbox';
 						if(count($data['option']) > 1)
 						{
-							$out = array();
-							$value	= is_array($value) ? $value : array($value);
+							$out           = array();
+							$value         = is_array($value) ? $value : array($value);
 							foreach((array)$data['option'] AS $key => $val)
 							{
+								if(empty($opt))	$opt = ($key!=0) ? 'key' : 'value';
+								$key = ($opt == 'key') ? $key : $val;
 								$select	= in_array($key, $value) ? ' checked="checked"' : '';
-								$out[] = '<label><input type="checkbox" name="'.$this->set_field_name($name, $id).'[]" value="'.$key.'" id="'.$id.$key.'"'.$select.$data['attr'].' /> '.$val.'</label>';
+								$out[] = '<label><input type="checkbox" name="'.$this->set_field_name($name, $id).'[]" value="'.$key.'" id="'.menu_save($id.$key).'"'.$select.$data['attr'].' /> '.$val.'</label>';
 							}
 							if (empty($data['delim']))
 							{
@@ -297,7 +308,7 @@ class params
 							$data['option']	= is_array($data['option']) ? $data['option'] : array(1 => $data['option']);
 							list($key, $val)= each($data['option']);
 							$select	= $key==$value ? ' checked="checked"' : '';
-							$input .= '<label><input type="checkbox" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key).'" id="'.$id.$key.'"'.$select.$data['attr'].' /> '.$val.'</label>';
+							$input .= '<label><input type="checkbox" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key).'" id="'.menu_save($id.$key).'"'.$select.$data['attr'].' /> '.$val.'</label>';
 						}
 					break;
 					case 'custom':
@@ -526,7 +537,8 @@ class params
 							break;
 						}
 					}
-					if (!$this->is_updated) {
+					if (!$this->is_updated)
+					{
 						break;
 					}
 				}
@@ -704,7 +716,8 @@ class params
 						if(!empty($post[$name]))
 						{
 							$captcha = _lib('captcha');
-							if (!$captcha->Validate($post[$name], $param['match'])) {
+							if (!$captcha->Validate($post[$name], $param['match']))
+							{
 								$this->is_updated = false;
 								$output .= lang('Incorrect').' '.$param['text'].'<br />';
 							}
@@ -726,7 +739,8 @@ class params
 							$p = $post[$name];
 							foreach($this->lang_r AS $l)
 							{
-								if(isset($p[$l['id']]) && !empty($p[$l['id']])) {
+								if(isset($p[$l['id']]) && !empty($p[$l['id']]))
+								{
 									$i_p	= $p[$l['id']];
 									$last = $p[$l['id']];
 								}else $i_p = $last;
@@ -758,7 +772,8 @@ class params
 					$output .= $param['text'].lang(' must not empty').'<br />';
 				}
 				// VALIDATION...
-				if($param['type'] == 'custom' || $param['type'] == 'captcha') {
+				if($param['type'] == 'custom' || $param['type'] == 'captcha')
+				{
 					unset($post[$name]);
 				}
 				if($this->is_updated
@@ -880,7 +895,8 @@ class params
 	}
 	function do_upload_check($path, $name)
 	{
-		if(!is_file($path.$name)) {
+		if(!is_file($path.$name))
+		{
 			return $name;
 		}else{
 			$ext	= strrchr($name, '.');
