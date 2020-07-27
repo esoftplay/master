@@ -130,7 +130,8 @@ class pagination
 		{
 			if($this->friendlyUrl)
 			{
-				$this->url = "http://" . $_SERVER['HTTP_HOST'] . "/";
+				$s         = preg_match('~^https://~is', _URL) ? 's' : '';
+				$this->url = "http{$s}://" . $_SERVER['HTTP_HOST'] . "/";
 			}else
 			{
 				$this->url = $_SERVER['PHP_SELF'];

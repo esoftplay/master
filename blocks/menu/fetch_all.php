@@ -22,7 +22,8 @@ foreach($arr AS $m)
 	}
 }
 $Bbc->menu_array = array();
-$main_url = $sys->wildcard ? 'http://'.config('site', 'url')._URI : _URL;
+$s               = preg_match('~^https://~is', _URL) ? 's' : '';
+$main_url        = $sys->wildcard ? 'http'.$s.'://'.config('site', 'url')._URI : _URL;
 foreach($r AS $dt)
 {
 	$data = array(
