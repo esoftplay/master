@@ -407,7 +407,7 @@ function alert_push_send($id, $last_id=0)
 				curl_setopt($ch, CURLOPT_POST, 1);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $message);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 				$r_ch[] = $ch;
 				// // TEMPORARILYWILLBEDELETEDBYDANANG
 				// $return = curl_exec($ch);
