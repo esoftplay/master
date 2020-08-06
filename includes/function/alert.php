@@ -409,50 +409,6 @@ function alert_push_send($id, $last_id=0)
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $message);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 				$r_ch[] = $ch;
-				// // TEMPORARILYWILLBEDELETEDBYDANANG
-				// $return = curl_exec($ch);
-				// curl_close($ch);
-				// try {
-				// 	$json = @json_decode($return, 1);
-				// 	if (!empty($json['data']) && is_array($json['data']))
-				// 	{
-				// 		$i = 0;
-				// 		foreach ($json['data'] as $out)
-				// 		{
-				// 			$to = $tos[$i];
-				// 			$i++;
-				// 			if (!empty($out['status']))
-				// 			{
-				// 				if ($out['status'] == 'ok')
-				// 				{
-				// 					$output = true;
-				// 				}else{
-				// 					switch (@$out['details']['error'])
-				// 					{
-				// 						// the device cannot receive push notifications anymore and you should stop sending messages to the corresponding Expo push token.
-				// 						case 'DeviceNotRegistered':
-				// 							$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$to['id']}");
-				// 							break;
-				// 						// the total notification payload was too large. On Android and iOS the total payload must be at most 4096 bytes.
-				// 						case 'MessageTooBig':
-				// 							break;
-				// 						// you are sending messages too frequently to the given device. Implement exponential backoff and slowly retry sending messages.
-				// 						case 'MessageRateExceeded':
-				// 							break;
-				// 						// your push notification credentials for your standalone app are invalid (ex: you may have revoked them). Run `expo build:ios -c` to regenerate new push notification credentials for iOS.
-				// 						case 'InvalidCredentials':
-				// 							/*
-				// 							When your push notification credentials have expired, simply run expo build:ios -c --no-publish
-				// 							to clear your expired credentials and generate new ones. The new credentials will take effect within a few minutes of being generated.
-				// 							You do not have to submit a new build!
-				// 							*/
-				// 							break;
-				// 					}
-				// 				}
-				// 			}
-				// 		}
-				// 	}
-				// } catch (Exception $e) {}
 			}
 
 			// create the multiple cURL handle
