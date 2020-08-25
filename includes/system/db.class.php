@@ -313,18 +313,18 @@ class bbcSQL
 			$out= urldecode_r(json_decode($this->file_read($path_to), 1));
 			if(!empty($out[$query][0]) && $out[$query][0] > $exp_sec)
 			{
-				$output = $out[$query][1];
-				$this->tmp_is_cache		= true;
-				$this->tmp_cache_count= count($output);
-				$is_write	= false;
+				$output                = $out[$query][1];
+				$this->tmp_is_cache    = true;
+				$this->tmp_cache_count = count($output);
+				$is_write              = false;
 			}
 		}
 		if($is_write)
 		{
 			$output = $this->$func($query);
-			$data		= array_merge((array)$out, array($query => array($this->now, $output)));
-			if (!empty($data))
+			if (!empty($output))
 			{
+				$data		= array_merge((array)$out, array($query => array($this->now, $output)));
 				$this->file_write($path_to, json_encode(urlencode_r($data)));
 			}
 		}
