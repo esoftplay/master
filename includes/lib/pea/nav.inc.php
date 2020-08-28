@@ -114,8 +114,7 @@ class oNav extends oDebug
 		$compileResult['all_order'] = (!empty($result['orderbyClause'])) ? " ORDER BY ". $result['orderbyClause'] : '';
 		$compileResult['all_limit'] = (!empty($result['limitClause'])) ? " LIMIT ". $result['limitClause'] : '';
 		$compileResult['distinct'] 	= (!empty($result['selectOption'])) ? true : false;
-		$compileResult['after_from_no_limit']	= $compileResult['all_table'] .' '. $compileResult['all_where'] .' '
-													. $compileResult['all_order'] .' ';
+		$compileResult['after_from_no_limit']	= preg_replace('~\s+limit\s+~is', ' ', $result['all_after_from']);
 		$compileResult['all_before_from'] = $result['fieldClause'];
 		$this->query	= array_merge($result, $compileResult);
 	}
@@ -482,8 +481,7 @@ class oNav extends oDebug
 	{
 		if (!$this->is_loaded['get_data']) $this->getData();
 
-		$sql 	= "SELECT ". $this->query['all_before_from'] . " FROM ".
-					$this->query['after_from_no_limit'] ." LIMIT ". $this->cur_sql_pos .", ". $this->int_max_rows;
+		$sql 	= "SELECT ". $this->query['all_before_from'] . " FROM ". $this->query['all_after_from'];
 		if (isset($_POST[$this->string_name."_search"]))
 		{
 			$sql = $this > getSearchSqlQuery();
