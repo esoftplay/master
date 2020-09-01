@@ -593,7 +593,7 @@ class phpRollAdmin extends phpEasyAdminLib
 							$tmp = preg_replace(array('~(<input\s?)~is', '~(<select\s?)~is', '~(<textarea\s?)~is'), '$1 disabled ', $tmp);
 							if ($input->objectName != 'system_delete_tool')
 							{
-								$tmp.= $this->setDisableInputRecovery($arrResult[$input->objectName], $input->name.'['.$i.']');
+								$tmp.= $this->setDisableInputRecovery($arrResult[$input->objectName], $input->name.'['.$i.']', $tmp);
 							}
 						}
 					}

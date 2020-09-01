@@ -559,17 +559,20 @@ class phpEasyAdminLib
 		}
 		$this->disableInput[$input_name][] = array($preprocessor, $value, $field_name);
 	}
-	function setDisableInputRecovery($values, $input_name)
+	function setDisableInputRecovery($values, $input_name, $input_html)
 	{
 		$output = '';
 		if (is_array($values))
 		{
 			foreach ($values as $i => $value)
 			{
-				$output .= $this->setDisableInputRecovery($value, $input_name.'['.$i.']');
+				$output .= $this->setDisableInputRecovery($value, $input_name.'['.$i.']', $input_html);
 			}
 		}else{
-			$output = '<input type="hidden" name="'.$input_name.'" value="'.urlencode($values).'" />';
+			if (!preg_match('~\s+type="checkbox"\s+~is', $input_html))
+			{
+				$output = '<input type="hidden" name="'.$input_name.'" value="'.urlencode($values).'" />';
+			}
 		}
 		return $output;
 	}

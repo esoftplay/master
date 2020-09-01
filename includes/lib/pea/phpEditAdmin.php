@@ -139,7 +139,7 @@ class phpEditAdmin extends phpAddAdmin
 					if ($is_disable)
 					{
 						$inputField = preg_replace(array('~(<input\s?)~is', '~(<select\s?)~is', '~(<textarea\s?)~is'), '$1 disabled ', $inputField);
-						$inputField.= $this->setDisableInputRecovery($defaultValue, $input->name);
+						$inputField.= $this->setDisableInputRecovery($defaultValue, $input->name, $inputField);
 					}
 				}
 				if ( $input->isInsideRow &&  $input->isInsideCell )
