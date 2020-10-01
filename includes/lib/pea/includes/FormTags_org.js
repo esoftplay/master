@@ -151,7 +151,11 @@ _Bbc(function ($) {
 				var tbl = $("#"+modalTbl);
 				tbl.html("");
 				for (var n = 0; n < t.length; n++) {
-					tbl.append('<tr data-id="'+t[n][2]+'" data-title="'+t[n][1]+'" style="cursor: pointer;"><td>'+t[n][0]+'</td><td>'+t[n][1]+'</td></tr>');
+					if (t[n][0] == t[n][0]) {
+						tbl.append('<tr data-id="'+t[n][2]+'" data-title="'+t[n][1]+'" style="cursor: pointer;"><td>'+t[n][0]+'</td></tr>');
+					}else{
+						tbl.append('<tr data-id="'+t[n][2]+'" data-title="'+t[n][1]+'" style="cursor: pointer;"><td>'+t[n][0]+'</td><td>'+t[n][1]+'</td></tr>');
+					}
 				}
 				$("tr", tbl).on("click", function(e){
 					$("#"+modalID).modal("hide");
@@ -329,7 +333,7 @@ _Bbc(function ($) {
 					<div class="modal-dialog">\
 						<div class="modal-content">\
 							<div class="modal-header">\
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 23px; right: 23px;">&times;</button>\
 								<div class="form-group">\
 									<input type="text" class="form-control" placeholder="'+d.placeholder+'" id="'+f+'modal_ac" />\
 								</div>\
@@ -360,12 +364,20 @@ _Bbc(function ($) {
 				// 	}
 				})
 			}
-			if ("" != $(this).val() && "" == $("#" + f + "_ac").val() && (e.value ? newInput.value = e.value : ($(this).data("parent") && (g += "&parent=" + $("#" + $(this).closest("form").attr("name") + "_" + $(this).data("parent")).val()), $.get(h + "id=" + $(this).val() + "&q=1&token=" + g, function (e) {
-				var t = e.split("|");
-				t[1] && $("#" + f + "_ac").val(t[1])
-			}))), $(this).data("parent")) {
-				var i = $(this).closest("form").find('input[name="' + $(this).data("parent") + '"]');
-				i.length && (e.parent = i)
+			if ($(this).data("parent")) {
+				g += "&parent=" + $("#" + $(this).closest("form").attr("name") + "_" + $(this).data("parent")).val();
+			}
+			if ($(this).val() != "" && $("#" + f + "_ac").val() == "") {
+				if (e.value) {
+					$("#" + f + "_ac").val(e.value);
+				}else{
+					$.get(h + "id=" + $(this).val() + "&q=1&token=" + g, function(e){
+						var t = e.split("|");
+						if (t[1]) {
+							$("#" + f + "_ac").val(t[1]);
+						}
+					});
+				}
 			}
 			e.url = h + "token=" + g + "&q=",
 			e.data = "object" == typeof d && d.constructor == Array ? d : null,
