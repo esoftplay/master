@@ -75,6 +75,10 @@ class bbcSQL
 			mysqli_set_charset($out, "utf8");
 			$this->link = $out;
 			$this->set_time();
+			if (defined('DB_SQL_MODE'))
+			{
+				$this->Execute('SET sql_mode = "'.DB_SQL_MODE.'"');
+			}
 		}
 		return $out;
 	}
