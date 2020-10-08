@@ -25,7 +25,7 @@ class phpRollPdf extends phpReport
 	{
 		$tgl	= date("Y-m-d");
 
-		if ( $fileName == '' )		$fileName = "pdfReport". $tgl . $extension;
+		if ( $fileName == '' )		$fileName = "pdfReport". $tgl . $this->extension;
 
 		$this->type				= "pdf";
 		$this->fileName			= $fileName;

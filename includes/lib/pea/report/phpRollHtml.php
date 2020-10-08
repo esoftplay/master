@@ -11,7 +11,7 @@ class phpRollHtml extends phpReport
 	{
 		$tgl	= date('Y-m-d');
 
-		if ( $fileName == '' )		$fileName = 'report'. $tgl . $extension;
+		if ( $fileName == '' )		$fileName = 'report'. $tgl . $this->extension;
 		if ( $worksheetName == '' )	$worksheetName = 'HTML Report '. $tgl;
 
 		$this->type          = 'html';

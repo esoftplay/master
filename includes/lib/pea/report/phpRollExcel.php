@@ -11,7 +11,7 @@ class phpRollExcel extends phpReport
 	{
 		$tgl	= date('Y-m-d');
 
-		if ( $fileName == '' )		$fileName = 'excelReport'. $tgl . $extension;
+		if ( $fileName == '' )		$fileName = 'excelReport'. $tgl . $this->extension;
 		if ( $worksheetName == '' )	$worksheetName = 'sheet ';
 
 		$this->type          = 'excel';
