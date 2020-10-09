@@ -9,7 +9,7 @@ $sys->set_layout('blank');
 $id = @intval($_GET['id']);
 if (!empty($id))
 {
-	switch ($_GET['act'])
+	switch (@$_GET['act'])
 	{
 		case 'del':
 			$db->Execute("DELETE FROM `bbc_async` WHERE `id`={$id}");
