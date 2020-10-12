@@ -128,9 +128,9 @@ function lang($txt)
 			}
 		}
 		$k = substr_count($output, '%');
-		if ($k >= count($j))
+		if ($k >= $j)
 		{
-			$l = $k - count($j) + 1;
+			$l = $k - $j + 1;
 			for ($i=0; $i < $l; $i++)
 			{
 				$param[] = '';
