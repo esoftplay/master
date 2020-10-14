@@ -357,7 +357,7 @@ function alert_push_send($id, $last_id=0)
 		$updatedb = 0;
 		$return   = '';
 
-		if ($data['status'] == 2) // sudah terbaca gk perlu dikirim notif
+		if ($data['status'] != 0) // yang belum dikirim saja
 		{
 			$output = true;
 		}else{
