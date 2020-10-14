@@ -354,139 +354,146 @@ function alert_push_send($id, $last_id=0)
 	$data   = $db->getRow("SELECT * FROM `bbc_user_push_notif` WHERE id={$id}");
 	if (!empty($data))
 	{
-		$unread   = $db->getOne("SELECT count(id) FROM `bbc_user_push_notif` WHERE `user_id`={$data['user_id']} AND `status` IN(0,1)"); // status 1 = berhasil terkirim, 0 = belum terkirim (tetapi pada mobile app tetap bisa di list)
-		$tos      = array();
-		$last_id  = intval($last_id);
 		$updatedb = 0;
-		$add_sql  = !empty($data['group_id']) ? ' AND `group_ids` LIKE \'%,'.$data['group_id'].',%\'' : '';
-		if (empty($data['user_id']))
+		$return   = '';
+
+		if ($data['status'] == 2) // sudah terbaca gk perlu dikirim notif
 		{
-			$sql = "`id` > {$last_id}{$add_sql}"; // digunakan untuk pencarian device selanjutnya jika device per user lebih dari 100
-			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
+			$output = true;
 		}else{
-			$sql = "`user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql}";
-			$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
-		}
-		if (!empty($tos))
-		{
-			$params    = json_decode($data['params'], 1);
-			$timestamp = date('Y-m-d H:i:s');
-			$messages  = array();
-			foreach ($tos as $to)
+			$unread  = $db->getOne("SELECT count(id) FROM `bbc_user_push_notif` WHERE `user_id`={$data['user_id']} AND `status` IN(0,1)"); // status 1 = berhasil terkirim, 0 = belum terkirim (tetapi pada mobile app tetap bisa di list)
+			$tos     = array();
+			$last_id = intval($last_id);
+			$add_sql = !empty($data['group_id']) ? ' AND `group_ids` LIKE \'%,'.$data['group_id'].',%\'' : '';
+			if (empty($data['user_id']))
 			{
-				$group_ids = repairExplode($to['group_ids']);
-				foreach ($group_ids as $g_id)
+				$sql = "`id` > {$last_id}{$add_sql}"; // digunakan untuk pencarian device selanjutnya jika device per user lebih dari 100
+				$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
+			}else{
+				$sql = "`user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql}";
+				$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
+			}
+			if (!empty($tos))
+			{
+				$params    = json_decode($data['params'], 1);
+				$timestamp = date('Y-m-d H:i:s');
+				$messages  = array();
+				foreach ($tos as $to)
 				{
-					$messages[$g_id][] = array(
-						'id'        => $to['id'],
-						'to'        => $to['token'],
-						'title'     => $data['title'],
-						'body'      => $data['message'],
-						'sound'     => 'default',
-						'badge'     => $unread,
-						'channelId' => 'android',
-						'data'      => array(
-														'id'      => $data['id'],
-														'action'  => $params['action'],
-														'module'  => $params['module'],
-														'title'   => $data['title'],
-														'message' => $data['message'],
-														'params'  => $params['arguments']
-													)
-						);
-				}
-				$last_id = $to['id'];
-			}
-
-			$r_ch = array();
-			foreach ($messages as $g_id => $message)
-			{
-				$message = json_encode($message);
-				$ch      = curl_init();
-				curl_setopt($ch, CURLOPT_URL,"https://exp.host/--/api/v2/push/send");
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $message);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-				$r_ch[] = $ch;
-			}
-
-			// create the multiple cURL handle
-			$mh = curl_multi_init();
-			foreach ($r_ch as $ch)
-			{
-				curl_multi_add_handle($mh, $ch);
-			}
-			// execute the multi handle
-			do {
-				$status = curl_multi_exec($mh, $active);
-				if ($active)
-				{
-					curl_multi_select($mh);
-				}
-			} while ($active && $status == CURLM_OK);
-			foreach ($r_ch as $ch)
-			{
-				$return = curl_multi_getcontent($ch);
-				try {
-					$json = @json_decode($return, 1);
-					if (!empty($json['data']) && is_array($json['data']))
+					$group_ids = repairExplode($to['group_ids']);
+					foreach ($group_ids as $g_id)
 					{
-						$i = 0;
-						foreach ($json['data'] as $out)
+						$messages[$g_id][] = array(
+							'id'        => $to['id'],
+							'to'        => $to['token'],
+							'title'     => $data['title'],
+							'body'      => $data['message'],
+							'sound'     => 'default',
+							'badge'     => $unread,
+							'channelId' => 'android',
+							'data'      => array(
+															'id'      => $data['id'],
+															'action'  => $params['action'],
+															'module'  => $params['module'],
+															'title'   => $data['title'],
+															'message' => $data['message'],
+															'params'  => $params['arguments']
+														)
+							);
+					}
+					$last_id = $to['id'];
+				}
+
+				$r_ch = array();
+				foreach ($messages as $g_id => $message)
+				{
+					$message = json_encode($message);
+					$ch      = curl_init();
+					curl_setopt($ch, CURLOPT_URL,"https://exp.host/--/api/v2/push/send");
+					curl_setopt($ch, CURLOPT_POST, 1);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $message);
+					curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+					$r_ch[] = $ch;
+				}
+
+				// create the multiple cURL handle
+				$mh = curl_multi_init();
+				foreach ($r_ch as $ch)
+				{
+					curl_multi_add_handle($mh, $ch);
+				}
+				// execute the multi handle
+				do {
+					$status = curl_multi_exec($mh, $active);
+					if ($active)
+					{
+						curl_multi_select($mh);
+					}
+				} while ($active && $status == CURLM_OK);
+				foreach ($r_ch as $ch)
+				{
+					$return = curl_multi_getcontent($ch);
+					try {
+						$json = @json_decode($return, 1);
+						if (!empty($json['data']) && is_array($json['data']))
 						{
-							$to = $tos[$i];
-							$i++;
-							if (!empty($out['status']))
+							$i = 0;
+							foreach ($json['data'] as $out)
 							{
-								if ($out['status'] == 'ok')
+								$to = $tos[$i];
+								$i++;
+								if (!empty($out['status']))
 								{
-									$output = true;
-								}else{
-									switch (@$out['details']['error'])
+									if ($out['status'] == 'ok')
 									{
-										// the device cannot receive push notifications anymore and you should stop sending messages to the corresponding Expo push token.
-										case 'DeviceNotRegistered':
-											$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$to['id']}");
-											break;
-										// the total notification payload was too large. On Android and iOS the total payload must be at most 4096 bytes.
-										case 'MessageTooBig':
-											break;
-										// you are sending messages too frequently to the given device. Implement exponential backoff and slowly retry sending messages.
-										case 'MessageRateExceeded':
-											break;
-										// your push notification credentials for your standalone app are invalid (ex: you may have revoked them). Run `expo build:ios -c` to regenerate new push notification credentials for iOS.
-										case 'InvalidCredentials':
-											/*
-											When your push notification credentials have expired, simply run expo build:ios -c --no-publish
-											to clear your expired credentials and generate new ones. The new credentials will take effect within a few minutes of being generated.
-											You do not have to submit a new build!
-											*/
-											break;
+										$output = true;
+									}else{
+										switch (@$out['details']['error'])
+										{
+											// the device cannot receive push notifications anymore and you should stop sending messages to the corresponding Expo push token.
+											case 'DeviceNotRegistered':
+												$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$to['id']}");
+												break;
+											// the total notification payload was too large. On Android and iOS the total payload must be at most 4096 bytes.
+											case 'MessageTooBig':
+												break;
+											// you are sending messages too frequently to the given device. Implement exponential backoff and slowly retry sending messages.
+											case 'MessageRateExceeded':
+												break;
+											// your push notification credentials for your standalone app are invalid (ex: you may have revoked them). Run `expo build:ios -c` to regenerate new push notification credentials for iOS.
+											case 'InvalidCredentials':
+												/*
+												When your push notification credentials have expired, simply run expo build:ios -c --no-publish
+												to clear your expired credentials and generate new ones. The new credentials will take effect within a few minutes of being generated.
+												You do not have to submit a new build!
+												*/
+												break;
+										}
 									}
 								}
 							}
 						}
-					}
-				} catch (Exception $e) {}
-				curl_multi_remove_handle($mh, $ch);
-			}
-			curl_multi_close($mh);
-
-			// Jika status masih belum terkirim
-			if ($data['status']==0)
-			{
-				// check apakah masih ada data setelah $last_id
-				$dtpush = $db->getRow("SELECT * FROM `bbc_user_push` WHERE `id`>{$last_id} AND {$sql} ORDER BY `id` ASC LIMIT 1");
-				// Jika data setelah yang terakhir diproses sudah tidak ada lagi maka update row di `alert_push_send`
-				if (empty($dtpush))
-				{
-					$updatedb = 1;
+					} catch (Exception $e) {}
+					curl_multi_remove_handle($mh, $ch);
 				}
-			}
-			if (!$updatedb)
-			{
-				_class('async')->run('alert_push_send', [$data['id'], $last_id]);
+				curl_multi_close($mh);
+
+				// Jika status masih belum terkirim
+				if ($data['status']==0)
+				{
+					// check apakah masih ada data setelah $last_id
+					$dtpush = $db->getRow("SELECT * FROM `bbc_user_push` WHERE `id`>{$last_id} AND {$sql} ORDER BY `id` ASC LIMIT 1");
+					// Jika data setelah yang terakhir diproses sudah tidak ada lagi maka update row di `alert_push_send`
+					if (empty($dtpush))
+					{
+						$updatedb = 1;
+					}
+				}
+				if (!$updatedb)
+				{
+					_class('async')->run('alert_push_send', [$data['id'], $last_id]);
+				}
 			}
 		}
 		if ($updatedb)
