@@ -17,6 +17,7 @@ class bbcSQL
 {
 	var $debug = 0;
 	var $debug_tot = 0;
+	var $insertid = 0;
 	var $dbOutput;
 	var $resid;
 	var $timestamp_sec= 900;
@@ -134,8 +135,19 @@ class bbcSQL
 		{
 			$sql = preg_replace('~([a-z0-9]+)\'([a-z0-9]+)~is', '$1\\\'$2', $sql);
 		}
+		if (preg_match('~\s+?insert\s+into\s+~is', $sql))
+		{
+			$this->insertid = 0;
+			$is_insert      = 1;
+		}else{
+			$is_insert = 0;
+		}
 		$result = @mysqli_query($this->link, $sql);
 		$this->echoerror($sql);
+		if ($is_insert)
+		{
+			$this->insertid = @mysqli_insert_id($this->link);
+		}
 		$this->resid = $result;
 		$this->tmp_is_cache = false;
 		return $result;
@@ -185,8 +197,7 @@ class bbcSQL
 
 	function Insert_ID()
 	{
-		$result = mysqli_insert_id($this->link);
-		return $result;
+		return $this->insertid;
 	}
 
 	function Affected_rows()
