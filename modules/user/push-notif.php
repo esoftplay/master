@@ -17,7 +17,8 @@ $output = array(
 if (!empty($_POST['secretkey']))
 {
 	$user_id   = @intval($_POST['user_id']);
-	$group_id  = @intval($_POST['group_id']);
+	$group_id  = !empty($_POST['group_id']) ? explode(',', $_POST['group_id']) : [0]; // agar bisa multi group_id untuk list notif
+	$group_id  = implode(',', array_filter($group_id));
 	$last_id   = @intval($_GET['last_id']);
 	$secretkey = _class('crypt')->decode($_POST['secretkey']);
 	if (!empty($secretkey))
@@ -34,9 +35,9 @@ if (!empty($_POST['secretkey']))
 					$user_id  .= ',0';
 					$group_id .= ',0';
 				}
-				$sql       = !empty($group_id) ? ' AND `group_id` IN ('.$group_id.')' : '';
-				$data      = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id`>{$last_id} ORDER BY `id` ASC LIMIT 6");
-				$next      = '';
+				$sql  = !empty($group_id) ? ' AND `group_id` IN ('.$group_id.')' : '';
+				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id`>{$last_id} ORDER BY `id` ASC LIMIT 6");
+				$next = '';
 				if (!empty($data))
 				{
 					$dt = end($data);
