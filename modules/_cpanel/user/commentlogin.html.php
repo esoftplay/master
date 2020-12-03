@@ -17,20 +17,13 @@ if (!empty($_SESSION[_class('comment')->sesname]))
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 			<title>Fetching Data</title>
 			<script type="text/javascript">
-				function waitForBridge() {
-					if (window.postMessage.length !== 1) {
-						setTimeout(waitForBridge, 300);
-					} else {
-						var data = JSON.stringify({
-						ok: 1,
-						name: '<?php echo @$user->name; ?>',
-						email: '<?php echo @$user->email; ?>',
-						website: '<?php echo @$user->website; ?>',
-						image: '<?php echo @$user->image; ?>'});
-						postMessage(data);
-					}
-				};
-				waitForBridge();
+				var data = JSON.stringify({
+					ok: 1,
+					name: '<?php echo @$user->name; ?>',
+					email: '<?php echo @$user->email; ?>',
+					website: '<?php echo @$user->website; ?>',
+					image: '<?php echo @$user->image; ?>'});
+				window.ReactNativeWebView.postMessage(data);
 				if (typeof FisipAndroid!="undefined") {
 					FisipAndroid.setUser("<?php echo $user->name; ?>","<?php echo $user->email; ?>","<?php echo $user->website; ?>","<?php echo $user->image; ?>");
 				}
