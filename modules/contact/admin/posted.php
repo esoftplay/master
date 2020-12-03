@@ -19,6 +19,7 @@ echo $form->search->getForm();
 $form = _lib('pea', 'contact');
 $form->initRoll("$add_sql ORDER BY `followed`, post_date ASC", 'id');
 $form->roll->setSaveTool(false);
+$form->roll->addReport('excel');
 
 $form->roll->addInput('name', 'sqllinks');
 $form->roll->input->name->setTitle('Name');
