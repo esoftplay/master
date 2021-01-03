@@ -59,17 +59,16 @@ function getWhereClause ( $data )
 	$regex = "/(.*)WHERE(.*)/is";
 }
 
-function parseSQL ( $sql )
+function parseSQL($sql)
 {
-	$sql = get_magic_quotes_gpc() ? stripslashes ( $sql ) : $sql;
-	if (	! function_exists ( "arrTrim" ) ||
-			! function_exists ( "arrFuncRecover" )
+	if (!function_exists('arrTrim') ||
+			!function_exists('arrFuncRecover')
 		)
 		die ("<strong>DIE</strong>: Fungsi tidak lengkap");
 
-	$result = array ();
-	$type = preg_split ( "/\s/", trim ( $sql ), 2 );
-	$type = strtolower ( trim ( $type[0] ) );
+	$result = array();
+	$type   = preg_split("/\s/", trim($sql), 2);
+	$type   = strtolower(trim($type[0]));
 	$result["type"] = $type;
 	switch ( $type )
 	{
