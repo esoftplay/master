@@ -318,7 +318,7 @@ class bbcSQL
 			{
 				$output                = $out[$query][1];
 				$this->tmp_is_cache    = true;
-				$this->tmp_cache_count = count($output);
+				$this->tmp_cache_count = count((array)$output);
 				$is_write              = false;
 			}
 		}
