@@ -15,6 +15,12 @@ RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{REQUEST_URI} (.css|.js)$  [NC]
 RewriteRule ^(.*)$ index.php?_loader=$1 [L]
 
+# Deny access to database.sql
+<Files database.sql>
+	Order allow,deny
+	Deny from all
+</Files>
+
 # fisip.net
 # Send all blocked request to homepage with 404 Not Found!
 ErrorDocument 404 file_not_found

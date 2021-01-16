@@ -31,6 +31,8 @@ class FormSqlplaintext extends FormText
 
 	function getOutput( $str_value = '', $str_name = '', $str_extra = '' )
 	{
+		if (empty($this->extra[0])) $this->extra[0] = '';
+		if (empty($this->extra[1])) $this->extra[1] = '';
 		return $this->getReturn($this->extra[0].$this->getReportOutput($str_value).$this->extra[1]);
 	}
 }
