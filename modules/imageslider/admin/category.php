@@ -24,6 +24,9 @@ $tabs['Add New'] = $form->edit->getForm();
 
 $form->initRoll('WHERE 1', 'id');
 
+$form->roll->addInput('id','sqlplaintext');
+$form->roll->input->id->setDisplayColumn(false);
+
 $form->roll->addInput('title', 'text');
 $form->roll->input->title->setTitle('Title');
 $form->roll->input->title->setSize('30');

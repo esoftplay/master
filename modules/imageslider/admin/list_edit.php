@@ -25,6 +25,7 @@ if (!empty($is_desc_exist))
 	$form->edit->input->description->setLanguage();
 }
 $form->edit->addInput('image','file');
+$form->edit->input->image->setImageClick();
 $form->edit->input->image->setRequire('any');
 $form->edit->input->image->setAllowedExtension(array('jpg', 'gif', 'png', 'bmp'));
 
