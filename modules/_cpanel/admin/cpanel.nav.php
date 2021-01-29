@@ -92,7 +92,10 @@ foreach(array_reverse($r) AS $cpanel)
 $nav['title'] = $cpanel['title'];
 
 // CHECK PERMISION
-if(!in_array($r[0]['id'], $Bbc->menu->cpanel) && !in_array($r[0]['id'], $user->cpanel_ids))
+if(!in_array($r[0]['id'], $Bbc->menu->cpanel) && !in_array('all', $user->cpanel_ids))
 {
-	redirect($Bbc->mod['circuit']);
+	if (!in_array($r[0]['id'], $user->cpanel_ids))
+	{
+		redirect($Bbc->mod['circuit']);
+	}
 }
