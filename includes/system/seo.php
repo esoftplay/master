@@ -15,6 +15,8 @@ if (session_id() == '')
 		}
 		session_set_cookie_params(0, '/', $_seo['dom'], false, false);
 		ini_set('session.cookie_domain', $_seo['dom']);
+		ini_set('session.cookie_httponly', 1);
+		if (preg_match('~^https~is', _URL)) ini_set('session.cookie_secure', 1);
 	}
 	session_start();
 }
