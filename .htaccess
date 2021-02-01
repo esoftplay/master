@@ -6,6 +6,9 @@ RewriteRule ^dummyPageToBypassCORS$ /_setting.php [L]
 RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
 RewriteRule ^(.*)$ - [E=BASE:%1]
 
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK) [NC]
+RewriteRule ^.* - [F]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} (/|.htm|.php|.html|.xml|/[^.]*)$  [NC]
