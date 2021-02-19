@@ -383,10 +383,11 @@ function alert_push_send($id, $last_id=0)
 					$group_ids = repairExplode($to['group_ids']);
 					foreach ($group_ids as $g_id)
 					{
+						$tmp_title         = preg_replace('~^#[A-Za-z]+\s{0,}~is', '', $data['title']);
 						$messages[$g_id][] = array(
 							'id'        => $to['id'],
 							'to'        => $to['token'],
-							'title'     => $data['title'],
+							'title'     => $tmp_title,
 							'body'      => $data['message'],
 							'sound'     => 'default',
 							'badge'     => $unread,
@@ -395,7 +396,7 @@ function alert_push_send($id, $last_id=0)
 															'id'      => $data['id'],
 															'action'  => $params['action'],
 															'module'  => $params['module'],
-															'title'   => $data['title'],
+															'title'   => $tmp_title,
 															'message' => $data['message'],
 															'params'  => $params['arguments']
 														)
