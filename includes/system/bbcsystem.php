@@ -14,5 +14,10 @@ if (function_exists('ioncube_loader_version'))
 			break;
 	}
 }else{
-	echo '<a href="https://www.ioncube.com/loader-wizard/loader-wizard.zip">click here</a> to get loader';
+	if (defined('_BBCSYS'))
+	{
+		require_once _BBCSYS;
+	}else{
+		echo '<a href="https://www.ioncube.com/loader-wizard/loader-wizard.zip">click here</a> to get loader';
+	}
 }
