@@ -120,7 +120,6 @@ class FormDatetime extends FormDate
 		link_js(_PEA_URL.'includes/FormDatetime.js', false);
 		$name	= ( $str_name == '' ) ? $this->name : $str_name;
 		$extra	= $this->extra .' '.$str_extra;
-		$str_value = str_replace(strrchr($str_value, ' '), '', $str_value);
 		$def_value = !empty($str_value) ? date($this->dateFormat, strtotime($str_value)) : '';
 
 		$out = '<input type="datetime" name="'.$name.'" value="'.$def_value.'"'.$this->getParam().$extra.' />';
