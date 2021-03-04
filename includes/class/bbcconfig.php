@@ -235,10 +235,11 @@ class bbcconfig
 							}
 							$input .= implode(@$data['delim'], $out);
 						}else{
-							$data['option']	= is_array($data['option']) ? $data['option'] : array(1 => $data['option']);
-							list($key, $val)= each($data['option']);
-							$select	= $key==$value ? ' checked="checked"' : '';
-							$input .= '<label><input type="checkbox" name="'.$name.'['.$id.']" value="'.htmlentities($key).'" id="'.$name.$id.$key.'"'.$data['attr'].$select.'> '.$val.'</label>';
+							$data['option'] = is_array($data['option']) ? $data['option'] : array(1 => $data['option']);
+							$key            = key($data['option']);
+							$val            = current($data['option']);
+							$select	        = $key == $value ? ' checked="checked"' : '';
+							$input         .= '<label><input type="checkbox" name="'.$name.'['.$id.']" value="'.htmlentities($key).'" id="'.$name.$id.$key.'"'.$data['attr'].$select.'> '.$val.'</label>';
 						}
 					break;
 					case 'htmlarea':
