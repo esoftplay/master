@@ -305,10 +305,11 @@ class params
 							}
 							$input .= implode(@$data['delim'], $out);
 						}else{
-							$data['option']	= is_array($data['option']) ? $data['option'] : array(1 => $data['option']);
-							list($key, $val)= each($data['option']);
-							$select	= $key==$value ? ' checked="checked"' : '';
-							$input .= '<label><input type="checkbox" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key).'" id="'.menu_save($id.$key).'"'.$select.$data['attr'].' /> '.$val.'</label>';
+							$data['option'] = is_array($data['option']) ? $data['option'] : array(1 => $data['option']);
+							$key            = key($data['option']);
+							$val            = current($data['option']);
+							$select	        = $key == $value ? ' checked="checked"' : '';
+							$input         .= '<label><input type="checkbox" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key).'" id="'.menu_save($id.$key).'"'.$select.$data['attr'].' /> '.$val.'</label>';
 						}
 					break;
 					case 'custom':

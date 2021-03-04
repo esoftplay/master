@@ -148,7 +148,7 @@ class xss {
 	{
 		if (is_array($str))
 		{
-			while (list($key) = each($str))
+			while ($key = key($str))
 			{
 				$str[$key] = $this->xss_clean($str[$key]);
 			}
