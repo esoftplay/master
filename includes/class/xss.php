@@ -118,13 +118,7 @@ class xss {
 		// Should we filter the input data?
 		if ($this->use_xss_clean === TRUE)
 		{
-			if (get_magic_quotes_gpc()) {
-				$str = stripslashes($str);
-			}
 			$str = $this->xss_clean($str);
-			if (get_magic_quotes_gpc())	{
-				$str = addslashes($str);
-			}
 			// Standardize newlines
 			if (strpos($str, "\r") !== FALSE) {
 				$str = str_replace(array("\r\n", "\r"), "\n", $str);
