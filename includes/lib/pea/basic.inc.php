@@ -350,55 +350,34 @@ function logQuery($query, $isLog = '')
  */
 function varCleanFromInput()
 {
-    $resarray = array();
-    foreach (func_get_args() as $var) {
-        // Get var
-        global $$var;
-        if (empty($var)) {
-            return;
-        }
-        $ourvar = $$var;
+		$resarray = array();
+		foreach (func_get_args() as $var) {
+				// Get var
+				global $$var;
+				if (empty($var)) {
+						return;
+				}
+				$ourvar = $$var;
 
-        if (!isset($ourvar)) {
-            array_push($resarray, NULL);
-            continue;
-        }
-        if (empty($ourvar)) {
-            array_push($resarray, $ourvar);
-            continue;
-        }
+				if (!isset($ourvar)) {
+						array_push($resarray, NULL);
+						continue;
+				}
+				if (empty($ourvar)) {
+						array_push($resarray, $ourvar);
+						continue;
+				}
 
-        // Clean var
-        if (get_magic_quotes_gpc()) {
-            pnStripslashes($ourvar);
-        }
+				// Add to result array
+				array_push($resarray, $ourvar);
+		}
 
-        // Add to result array
-        array_push($resarray, $ourvar);
-    }
-
-    // Return vars
-    if (func_num_args() == 1) {
-        return $resarray[0];
-    } else {
-        return $resarray;
-    }
-}
-
-/**
- * strip slashes
- *
- * stripslashes on multidimensional arrays.
- * Used in conjunction with pnVarCleanFromInput
- * @access private
- * @param any variables or arrays to be stripslashed
- */
-function pnStripslashes (&$value) {
-    if(!is_array($value)) {
-        $value = stripslashes($value);
-    } else {
-        array_walk($value,'pnStripslashes');
-    }
+		// Return vars
+		if (func_num_args() == 1) {
+				return $resarray[0];
+		} else {
+				return $resarray;
+		}
 }
 
 /**
@@ -415,24 +394,24 @@ function pnStripslashes (&$value) {
  */
 function varPrepForStore()
 {
-    $resarray = array();
-    foreach (func_get_args() as $ourvar) {
+		$resarray = array();
+		foreach (func_get_args() as $ourvar) {
 
-        // Prepare var
-        if (!get_magic_quotes_runtime()) {
+				// Prepare var
+				if (!get_magic_quotes_runtime()) {
 #            $ourvar = addslashes($ourvar);
-        }
+				}
 
-        // Add to array
-        array_push($resarray, $ourvar);
-    }
+				// Add to array
+				array_push($resarray, $ourvar);
+		}
 
-    // Return vars
-    if (func_num_args() == 1) {
-        return $resarray[0];
-    } else {
-        return $resarray;
-    }
+		// Return vars
+		if (func_num_args() == 1) {
+				return $resarray[0];
+		} else {
+				return $resarray;
+		}
 }
 
 /*
