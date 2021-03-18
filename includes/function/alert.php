@@ -380,11 +380,11 @@ function alert_push_send($id, $last_id=0)
 				$messages  = array();
 				foreach ($tos as $to)
 				{
-					$group_ids = repairExplode($to['group_ids']);
-					foreach ($group_ids as $g_id)
-					{
+					// $group_ids = repairExplode($to['group_ids']);
+					// foreach ($group_ids as $g_id)
+					// {
 						$tmp_title         = preg_replace('~^#[A-Za-z]+\s{0,}~is', '', $data['title']);
-						$messages[$g_id][] = array(
+						$messages[$to['id']][] = array(
 							'id'        => $to['id'],
 							'to'        => $to['token'],
 							'title'     => $tmp_title,
@@ -401,12 +401,12 @@ function alert_push_send($id, $last_id=0)
 															'params'  => $params['arguments']
 														)
 							);
-					}
+					// }
 					$last_id = $to['id'];
 				}
 
 				$r_ch = array();
-				foreach ($messages as $g_id => $message)
+				foreach ($messages as $to_id => $message)
 				{
 					$message = json_encode($message);
 					$ch      = curl_init();
