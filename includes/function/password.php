@@ -10,7 +10,7 @@ class Encrypt {
 
 	function __construct()
 	{
-		$this->_mcrypt_exists = ( ! function_exists('mcrypt_encrypt')) ? FALSE : TRUE;
+		$this->_mcrypt_exists = (!function_exists('mcrypt_encrypt') || defined('NO_MCRYPT')) ? FALSE : TRUE;
 	}
 
 	function decode($string, $key = '')
