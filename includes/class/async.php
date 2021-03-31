@@ -12,27 +12,48 @@
 */
 class async
 {
-	public $client;
-	private $tasks    = 0;
+	private $tasks;
+	private $task_ids;
 	private $isExists = false;
 	private $host;
 	private $port;
 	function __construct()
 	{
 		$this->isExists = class_exists('GearmanClient');
+		$this->tasks    = 0;
+		$this->task_ids = array();
 		if ($this->isExists)
 		{
-			$this->client = new GearmanClient();
 			$this->host = defined('_ASYNC_HOST') ? _ASYNC_HOST : '127.0.0.1';
 			$this->port = defined('_ASYNC_PORT') ? _ASYNC_PORT : 4730;
-			$this->client->addServer($this->host, $this->port);
 		}
 	}
 	function __destruct()
 	{
-		if ($this->tasks > 0)
+		if ($this->tasks > 0 && count($this->task_ids) > 0)
 		{
-			@$this->client->runTasks();
+			$client = new GearmanClient();
+			$client->addServer($this->host, $this->port);
+			foreach ($this->task_ids as $dt)
+			{
+				try {
+					$result = $client->addTaskBackground('esoftplay_async', json_encode(array(
+						$_SERVER,
+						_ROOT,
+						_ADMIN,
+						$dt[0],	# $object
+						$dt[1],	# $insert_ID
+						$dt[2]	# $params
+						)));
+				} catch (Exception $e) {
+					$log = 'Async::'.json_encode($object).' '.  $e->getMessage();
+					if (function_exists('iLog'))
+					{
+						iLog($log);
+					}
+				}
+			}
+			$client->runTasks();
 		}
 	}
 	public function run($object, $params=array())
@@ -50,23 +71,8 @@ class async
 				$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_async` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `function` varchar(255) DEFAULT '', `arguments` text, `created` datetime DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 			}
 			$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".json_encode($params)."', `created`=NOW()");
-			try {
-				$this->tasks++;
-				$result = $this->client->addTaskBackground('esoftplay_async', json_encode(array(
-					$_SERVER,
-					_ROOT,
-					_ADMIN,
-					$object,
-					$db->Insert_ID(),
-					$params
-					)));
-			} catch (Exception $e) {
-				$log = 'Async::'.json_encode($object).' '.  $e->getMessage();
-				if (function_exists('iLog'))
-				{
-					iLog($log);
-				}
-			}
+			$this->task_ids[] = array($object, $db->Insert_ID(), $params);
+			$this->tasks++;
 		}else{
 			if (is_array($object))
 			{
@@ -103,23 +109,8 @@ class async
 			$params = json_decode($sync['arguments'], 1);
 			if ($this->isExists)
 			{
-				try {
-					$this->tasks++;
-					$result = $this->client->addTaskBackground('esoftplay_async', json_encode(array(
-						$_SERVER,
-						_ROOT,
-						_ADMIN,
-						$object,
-						$async_id,
-						$params
-						)));
-				} catch (Exception $e) {
-					$log = 'Async::'.$sync['function'].' '.  $e->getMessage();
-					if (function_exists('iLog'))
-					{
-						iLog($log);
-					}
-				}
+				$this->task_ids[] = array($object, $async_id, $params);
+				$this->tasks++;
 			}else{
 				$db->Execute("DELETE FROM `bbc_async` WHERE `id`=".$async_id);
 				$db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
@@ -174,26 +165,6 @@ class async
 						);
 					}
 				}
-				// fwrite($handle,"workers\n");
-				// while (!feof($handle))
-				// {
-				// 	$line = fgets($handle, 4096);
-				// 	if( $line==".\n")
-				// 	{
-				// 		break;
-				// 	}
-				// 	// FD IP-ADDRESS CLIENT-ID : FUNCTION
-				// 	if( preg_match("~^(\d+)[ \t](.*?)[ \t](.*?) : ?(.*)~",$line,$matches) )
-				// 	{
-				// 		$fd = $matches[1];
-				// 		$status['connections'][$fd] = array(
-				// 			'fd'       => $fd,
-				// 			'ip'       => $matches[2],
-				// 			'id'       => $matches[3],
-				// 			'function' => $matches[4],
-				// 		);
-				// 	}
-				// }
 				fclose($handle);
 			}
 		} catch (Exception $e) {
