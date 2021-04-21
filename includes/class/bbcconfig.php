@@ -220,7 +220,7 @@ class bbcconfig
 					break;
 					case 'checkbox':
 						$cls = 'checkbox';
-						if(count($data['option']) > 1)
+						if(count((array)$data['option']) > 1)
 						{
 							$out = array();
 							$value	= is_array($value) ? $value : array($value);

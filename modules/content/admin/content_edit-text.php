@@ -8,7 +8,7 @@ $tmp = array(
 	'content'     => '',
 	'tags'        => ''
 );
-$text = @array_merge($tmp, $data['text'][$lang_id]);
+$text = @array_merge($tmp, (array)$data['text'][$lang_id]);
 $defConfig = array('language' => (count($r_lang) > 1) ? $language['code'] : 'en', 'path' => 'images/modules/content/');
 ?>
 <div class="form-group">
