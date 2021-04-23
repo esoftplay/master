@@ -24,6 +24,11 @@ RewriteRule ^(.*)$ index.php?_loader=$1 [L]
 	Deny from all
 </Files>
 
+# For approval deeplink
+<Files 'apple-app-site-association'>
+	ForceType 'application/json'
+</Files>
+
 # fisip.net
 # Send all blocked request to homepage with 404 Not Found!
 ErrorDocument 404 file_not_found
