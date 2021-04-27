@@ -1,14 +1,14 @@
 <?php
-$formName		= $_GET['formName'];
-$formType		= $_GET['formType'];
-$reportType	= $_GET['reportType'];
+$formName		= @$_GET['formName'];
+$formType		= @$_GET['formType'];
+$reportType	= @$_GET['reportType'];
 
 $formClass	= 'php'. ucfirst(strtolower($formType)) . ucfirst(strtolower($reportType)) . '.php';
 if (!preg_match('~/~is', $formClass))
 {
 	include_once( $formClass );
 	$formFile = '';
-	if (!empty($_GET['name']))
+	if (!empty(@$_GET['name']))
 	{
 		if (!defined('_CACHE'))
 		{
