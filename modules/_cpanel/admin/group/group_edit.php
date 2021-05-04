@@ -81,7 +81,7 @@ foreach($r AS $dt)
 	if($dt['is_admin']) $r_menu_admin[] = $dt;
 	else $r_menu_public[] = $dt;
 }
-$data['menus'] = repairExplode($data['menus']);
+$data['menus'] = !empty($data['menus']) ? repairExplode($data['menus']) : [];
 
 # GET ARRAY FOR PUBLIC MENU...
 $r_menu_public = repairImplodeVar(array_option($r_menu_public, 0, @$r_menu_public[0]['cat_name']), $data['menus']);
