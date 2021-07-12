@@ -58,7 +58,7 @@ $form->roll->onSave('menu_repair');
 $form->roll->onDelete('doDeleteMenu');
 function doDeleteMenu($ids)
 {
-	if(count($ids > 0))
+	if(count($ids) > 0)
 	{
 		menu_delete($ids);
 	}
