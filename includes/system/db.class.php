@@ -109,6 +109,7 @@ class bbcSQL
 		if(!is_dir($this->cache_dir))
 		{
 			@mkdir($this->cache_dir, 0777);
+			@chmod($this->cache_dir, 0777);
 		}
 	}
 
