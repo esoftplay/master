@@ -143,7 +143,7 @@ class FormFile extends Form
 	// untuk ngeset extensi apa aja yang boleh di upload
 	// berupa array
 	// contoh: $this->setAllowedExtension( array('jpg', 'gif') );
-	function setAllowedExtension( $arr_allowed_extension = array('jpg', 'gif', 'png', 'bmp') )
+	function setAllowedExtension( $arr_allowed_extension = array('jpg', 'jpeg', 'gif', 'png', 'bmp') )
 	{
 		$this->arrAllowedExtension	= $arr_allowed_extension;
 	}
