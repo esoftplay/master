@@ -18,10 +18,14 @@ if($type == 1 || $type == 2 || $type == 3 || $type == 4)
 			include 'layout.main.php';
 			break;
 		case 'login':
+			$MAINURL= _URL._ADMIN;
+			if (!empty($user->id))
+			{
+				redirect($MAINURL);
+			}
 			$arr    = $sys->login($type_name);
 			$email  = @$arr['email'];
 			$user   = $db->getRow("SELECT * FROM `bbc_user` WHERE `username`='{$email}'");
-			$MAINURL= _URL._ADMIN;
 			if(empty($user))
 			{
 				$q		= "SELECT `user_id` FROM `bbc_account` WHERE `email`='{$email}'";
