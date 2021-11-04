@@ -11,9 +11,7 @@ if(!isset($user->is_login) || $user->is_login != 1)
 		header('location:'._URL.'admin');	die();
 	}
 	$Bbc->home = $Bbc->login;
-}
-else
-{
+} else {
 	$Bbc->menu = new stdClass;
 	$user->menu_ids = is_array($user->menu_ids) ? $user->menu_ids : array();
 	$q="SELECT * FROM bbc_menu AS m LEFT JOIN bbc_menu_text AS t 
