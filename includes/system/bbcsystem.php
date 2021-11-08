@@ -3,15 +3,11 @@
 if (function_exists('ioncube_loader_version'))
 {
 	$i = intval(ioncube_loader_version());
-	switch ($i)
+	if (file_exists( __DIR__.'/'.$i.'.php'))
 	{
-		case 9:
-		case 10:
-			require_once __DIR__.'/'.$i.'.php';
-			break;
-		default:
-			require_once __DIR__.'/8.php';
-			break;
+		require_once __DIR__.'/'.$i.'.php';
+	}else{
+		echo 'ioncube_loader_version: '.$i.' is not ready yet';
 	}
 }else{
 	if (defined('_BBCSYS'))
