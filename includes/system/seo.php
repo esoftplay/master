@@ -11,7 +11,12 @@ if (session_id() == '')
 		{
 			session_name($_seo['_URI'].$m[1]);
 		}else{
-			session_name($_seo['_URI']);
+			if (!empty($_seo['_URI']))
+			{
+				session_name($_seo['_URI']);
+			}else{
+				session_name('/');
+			}
 		}
 		session_set_cookie_params(0, '/', $_seo['dom'], false, false);
 		ini_set('session.cookie_domain', $_seo['dom']);
