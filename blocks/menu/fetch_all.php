@@ -4,18 +4,25 @@ $q     = "SELECT id, name FROM bbc_menu_cat ORDER BY orderby ASC";
 $r_cat = $db->getAssoc($q);
 $arr   = $sys->menu_get_all();
 $r     = array();
-if (empty($user->menu_ids) || !is_array($user->menu_ids))
+
+if (isset($user)) // ada error variable global $user tidak ada di sini. PHP Warning:  Attempt to assign property of non-object in /var/www/html/master/blocks/menu/fetch_all.php on line 9
 {
-	$user->menu_ids = array();
+	if (empty($user->menu_ids) || !is_array($user->menu_ids))
+	{
+		$user->menu_ids = array();
+	}
 }
 foreach($arr AS $m)
 {
 	if($m['protected'])
 	{
-		if(intval($user->id) > 0)
+		if (isset($user)) // ada error variable global $user tidak ada di sini. PHP Notice:  Trying to get property of non-object in /var/www/html/master/blocks/menu/fetch_all.php on line 15
 		{
-			if(in_array('all', $user->menu_ids) ||	in_array($m['id'], $user->menu_ids))
-				$r[] = $m;
+			if(intval($user->id) > 0)
+			{
+				if(in_array('all', $user->menu_ids) ||	in_array($m['id'], $user->menu_ids))
+					$r[] = $m;
+			}
 		}
 	}else{
 		$r[] = $m;
