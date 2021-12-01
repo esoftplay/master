@@ -24,6 +24,8 @@ RewriteRule ^(.*)$ index.php?_loader=$1 [L]
 	Deny from all
 </Files>
 
+RewriteRule ^(images/uploads/(.*htm|.*php|.*html|.*xml)$) - [F,L,NC]
+
 # For approval deeplink
 <Files 'apple-app-site-association'>
 	ForceType 'application/json'
