@@ -11,7 +11,7 @@ if(!empty($_GET['id']))
 		$output  = file_read($tmp_file);
 		$success = 1;
 	}else{
-		$q        = "SELECT * FROM bbc_account_temp WHERE code='".$_GET['id']."'";
+		$q        = 'SELECT * FROM `bbc_account_temp` WHERE `code`="'.addslashes($_GET['id']).'"';
 		$tmp_data = $db->getRow($q);
 		if(!$db->Affected_rows() || !$tmp_data['active'])
 		{
@@ -27,9 +27,9 @@ if(!empty($_GET['id']))
 				if($user_id > 0)
 				{
 					// FECTH USER DATA
-					$q = "SELECT * FROM bbc_account WHERE `user_id`=".$user_id;
+					$q    = 'SELECT * FROM `bbc_account` WHERE `user_id`='.$user_id;
 					$data = $db->getRow($q);
-					$q = "SELECT * FROM bbc_user WHERE id=".$user_id;
+					$q    = 'SELECT * FROM `bbc_user` WHERE `id`='.$user_id;
 					$data = array_merge($data, $db->getRow($q));
 					$data['password'] = decode($data['password']);
 
@@ -65,14 +65,14 @@ if(!empty($_GET['id']))
 					$Msg = user_create_validate_msg();
 				}
 			}
-			$q = "DELETE FROM bbc_account_temp WHERE id=".$tmp_data['id'];
+			$q = 'DELETE FROM `bbc_account_temp` WHERE `id`='.$tmp_data['id'];
 			$db->Execute($q);
 		}
 		if(!empty($Msg))
 		{
 			$output = $Msg;
 		}
-		$q = "DELETE FROM bbc_account_temp WHERE `date` < NOW()";
+		$q = 'DELETE FROM `bbc_account_temp` WHERE `date` < NOW()';
 		$db->Execute($q);
 	}
 }
