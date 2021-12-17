@@ -535,7 +535,7 @@ class bbcSQL
 		}
 		if (function_exists('file_get_contents'))
 		{
-			return file_get_contents($file);
+			return @file_get_contents($file);
 		}
 		if (!$fp = @fopen($file, $method))
 		{
