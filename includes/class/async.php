@@ -33,27 +33,31 @@ class async
 		if ($this->tasks > 0 && count($this->task_ids) > 0)
 		{
 			$client = new GearmanClient();
-			$client->addServer($this->host, $this->port);
-			foreach ($this->task_ids as $dt)
-			{
-				try {
-					$result = $client->addTaskBackground('esoftplay_async', json_encode(array(
-						$_SERVER,
-						_ROOT,
-						_ADMIN,
-						$dt[0],	# $object
-						$dt[1],	# $insert_ID
-						$dt[2]	# $params
-						)));
-				} catch (Exception $e) {
-					$log = 'Async::'.json_encode($object).' '.  $e->getMessage();
-					if (function_exists('iLog'))
-					{
-						iLog($log);
+			try {
+				$client->addServer($this->host, $this->port);
+				foreach ($this->task_ids as $dt)
+				{
+					try {
+						$result = $client->addTaskBackground('esoftplay_async', json_encode(array(
+							$_SERVER,
+							_ROOT,
+							_ADMIN,
+							$dt[0],	# $object
+							$dt[1],	# $insert_ID
+							$dt[2]	# $params
+							)));
+					} catch (Exception $e) {
+						$log = 'Async::'.json_encode($object).' '.  $e->getMessage();
+						if (function_exists('iLog'))
+						{
+							iLog($log);
+						}
 					}
 				}
+				$client->runTasks();
+			} catch (Exception $e) {
+				$this->restart();
 			}
-			$client->runTasks();
 		}
 	}
 	public function run($object, $params=array())

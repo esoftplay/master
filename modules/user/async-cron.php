@@ -13,95 +13,18 @@ if (!empty($data))
 	$checklast = file_read($filecheck);
 
 	$last      = strtotime($data['created']);
-	$threshold = strtotime('-5 minutes');
+	$threshold = strtotime('-2 minutes');
 	$thresmax  = strtotime('-35 minutes');
 	if ($last < $threshold)
 	{
-		$async   = _class('async');
 		if ($last < $thresmax)
 		{
 			$pending   = '?';
 			$process   = '?';
 			$worker    = '?';
 			$notify = 'ada async yang umur lebih dari 35 menit';
-			// $async->restart($notify);
 		}else{
-			if (preg_match('~worker_num.*?([0-9]+)~is', file_read($fileasync), $match))
-			{
-				$num_worker = intval($match[1]);
-			}
-			$pending   = 0;
-			$process   = 0;
-			$worker    = 0;
-			$gearadmin = shell_exec('gearadmin --status');
-			if (!empty($gearadmin) && preg_match('~esoftplay_async\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)~is', $gearadmin, $status))
-			{
-				if (file_exists($filefailed))
-				{
-					@unlink($filefailed);
-				}
-				$pending = @intval($status[1]);
-				$process = @intval($status[2]);
-				$worker  = @intval($status[3]);
-				/* JIKA JUMLAH WORKER DIBAWAH DARI CONFIG MAKA RESTART ASYNC SAJA */
-				if ($worker < $num_worker)
-				{
-					$async->restart('karena jumlah worker hanya: '.money($worker).' yang seharusnya '.money($num_worker));
-					user_async_cron_clean();
-				}
-				/* JIKA JUMLAH WORKER MASIH UTUH MAKA EKSEKUSI SAJA TASK PERTAMA SEJUMLAH WORKER AKTIF */
-				if ($worker >= $num_worker)
-				{
-					$r_stuck = $db->getAll("SELECT id, function FROM `bbc_async` WHERE `created` < '".date('Y-m-d H:i:s', $threshold)."' ORDER BY id ASC LIMIT 0, {$worker}");
-					$total   = count($r_stuck);
-					/* TAPI JIKA YANG DIEKSEKUSI SEBELUMNYA MSH BELUM HILANG MAKA NOTIF DEVELOPER */
-					if ($checknow == $checklast)
-					{
-						// fix sebelumnya masih belum selesai
-						$notify = '';
-					}else{
-						/* EKSEKUSI ASYNC YANG MACET LALU SIMPAN APA AJA YANG SUDAH DIEKSEKUSI  */
-						$arr_execute = @json_decode(file_read($fileexecute), 1);
-						$on_execute  = array();
-						$no_execute  = array(); // Hitung jumlah yang sudah dieksekusi sebelumnya tapi msh belum selesai
-						if (!is_array($arr_execute))
-						{
-							$arr_execute = array();
-						}
-						foreach ($r_stuck as $dt)
-						{
-							if (!in_array($dt['id'], $arr_execute))
-							{
-								$async->fix($dt['id']);
-								$on_execute[] = $dt['id'];
-							}else{
-								$no_execute[] = $dt['id'];
-							}
-						}
-						file_write($fileexecute, json_encode($on_execute));
-						file_write($filecheck, $data['id'].'-'.$data['function']);
-						/* JIKA YANG DIEKSEKUSI SEBELUMNYA MSH BELUM SELESAI SAMPAI LEBIH DARI 5 MAKA NOTIF DEVELOPER */
-						if (count($no_execute) >= 5)
-						{
-							$notify = 'ada yang stuck sejumlah '.money($i).":\n".json_encode($no_execute);
-						}
-					}
-				} // jika worker masih dibawah config bisa jd msh dalam proses restart, jd tdk perlu notify
-			}else{
-				if (!file_exists($filefailed))
-				{
-					file_write($filefailed, strtotime('now'));
-				}else{
-					$lastfailed  = file_read($filefailed);
-					$limitfailed = strtotime('-30 MINUTES');
-					if ($lastfailed < $limitfailed)
-					{
-						$async->restart('karena gagal check lebih dari 30menit');
-						unlink($filefailed);
-						$notify = 'check async gagal selama 30menit akan direstart';
-					}
-				}
-			}
+			_class('async')->fix($data['id']);
 		}
 		if ($notify)
 		{
