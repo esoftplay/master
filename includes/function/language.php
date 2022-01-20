@@ -89,10 +89,10 @@ function lang($txt)
 		{
 			global $db, $sys;
 			$module_id = $sys->module_id;
-			$code_id = $db->getOne("SELECT `id` FROM `bbc_lang_code` WHERE `code`='{$id}' AND `module_id`={$module_id}");
+			$code_id = $db->getOne('SELECT `id` FROM `bbc_lang_code` WHERE `code`="'.addslashes($id).'" AND `module_id`='.intval($module_id));
 			if (empty($code_id))
 			{
-				$db->Execute("INSERT INTO `bbc_lang_code` SET `code`='$id', `module_id`={$module_id}");
+				$db->Execute('INSERT INTO `bbc_lang_code` SET `code`="'.addslashes($id).'", `module_id`='.intval($module_id));
 				$code_id = $db->Insert_ID();
 			}
 			$r_lang = get_lang();
@@ -103,10 +103,10 @@ function lang($txt)
 					$_LANG[$id] = $txt;
 				}
 				$content = $txt;
-				$text_id = $db->getOne("SELECT `text_id` FROM `bbc_lang_text` WHERE `code_id`={$code_id} AND `lang_id`={$lang_id}");
+				$text_id = $db->getOne('SELECT `text_id` FROM `bbc_lang_text` WHERE `code_id`='.intval($code_id).' AND `lang_id`='.intval($lang_id));
 				if (empty($text_id))
 				{
-					$db->Execute("INSERT INTO `bbc_lang_text` SET `lang_id`='{$lang_id}', `code_id`={$code_id}, `content`='{$content}'");
+					$db->Execute('INSERT INTO `bbc_lang_text` SET `lang_id`='.intval($lang_id).', `code_id`='.intval($code_id).', `content`="'.addslashes($content).'"');
 				}
 			}
 			lang_refresh();
