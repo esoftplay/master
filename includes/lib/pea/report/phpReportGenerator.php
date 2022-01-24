@@ -10,15 +10,12 @@ if (!preg_match('~/~is', $formClass))
 	$formFile = '';
 	if (!empty(@$_GET['name']))
 	{
-		if (!defined('_CACHE'))
-		{
-			define('_CACHE', _ROOT.'images/cache/');
-		}
 		ini_set('display_errors', 0);
 		ini_set('memory_limit', -1);
 		set_time_limit(0);
 		$name     = str_replace('/', '', $_GET['name']); // pengamanan agar tidak membaca file diluar cache
-		$formFile = _CACHE.implode('/', str_split($name, 2)).'.cfg';
+		$_cache   = _ROOT.'images/tmp/'.date('Y/m/d/');
+		$formFile = $_cache.implode('/', str_split($name, 2)).'.cfg';
 		try {
 			$json = phpReportRead($formFile);
 		} catch (Exception $e) {

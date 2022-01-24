@@ -366,14 +366,23 @@ class phpRollAdmin extends phpEasyAdminLib
 		if ($this->isReportOn)
 		{
 			$export_all = !empty($_GET[$this->formName.'_export_all']);
+			$_cache     = _ROOT.'images/tmp/';
+			$purge_day  = date('Y/m/d', strtotime('-2 DAYS'));
+			if (file_exists($_cache.$purge_day))
+			{
+				_func('path', 'delete', $_cache.$purge_day);
+			}
+			$_cache .= date('Y/m/d/');
+
+
 
 			$out  .= '<span class="input-group-addon checkbox roll-export">';
 			$out  .= 'Export: ';
 			$link  = _PEA_URL . 'report/phpReportGenerator.php?formName='. $this->formName .'&formType=roll&reportType=';
 			$file  = menu_save(@$_GET['mod'].$this->formName.session_id());
 			$file .= $export_all ? '' : $page;
-			$file  = _CACHE.implode('/', str_split($file, 2)).'.cfg';
-			$name  = substr(str_replace('/', '', preg_replace('~^'.preg_quote(_CACHE, '~').'~s', '', $file)), 0, -4);
+			$file  = $_cache.implode('/', str_split($file, 2)).'.cfg';
+			$name  = substr(str_replace('/', '', preg_replace('~^'.preg_quote($_cache, '~').'~s', '', $file)), 0, -4);
 			$title = !empty($this->input->header->title) ? strip_tags($this->input->header->title) : 'Report';
 			if (preg_match('~([a-z0-9_]+)~is', $this->table, $m) && empty($this->input->header->title))
 			{
