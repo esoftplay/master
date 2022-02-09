@@ -431,14 +431,9 @@ function user_login($username, $password, $is_admin = 0, $rememberme = 0)
 	{
 		return $output;
 	}
-<<<<<<< HEAD
 	$username = str_replace("'", "\'", $username);
 	$q        = "SELECT * FROM `bbc_user` WHERE `username`='{$username}'";
 	$dt       = $db->getRow($q);
-=======
-	$q  = 'SELECT * FROM `bbc_user` WHERE `username`="'.addslashes($username).'"';
-	$dt = $db->getRow($q);
->>>>>>> 7b120a6 (sql injection bug)
 	if($db->affected_rows())
 	{
 		// LOGIN CORRECT
