@@ -159,11 +159,13 @@ function user_create($params)
 			// Username
 			if($key == 'username')
 			{
-				if(isset($params[$key]) && !empty($params[$key])) {
+				if(isset($params[$key]) && !empty($params[$key]))
+				{
 					$data[$key] = strtolower($params[$key]);
 				}else{
 					$data[$key] = strtolower($params['email']);
 				}
+				$data[$key] = str_replace("'", "\'", strtolower($data[$key]));
 			}
 			// Password
 			if($key == 'password')
@@ -171,7 +173,7 @@ function user_create($params)
 				if(isset($params[$key]) && !empty($params[$key])) {
 					$data[$key] = $params[$key];
 				}else{
-					$data[$key] = preg_replace("/[^a-z0-9]/is", "", base64_encode(rand()));
+					$data[$key] = preg_replace('~[^a-z0-9]~is', '', base64_encode(rand()));
 				}
 			}
 			// Email
@@ -429,14 +431,15 @@ function user_login($username, $password, $is_admin = 0, $rememberme = 0)
 	{
 		return $output;
 	}
-	$q  = "SELECT * FROM `bbc_user` WHERE `username`='$username'";
-	$dt = $db->getRow($q);
+	$username = str_replace("'", "\'", $username);
+	$q        = "SELECT * FROM `bbc_user` WHERE `username`='{$username}'";
+	$dt       = $db->getRow($q);
 	if($db->affected_rows())
 	{
 		// LOGIN CORRECT
 		if($password == decode($dt['password']))
 		{
-			$q = "SELECT is_admin FROM bbc_user_group WHERE id IN(".fixValue($dt['group_ids']).")";
+			$q = "SELECT `is_admin` FROM `bbc_user_group` WHERE `id` IN(".fixValue($dt['group_ids']).")";
 			$dt['is_admin'] = array_unique($db->getCol($q));
 			if(!$dt['active'])
 			{
