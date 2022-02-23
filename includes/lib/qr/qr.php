@@ -24,6 +24,7 @@ class qr
 	private $data     = '';
 	private $level    = 'H';
 	private $size     = 10;
+	private $margin   = 2;
 	private $isRender = false;
 	private $url      = '';
 	private $dir      = '';
@@ -53,6 +54,10 @@ class qr
 		{
 			$this->size = $size;
 		}
+	}
+	public function setMargin($margin)
+	{
+		$this->margin = max(0, $margin);
 	}
 	public function getData()
 	{
@@ -114,7 +119,7 @@ class qr
 					{
 						_func('path', 'create', $temp);
 					}
-					QRcode::png($this->data, $dir, $this->level, $this->size, 2);
+					QRcode::png($this->data, $dir, $this->level, $this->size, $this->margin);
 				}
 			}
 			if (file_exists($dir))
