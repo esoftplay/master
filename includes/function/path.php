@@ -57,15 +57,17 @@ function path_delete($path)
 		@chmod($path,0777);
 		if (is_dir($path))
 		{
-			$handle = opendir($path);
-			while(false !== ($filename = readdir($handle)))
+			if ($handle = opendir($path);)
 			{
-				if ($filename != '.' && $filename != '..')
+				while(false !== ($filename = readdir($handle)))
 				{
-					call_user_func(__FUNCTION__, $path.'/'.$filename);
+					if ($filename != '.' && $filename != '..')
+					{
+						call_user_func(__FUNCTION__, $path.'/'.$filename);
+					}
 				}
+				closedir($handle);
 			}
-			closedir($handle);
 			@rmdir($path);
 		} else {
 			@unlink($path);
