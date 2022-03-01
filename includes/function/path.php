@@ -57,7 +57,7 @@ function path_delete($path)
 		@chmod($path,0777);
 		if (is_dir($path))
 		{
-			if ($handle = opendir($path);)
+			if ($handle = opendir($path))
 			{
 				while(false !== ($filename = readdir($handle)))
 				{

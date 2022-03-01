@@ -97,9 +97,9 @@ $form->roll->input->link->setTitle('Link');
 
 if(empty($keyword['cat_id']))
 {
-	$q = "SELECT DISTINCT cat_id FROM imageslider WHERE 1";
+	$q = "SELECT count(DISTINCT `cat_id`) FROM `imageslider` WHERE 1";
 	$r = $db->getOne($q);
-	$ord = (count($r) > 1) ? false : true;
+	$ord = (intval($r) > 1) ? false : true;
 }else $ord = true;
 if($ord)
 {

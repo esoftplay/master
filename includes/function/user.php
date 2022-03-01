@@ -225,8 +225,8 @@ function user_create($params)
 			// $db->Execute('UNLOCK TABLES');
 			@unlink(_CACHE.'user_create_validate_msg.txt');
 			$q = "INSERT INTO `bbc_user` SET
-				`group_ids`       = '".repairImplode($data['group_ids'])."',
-				`username`        = '".$data['username']."',
+				`group_ids`       = '".repairImplode(addslashes_r($data['group_ids']))."',
+				`username`        = '".addslashes($data['username'])."',
 				`password`        = '".encode($data['password'])."',
 				`last_ip`         = '',
 				`last_ip_temp`    = '',
@@ -242,9 +242,9 @@ function user_create($params)
 				$user_id = $db->Insert_ID();
 				$q = "INSERT INTO `bbc_account` SET
 					`user_id`  = '".$user_id."',
-					`username` = '".$data['username']."',
-					`name`     = '".$data['name']."',
-					`email`    = '".$data['email']."',
+					`username` = '".addslashes($data['username'])."',
+					`name`     = '".addslashes($data['name'])."',
+					`email`    = '".addslashes($data['email'])."',
 					`params`   = '".config_encode($data['params'])."'
 					";
 				$db->Execute($q);
