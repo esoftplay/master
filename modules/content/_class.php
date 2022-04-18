@@ -16,7 +16,7 @@ class content_class {
 		$this->path       = $path;
 		$this->img_path   = _ROOT.$path.'images/';
 		$this->img_url    = _URL.$path.'images/';
-		$this->tmp_path   = _CACHE.'content/';
+		$this->tmp_path   = _ROOT.'images/tmp/content/';
 		$this->text_path  = _ROOT.$path.'comments/';
 		$this->prune_path = content_prune_path();
 		$this->conf       = get_config('content');

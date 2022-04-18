@@ -6,7 +6,7 @@ include_once __DIR__.'/phpReport.php';
 
 class phpRollExcel extends phpReport
 {
-	public $extension = '.xls';
+	public $extension = '.xlsx';
 	function __construct( $fileName='', $worksheetName='', $arrHeader=array(), $arrData = array() )
 	{
 		$tgl	= date('Y-m-d');

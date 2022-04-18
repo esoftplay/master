@@ -82,7 +82,7 @@ class FormMultifile extends FormMulticheckbox
 			'folder' => $str_folder,
 			'tmp'    => menu_save($str_folder).'/',
 			);
-		$this->folder_tmp  = _CACHE.$this->params['path']['tmp'];
+		$this->folder_tmp  = _ROOT.'images/tmp/'.$this->params['path']['tmp'];
 		$this->folder      = _ROOT.$str_folder;
 		$this->folderUrl   = $str_folder_url;
 		$this->isFolderSet = true;
@@ -559,7 +559,7 @@ class FormMultifile extends FormMulticheckbox
 		}
 		$extra  = str_replace(' class="form-control"', '', $this->extra.' '. $str_extra);
 		$values = $this->getDataFromRelationTable($str_value);
-		$path   = str_replace(_ROOT, _URL, _CACHE).$this->params['path']['tmp'];
+		$path   = _URL.'images/tmp/'.$this->params['path']['tmp'];
 		ob_start();
 		$this->params['folder'] = $this->folder;
 		$this->params['expire'] = strtotime('+2 HOUR');

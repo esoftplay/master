@@ -11,7 +11,7 @@ if (!empty($_GET['token']))
 }
 if ($file && !empty($param['expire']) && $param['expire'] > time())
 {
-  $file->path = _CACHE.@trim($param['path']['tmp']);
+  $file->path = _ROOT.'images/tmp/'.@trim($param['path']['tmp']);
   $extAllowed = $param['ext'];
   $sizeLimit  = 1024*1024*1024;
   if (!file_exists($file->path))
@@ -220,11 +220,11 @@ $params = array(
   );
 $extra = 'title="click or drag to upload"';
 $extra .= ' data-name="gallery"';
-$extra .= ' data-path="'.str_replace(_ROOT, _URL, _CACHE).$g_temp.'"';
+$extra .= ' data-path="'._URL.'images/tmp/'.$g_temp.'"';
 $extra .= ' data-params="'.encode(json_encode($params)).'"';
 #extra .= ' data-title'; ## ini optional mau pakai field ini atau tidak terserah
 #extra .= ' data-description'; ## ini optional
-$array = $db->getAssoc("SELECT id, image, title, description FROM gallery_image WHERE gallery_id=1 ORDER BY orderby ASC");
+$array = $db->getAssoc("SELECT `id`, `image`, `title`, `description` FROM `gallery_image` WHERE 1 ORDER BY `orderby` ASC");
 ?>
 <div class="file-uploader"<?php echo $extra; ?>>
   <noscript> <p>Please enable JavaScript to use file uploader.</p> </noscript>
