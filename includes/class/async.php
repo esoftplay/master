@@ -62,6 +62,12 @@ class async
 	}
 	public function run($object, $params=array())
 	{
+		global $db;
+		if (!empty($db->bg_check))
+		{
+			$db->add_bg([$this, 'run'], func_get_args());
+			return true;
+		}
 		if (!is_array($params))
 		{
 			$params = array($params);
