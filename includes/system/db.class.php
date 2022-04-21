@@ -15,8 +15,10 @@ if (!defined('_ROOT'))
 }
 class bbcSQL
 {
-	var $debug = 0;
+	var $debug     = 0;
 	var $debug_tot = 0;
+	var $bg_check  = 1;
+	var $bg_data   = [];
 	var $dbOutput;
 	var $resid;
 	var $timestamp_sec= 900;
@@ -53,6 +55,19 @@ class bbcSQL
 			@mysqli_close($this->link);
 			unset($this->link);
 		}
+
+		$this->bg_check = 0;
+		if (!empty($this->bg_data))
+		{
+			foreach ($this->bg_data as $data)
+			{
+				call_user_func_array($data[0], $data[1]);
+			}
+		}
+	}
+	function add_bg($obj, $args)
+	{
+		$this->bg_data[] = [$obj, $args];
 	}
 	function Connect($DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_TABLE)
 	{
