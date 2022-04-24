@@ -6,12 +6,12 @@ if (!defined('_SYS'))
 	{
 		define('_SYS', _ROOT.'includes/system/');
 	}else{
-		define('_SYS', str_replace('\\', '/', __DIR__).'/includes/system/');
+		define('_SYS', __DIR__.'/includes/system/');
 	}
 }
 if (!defined('_ROOT'))
 {
-	define('_ROOT', str_replace('\\', '/', __DIR__).'/');
+	define('_ROOT', __DIR__.'/');
 }
 class bbcSQL
 {
@@ -134,7 +134,7 @@ class bbcSQL
 		{
 			return false;
 		}
-		if (!$this->link)
+		if (empty($this->link))
 		{
 			if ($this->debug)
 			{
@@ -321,8 +321,13 @@ class bbcSQL
 
 	function cache($func, $query, $path = '', $sec = '')
 	{
-		// sample $timestamp = '-2 hour';
-		if(empty($path)) $path = implode('/',str_split(md5($query), 3)).'.cfg';
+		// sample $sec = '-2 hour';
+		if(empty($path))
+		{
+			$path = 'sql/'.md5($query).'.sql';
+		}else{
+			$path = trim($path, ' /');
+		}
 		$is_write	= true;
 		$output		= $out = array();
 		$path_to	= $this->cache_dir.$path;
@@ -407,7 +412,7 @@ class bbcSQL
 
 	function _fetch()
 	{
-		if (!$this->link)
+		if (empty($this->link))
 		{
 			if ($this->debug)
 			$this->dbOutput .= "<br /><b>Koneksi ke database gagal!</b>";
@@ -486,7 +491,7 @@ class bbcSQL
 
 	function fixPath($value)
 	{
-		$value = str_replace(array('\\', _ROOT), array('/', ''), $value);
+		$value = str_replace(_ROOT, '', $value);
 		if (defined('_MST'))
 		{
 			$r = explode('|', _MST);
