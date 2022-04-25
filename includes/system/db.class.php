@@ -709,8 +709,8 @@ if(!empty($_DB))
 	{
 		$i                = ($i > 0) ? $i : '';
 		$GLOBALS['db'.$i] = new bbcSQL();
-		// $ifconn           = $GLOBALS['db'.$i]->Pconnect($d['SERVER'], $d['USERNAME'], $d['PASSWORD'], $d['DATABASE']);
-		$ifconn           = $GLOBALS['db'.$i]->Connect($d['SERVER'], $d['USERNAME'], $d['PASSWORD'], $d['DATABASE']);
+		$ifconn           = $GLOBALS['db'.$i]->Pconnect($d['SERVER'], $d['USERNAME'], $d['PASSWORD'], $d['DATABASE']);
+		// $ifconn           = $GLOBALS['db'.$i]->Connect($d['SERVER'], $d['USERNAME'], $d['PASSWORD'], $d['DATABASE']);
 		if (!$ifconn)
 		{
 			die('Error while connecting to Database "'.$d['DATABASE'].'" on Server');
