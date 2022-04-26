@@ -1,8 +1,9 @@
 <?php  if ( ! defined('_VALID_BBC')) exit('No direct script access allowed');
 
-$user     = new stdClass();
-$user->id = 0;
-$_CONFIG  = get_config(0);
+$user        = new stdClass();
+$user->id    = 0;
+$_CONFIG     = get_config(0);
+$Bbc->no_log = 1;
 if (empty($Bbc->no_log))
 {
 	/*===================================================
