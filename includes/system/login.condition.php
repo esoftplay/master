@@ -74,13 +74,13 @@ if (empty($Bbc->no_log))
 	 *==================================================*/
 	if(!isset($_SESSION[bbcAuth.'_log']))
 	{
-		$q = "INSERT INTO bbc_log	SET name='".session_id()."',	ip='".$_SERVER['REMOTE_ADDR']."', `datetime`=NOW()";
+		$q = "INSERT INTO bbc_log SET name='".session_id()."', ip='".$_SERVER['REMOTE_ADDR']."', `datetime`=NOW()";
 		$db->Execute($q);
 		$_SESSION[bbcAuth.'_log'] = $db->Insert_ID();
 	}else{
-		$q = "UPDATE bbc_log	SET `datetime`=NOW() WHERE id=".intval($_SESSION[bbcAuth.'_log']);
+		$q = "UPDATE bbc_log SET `datetime`=NOW() WHERE id=".intval($_SESSION[bbcAuth.'_log']);
 		$db->Execute($q);
 	}
-	$q = "DELETE FROM bbc_log	WHERE datetime < DATE_ADD(NOW(), INTERVAL -{$dur} {$per})";
+	$q = "DELETE FROM bbc_log WHERE datetime < DATE_ADD(NOW(), INTERVAL -{$dur} {$per})";
 	$db->Execute($q);
 }
