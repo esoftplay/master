@@ -80,22 +80,9 @@ function path_create($path, $chmod = 0777)
 	{
 		if(file_exists($path)) $output = true;
 		else {
-			$path = preg_replace('~^'.addslashes(_ROOT).'~s', '', $path);
-			$path = preg_replace('~^'.addslashes(_URL).'~s', '', $path);
-			$tmp_dir = _ROOT;
-			$r = explode('/', $path);
-			foreach($r AS $dir)
-			{
-				$tmp_dir .= $dir.'/';
-				if(!file_exists($tmp_dir))
-				{
-					if(mkdir($tmp_dir, $chmod))
-					{
-						chmod($tmp_dir, $chmod);
-					}
-				}
-			}
-			$output = file_exists($tmp_dir);
+			umask(0);
+			mkdir($path, $chmod, true);
+			$output = file_exists($path);
 		}
 	}else{
 		$output = false;
