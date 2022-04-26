@@ -1,5 +1,6 @@
 <?php
-$Bbc = new stdClass();
+$Bbc         = new stdClass();
+$Bbc->no_log = 1;
 define( '_VALID_BBC', 1 );
 define( '_ADMIN', '' );
 include_once 'config.php';
