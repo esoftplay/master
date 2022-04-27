@@ -545,7 +545,7 @@ function user_auto_login()
 		$user_id = intval(decode($code));
 		if($user_id > 0)
 		{
-			$q      = "SELECT * FROM bbc_user WHERE id=$user_id";
+			$q      = "SELECT * FROM `bbc_user` WHERE `id`={$user_id}";
 			$usr    = $db->getRow($q);
 			$output = user_login($usr['username'], $usr['password'], 0, 1);
 			if($output != 'allowed')

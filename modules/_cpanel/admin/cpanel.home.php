@@ -33,7 +33,7 @@ $form->roll->input->links1->setGetName( 'id' );
 $form->roll->input->links1->setLinks( 'index.php?mod=_cpanel.user&act=force2Logout');
 
 $userOnline = $form->roll->getForm();
-
+/*
 $form1 = _lib('pea',  $str_table = "bbc_log" );
 
 $form1->initRoll( "WHERE datetime > DATE_ADD(datetime, INTERVAL '-".config('logged','duration')." 900' $tmp_time)", 'id' );
@@ -51,7 +51,7 @@ $form1->roll->input->datetime->setTitle( 'Exp' );
 $form1->roll->input->datetime->setPlaintext( true );
 
 $userOnline .= '<p>&nbsp;</p>'.$form1->roll->getForm();
-
+*/
 /*========================================*
  * Popular Content...
  *========================================*/

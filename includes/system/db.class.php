@@ -55,6 +55,11 @@ class bbcSQL
 			@mysqli_close($this->link);
 			unset($this->link);
 		}
+		if (isset($this->link_read))
+		{
+			@mysqli_close($this->link_read);
+			unset($this->link_read);
+		}
 
 		$this->bg_check = 0;
 		if (!empty($this->bg_data))
@@ -69,26 +74,54 @@ class bbcSQL
 	{
 		$this->bg_data[] = [$obj, $args];
 	}
-	function Connect($DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_TABLE)
+	function Connect($DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_NAME, $is_presistent=false)
 	{
 		if (!function_exists('mysqli_connect'))
 		{
 			die('Sorry, your PHP does not support Mysql due to mysqli_connect is not available as a function');
 		}else{
-			try {
-				$this->dbname = $DB_TABLE;
-				$this->dbuser = $DB_USER;
-				$out = @mysqli_connect($DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_TABLE);
-			} catch (Exception $e) {
-				die('Sorry, '.$e->getMessage());
+			if (empty($DB_SERVER))
+			{
+				die('Please insert database credential');
+			}else{
+				try {
+					$out        = [];
+					$add_server = $is_presistent ? 'p:' : '';
+					if (is_array($DB_SERVER))
+					{
+						$this->dbname = $DB_NAME[0];
+						$this->dbuser = $DB_USER[0];
+
+						foreach ($DB_SERVER as $i => $server)
+						{
+							$test = @mysqli_connect($add_server.$server, $DB_USER[$i], $DB_PASSWORD[$i], $DB_NAME[$i]);
+							if (!$test)
+							{
+								break;
+							}else{
+								$out[] = $test;
+							}
+						}
+					}else{
+						$out[]        = @mysqli_connect($add_server.$DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_NAME);
+						$this->dbname = $DB_NAME;
+						$this->dbuser = $DB_USER;
+					}
+				} catch (Exception $e) {
+					die('Sorry, '.$e->getMessage());
+				}
 			}
 		}
-		if (!$out)
+		if (empty($out[0]))
 		{
 			$this->echoerror();
 		}else{
-			mysqli_set_charset($out, "utf8");
-			$this->link = $out;
+			mysqli_set_charset($out[0], "utf8");
+			$this->link = $out[0];
+			if (!empty($out[1]))
+			{
+				$this->link_read = $out[1];
+			}
 			$this->set_time();
 			if (defined('DB_SQL_MODE'))
 			{
@@ -98,9 +131,9 @@ class bbcSQL
 		return $out;
 	}
 
-	function Pconnect($DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_TABLE)
+	function Pconnect($DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_NAME)
 	{
-		return $this->Connect('p:'.$DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_TABLE);
+		return $this->Connect($DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_NAME, true);
 	}
 
 	function set_time($offset = '')
@@ -123,8 +156,8 @@ class bbcSQL
 		$this->cache_dir= $dir;
 		if(!is_dir($this->cache_dir))
 		{
-			@mkdir($this->cache_dir, 0777);
-			@chmod($this->cache_dir, 0777);
+			@umask(0);
+			@mkdir($this->cache_dir, 0777, true);
 		}
 	}
 
@@ -150,8 +183,14 @@ class bbcSQL
 		{
 			$sql = preg_replace('~([a-z0-9]+)\'([a-z0-9]+)~is', '$1\\\'$2', $sql);
 		}
-		$result = @mysqli_query($this->link, $sql);
-		$this->echoerror($sql);
+		if (!empty($this->link_read) && preg_match('~\s+?select\s+~is', $sql))
+		{
+			$result = @mysqli_query($this->link_read, $sql);
+			$this->echoerror($sql, $this->link_read);
+		}else{
+			$result = @mysqli_query($this->link, $sql);
+			$this->echoerror($sql, $this->link);
+		}
 		$this->resid = $result;
 		$this->tmp_is_cache = false;
 		return $result;
@@ -445,7 +484,7 @@ class bbcSQL
 		return implode(', ', $output);
 	}
 
-	function echoerror($sql = '')
+	function echoerror($sql = '', $link='')
 	{
 		$dbOutput = '';
 		if (!$this->debug)
@@ -457,7 +496,11 @@ class bbcSQL
 				$this->debug_tot++;
 				$dbOutput .= '<hr />SQL - '.$this->debug_tot.': '.htmlentities($sql);
 			}
-			if (mysqli_errno($this->link))
+			if (empty($link))
+			{
+				$link = $this->link;
+			}
+			if (mysqli_errno($link))
 			{
 				if (function_exists( 'debug_backtrace' ))
 				{
@@ -477,8 +520,8 @@ class bbcSQL
 						}
 					}
 				}
-				$dbOutput .= "<br /><span style=\"color:#ff0000;font-weight: bold;\">" . mysqli_errno($this->link);
-				$dbOutput .= ": ". mysqli_error($this->link) ."</span><br />";
+				$dbOutput .= "<br /><span style=\"color:#ff0000;font-weight: bold;\">" . mysqli_errno($link);
+				$dbOutput .= ": ". mysqli_error($link) ."</span><br />";
 				echo $dbOutput;
 				if (function_exists('iLog'))
 				{
@@ -707,7 +750,7 @@ if(!empty($_DB))
 {
 	foreach((array)$_DB AS $i => $d)
 	{
-		$i                = ($i > 0) ? $i : '';
+		$i = ($i > 0) ? $i : '';
 		$GLOBALS['db'.$i] = new bbcSQL();
 		$ifconn           = $GLOBALS['db'.$i]->Pconnect($d['SERVER'], $d['USERNAME'], $d['PASSWORD'], $d['DATABASE']);
 		// $ifconn           = $GLOBALS['db'.$i]->Connect($d['SERVER'], $d['USERNAME'], $d['PASSWORD'], $d['DATABASE']);
