@@ -3,7 +3,6 @@
 $user        = new stdClass();
 $user->id    = 0;
 $_CONFIG     = get_config(0);
-$Bbc->no_log = 1;
 if (empty($Bbc->no_log))
 {
 	/*===================================================
