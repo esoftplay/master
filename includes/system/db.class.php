@@ -183,13 +183,20 @@ class bbcSQL
 		{
 			$sql = preg_replace('~([a-z0-9]+)\'([a-z0-9]+)~is', '$1\\\'$2', $sql);
 		}
-		if (!empty($this->link_read) && preg_match('~\s+?select\s+~is', $sql))
+		if (!empty($this->link_read))
+		{
+			$stat_r = ' R';
+			$stat_w = ' W';
+		}else{
+			$stat_r = $stat_w = '';
+		}
+		if (!empty($stat_r) && preg_match('~\s{0,}select\s+~is', $sql))
 		{
 			$result = @mysqli_query($this->link_read, $sql);
-			$this->echoerror($sql, $this->link_read);
+			$this->echoerror($sql, $this->link_read, $stat_r);
 		}else{
 			$result = @mysqli_query($this->link, $sql);
-			$this->echoerror($sql, $this->link);
+			$this->echoerror($sql, $this->link, $stat_w);
 		}
 		$this->resid = $result;
 		$this->tmp_is_cache = false;
@@ -484,7 +491,7 @@ class bbcSQL
 		return implode(', ', $output);
 	}
 
-	function echoerror($sql = '', $link='')
+	function echoerror($sql = '', $link='', $type = '')
 	{
 		$dbOutput = '';
 		if (!$this->debug)
@@ -494,7 +501,7 @@ class bbcSQL
 			if(!empty($sql))
 			{
 				$this->debug_tot++;
-				$dbOutput .= '<hr />SQL - '.$this->debug_tot.': '.htmlentities($sql);
+				$dbOutput .= '<hr />SQL - '.$this->debug_tot.$type.': '.htmlentities($sql);
 			}
 			if (empty($link))
 			{
