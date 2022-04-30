@@ -368,6 +368,10 @@ class bbcSQL
 	function cache($func, $query, $path = '', $sec = '')
 	{
 		// sample $sec = '-2 hour';
+		if (defined('_DB_CACHE') && _DB_CACHE == 0)
+		{
+			$this->$func($query);
+		}
 		if(empty($path))
 		{
 			$path = 'sql/'.md5($query).'.sql';
