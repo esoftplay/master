@@ -370,7 +370,7 @@ class bbcSQL
 		// sample $sec = '-2 hour';
 		if (defined('_DB_CACHE') && _DB_CACHE == 0)
 		{
-			$this->$func($query);
+			return $this->$func($query);
 		}
 		if(empty($path))
 		{
