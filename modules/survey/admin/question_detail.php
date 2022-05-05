@@ -202,7 +202,7 @@ function _option_add($id)
   if($id > 0)
   {
     $question_id = @intval($_GET['id']);
-    $q = "SELECT COUNT(*) FROM survey_question_option WHERE question_id=$question_id";
+    $q = "SELECT COUNT(1) FROM survey_question_option WHERE question_id=$question_id";
     $orderby = $db->getOne($q);
     $q = "UPDATE survey_question_option SET orderby=$orderby WHERE id=$id";
     $db->Execute($q);

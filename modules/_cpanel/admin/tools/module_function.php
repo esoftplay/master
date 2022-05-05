@@ -272,7 +272,7 @@ function tools_module_install($id)
 						if(!empty($m['id']))
 						{
 							$n_par_id = @intval($n_id[$m['is_admin']][$m['par_id']]);
-							$q ="SELECT COUNT(*) FROM bbc_menu WHERE par_id=".$n_par_id." AND is_admin=".$m['is_admin'];
+							$q ="SELECT COUNT(1) FROM bbc_menu WHERE par_id=".$n_par_id." AND is_admin=".$m['is_admin'];
 							$orderby = $db->getOne($q)+1;
 							if($m['is_admin'])
 							{

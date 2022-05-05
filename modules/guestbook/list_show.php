@@ -38,7 +38,7 @@ if(!empty($r_list))
 }
 if($Bbc->mod['task'] != 'list_show')
 {
-	$q     = "SELECT COUNT(*) FROM guestbook WHERE publish=1 ";
+	$q     = "SELECT COUNT(1) FROM guestbook WHERE publish=1 ";
 	$found = $db->getOne($q);
 	if (empty($found))
 	{

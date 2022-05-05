@@ -30,7 +30,7 @@ function survey_questionary_add($id)
 	if($id > 0)
 	{
 		$question_id = @intval($_GET['id']);
-		$q = "SELECT COUNT(*) FROM survey_questionary WHERE question_id=$question_id";
+		$q = "SELECT COUNT(1) FROM survey_questionary WHERE question_id=$question_id";
 		$orderby = $db->getOne($q);
 		$q = "UPDATE survey_questionary SET orderby=$orderby WHERE id=$id";
 		$db->Execute($q);

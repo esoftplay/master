@@ -180,7 +180,7 @@ class content_class {
 					if(!in_array($i, $post['tags_ids']))
 					{
 						$this->db->Execute("DELETE FROM `bbc_content_tag_list` WHERE `tag_id`={$i}");
-						$total = $this->db->getOne("SELECT COUNT(*) FROM `bbc_content_tag_list` WHERE `tag_id`={$i}");
+						$total = $this->db->getOne("SELECT COUNT(1) FROM `bbc_content_tag_list` WHERE `tag_id`={$i}");
 						$this->db->Execute("UPDATE `bbc_content_tag` SET `total`={$total}, `updated`=NOW() WHERE `id`={$i}");
 					}
 				}
@@ -192,7 +192,7 @@ class content_class {
 						if (is_numeric($i))
 						{
 							$this->db->Execute("INSERT INTO `bbc_content_tag_list` SET `content_id`={$tmp_content_id},`tag_id`={$i}");
-							$total = $this->db->getOne("SELECT COUNT(*) FROM `bbc_content_tag_list` WHERE `tag_id`={$i}");
+							$total = $this->db->getOne("SELECT COUNT(1) FROM `bbc_content_tag_list` WHERE `tag_id`={$i}");
 							$this->db->Execute("UPDATE `bbc_content_tag` SET `total`={$total}, `updated`=NOW() WHERE `id`={$i}");
 						}else{
 							$post['tags_new'][] = $i;
@@ -515,7 +515,7 @@ class content_class {
 		$content_max = intval(get_config(0, 'rules', 'content_max'));
 		if($content_max > 0)
 		{
-			$q = "SELECT COUNT(*) FROM `bbc_content` WHERE 1";
+			$q = "SELECT COUNT(1) FROM `bbc_content` WHERE 1";
 			$t = $this->db->getOne($q);
 			if($t > $content_max)
 			{

@@ -48,7 +48,7 @@ if (!empty($_GET['token']))
 		// Hitung jumlah halaman jika ini subComment
 		if ($par_id > 0 && empty($config['comment_id']))
 		{
-			$total = $db->getOne("SELECT COUNT(*) FROM {$table} WHERE {$field}_id={$id} {$sql} ");
+			$total = $db->getOne("SELECT COUNT(1) FROM {$table} WHERE {$field}_id={$id} {$sql} ");
 			$pages = ceil($total/$list);
 		}
 		include tpl('comment_list.html.php');

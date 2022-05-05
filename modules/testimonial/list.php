@@ -10,7 +10,7 @@ if(!$sys->menu_real)
 	$sys->nav_add(lang('Testimonial'));
 if($conf['animated'])
 {
-	$q	= "SELECT COUNT(*) FROM testimonial WHERE publish=1 ";
+	$q	= "SELECT COUNT(1) FROM testimonial WHERE publish=1 ";
 	$found= $db->getOne($q);
 	echo page_ajax($found, $conf['tot'], $Bbc->mod['circuit'].'.list_show&id=');
 }else{

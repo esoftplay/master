@@ -44,7 +44,7 @@ if (!empty($id))
 					output_json(array('users' => $users));
 				}else{
 					$title = $db->getOne("SELECT title FROM `bbc_content_text` WHERE `content_id`={$id} AND `lang_id`=".lang_id());
-					$total = $db->getOne("SELECT COUNT(*) FROM `bbc_content_registrant` WHERE `content_id`={$id}");
+					$total = $db->getOne("SELECT COUNT(1) FROM `bbc_content_registrant` WHERE `content_id`={$id}");
 					$file  = $data['file_type'] ? $data['file_url'] : $data['file'];
 					$excel = array(
 						'Registrant' => array(

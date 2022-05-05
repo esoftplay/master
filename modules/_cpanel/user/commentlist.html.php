@@ -34,7 +34,7 @@ $total  = 0;
 $r_list = $db->getAll( "SELECT *, `reply_on` AS reply FROM `{$table}` WHERE {$field}_id={$id} AND par_id={$par_id} AND publish=1 ORDER BY id ASC LIMIT {$start}, {$list}");
 if (!empty($r_list))
 {
-	$total = intval($db->getOne( "SELECT COUNT(*) FROM `{$table}` WHERE {$field}_id={$id} AND par_id={$par_id} AND publish=1"));
+	$total = intval($db->getOne( "SELECT COUNT(1) FROM `{$table}` WHERE {$field}_id={$id} AND par_id={$par_id} AND publish=1"));
 	$pages = ceil($total/$list);
 	$r     = array(
 		'unset'  => array('user_id', 'reply_all', 'reply_on', $field.'_id', $field.'_title', 'publish'),

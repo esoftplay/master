@@ -22,7 +22,7 @@ $page	= @intval($_GET['page']);
 $limit_per_page = 12;
 $sql	= ($id > 0) ? " AND id=$id" : '';
 
-$found= "SELECT COUNT(*) FROM survey_polling AS p LEFT JOIN survey_polling_text AS t ON 
+$found= "SELECT COUNT(1) FROM survey_polling AS p LEFT JOIN survey_polling_text AS t ON 
 					(p.id=t.polling_id AND lang_id=".lang_id().") WHERE publish=1 $sql";
 $q = "SELECT id, question FROM survey_polling AS p LEFT JOIN survey_polling_text AS t ON (p.id=t.polling_id AND lang_id=".lang_id().")
 WHERE publish=1 $sql ORDER BY id DESC LIMIT $page, $limit_per_page";

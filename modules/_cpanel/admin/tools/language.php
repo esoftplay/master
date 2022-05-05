@@ -51,7 +51,7 @@ if(isset($_POST['Submit_params']))
 		// DELETE AVAILABLE LANGUAGE
 		$q = "DELETE FROM bbc_lang_text WHERE lang_id=$lang_id";
 		$db->Execute($q);
-		$left = $db->getOne("SELECT COUNT(*) FROM bbc_lang_text WHERE 1");
+		$left = $db->getOne("SELECT COUNT(1) FROM bbc_lang_text WHERE 1");
 		if (empty($left))
 		{
 			$db->Execute("TRUNCATE TABLE bbc_lang_text");

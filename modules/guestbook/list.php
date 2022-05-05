@@ -12,7 +12,7 @@ if(!$sys->menu_real)
 }
 if($conf['animated'])
 {
-	$q	= "SELECT COUNT(*) FROM guestbook WHERE publish=1 ";
+	$q	= "SELECT COUNT(1) FROM guestbook WHERE publish=1 ";
 	$found= $db->getOne($q);
 	echo page_ajax($found, $conf['tot'], _URL.'guestbook/list_show/');
 }else{

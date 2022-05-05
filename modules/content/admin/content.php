@@ -24,7 +24,7 @@ $form->search->input->kind_id->setTitle('Search by Format');
 $form->search->input->kind_id->addOption('Select Format', '');
 $form->search->input->kind_id->addOption($kinds, array_keys($kinds));
 
-$q = "SELECT COUNT(*) FROM bbc_content_cat WHERE {$q_add}";
+$q = "SELECT COUNT(1) FROM bbc_content_cat WHERE {$q_add}";
 $c = $db->getOne($q);
 if ($c > 1)
 {

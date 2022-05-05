@@ -1,6 +1,6 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
-$found = $db->getOne("SELECT COUNT(*) FROM bbc_content_tag");
+$found = $db->getOne("SELECT COUNT(1) FROM bbc_content_tag");
 $page  = @intval($_GET['page']);
 $limit = 30;
 $start = $page*$limit;

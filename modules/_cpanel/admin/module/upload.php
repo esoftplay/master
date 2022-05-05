@@ -95,7 +95,7 @@ if(!empty($_FILES['params'])
 					{
 						if($orderby==0)
 						{
-							$q ="SELECT COUNT(*) FROM bbc_menu WHERE par_id=".intval($par_id)
+							$q ="SELECT COUNT(1) FROM bbc_menu WHERE par_id=".intval($par_id)
 								.	" AND is_admin=".$data['is_admin'];
 							$orderby = $db->getOne($q);
 						}

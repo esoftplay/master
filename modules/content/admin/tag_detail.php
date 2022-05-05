@@ -50,7 +50,7 @@ function content_tag_detail_delete($ids)
 	if (!empty($ids))
 	{
 		$db->Execute("DELETE FROM bbc_content_tag_list WHERE content_id IN ({$ids}) AND tag_id={$id}");
-		$total = $db->getOne("SELECT COUNT(*) FROM bbc_content_tag_list WHERE tag_id={$id}");
+		$total = $db->getOne("SELECT COUNT(1) FROM bbc_content_tag_list WHERE tag_id={$id}");
 		$db->Execute("UPDATE bbc_content_tag SET total={$total}, updated=NOW() WHERE id={$id}");
 		$form1->roll->setActionExecute(false, 'Selected contents have been deleted from current tags');
 	}
