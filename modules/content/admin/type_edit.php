@@ -238,7 +238,7 @@ $link = 'index.php?mod=content.config_default';
 		<?php
 		if ($Bbc->mod['task'] == 'type_edit')
 		{
-			$c = $db->getOne("SELECT COUNT(*) FROM bbc_content_type WHERE 1");
+			$c = $db->getOne("SELECT COUNT(1) FROM bbc_content_type WHERE 1");
 			if ($c < 2)
 			{
 				echo $sys->button($Bbc->mod['circuit'].'.type_add','Add Content Type', 'fa-file-text-o');

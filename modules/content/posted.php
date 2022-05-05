@@ -11,7 +11,7 @@ if(content_posted_permission())
 	$page = @intval($_GET['page']);
 	if(!empty($conf['animated']))
 	{
-		$q     = "SELECT COUNT(*) FROM bbc_content WHERE created_by=".$user->id;
+		$q     = "SELECT COUNT(1) FROM bbc_content WHERE created_by=".$user->id;
 		$found = $db->getOne($q);
 		echo page_ajax($found, $conf['tot'], $Bbc->mod['circuit'].'.posted_list&id=');
 	}else{
@@ -35,7 +35,7 @@ if(content_posted_permission())
 					ON(c.`id`=t.`content_id` AND `lang_id`=".lang_id().")
 			 WHERE created_by=".$user->id.$sql;
 			$post['list']       = $db->getAll($q);
-			$post['total']      = $db->getOne("SELECT COUNT(*) FROM bbc_content WHERE created_by=".$user->id);
+			$post['total']      = $db->getOne("SELECT COUNT(1) FROM bbc_content WHERE created_by=".$user->id);
 			$post['total_page'] = ceil($post['total'] / $conf['tot']);
 			$cat = array(
 				'id'         => 0,

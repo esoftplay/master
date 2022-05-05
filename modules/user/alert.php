@@ -50,7 +50,7 @@ if (!$db->resid)
 {
 	include_once __DIR__.'/repair-comment.php';
 }
-$q_found = "SELECT COUNT(*) FROM `bbc_alert` WHERE {$where} AND `is_open`=0";
+$q_found = "SELECT COUNT(1) FROM `bbc_alert` WHERE {$where} AND `is_open`=0";
 $found   = $db->getOne($q_found);
 if (!$db->resid)
 {

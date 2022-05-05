@@ -1,6 +1,6 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
-$q = "SELECT COUNT(*) FROM bbc_content_type";
+$q = "SELECT COUNT(1) FROM bbc_content_type";
 if($db->getOne($q) == 1)
 {
 	$q = "SELECT id FROM bbc_content_type WHERE 1 LIMIT 1";

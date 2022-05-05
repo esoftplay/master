@@ -573,7 +573,7 @@ if (!empty($c['is_nested']))
 		$r_ids = $new_r;
 	}
 	$max_content = intval(config('rules', 'content_max'));
-	$tot_content = $db->getOne("SELECT COUNT(*) FROM `bbc_content` WHERE 1")+1;
+	$tot_content = $db->getOne("SELECT COUNT(1) FROM `bbc_content` WHERE 1")+1;
 	if ($tot_content > $max_content)
 	{
 		?>

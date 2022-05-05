@@ -29,7 +29,7 @@ if($Bbc->mod['task'] == 'question_report')
 		'Chart'  => '',
 		'Report' => $form->roll->getForm()
 	);
-	$q = "SELECT COUNT(*) FROM survey_posted_question WHERE question_id=$id";
+	$q = "SELECT COUNT(1) FROM survey_posted_question WHERE question_id=$id";
 	$total = $db->getOne($q);
 	if($total > 0)
 	{

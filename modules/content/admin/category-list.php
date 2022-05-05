@@ -32,7 +32,7 @@ $form->roll->input->visit->setFieldName('id AS visit');
 $show_config = true;
 if (!$sub_content)
 {
-	$c = $db->getOne("SELECT COUNT(*) FROM `bbc_content_type` WHERE 1");
+	$c = $db->getOne("SELECT COUNT(1) FROM `bbc_content_type` WHERE 1");
 	if ($c > 1)
 	{
 		$form->roll->addInput( 'type_id', 'selecttable' );

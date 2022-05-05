@@ -55,7 +55,7 @@ function _question_add($id)
 	global $db, $Bbc;
 	if($id > 0)
 	{
-		$q = "SELECT COUNT(*) FROM survey_question";
+		$q = "SELECT COUNT(1) FROM survey_question";
 		$orderby = $db->getOne($q);
 		$q = "UPDATE survey_question SET orderby=$orderby WHERE id=$id";
 		$db->Execute($q);

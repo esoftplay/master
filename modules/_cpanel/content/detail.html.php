@@ -103,7 +103,7 @@ if (!empty($data['publish']))
 	if (!empty($config['comment']) && $config['comment']==1)
 	{
 		$config['comment'] = 1;
-		$comment_total     = intval($db->getOne("SELECT COUNT(*) FROM bbc_content_comment WHERE content_id=".$data['id']." AND publish=1"));
+		$comment_total     = intval($db->getOne("SELECT COUNT(1) FROM bbc_content_comment WHERE content_id=".$data['id']." AND publish=1"));
 	}else $config['comment'] = 0;
 
 	$output = array(

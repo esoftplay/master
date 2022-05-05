@@ -13,7 +13,7 @@ if (!isset($conf))
 	$conf = _class('bbcconfig');
 }
 $config_message = '';
-$is_single_type = $db->getOne("SELECT COUNT(*) FROM `bbc_content_type`") == 1 ? true : false;
+$is_single_type = $db->getOne("SELECT COUNT(1) FROM `bbc_content_type`") == 1 ? true : false;
 if (!$is_single_type)
 {
 	$config_message = explain('<br />Configuration below will not change anything, it only determines the default value when you add new content type. Go to <strong><a href="index.php?mod=content.type" class="admin_link">Content &raquo; Content Type</a></strong> to configure default parameters of content under specified type!', 'ATTENTION !!');

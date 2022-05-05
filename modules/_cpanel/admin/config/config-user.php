@@ -30,7 +30,7 @@ function field_orderby()
 	global $form, $db;
 	if($form->type == 'add') {
 		$id = $form->edit->getInsertId();
-		$q = "SELECT COUNT(*) FROM bbc_user_field WHERE group_id=0";
+		$q = "SELECT COUNT(1) FROM bbc_user_field WHERE group_id=0";
 		$orderby = $db->getOne($q);
 		$q = "UPDATE bbc_user_field SET `orderby`=$orderby WHERE id=$id";
 		$db->Execute($q);

@@ -42,7 +42,7 @@ if (!empty($list))
 		$list[$i] = alert_view($data);
 	}
 }
-$found  = $db->getOne("SELECT COUNT(*) FROM `bbc_alert` WHERE {$where}");
+$found  = $db->getOne("SELECT COUNT(1) FROM `bbc_alert` WHERE {$where}");
 $output = array(
 	'ok'         => 1,
 	'list'       => $list,

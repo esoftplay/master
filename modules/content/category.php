@@ -12,13 +12,13 @@ if (!empty($id))
 		$link     = site_url('index.php?content.category&id='.$id);
 		$text     = $db->cacheGetRow("SELECT * FROM bbc_content_cat_text WHERE lang_id=".lang_id()." AND cat_id={$id}");
 		$category = array_merge($category, $text);
-		$total    = $db->cacheGetOne("SELECT COUNT(*) FROM bbc_content_cat WHERE publish=1 AND par_id={$id}");
+		$total    = $db->cacheGetOne("SELECT COUNT(1) FROM bbc_content_cat WHERE publish=1 AND par_id={$id}");
 		$subcat   = $db->cacheGetAll("SELECT * FROM bbc_content_cat WHERE publish=1 AND par_id={$id} ORDER BY id ASC LIMIT {$start}, {$limit}");
 		foreach ($subcat as &$sub)
 		{
 			$text           = $db->cacheGetRow("SELECT * FROM bbc_content_cat_text WHERE lang_id=".lang_id()." AND cat_id=".$sub['id']);
 			$sub            = array_merge($sub, $text);
-			$sub['total']   = $db->cacheGetOne("SELECT COUNT(*) FROM bbc_content_category WHERE cat_id=".$sub['id']);
+			$sub['total']   = $db->cacheGetOne("SELECT COUNT(1) FROM bbc_content_category WHERE cat_id=".$sub['id']);
 			if ($sub['total'])
 			{
 				$sub['updated'] = $db->GetOne("SELECT c.created FROM bbc_content_category AS y 

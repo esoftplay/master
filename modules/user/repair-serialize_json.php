@@ -13,7 +13,7 @@ $tables = array(
 $row_per_action = 10;
 foreach ($tables as $table)
 {
-	$count = $db->getOne("SELECT COUNT(*) FROM {$table} WHERE 1");
+	$count = $db->getOne("SELECT COUNT(1) FROM {$table} WHERE 1");
 	if ($count > 0)
 	{
 		$done = 0;

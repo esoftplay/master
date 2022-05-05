@@ -33,8 +33,8 @@ switch (@$config['type'])
 			$total_all  = 1;
 			$total_list = 1;
 		}else{
-			$total_all  = $db->getOne("SELECT COUNT(*) FROM `".$config['table']."` WHERE `".$config['field']."_id`=".$config['id']);
-			$total_list = $db->getOne("SELECT COUNT(*) FROM `".$config['table']."` WHERE `par_id`=".$config['par_id']." AND `".$config['field']."_id`=".$config['id']);
+			$total_all  = $db->getOne("SELECT COUNT(1) FROM `".$config['table']."` WHERE `".$config['field']."_id`=".$config['id']);
+			$total_list = $db->getOne("SELECT COUNT(1) FROM `".$config['table']."` WHERE `par_id`=".$config['par_id']." AND `".$config['field']."_id`=".$config['id']);
 		}
 		$token      = encode(json_encode($config));
 		include tpl('comment.html.php');

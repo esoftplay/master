@@ -123,7 +123,7 @@ function block_add()
 {
 	global $db;
 	$data = block_repair_post();
-	$q="SELECT COUNT(*) FROM bbc_block 
+	$q="SELECT COUNT(1) FROM bbc_block 
 			WHERE position_id	=".$data['position_id']."
 			AND template_id		=".$data['template_id'];
 	$data['orderby'] = $db->getOne($q);

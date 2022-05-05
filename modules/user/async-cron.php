@@ -33,7 +33,7 @@ if (!empty($data))
 			$msg = '#'.@$_SERVER['HTTP_HOST'].' : '.$pending.' - '.$process.' - '.$worker
 				."\nfunction: ".$data['function']
 				."\ncreated: ".$data['created'].' ('.timespan(strtotime($data['created'])).')'
-				."\ntotal: ".money($db->getOne("SELECT COUNT(*) FROM `bbc_async` WHERE 1"));
+				."\ntotal: ".money($db->getOne("SELECT COUNT(1) FROM `bbc_async` WHERE 1"));
 			$msg = array(
 				'text'         => $msg."\n".$notify,
 				'reply_markup' => json_encode([

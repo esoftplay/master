@@ -52,7 +52,7 @@ if (!empty($id))
 			$result    = array(
 				'function' => @$data['function'],
 				'created'  => @$data['created'],
-				'total'    => intval($db->getOne("SELECT COUNT(*) FROM `bbc_async` WHERE 1")),
+				'total'    => intval($db->getOne("SELECT COUNT(1) FROM `bbc_async` WHERE 1")),
 				);
 			$out = array(
 				'ok'     => 1,

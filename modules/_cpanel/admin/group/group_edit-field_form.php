@@ -10,7 +10,7 @@ $form->edit->input->header->setTitle( 'Add User Field' );
 $form->edit->addInput('group_id', 'hidden');
 $form->edit->input->group_id->setDefaultValue( $data['id'] );
 
-$q = "SELECT COUNT(*) FROM bbc_user_field WHERE group_id=".$data['id'];
+$q = "SELECT COUNT(1) FROM bbc_user_field WHERE group_id=".$data['id'];
 $t = $db->getOne($q) + 1;
 $form->edit->addInput('orderby', 'hidden');
 $form->edit->input->orderby->setDefaultValue($t);

@@ -38,7 +38,7 @@ function content_fetch($id, $use_text = true)
 		$output = $db->getRow($q);
 		if (!empty($output) && !empty($output['id']) && !isset($output['kind_id']))
 		{
-			if ($db->getOne("SELECT COUNT(*) FROM `bbc_content` WHERE `id`={$id}") == 1)
+			if ($db->getOne("SELECT COUNT(1) FROM `bbc_content` WHERE `id`={$id}") == 1)
 			{
 				// redirect('index.php?mod=user.repair&id=content&redirect='.urlencode(seo_url()));
 			}
@@ -123,7 +123,7 @@ function content_fetch_admin($id)
 		$output = $db->getRow($q);
 		if (!empty($output) && !empty($output['id']) && !isset($output['kind_id']))
 		{
-			if ($db->getOne("SELECT COUNT(*) FROM `bbc_content` WHERE `id`={$id}") == 1)
+			if ($db->getOne("SELECT COUNT(1) FROM `bbc_content` WHERE `id`={$id}") == 1)
 			{
 				// redirect('index.php?mod=user.repair&id=content&redirect='.urlencode(seo_url()));
 			}
@@ -919,7 +919,7 @@ function content_type_delete($ids = array())
 function content_type_refresh()
 {
 	global $sys, $db;
-	$c = $db->getOne("SELECT COUNT(*) FROM `bbc_content_type`");
+	$c = $db->getOne("SELECT COUNT(1) FROM `bbc_content_type`");
 	if ($c==1)
 	{
 		$data   = $db->getRow("SELECT * FROM `bbc_content_type` LIMIT 1");
