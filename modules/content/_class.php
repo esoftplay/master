@@ -790,7 +790,7 @@ class content_class {
 							$ext = strtolower($m[1]);
 							if (isset($exts[$ext]))
 							{
-								if (move_uploaded_file($_FILES['file']['tmp_name'], $path.$_FILES['file']['name']))
+								if (_class('images')->move_upload($_FILES['file']['tmp_name'], $path.$_FILES['file']['name']))
 								{
 									$is_valid              = true;
 									$output['file']        = $_FILES['file']['name'];

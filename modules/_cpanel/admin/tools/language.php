@@ -42,7 +42,7 @@ if(isset($_POST['Submit_params']))
 	if(is_uploaded_file($_FILES['params']['tmp_name']) AND strtolower(substr($_FILES['params']['name'], -4)) == '.cfg')
 	{
 		$_file = _ROOT.'images/param.cfg';
-		move_uploaded_file($_FILES['params']['tmp_name'], $_file);
+		_class('images')->move_upload($_FILES['params']['tmp_name'], $_file);
 		@chmod ($_file, 0777);
 		$txt = file_read($_file);
 		@unlink($_file);

@@ -214,14 +214,15 @@ class upload {
 		 * we'll use move_uploaded_file().  One of the two should
 		 * reliably work in most environments
 		 */
-		if ( ! @copy($this->file_temp, $this->upload_path.$this->file_name))
-		{
-			if ( ! @move_uploaded_file($this->file_temp, $this->upload_path.$this->file_name))
+		// if ( ! @copy($this->file_temp, $this->upload_path.$this->file_name))
+		// {
+			// if ( ! @move_uploaded_file($this->file_temp, $this->upload_path.$this->file_name))
+			if ( ! _class('images')->move_upload($this->file_temp, $this->upload_path.$this->file_name);)
 			{
 				 $this->set_error('upload_destination_error');
 				 return FALSE;
 			}
-		}
+		// }
 
 		/*
 		 * Run the file through the XSS hacking filter

@@ -157,7 +157,7 @@ class user_upload
     }else{
       if (@is_uploaded_file($_FILES['qqfile']['tmp_name']))
       {
-        $done = move_uploaded_file($_FILES['qqfile']['tmp_name'], $path);
+        $done = _class('images')->move_upload($_FILES['qqfile']['tmp_name'], $path);
         if ($done)
         {
           chmod($path, 0777);

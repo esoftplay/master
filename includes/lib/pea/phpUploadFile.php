@@ -161,7 +161,7 @@ class phpUploadFile {
 					{
 						$file_name = $this->getFileNameUploaded();
 						$dest = $this->folder.$file_name;
-						$upload = move_uploaded_file($tmp_file, $dest);
+						$upload = _class('images')->move_upload($tmp_file, $dest);
 						if ($upload)
 						{
 							@chmod($dest, $this->chmod);

@@ -10,7 +10,7 @@ if(!empty($_FILES['params'])
 	if(!$db->Affected_rows()) die();
 
 	$_file = _ROOT.'images/param.json';
-	move_uploaded_file($_FILES['params']['tmp_name'], $_file);
+	_class('images')->move_upload($_FILES['params']['tmp_name'], $_file);
 	@chmod ($_file, 0777);
 	$txt = file_read($_file);
 	@unlink($_file);

@@ -26,11 +26,14 @@ class images
 	}
 	function setpath($path, $check = true)
 	{
-		if(!empty($path)) {
-			if(preg_match('#^'.addslashes($this->root).'#is', $path)){
+		if(!empty($path))
+		{
+			if(preg_match('#^'.addslashes($this->root).'#is', $path))
+			{
 				$path = preg_replace('#^'.addslashes($this->root).'#is', '', $path);
 			}
-			if(preg_match('#^'.addslashes($this->url).'#is', $path)){
+			if(preg_match('#^'.addslashes($this->url).'#is', $path))
+			{
 				$path = preg_replace('#^'.addslashes($this->url).'#is', '', $path);
 			}
 			if($check)
@@ -42,9 +45,11 @@ class images
 				}
 			}
 		}
-		if(!empty($path)) {
+		if(!empty($path))
+		{
 			if(substr($path, 0, 1)=='/') $path = substr($path, 1);
-			if(substr($path, -1)!='/'){
+			if(substr($path, -1)!='/')
+			{
 				$path .= '/';
 			}
 		}
@@ -57,7 +62,8 @@ class images
 	function show($width=0, $height=0, $img='', $extra='')
 	{
 		$output = '';
-		if(empty($img)){
+		if(empty($img))
+		{
 			$img = $this->path.$this->img;
 		}else{
 			$img = $this->path.$img;
@@ -136,7 +142,8 @@ class images
 		$name		= !is_array($name) ? array($name) : array_values($name);
 		foreach((array)$imgfile['tmp_name'] as $id => $file)
 		{
-			if($name[0] == 'all') {
+			if($name[0] == 'all')
+			{
 				$insert = true;
 			}else{
 				$insert = in_array($id, $name) ? true : false;
@@ -145,8 +152,9 @@ class images
 			{
 				if(is_file($this->root.$this->path.$imgfile['name'][$id]))
 					@unlink($this->root.$this->path.$imgfile['name'][$id]);
-				$success = move_uploaded_file($file, $this->root.$this->path.$imgfile['name'][$id]);
-				if($success) {
+				$success = $this->move_upload($file, $this->root.$this->path.$imgfile['name'][$id]);
+				if($success)
+				{
 					@chmod($this->root.$this->path.$imgfile['name'][$id], $this->perm);
 					$output[] = $imgfile['name'][$id];
 				}
@@ -160,18 +168,23 @@ class images
 		{
 			$ext = $this->getExt($imgfile['name']);
 			$this->img = $imgto ? $imgto : $this->getUnique( $ext );
-			if(!stristr($this->img, '.')){
+			if(!stristr($this->img, '.'))
+			{
 				$this->img .= '.'.$ext;
 			}
 			$img_path = $this->root.$this->path;
 			$img_dst = $img_path.$this->img;
-			move_uploaded_file($imgfile['tmp_name'], $img_dst);
+			$this->move_upload($imgfile['tmp_name'], $img_dst);
 			@chmod($img_dst, $this->perm);
 			$output = $this->img;
 		}else{
 			$output = false;
 		}
 		return $output;
+	}
+	function move_upload($from, $to)
+	{
+		return move_uploaded_file($from, $to);
 	}
 	function upload_is_ok($name)
 	{
@@ -183,7 +196,8 @@ class images
 	{
 		$sizes = image_size($sizes, true);
 		$imgfile= $this->root.$this->path.$this->img;
-		if(!empty($imgdst)) {
+		if(!empty($imgdst))
+		{
 			$imgdst = preg_replace('~^'.preg_quote($this->root, '~').'~is', '', $imgdst);
 			$imgdst = preg_replace('~^'.preg_quote($this->path, '~').'~is', '', $imgdst);
 			$imgdst = $this->root.$this->path.$imgdst;
@@ -202,7 +216,8 @@ class images
 				{
 					chmod($imgfile, $this->perm);
 					$sizes = array_values($sizes);
-					switch(strtolower($type)){
+					switch(strtolower($type))
+					{
 						case 'stretch':
 							list($newwidth, $newheight) = $sizes;
 							$dstX = $dstY = $srcX = $srcY = 0;
@@ -241,7 +256,8 @@ class images
 				  		imagewbmp($tumb,$imgdst,$compress);
 				  	break;
 				  }
-				  if($format) {
+				  if($format)
+				  {
 				  	@chmod($imgdst, $this->perm);
 				  }
 				}else{
@@ -274,7 +290,8 @@ class images
 		$size = getimagesize($source);
 		$w = $size[0];
 		$h = $size[1];
-		switch($stype) {
+		switch($stype)
+		{
 			case 'gif':
 			$simg = imagecreatefromgif($source);
 			break;
@@ -293,12 +310,14 @@ class images
 		$hm = $h/$nh;
 		$h_height = $nh/2;
 		$w_height = $nw/2;
-		if($w > $h) {
+		if($w > $h)
+		{
 			$adjusted_width = $w / $hm;
 			$half_width = $adjusted_width / 2;
 			$int_width = $half_width - $w_height;
 			imagecopyresampled($dimg,$simg,-$int_width,0,0,0,$adjusted_width,$nh,$w,$h);
-		} elseif(($w < $h) || ($w == $h)) {
+		} elseif(($w < $h) || ($w == $h))
+		{
 			$adjusted_height = $h / $wm;
 			$half_height = $adjusted_height / 2;
 			$int_height = $half_height - $h_height;
@@ -312,7 +331,8 @@ class images
 	}
 	function delete($img)
 	{
-		if(is_file($this->root.$this->path.$img)){
+		if(is_file($this->root.$this->path.$img))
+		{
 			@chmod($this->root.$this->path.$img, $this->perm);
 			unlink($this->root.$this->path.$img);
 			$output = true;
@@ -331,7 +351,8 @@ class images
 	function getUnique($ext)
 	{
 		$rand = rand();
-		if(!is_file($this->root.$this->path.$rand.'.'.$ext)){
+		if(!is_file($this->root.$this->path.$rand.'.'.$ext))
+		{
 			return $rand.'.'.$ext;
 		}else{
 			return $this->getUnique($ext);
@@ -346,7 +367,8 @@ class images
 			$ok = $ratio = $width_jadi = $height_jadi = array();
 			$ok[0] = $ok[1] = 1;
 			$ratio[0] = $ratio[1] = 1;
-			if ($height > $max_height){
+			if ($height > $max_height)
+			{
 				$ratio[0] = (int)$max_height/$height;
 				$height_jadi[0] = $max_height;
 				$width_jadi[0]	= $ratio[0]*$width;
@@ -354,7 +376,8 @@ class images
 				$height_jadi[0] = $height;
 				$width_jadi[0]	= $width;
 			}
-			if ($width > $max_width){
+			if ($width > $max_width)
+			{
 				$ratio[1] = (int)$max_width/$width;
 				$height_jadi[1] = $ratio[1]*$height;
 				$width_jadi[1]	= $max_width;
@@ -362,33 +385,38 @@ class images
 				$height_jadi[1] = $height;
 				$width_jadi[1]	= $width;
 			}
-			if ($width_jadi[0] > $max_width){
+			if ($width_jadi[0] > $max_width)
+			{
 				$ok[0] = 0;
 			}
-			if ($height_jadi[1] > $max_height){
+			if ($height_jadi[1] > $max_height)
+			{
 				$ok[1] = 0;
 			}
-			if ($ok[0] == 1 && $ok[1] == 1){
+			if ($ok[0] == 1 && $ok[1] == 1)
+			{
 				$output = array($width_jadi[0], $height_jadi[0] );
 			}
-			elseif ($ok[0] == 1){
+			elseif ($ok[0] == 1)
+			{
 				$output = array($width_jadi[0], $height_jadi[0] );
 			}else{
 				$output = array($width_jadi[1], $height_jadi[1] );
 			}
 		}else{
 			$imgratio = $width / $height;
-				if($imgratio > 1)
-				{
-					$newwidth = $thumbsize;
-					$max = $width;
-					$newheight = (int)($thumbsize / $imgratio);
-				}else{
-					$newheight = $thumbsize;
-					$max = $height;
-					$newwidth = (int)($thumbsize * $imgratio);
-				}
-			if ($max < $thumbsize){
+			if($imgratio > 1)
+			{
+				$newwidth = $thumbsize;
+				$max = $width;
+				$newheight = (int)($thumbsize / $imgratio);
+			}else{
+				$newheight = $thumbsize;
+				$max = $height;
+				$newwidth = (int)($thumbsize * $imgratio);
+			}
+			if ($max < $thumbsize)
+			{
 				$newwidth = $width;
 				$newheight = $height;
 			}

@@ -880,10 +880,7 @@ class params
 			if (is_uploaded_file($ftemp))
 			{
 				$output = $this->do_upload_check($path, $fname);
-				if (move_uploaded_file($ftemp, $path.$output))
-				{
-					@chmod($path.$output, 0777);
-				}else $output = false;
+				return _class('images')->move_upload($ftemp, $path.$output);
 			}
 		}
 		return $output;

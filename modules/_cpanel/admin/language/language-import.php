@@ -13,7 +13,7 @@ if (!empty($_POST['add_lang_id']))
 		if (preg_match('~\.xlsx?$~is', $_FILES['add_code']['name']))
 		{
 			$tmp_file = _CACHE.$_FILES['add_code']['name'];
-			if (move_uploaded_file($_FILES['add_code']['tmp_name'], $tmp_file))
+			if (_class('images')->move_upload($_FILES['add_code']['tmp_name'], $tmp_file))
 			{
 				$data = _lib('excel')->read($tmp_file)->sheet(1)->fetch();
 				@unlink($tmp_file);

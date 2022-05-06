@@ -63,7 +63,7 @@ if (!empty($_POST['submit']))
 					if (preg_match('~\.json$~is', $_FILES['menufile']['name']))
 					{
 						$filename = 'menu_'.date('YmdHis');
-						if (move_uploaded_file($_FILES['menufile']['tmp_name'], _CACHE.$filename.'.json'))
+						if (_class('images')->move_upload($_FILES['menufile']['tmp_name'], _CACHE.$filename.'.json'))
 						{
 							echo msg('the page will redirect to the page for more configuration', 'success');
 							?>
