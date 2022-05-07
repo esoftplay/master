@@ -679,6 +679,7 @@ if (!function_exists('pr'))
 }
 if(!empty($_DB))
 {
+	_func('file');
 	foreach((array)$_DB AS $i => $d)
 	{
 		$i = ($i > 0) ? $i : '';
