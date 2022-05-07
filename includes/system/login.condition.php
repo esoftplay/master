@@ -5,6 +5,31 @@ $user->id    = 0;
 $_CONFIG     = get_config(0);
 if (empty($Bbc->no_log))
 {
+	if (session_id() == '')
+	{
+		session_write_close();
+		if(!empty($_SERVER['HTTP_HOST']))
+		{
+			$_seo['dom']  = ($_SERVER['HTTP_HOST'] == 'localhost') ? '' : '.'.preg_replace(array('~^((?:www|m|wap|mobile)\.)?~is', '~(:[0-9]+)?$~'), '', $_SERVER['HTTP_HOST']);
+			$_seo['_URI'] = preg_replace('~[^a-z0-9]+~is', '', _URI);
+			if (preg_match('~([a-z0-9\-]+)\.~is', $_seo['dom'], $m))
+			{
+				session_name($_seo['_URI'].$m[1]);
+			}else{
+				if (!empty($_seo['_URI']))
+				{
+					session_name($_seo['_URI']);
+				}else{
+					session_name('/');
+				}
+			}
+			session_set_cookie_params(0, '/', $_seo['dom'], false, false);
+			ini_set('session.cookie_domain', $_seo['dom']);
+			ini_set('session.cookie_httponly', 1);
+			if (preg_match('~^https~is', _URL)) ini_set('session.cookie_secure', 1);
+		}
+		session_start();
+	}
 	/*===================================================
 	 * IT'S DECLARE VARIABLE $user
 	 *==================================================*/
