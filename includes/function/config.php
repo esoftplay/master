@@ -44,7 +44,7 @@ function get_config($module_id = 'none', $index = '')
 		{
 			$module_id = $sys->get_module_id($module_id);
 		}else{
-			$r = $db->cacheGetAssoc("SELECT name, id FROM bbc_module WHERE active=1");
+			$r = $db->cacheGetAssoc("SELECT `name`, `id` FROM `bbc_module` WHERE `active`=1");
 			if(!empty($r[$module_id]))
 			{
 				$module_id = $r[$module_id];
@@ -60,11 +60,11 @@ function get_config($module_id = 'none', $index = '')
 	$Bbc->get_config_idx = !empty($Bbc->get_config_idx) ? $Bbc->get_config_idx : array();
 	if(!in_array($module_id, $Bbc->get_config_idx))
 	{
-		$q = "SELECT * FROM bbc_config WHERE module_id=".$module_id;
+		$q = "SELECT * FROM `bbc_config` WHERE `module_id`=".$module_id;
 		$r = $db->cache('getAll', $q, 'config/'.$module_id.'.cfg');
 		if (empty($r))
 		{
-			@unlink(_CACHE.'config/'.$module_id.'.cfg');
+			file_delete(_CACHE.'config/'.$module_id.'.cfg');
 		}
 		foreach((array) $r AS $dt)
 		{

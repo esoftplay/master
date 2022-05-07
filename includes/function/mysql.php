@@ -77,7 +77,7 @@ function mysql_dump($r_tables = array())
 				$output .= "\n) ENGINE=MyISAM;\n\n";
 				// Header
 				$limit	= 200;
-				$count	= $db->getOne("SELECT COUNT(*) FROM `$table`");
+				$count	= $db->getOne("SELECT COUNT(1) FROM `$table`");
 				$loop		= ceil($count/$limit);
 				if($count > 0)
 				{

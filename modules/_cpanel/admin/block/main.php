@@ -145,7 +145,7 @@ $form2->roll->addInput('name','sqllinks');
 $form2->roll->input->name->setGetName( 'ref_id' );
 $form2->roll->input->name->setLinks( $linkto );
 
-$r = $db->getAssoc("SELECT block_ref_id, COUNT(*) AS total FROM bbc_block WHERE template_id={$template_id} GROUP BY block_ref_id");
+$r = $db->getAssoc("SELECT block_ref_id, COUNT(1) AS total FROM bbc_block WHERE template_id={$template_id} GROUP BY block_ref_id");
 $form2->roll->addInput( 'used', 'select' );
 $form2->roll->input->used->setFieldName('id AS used');
 $form2->roll->input->used->addOption($r);

@@ -154,7 +154,7 @@ class FormTags extends FormMulticheckbox
 			$sql = array();
 			if ($this->isTotalCount)
 			{
-				$query = "SELECT COUNT(*) FROM {$this->relationTable} WHERE ".$this->relationField['reference'].'=\''.$ref_id.'\'';
+				$query = "SELECT COUNT(1) FROM {$this->relationTable} WHERE ".$this->relationField['reference'].'=\''.$ref_id.'\'';
 				$query = $this->getTableCondition($query,$this->sqlRelationCondition);
 				$sql[] = $this->fieldRefTotal.'='.intval($this->db->getOne($query));
 			}

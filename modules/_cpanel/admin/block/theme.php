@@ -41,7 +41,7 @@ $form->roll->input->header->setTitle('Block Themes on "'.$_CONFIG['template'].'"
 $form->roll->addInput( 'name', 'sqllinks' );
 $form->roll->input->name->setLinks( $Bbc->mod['circuit'].'.block&act=theme_edit'.$add_link );
 
-$q = "SELECT theme_id, COUNT(*) AS total FROM bbc_block WHERE template_id={$template_id} GROUP BY theme_id";
+$q = "SELECT theme_id, COUNT(1) AS total FROM bbc_block WHERE template_id={$template_id} GROUP BY theme_id";
 $form->roll->addInput( 'id', 'select' );
 $form->roll->input->id->setTitle( 'Used' );
 $form->roll->input->id->setFieldName( 'id AS theme_id' );

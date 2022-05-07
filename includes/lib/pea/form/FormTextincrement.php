@@ -37,7 +37,7 @@ class FormTextincrement extends Form
 	function lastSequence()
 	{
 
-			$q = "SELECT count(*) as totalrow FROM ".$this->tableName."";
+			$q = "SELECT count(1) as totalrow FROM ".$this->tableName."";
 			$r=$this->db->Execute($q);
 
 			$data = $r->FetchRow( $q );

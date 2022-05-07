@@ -11,20 +11,20 @@ if($config['total_visit'])
 }
 if($config['total_member'])
 {
-	$total = $db->getOne("SELECT COUNT(*) FROM bbc_user");
+	$total = $db->getOne("SELECT COUNT(1) FROM bbc_user");
 	$output['total_member'] = $total;
 }
 if($config['member_online'])
 {
 	$tmp_time = (config('logged','period') == 'SECOND') ? 'SECOND' : config('logged','period').'_SECOND';
 	$add_sql = "WHERE exp_checked > DATE_ADD(exp_checked, INTERVAL '-".config('logged','duration')." 900' $tmp_time)";
-	$q = "SELECT COUNT(*) FROM bbc_user $add_sql";
+	$q = "SELECT COUNT(1) FROM bbc_user $add_sql";
 	$total = $db->getOne($q);
 	$output['member_online'] = $total;
 }
 if($config['user_online'])
 {
-	$q = "SELECT COUNT(*) FROM bbc_log WHERE `datetime` > DATE_ADD(NOW(), INTERVAL -".$config['interval_time']." SECOND)";
+	$q = "SELECT COUNT(1) FROM bbc_log WHERE `datetime` > DATE_ADD(NOW(), INTERVAL -".$config['interval_time']." SECOND)";
 	$total = $db->getOne($q);
 	$output['user_online'] = $total;
 }

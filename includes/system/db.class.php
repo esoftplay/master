@@ -384,7 +384,7 @@ class bbcSQL
 		$exp_sec	= $this->cache_time($sec);
 		if(is_file($path_to))
 		{
-			$out= urldecode_r(json_decode($this->file_read($path_to), 1));
+			$out= urldecode_r(json_decode(file_read($path_to), 1));
 			if(!empty($out[$query][0]) && $out[$query][0] > $exp_sec)
 			{
 				$output                = $out[$query][1];
@@ -399,7 +399,7 @@ class bbcSQL
 			if (!empty($output))
 			{
 				$data		= array_merge((array)$out, array($query => array($this->now, $output)));
-				$this->file_write($path_to, json_encode(urlencode_r($data)));
+				file_write($path_to, json_encode(urlencode_r($data)));
 			}
 		}
 		return $output;
@@ -601,49 +601,6 @@ class bbcSQL
 		echo '<table class="table table-striped table-bordered table-hover">'.$tHead.$tBody.'</table>';
 	}
 
-	function file_read($file = '', $method = 'r')
-	{
-		if (!file_exists($file))
-		{
-			return FALSE;
-		}
-		if (function_exists('file_get_contents'))
-		{
-			return @file_get_contents($file);
-		}
-		if (!$fp = @fopen($file, $method))
-		{
-			return FALSE;
-		}
-		flock($fp, LOCK_SH);
-		$data = '';
-		if (filesize($file) > 0)
-		{
-			$data =& fread($fp, filesize($file));
-		}
-		flock($fp, LOCK_UN);
-		fclose($fp);
-		return $data;
-	}
-
-	function file_write($path, $data='', $mode = 'w+')
-	{
-		if(!file_exists(dirname($path)))
-		{
-			$this->path_create(dirname($path));
-		}
-		if ( ! $fp = @fopen($path, $mode))
-		{
-			return FALSE;
-		}
-		flock($fp, LOCK_EX);
-		fwrite($fp, $data);
-		flock($fp, LOCK_UN);
-		fclose($fp);
-		@chmod($path, 0777);
-		return TRUE;
-	}
-
 	function path_delete($path)
 	{
 		if (file_exists($path))
@@ -665,43 +622,6 @@ class bbcSQL
 				@unlink($path);
 			}
 		}
-	}
-
-	function path_create($path, $chmod = 0777)
-	{
-		if(!empty($path))
-		{
-			if(file_exists($path))
-			{
-				$output = true;
-			}else{
-				$root = dirname($this->cache_dir).'/';
-				if(!file_exists($root))
-				{
-					mkdir($root, $chmod);
-					chmod($root, $chmod);
-				}
-				$path    = @preg_replace('~^'.$root.'~', '', $path);
-				$tmp_dir = $root;
-				$r       = explode('/', $path);
-				foreach($r AS $dir)
-				{
-					if(!empty($dir))
-					{
-						$tmp_dir .= $dir.'/';
-						if(!file_exists($tmp_dir))
-						{
-							@mkdir($tmp_dir, $chmod);
-							@chmod($tmp_dir, $chmod);
-						}
-					}
-				}
-				$output = file_exists($tmp_dir);
-			}
-		}else{
-			$output = false;
-		}
-		return $output;
 	}
 }
 if (!function_exists('pr'))

@@ -45,7 +45,8 @@ if (empty($is_admin))
 }
 $where  .= ' AND `is_admin` IN ('.$is_admin.', 3)';
 /* CLEAN OLD NOTIFICATION */
-$db->Execute("DELETE FROM `bbc_alert` WHERE `created` < DATE_SUB(NOW(), INTERVAL 3 MONTH)");
+$ago = date('Y-m-d H:i:s', strtotime('-3 MONTHS'));
+$db->Execute("DELETE FROM `bbc_alert` WHERE `created` < '{$ago}'");
 if (!$db->resid)
 {
 	include_once __DIR__.'/repair-comment.php';

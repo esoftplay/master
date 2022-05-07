@@ -47,7 +47,7 @@ $form->roll->input->name->setLinks( $Bbc->mod['circuit'].'.tools&act=block_downl
 $form->roll->addInput( 'id', 'selecttable' );
 $form->roll->input->id->setTitle( 'Installed' );
 $form->roll->input->id->setReferenceTable( 'bbc_block GROUP BY block_ref_id' );
-$form->roll->input->id->setReferenceField( 'COUNT(*)', 'block_ref_id' );
+$form->roll->input->id->setReferenceField( 'COUNT(1)', 'block_ref_id' );
 $form->roll->input->id->setPlaintext( true );
 
 $form->roll->onDelete('tools_block_uninstall');//, $form->roll->getDeletedId(), false);

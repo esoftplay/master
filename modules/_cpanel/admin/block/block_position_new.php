@@ -27,7 +27,7 @@ if($position_id == 0) {
 		$linkto  = $Bbc->mod['circuit'].'.block&act=block_position_new'.$add_link.'&pos_id='.$position_id.'&ref_id=';
 		$q       = "SELECT id, name FROM bbc_block_ref WHERE 1 ORDER BY name ASC";
 		$r       = $db->getAssoc($q);
-		$f       = $db->getAssoc("SELECT block_ref_id, COUNT(*) AS total FROM bbc_block WHERE template_id={$template_id} GROUP BY block_ref_id");
+		$f       = $db->getAssoc("SELECT block_ref_id, COUNT(1) AS total FROM bbc_block WHERE template_id={$template_id} GROUP BY block_ref_id");
 		$r2      = array();
 		foreach ($r as $i => $d)
 		{

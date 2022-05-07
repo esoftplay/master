@@ -7,7 +7,7 @@ function lang_count()
 		return $Bbc->lang_count;
 	}else{
 		global $db;
-		$q = "SELECT COUNT(*) FROM bbc_lang";
+		$q = "SELECT COUNT(1) FROM bbc_lang";
 		$Bbc->lang_count = $db->getOne($q);
 		return $Bbc->lang_count;
 	}

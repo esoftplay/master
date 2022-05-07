@@ -120,7 +120,7 @@ class oNav extends oDebug
 	}
 
 	// Untuk menghitung jumlah baris dari return query tersebut
-	// SELECT count(*)
+	// SELECT count(1)
 	function getNumAllRows()
 	{
 		// ini method intern
@@ -130,7 +130,7 @@ class oNav extends oDebug
 
 		if (!$this->query['distinct'])
 		{
-			$sql 	= "SELECT count(*) FROM ". $this->query['after_from_no_limit'];
+			$sql 	= "SELECT count(1) FROM ". $this->query['after_from_no_limit'];
 		}else{
 			if ($this->query['field'][0] != '*')
 			{
