@@ -110,4 +110,6 @@ if (empty($Bbc->no_log))
 	$q = "DELETE FROM `bbc_log` WHERE `datetime` < DATE_ADD(NOW(), INTERVAL -{$dur} {$per})";
 	$db->Execute($q);
 	*/
+}else{
+	$_SESSION = [];
 }
