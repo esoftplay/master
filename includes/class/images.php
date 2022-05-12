@@ -336,6 +336,12 @@ class images
 			@chmod($this->root.$this->path.$img, $this->perm);
 			unlink($this->root.$this->path.$img);
 			$output = true;
+		}else
+		if(is_file($img))
+		{
+			@chmod($img, 0777);
+			unlink($img);
+			$output = true;
 		}else{
 			$output = false;
 		}
