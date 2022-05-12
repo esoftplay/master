@@ -95,8 +95,7 @@ class bbcconfig
 							if(isset($_POST['_delete'][$this->name][$name]) && @$_POST['_delete'][$this->name][$name] == '1')
 							{
 								if(!preg_match('~^'.addslashes(_ROOT).'~s', $param['path'])) $param['path'] = _ROOT.$param['path'];
-								@chmod($param['path'].$this->default[$name], 0777);
-								@unlink($param['path'].$this->default[$name]);
+								_class('images')->delete($param['path'].$this->default[$name]);
 								$post[$name] = '';
 							}else{
 								if(!isset($img))
@@ -116,7 +115,7 @@ class bbcconfig
 										$post[$name] = $out[0];
 										if($post[$name] != @$this->default[$name] && @is_file($img->root.$img->path.$this->default[$name]))
 										{
-											@unlink($img->root.$img->path.$this->default[$name]);
+											_class('images')->delete($img->root.$img->path.$this->default[$name]);
 										}
 									}else{
 										$post[$name] = $this->default[$name];

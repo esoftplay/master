@@ -41,10 +41,14 @@ class images_class extends images
 			}else{
 				$dst = str_replace(_ROOT, config('site', 'url').'/', $to);
 			}
-			$this->bucket->upload(fopen($to , 'r'), [
-				'name'          => $dst,
-				'predefinedAcl' => 'publicRead'
-			]);
+			$src = @fopen($to , 'r');
+			if ($src)
+			{
+				$this->bucket->upload($src, [
+					'name'          => $dst,
+					'predefinedAcl' => 'publicRead'
+				]);
+			}
 		}
 		return $out;
 	}

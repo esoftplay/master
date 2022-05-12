@@ -156,7 +156,7 @@ class csv
 		$tmpFile = _CACHE.'csv'.time().'.cfg';
 		$this->save($tmpFile);
 		_func('download', 'file', $fileName, $tmpFile, false);
-		@unlink($tmpFile);
+		_class('images')->delete($tmpFile);
 		if ($is_exit)
 		{
 			die();

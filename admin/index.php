@@ -10,7 +10,7 @@ if(!empty($_POST))
 	{
 		if(count($_POST) > 1 && empty($_POST['login']))
 		{
-			@unlink(_ROOT.'images/cache/tmp.html');
+			_class('images')->delete(_ROOT.'images/cache/tmp.html');
 		}
 	}
 }

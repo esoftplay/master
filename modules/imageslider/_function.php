@@ -10,11 +10,7 @@ function imageslider_delete($ids)
 		$r = $db->getCol($q);
 		foreach($r AS $img)
 		{
-			if(is_file($Bbc->mod['dir'].$img))
-			{
-				chmod($Bbc->mod['dir'].$img, 0777);
-				unlink($Bbc->mod['dir'].$img);
-			}
+			_class('images')->delete($Bbc->mod['dir'].$img);
 		}
 		$db->Execute("DELETE FROM `imageslider` WHERE `id` IN ($ids)");
 		$db->Execute("DELETE FROM `imageslider_text` WHERE `imageslider_id` IN ($ids)");

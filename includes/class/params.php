@@ -639,8 +639,7 @@ class params
 							{
 								if(isset($is_del[$id]) && $is_del[$id] == '1')
 								{
-									@chmod($param['path'].$file_from[$tmp_id], 0777);
-									@unlink($param['path'].$file_from[$tmp_id]);
+									_class('images')->delete($param['path'].$file_from[$tmp_id]);
 								}else
 								if(empty($file))
 								{
@@ -655,8 +654,7 @@ class params
 									$post[$name][] = empty($tmp_file) ? @$file_from[$tmp_id] : $tmp_file;
 									if($tmp_file != $file_from[$tmp_id] && is_file($param['path'].$file_from[$tmp_id]))
 									{
-										@chmod($param['path'].$file_from[$tmp_id], 0777);
-										@unlink($param['path'].$file_from[$tmp_id]);
+										_class('images')->delete($param['path'].$file_from[$tmp_id]);
 									}
 								}
 								$tmp_id++;
@@ -678,8 +676,7 @@ class params
 							$del = empty($prefix) ? @$_POST['_delete'.$name] : @$_POST['_delete'.$prefix][$name];
 							if($del == '1')
 							{
-								@chmod($param['path'].$default[$name], 0777);
-								@unlink($param['path'].$default[$name]);
+								_class('images')->delete($param['path'].$default[$name]);
 								$post[$name] = '';
 							}else{
 								$file_name = empty($prefix) ? $_FILES[$name]['name'] : $_FILES[$prefix]['name'][$name];
@@ -698,11 +695,10 @@ class params
 										$post[$name] = $out;
 										if($post[$name] != $default[$name] && is_file($param['path'].$default[$name]))
 										{
-											@chmod($param['path'].$default[$name], 0777);
-											@unlink($param['path'].$default[$name]);
+											_class('images')->delete($param['path'].$default[$name]);
 										}
 									}else{
-										@unlink($param['path'].$default[$name]);
+										_class('images')->delete($param['path'].$default[$name]);
 										$post[$name] = '';
 									}
 								}

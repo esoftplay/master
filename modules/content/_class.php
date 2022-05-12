@@ -41,10 +41,10 @@ class content_class {
 		}
 		$tmp_data = content_fetch($content_id, false);
 		// old image exists but different than the new one in POST
-		if (!empty($post['image']) && @is_file($this->img_path.$tmp_data['image']) && $tmp_data['image']!=$post['image'])
+		if (!empty($post['image']) && $tmp_data['image']!=$post['image'])
 		{
-			@unlink($this->img_path.$tmp_data['image']);
-			@unlink($this->img_path.'p_'.$tmp_data['image']);
+			_class('images')->delete($this->img_path.$tmp_data['image']);
+			_class('images')->delete($this->img_path.'p_'.$tmp_data['image']);
 		}
 		if ($post['img_rename'])
 		{
@@ -79,7 +79,7 @@ class content_class {
 			}else{
 				if ($tmp_data['file']!=$post['file'])
 				{
-					@unlink($path.$tmp_data['file']);
+					_class('images')->delete($path.$tmp_data['file']);
 				}
 			}
 		}
@@ -112,8 +112,8 @@ class content_class {
 			{
 				if (!in_array($img, $images_new))
 				{
-					@unlink($path.$img);
-					@unlink($path.'thumb_'.$img);
+					_class('images')->delete($path.$img);
+					_class('images')->delete($path.'thumb_'.$img);
 				}
 			}
 		}

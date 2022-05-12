@@ -608,11 +608,8 @@ function content_trash_delete($ids = array())
 			{
 				$c_ids[] = $i;
 				path_delete($i_path.$i);
-				if(is_file($_dir.$image))
-				{
-					@unlink($_dir.'p_'.$image);
-					@unlink($_dir.$image);
-				}
+				_class('images')->delete($_dir.'p_'.$image);
+				_class('images')->delete($_dir.$image);
 			}
 			ids($c_ids);
 			$q = "DELETE FROM `bbc_content_comment` WHERE `content_id` IN ({$c_ids})";
@@ -664,10 +661,7 @@ function content_category_delete($ids = array())
 			{
 				if (!empty($img))
 				{
-					if (file_exists($path.$img))
-					{
-						@unlink($path.$img);
-					}
+					_class('images')->delete($path.$img);
 				}
 			}
 		}
@@ -701,10 +695,7 @@ function content_category_delete($ids = array())
 			$r = $db->getCol($q);
 			foreach ($r as $f)
 			{
-				if (is_file($path.$f))
-				{
-					@unlink($path.$f);
-				}
+				_class('images')->delete($path.$f);
 			}
 			$db->Execute("DELETE FROM `bbc_content_ad` WHERE `cat_id` IN ({$ids})");
 		}

@@ -317,10 +317,10 @@ class FormMultifile extends FormMulticheckbox
 					if (!in_array($data[$imgField], $images))
 					{
 						$this->db->Execute("DELETE FROM {$this->relationTable} WHERE {$this->relationTableId}={$id}");
-						@unlink($this->folder.$data[$imgField]);
+						_class('images')->delete($this->folder.$data[$imgField]);
 						if (!empty($this->params['thumbnail']))
 						{
-							@unlink($this->folder.$this->params['thumbnail']['prefix'].$data[$imgField]);
+							_class('images')->delete($this->folder.$this->params['thumbnail']['prefix'].$data[$imgField]);
 						}
 					}else{
 						// cari id nya di DB
@@ -379,10 +379,10 @@ class FormMultifile extends FormMulticheckbox
 				{
 					if (!in_array($dt['image'], $images))
 					{
-						@unlink($this->folder.$dt['image']);
+						_class('images')->delete($this->folder.$dt['image']);
 						if (!empty($this->params['thumbnail']))
 						{
-							@unlink($this->folder.$this->params['thumbnail']['prefix'].$dt['image']);
+							_class('images')->delete($this->folder.$this->params['thumbnail']['prefix'].$dt['image']);
 						}
 					}
 				}
@@ -508,10 +508,10 @@ class FormMultifile extends FormMulticheckbox
 			{
 				foreach ($files as $file)
 				{
-					@unlink($this->folder.$file);
+					_class('images')->delete($this->folder.$file);
 					if (!empty($this->params['thumbnail']))
 					{
-						@unlink($this->folder.$this->params['thumbnail']['prefix'].$file);
+						_class('images')->delete($this->folder.$this->params['thumbnail']['prefix'].$file);
 					}
 				}
 				if ($this->isFolderSet)

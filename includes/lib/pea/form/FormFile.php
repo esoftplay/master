@@ -217,11 +217,9 @@ class FormFile extends Form
 
 	function deleteFile( $filePath, $file )
 	{
-		@chmod( $filePath.$file, 0777 );
-		@unlink( $filePath.$file );
+		_class('images')->delete( $filePath.$file );
 		if($this->is_thumbnail){
-			@chmod( $filePath.$this->thumb_prefix.$file, 0777 );
-			@unlink( $filePath.$this->thumb_prefix.$file );
+			_class('images')->delete( $filePath.$this->thumb_prefix.$file );
 		}
 	}
 
@@ -405,11 +403,11 @@ class FormFile extends Form
 			foreach ($files as $afile)
 			{
 				$file = $this->folder.$afile;
-				@unlink($file);
+				_class('images')->delete($file);
 				if ($this->is_thumbnail)
 				{
 					$file = preg_replace('~(/)([^/]+)$~s', '/'.$this->thumb_prefix.'$2', $file);
-					@unlink($file);
+					_class('images')->delete($file);
 				}
 			}
 		}

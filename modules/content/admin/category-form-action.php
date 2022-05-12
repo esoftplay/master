@@ -19,7 +19,7 @@ if($prefix == 'edit_')
 				$oldimage = $db->getOne("SELECT image FROM bbc_content_cat WHERE id={$category_id}");
 				if (!empty($oldimage))
 				{
-					@unlink($Bbc->mod['dir'].$oldimage);
+					_class('images')->delete($Bbc->mod['dir'].$oldimage);
 				}
 			}
 		}
@@ -29,7 +29,7 @@ if($prefix == 'edit_')
 			$oldimage = $db->getOne("SELECT image FROM bbc_content_cat WHERE id={$category_id}");
 			if (!empty($oldimage))
 			{
-				@unlink($Bbc->mod['dir'].$oldimage);
+				_class('images')->delete($Bbc->mod['dir'].$oldimage);
 			}
 		}
 		$_POST['edit_is_config'] = @intval($_POST['edit_is_config']);
