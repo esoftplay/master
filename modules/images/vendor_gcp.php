@@ -22,7 +22,13 @@ class images_class extends images
 	}
 	function move_upload($from, $to)
 	{
-		$out = move_uploaded_file($from, $to);
+		if ($from != $to)
+		{
+			$out = move_uploaded_file($from, $to);
+		}else{
+			$to  = $from;
+			$out = true;
+		}
 		if ($out)
 		{
 			if (defined('_IMAGE_PATH'))
@@ -35,7 +41,6 @@ class images_class extends images
 				'name'          => $dst,
 				'predefinedAcl' => 'publicRead'
 			]);
-			// pr($out, __FILE__.':'.__LINE__);
 		}
 		return $out;
 	}
