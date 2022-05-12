@@ -25,6 +25,10 @@ class images_class extends images
 		if ($from != $to)
 		{
 			$out = move_uploaded_file($from, $to);
+			if (!$out)
+			{
+				$out = @rename($from, $to);
+			}
 		}else{
 			$to  = $from;
 			$out = true;
