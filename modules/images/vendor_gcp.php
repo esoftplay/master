@@ -8,6 +8,7 @@ use Google\Cloud\Storage\StorageClient;
  * please add in config.php
  * define('_IMAGE_STORAGE', 'gcp');
  * define('_IMAGE_CREDENTIAL', '/real/path/gcp_storage.json');
+ * define('_IMAGE_PATH', 'domain.com/cgi-bin/help/'); // opsional
  */
 require_once _CLASS.'images.php';
 class images_class extends images
@@ -24,11 +25,17 @@ class images_class extends images
 		$out = move_uploaded_file($from, $to);
 		if ($out)
 		{
-			$dst = str_replace(_ROOT, config('site', 'url').'/', $to);
+			if (defined('_IMAGE_PATH'))
+			{
+				$dst =	 str_replace(_ROOT, _IMAGE_PATH, $to);
+			}else{
+				$dst =	 str_replace(_ROOT, config('site', 'url').'/', $to);
+			}
 			$this->bucket->upload(fopen($to , 'r'), [
 				'name'          => $dst,
 				'predefinedAcl' => 'publicRead'
 			]);
+			// pr($out, __FILE__.':'.__LINE__);
 		}
 		return $out;
 	}

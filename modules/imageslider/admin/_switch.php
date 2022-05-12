@@ -18,6 +18,10 @@ switch( $Bbc->mod['task'] )
 		include 'new_desc.php';
 		break;
 
+	case 'new_file':
+		include 'new_file.php';
+		break;
+
 	default:
 		echo 'Invalid action <b>'.$Bbc->mod['task'].'</b> has been received...';
 		break;
