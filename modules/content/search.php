@@ -27,7 +27,7 @@ if(!empty($keyword))
 	$show = count($r_list);
 	if($show > 0)
 	{
-		$found = $db->GetOne('SELECT FOUND_ROWS(), "'.$keyword.'" AS `keyword_content`');
+		$found = $db->GetOne('SELECT FOUND_ROWS(), "'.addslashes($keyword).'" AS `keyword_content`');
 		$cat   = array(
 			'id'         => $keyword,
 			'title'      => $title,

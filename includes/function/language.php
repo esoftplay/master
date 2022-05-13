@@ -36,7 +36,7 @@ function lang_assoc($id = 'id')
 function lang_id()
 {
 #	$output = (_ADMIN == '' && isset($_SESSION['lang_id']) ) ? $_SESSION['lang_id'] : (_ADMIN != '') ? 1 : @intval(config('rules','lang_default'));
-	$output = (_ADMIN == '' && isset($_GET['lang_id']) && !empty(intval($_GET['lang_id']))) ? $_GET['lang_id'] : ((_ADMIN != '') ? 1 : @intval(config('rules','lang_default')));
+	$output = (_ADMIN == '' && isset($_GET['lang_id']) && !empty(intval($_GET['lang_id']))) ? intval($_GET['lang_id']) : ((_ADMIN != '') ? 1 : @intval(config('rules','lang_default')));
 	return $output;
 }
 
