@@ -41,7 +41,7 @@ class content_class {
 		}
 		$tmp_data = content_fetch($content_id, false);
 		// old image exists but different than the new one in POST
-		if (!empty($post['image']) && $tmp_data['image']!=$post['image'])
+		if (!empty($tmp_data['image']) && $tmp_data['image']!=$post['image'])
 		{
 			_class('images')->delete($this->img_path.$tmp_data['image']);
 			_class('images')->delete($this->img_path.'p_'.$tmp_data['image']);
@@ -55,12 +55,12 @@ class content_class {
 				if(preg_match('~(\.[a-z0-9]+)$~is', $cur_image_name, $m))
 				{
 					$new_image_name .= $m[1];
-					if ($new_image_name != $cur_image_name && file_exists($this->img_path.$cur_image_name))
+					if ($new_image_name != $cur_image_name)
 					{
-						if(@rename($this->img_path.$cur_image_name, $this->img_path.$new_image_name))
+						if(_class('images')->rename($this->img_path.$cur_image_name, $this->img_path.$new_image_name))
 						{
 							$post['image'] = $new_image_name;
-							@rename($this->img_path.'p_'.$cur_image_name, $this->img_path.'p_'.$new_image_name);
+							_class('images')->rename($this->img_path.'p_'.$cur_image_name, $this->img_path.'p_'.$new_image_name);
 						}
 					}
 				}
@@ -408,10 +408,14 @@ class content_class {
 			$tmp_content_id = $this->db->Insert_ID();
 			if ($tmp_content_id > 0 && in_array($post['kind_id'], array(1, 2)))
 			{
-				if (file_exists(_ROOT.$this->path.'0/') && !file_exists(_ROOT.$this->path.$tmp_content_id))
+				$t_f = _ROOT.$this->path.'0/';
+				$t_t = _ROOT.$this->path.$tmp_content_id.'/';
+				$t_r = path_list($t_f);
+				foreach ($t_r as $f)
 				{
-					@rename(_ROOT.$this->path.'0/', _ROOT.$this->path.$tmp_content_id);
+					_class('images')->rename($t_f.$f, $t_t.$f);
 				}
+				// _class('images')->rename(_ROOT.$this->path.'0/', _ROOT.$this->path.$tmp_content_id.'/');
 				if ($post['kind_id']==1)
 				{
 					$r = json_decode(stripslashes($post['images']), 1);
@@ -743,8 +747,8 @@ class content_class {
 					{
 						if (is_file($this->tmp_path.$img))
 						{
-							@rename($this->tmp_path.$img, $path.$img);
-							@rename($this->tmp_path.'thumb_'.$img, $path.'thumb_'.$img);
+							_class('images')->rename($this->tmp_path.$img, $path.$img);
+							_class('images')->rename($this->tmp_path.'thumb_'.$img, $path.'thumb_'.$img);
 						}
 						$images[] = array(
 							'image'       => $img,
@@ -801,17 +805,14 @@ class content_class {
 					}else
 					if (!empty($input['file']))
 					{
+						$is_valid = false;
 						if (preg_match('~\.([a-z0-9]+)$~is', $input['file'], $m))
 						{
 							$ext = strtolower($m[1]);
 							if (isset($exts[$ext]))
 							{
-								if (is_file($this->tmp_path.$input['file']))
-								{
-									$is_valid = @rename($this->tmp_path.$input['file'], $path.$input['file']);
-								}else{
-									$is_valid = is_file($path.$input['file']);
-								}
+								$is_valid = true;
+								_class('images')->rename($this->tmp_path.$input['file'], $path.$input['file']);
 							}
 						}
 						if ($is_valid)
@@ -914,10 +915,10 @@ class content_class {
 							{
 								$output['img_rename'] = 1;
 								$image_name           = $m[1];
-								if (@rename(_ROOT.$img_file, $this->img_path.'p_'.$image_name))
+								if (_class('images')->rename(_ROOT.$img_file, $this->img_path.'p_'.$image_name))
 								{
 									$output['image'] = $image_name;
-									@rename(dirname(_ROOT.$img_file).'/thumb_'.$image_name, $this->img_path.$image_name);
+									_class('images')->rename(dirname(_ROOT.$img_file).'/thumb_'.$image_name, $this->img_path.$image_name);
 								}
 							}
 						}else{

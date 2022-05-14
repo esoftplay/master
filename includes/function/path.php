@@ -90,8 +90,31 @@ if (!function_exists('path_create'))
 			if(file_exists($path)) $output = true;
 			else {
 				umask(0);
-				mkdir($path, $chmod, true);
-				$output = file_exists($path);
+				$output = mkdir($path, $chmod, true);
+				if (!$output)
+				{
+					$debug = debug_backtrace();
+					$file  = $debug[0]['file'];
+					$line  = $debug[0]['line'];
+					if (defined('_MST'))
+					{
+						$r = explode('|', _MST);
+						foreach ($r as $p)
+						{
+							$p = trim($p);
+							if (!empty($p))
+							{
+								$file = preg_replace('~^'.preg_quote($p, '~').'~s', '', $file);
+							}
+						}
+						$file = preg_replace('~^'.preg_quote(_ROOT, '~').'~s', '', $file);
+					}
+					$f = !empty($debug[0]) ? $file.':'.$line : '';
+					if (!empty($f))
+					{
+						tm(_URL.': '.$f.' Failed path create on '.$path);
+					}
+				}
 			}
 		}else{
 			$output = false;

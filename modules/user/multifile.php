@@ -124,7 +124,9 @@ if ($file && !empty($param['expire']) && $param['expire'] > time())
   			);
   		$img->initialize($cfg);
   		$img->resize();
+      _class('images')->move_upload($cfg['new_image'], $cfg['new_image']);
   	}
+    _class('images')->move_upload($fileresult, $fileresult);
   	output_json(array('success'=>1, 'result' => $filename.'.'.$ext));
   }else{
   	output_json(array('error'=> 'Could not save uploaded file.' . 'The upload was cancelled, or server error encountered'));
@@ -157,7 +159,7 @@ class user_upload
     }else{
       if (@is_uploaded_file($_FILES['qqfile']['tmp_name']))
       {
-        $done = _class('images')->move_upload($_FILES['qqfile']['tmp_name'], $path);
+        $done = move_uploaded_file($_FILES['qqfile']['tmp_name'], $path);
         if ($done)
         {
           chmod($path, 0777);

@@ -7,6 +7,7 @@ $img->setPath($Bbc->mod['dir']);
 $image_name = $img->upload($_FILES['input_name']);
 $img->resize(400);
 */
+_func('path');
 class images
 {
 	var $root = _ROOT;
@@ -24,6 +25,7 @@ class images
 		if(!empty($img))
 			$this->setimages($img);
 	}
+
 	function setpath($path, $check = true)
 	{
 		if(!empty($path))
@@ -40,7 +42,6 @@ class images
 			{
 				if(!file_exists($this->root.$path))
 				{
-					_func('path');
 					path_create($this->root.$path);
 				}
 			}
@@ -55,10 +56,12 @@ class images
 		}
 		$this->path = $path;
 	}
+
 	function setimages($img)
 	{
 		$this->img = $img ? $img : $this->getUnique('jpg');
 	}
+
 	function show($width=0, $height=0, $img='', $extra='')
 	{
 		$output = '';
@@ -95,18 +98,29 @@ class images
 		}
 		return $output;
 	}
+
 	function getExt($img)
 	{
 		preg_match('~\.([a-z0-9]+)[^\.]{0,}$~is', $img, $match);
 		return !empty($match[1]) ? strtolower($match[1]) : '';
 	}
+
 	function move($path, $img='', $imgfrom = '')
 	{
-		if(!empty($imgfrom)) $this->img = $imgfrom;
-		if(empty($img)) $img = $this->img;
-		$path = preg_replace("#^".addslashes($this->root)."#is", "", $path);
-		if(!is_dir($this->root.$path))
-			mkdir($this->root.$path, $this->perm);
+		if(!empty($imgfrom))
+		{
+			$this->img = $imgfrom;
+		}
+		if(empty($img))
+		{
+			$img = $this->img;
+		}
+		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
+		$dir  = dirname($this->root.$path.$img);
+		if(!is_dir($dir))
+		{
+			mkdir($dir, $this->perm, true);
+		}
 		if(!is_file($this->root.$path.$img))
 		{
 			$out = @rename($this->root.$this->path.$this->img, $this->root.$path.$img);
@@ -118,13 +132,23 @@ class images
 		}
 		return $output;
 	}
+
 	function copying($path, $img='', $imgfrom = '')
 	{
-		if(!empty($imgfrom)) $this->img = $imgfrom;
-		if(empty($img)) $img = $this->img;
-		$path = preg_replace("#^".addslashes($this->root)."#is", "", $path);
-		if(!is_dir($this->root.$path))
-			mkdir($this->root.$path, $this->perm);
+		if(!empty($imgfrom))
+		{
+			$this->img = $imgfrom;
+		}
+		if(empty($img))
+		{
+			$img = $this->img;
+		}
+		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
+		$dir  = dirname($this->root.$path.$img);
+		if(!is_dir($dir))
+		{
+			mkdir($dir, $this->perm, true);
+		}
 		if(!is_file($this->root.$path.$img))
 		{
 			$out = @copy($this->root.$this->path.$this->img, $this->root.$path.$img);
@@ -136,6 +160,16 @@ class images
 		}
 		return $output;
 	}
+
+	function rename($oldname, $newname)
+	{
+		if (file_exists($oldname) && !file_exists($newname))
+		{
+			return @rename($oldname, $newname);
+		}
+		return false;
+	}
+
 	function upload_r($imgfile, $name = 'all')
 	{
 		$output = array();
@@ -162,6 +196,7 @@ class images
 		}
 		return $output;
 	}
+
 	function upload($imgfile, $imgto='')
 	{
 		if(is_uploaded_file($imgfile['tmp_name']) && $this->upload_is_ok($imgfile['name']))
@@ -182,16 +217,33 @@ class images
 		}
 		return $output;
 	}
-	function move_upload($from, $to)
+
+	function move_upload($from, $to = '')
 	{
-		return move_uploaded_file($from, $to);
+		if (empty($to))
+		{
+			$to = $from;
+		}
+		if ($from == $to)
+		{
+			$out = true;
+		}else{
+			$out = move_uploaded_file($from, $to);
+			if (!$out)
+			{
+				$out = @rename($from, $to);
+			}
+		}
+		return $out;
 	}
+
 	function upload_is_ok($name)
 	{
 		$restricted = array('php','phps','php3','php4','phtml','pl','p');
 		return !in_array($this->getExt($name), $restricted);
 		return (!empty($match[1]) && !in_array(strtolower($match[1]), $restricted));
 	}
+
 	function resize($sizes, $imgdst = '', $compress = 100, $type = 'proportion', $force = false)
 	{
 		$sizes = image_size($sizes, true);
@@ -259,6 +311,7 @@ class images
 				  if($format)
 				  {
 				  	@chmod($imgdst, $this->perm);
+				  	$this->move_upload($imgdst);
 				  }
 				}else{
 					if($imgfile != $imgdst)
@@ -285,6 +338,7 @@ class images
 		}
 		return $match;
 	}
+
 	function cropImage($nw, $nh, $source, $stype, $dest)
 	{
 		$size = getimagesize($source);
@@ -327,8 +381,10 @@ class images
 		}
 		imagejpeg($dimg,$dest,100);
 		@chmod($dest, $this->perm);
+		$this->move_upload($dest);
 		return true;
 	}
+
 	function delete($img)
 	{
 		if(is_file($this->root.$this->path.$img))
@@ -347,6 +403,7 @@ class images
 		}
 		return $output;
 	}
+
 	function is_validImage($file)
 	{
 		$format = $this->getExt($file);
@@ -354,6 +411,7 @@ class images
 	  $output= array($match, $format);
 	  return $output;
 	}
+
 	function getUnique($ext)
 	{
 		$rand = rand();
@@ -364,6 +422,7 @@ class images
 			return $this->getUnique($ext);
 		}
 	}
+
 	function proportionImg($img_src, $thumbsize)
 	{
 		list($width, $height) = getimagesize($img_src);
