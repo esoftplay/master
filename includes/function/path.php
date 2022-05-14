@@ -112,7 +112,7 @@ if (!function_exists('path_create'))
 					$f = !empty($debug[0]) ? $file.':'.$line : '';
 					if (!empty($f))
 					{
-						tm(_URL.': '.$f.' Failed path create on '.$path);
+						error_log(_URL.': '.$f.' Failed path create on '.$path);
 					}
 				}
 			}
