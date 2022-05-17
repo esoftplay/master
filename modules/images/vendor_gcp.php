@@ -91,7 +91,11 @@ class images_class extends images
 					unlink($img);
 				}
 				$file = $this->_dest($img);
-				$this->bucket->object($file)->delete();
+				$obj  = $this->bucket->object($file);
+				if ($obj->exists())
+				{
+					$obj->delete();
+				}
 			}
 		}
 		return true;
@@ -125,7 +129,10 @@ class images_class extends images
 		$from = $this->_dest($this->root.$this->path.$this->img);
 		$dest = $this->_dest($this->root.$path.$img);
 		$obj  = $this->bucket->object($from);
-		$obj->copy($dest);
+		if ($obj->exists())
+		{
+			$obj->copy($dest);
+		}
 	}
 
 	function rename($oldname, $newname)
@@ -154,7 +161,10 @@ class images_class extends images
 			$from = $this->_dest($oldname);
 			$dest = $this->_dest($newname);
 			$obj  = $this->bucket->object($from);
-			$obj->rename($dest);
+			if ($obj->exists())
+			{
+				$obj->rename($dest);
+			}
 			return @rename($oldname, $newname);
 		}
 	}
