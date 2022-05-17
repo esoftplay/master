@@ -141,7 +141,7 @@ class images_class extends images
 				$newname .= '/';
 			}
 			$r = path_list($oldname);
-			foreach ($t as $file)
+			foreach ($r as $file)
 			{
 				$this->rename($oldname.$file, $newname.$file);
 			}
