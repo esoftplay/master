@@ -406,16 +406,10 @@ class content_class {
 				`publish`          = '".$post['publish']."'";
 			$this->db->Execute($q);
 			$tmp_content_id = $this->db->Insert_ID();
+			// GALLERY / DOWNLOAD
 			if ($tmp_content_id > 0 && in_array($post['kind_id'], array(1, 2)))
 			{
-				$t_f = _ROOT.$this->path.'0/';
-				$t_t = _ROOT.$this->path.$tmp_content_id.'/';
-				$t_r = path_list($t_f);
-				foreach ($t_r as $f)
-				{
-					_class('images')->rename($t_f.$f, $t_t.$f);
-				}
-				// _class('images')->rename(_ROOT.$this->path.'0/', _ROOT.$this->path.$tmp_content_id.'/');
+				_class('images')->rename(_ROOT.$this->path.'0/', _ROOT.$this->path.$tmp_content_id.'/');
 				if ($post['kind_id']==1)
 				{
 					$r = json_decode(stripslashes($post['images']), 1);
@@ -909,7 +903,7 @@ class content_class {
 					if (is_file(_ROOT.$img_file))
 					{
 						// image is from auto upload (javascript)
-						if (preg_match('~images/cache/?~', $input['image_text']))
+						if (preg_match('~images/tmp/?~', $input['image_text']))
 						{
 							if (preg_match('~([^/]+)$~s', $input['image_text'], $m))
 							{

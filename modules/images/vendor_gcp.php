@@ -35,6 +35,11 @@ class images_class extends images
 			$out = move_uploaded_file($from, $to);
 			if (!$out)
 			{
+				$dir = dirname($to);
+				if (!is_dir($dir))
+				{
+					path_create($dir);
+				}
 				$out = @rename($from, $to);
 			}
 		}
@@ -55,24 +60,40 @@ class images_class extends images
 
 	function delete($img)
 	{
-		if(is_file($this->root.$this->path.$img))
+		if (file_exists($this->root.$this->path.$img))
 		{
-			@chmod($this->root.$this->path.$img, $this->perm);
-			unlink($this->root.$this->path.$img);
-			$img    = $this->root.$this->path.$img;
-			$output = true;
-		}else
-		if(is_file($img))
-		{
-			@chmod($img, 0777);
-			unlink($img);
-			$output = true;
+			$this->delete($this->root.$this->path.$img);
 		}else{
-			$output = false;
+			$is_dir = 0;
+			if (is_dir($img))
+			{
+				$is_dir = 1;
+				if (substr($img, -1) != '/')
+				{
+					$img .= '/';
+				}
+			}else
+			if (substr($img, -1) == '/')
+			{
+				$is_dir = 1;
+			}
+			if ($is_dir)
+			{
+				$r = path_list($img);
+				foreach ($r as $file)
+				{
+					$this->delete($img.$file);
+				}
+			}else{
+				if (is_file($img))
+				{
+					@chmod($img, 0777);
+					unlink($img);
+				}
+				$file = $this->_dest($img);
+				$this->bucket->object($file)->delete();
+			}
 		}
-		$dst    = $this->_dest($img);
-		$object = $this->bucket->object($dst);
-		$object->delete();
 		return true;
 	}
 
@@ -109,17 +130,33 @@ class images_class extends images
 
 	function rename($oldname, $newname)
 	{
-		$from = $this->_dest($oldname);
-		$dest = $this->_dest($newname);
-		$obj  = $this->bucket->object($from);
-		if (substr($from, -1) == '/')
+		if (is_dir($oldname))
 		{
-			$obj->copy($dest);
-			$obj->delete();
+			if (substr($oldname, -1) != '/')
+			{
+				$oldname .= '/';
+			}
+			if (substr($newname, -1) != '/')
+			{
+				$newname .= '/';
+			}
+			$r = path_list($oldname);
+			foreach ($t as $file)
+			{
+				$this->rename($oldname.$file, $newname.$file);
+			}
 		}else{
+			$dir = dirname($newname);
+			if (!is_dir($dir))
+			{
+				path_create($dir);
+			}
+			$from = $this->_dest($oldname);
+			$dest = $this->_dest($newname);
+			$obj  = $this->bucket->object($from);
 			$obj->rename($dest);
+			return @rename($oldname, $newname);
 		}
-		return @rename($oldname, $newname);;
 	}
 
 	private function _dest($path)
