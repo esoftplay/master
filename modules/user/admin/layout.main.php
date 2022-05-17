@@ -14,11 +14,11 @@ if (!empty($Bbc->shortcut))
 		$src = $sys->template_url.'images/bogus_shortcut.png';
 		if (!empty($menu[2]))
 		{
-			if (is_file(_ROOT.'modules/_cpanel/admin/images/'.$menu[2]))
+			if (_class('images')->exists(_ROOT.'modules/_cpanel/admin/images/'.$menu[2]))
 			{
 				$src = _URL.'modules/_cpanel/admin/images/'.$menu[2];
 			}else
-			if (is_file(_ROOT.'modules/_cpanel/admin/images/icon_'.$menu[2]))
+			if (_class('images')->exists(_ROOT.'modules/_cpanel/admin/images/icon_'.$menu[2]))
 			{
 				$src = _URL.'modules/_cpanel/admin/images/icon_'.$menu[2];
 			}

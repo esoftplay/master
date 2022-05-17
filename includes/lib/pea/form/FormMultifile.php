@@ -410,7 +410,7 @@ class FormMultifile extends FormMulticheckbox
 				$this->newFolder = preg_replace('~0/?$~s', $Insert_ID.'/', $this->folder);
 				if (!file_exists($this->newFolder))
 				{
-					@rename($this->folder, $this->newFolder);
+					_class('images')->rename($this->folder, $this->newFolder);
 				}
 			}
 		}

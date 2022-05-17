@@ -250,7 +250,7 @@ class FormFile extends Form
 			$btn   = '';
 			$title = '';
 			$nobr  = 0;
-			if ( file_exists($file) && is_file( $file ) )
+			if ( _class('images')->exists($file) )
 			{
 				$size = '';
 				if (!$isUrl)

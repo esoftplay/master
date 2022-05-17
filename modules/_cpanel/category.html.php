@@ -15,7 +15,7 @@ foreach ($r as $d)
 {
 	if (!empty($d['image']))
 	{
-		if (file_exists(_ROOT.'images/modules/content/'.$d['image']))
+		if (_class('images')->exists(_ROOT.'images/modules/content/'.$d['image']))
 		{
 			$d['image'] = _URL.'images/modules/content/'.$d['image'];
 		}

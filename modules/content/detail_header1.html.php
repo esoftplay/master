@@ -10,7 +10,7 @@ if (!empty($data['images']))
 		$inner    = '';
 		foreach ($images as $i => $d)
 		{
-			if (is_file(_ROOT.$path.$d['image']))
+			if (_class('images')->exists(_ROOT.$path.$d['image']))
 			{
 				$isActive = '';
 				if (empty($hasActive))

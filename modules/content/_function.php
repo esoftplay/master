@@ -270,20 +270,20 @@ function content_src($src, $is_imgsrc = false, $is_large_image = false)
 	{
 		$output = $src;
 	}else
-	if (is_file(_ROOT.$src))
+	if (_class('images')->exists(_ROOT.$src))
 	{
 		$output = _URL.$src;
 	}else
-	if ($is_large_image && is_file(_ROOT.$path.'p_'.$src))
+	if ($is_large_image && _class('images')->exists(_ROOT.$path.'p_'.$src))
 	{
 		$output = _URL.$path.'p_'.$src;
 	}else
-	if (is_file(_ROOT.$path.$src))
+	if (_class('images')->exists(_ROOT.$path.$src))
 	{
 		$output = _URL.$path.$src;
 	}else{
 		$p = 'images/modules/content/'.get_config('content', 'manage', 'images');
-		if (is_file(_ROOT.$p))
+		if (_class('images')->exists(_ROOT.$p))
 		{
 			$output = _URL.$p;
 		}

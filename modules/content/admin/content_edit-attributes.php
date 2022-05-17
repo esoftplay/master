@@ -162,7 +162,7 @@ include_once _ROOT.'modules/content/constants.php';
 	$file_name  = '';
 	if (!empty($data['file']))
 	{
-		if (is_file(_ROOT.$path.$data['file']))
+		if (_class('images')->exists(_ROOT.$path.$data['file']))
 		{
 			$file_style = '';
 			$file_name  = icon('fa-file-o').' '.$data['file'];

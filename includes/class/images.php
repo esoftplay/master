@@ -71,7 +71,7 @@ class images
 		}else{
 			$img = $this->path.$img;
 		}
-		if(is_file($this->root.$img))
+		if($this->exists($this->root.$img))
 		{
 			$ext = $this->getExt($img);
 			if(in_array($ext, $this->allow))
@@ -166,6 +166,23 @@ class images
 		if (file_exists($oldname) && !file_exists($newname))
 		{
 			return @rename($oldname, $newname);
+		}
+		return false;
+	}
+
+	function exists($filename = '')
+	{
+		if (empty($filename))
+		{
+			$filename = $this->root.$this->path.$this->img;
+		}
+		if (file_exists($filename))
+		{
+			return true;
+		}
+		if (file_exists($this->root.$this->path.$filename))
+		{
+			return true;
 		}
 		return false;
 	}

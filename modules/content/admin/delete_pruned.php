@@ -20,14 +20,14 @@ if (!empty($id))
 		{
 			$files[] = $class->path.$id;
 		}
-		if (is_file($class->img_path.$data['image']))
+		if (_class('images')->exists($class->img_path.$data['image']))
 		{
 			$files[] = $class->img_path.$data['image'];
 			$files[] = $class->img_path.'p_'.$data['image'];
 		}
 		foreach ($files as $file)
 		{
-			path_delete($file);
+			_class('images')->delete($file);
 		}
 		$q = "DELETE FROM `bbc_content_comment` WHERE `content_id`={$id}";
 		$db->Execute($q);

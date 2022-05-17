@@ -149,17 +149,24 @@ if($prefix == 'edit_')
 						<?php
 						if($prefix == 'edit_')
 						{
-							if (!empty($data['image']) && file_exists($Bbc->mod['dir'].$data['image']))
+							if (!empty($data['image']) && _class('images')->exists($Bbc->mod['dir'].$data['image']))
 							{
 								$file = $Bbc->mod['dir'].$data['image'];
 								$name = $data['image'];
-								@list($w,$h) = @getimagesize($file);
-								if (!empty($w) && !empty($h)) {
-									$name .= ' ('.money($w).' x '.money($h).' px)';
+								if (defined('_IMAGE_STORAGE'))
+								{
+									$kb_size = '';
+								}else{
+									$kb_size = money(round(filesize($file)/1000)).' kb';
+									@list($w,$h) = @getimagesize($file);
+									if (!empty($w) && !empty($h))
+									{
+										$name .= ' ('.money($w).' x '.money($h).' px)';
+									}
 								}
 								$out = '<div class="checkbox"><img src="'.$Bbc->mod['image'].$data['image'].'" class="img-thumbnail formFile-clickable" />';
 								$out.= '<br /><label><input type="checkbox" name="edit_image_del" val="1"> Delete Image</label>';
-								$out.= ' &raquo; <em>'.$name.' &raquo; '.money(round(filesize($file)/1000)).' Kb</em>';
+								$out.= ' &raquo; <em>'.$name.' &raquo; '.$kb_size.'</em>';
 								$out.= '</div>';
 								echo $out;
 							}

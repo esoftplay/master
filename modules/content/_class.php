@@ -737,9 +737,11 @@ class content_class {
 				path_create($path);
 				foreach ((array)@$input['images']['order'] as $i => $img)
 				{
-					if (is_file($this->tmp_path.$img) || is_file($path.$img))
+					$is_tmp = $this->img->exists($this->tmp_path.$img);
+					$is_old = $this->img->exists($path.$img);
+					if ($is_tmp || $is_old)
 					{
-						if (is_file($this->tmp_path.$img))
+						if ($is_tmp)
 						{
 							_class('images')->rename($this->tmp_path.$img, $path.$img);
 							_class('images')->rename($this->tmp_path.'thumb_'.$img, $path.'thumb_'.$img);
@@ -900,7 +902,7 @@ class content_class {
 						$output['image'] = $img_file;
 					}else
 					// image file is exists
-					if (is_file(_ROOT.$img_file))
+					if ($this->img->exists(_ROOT.$img_file))
 					{
 						// image is from auto upload (javascript)
 						if (preg_match('~images/tmp/?~', $input['image_text']))

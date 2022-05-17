@@ -38,20 +38,20 @@ if(@is_numeric($_GET['id']))
 	{
 		if(!empty($d['image']))
 		{
-			if(file_exists($path.$d['image']))
+			if(_class('images')->exists($path.$d['image']))
 			{
 				preg_match('~(\.[a-z]+)$~is', $d['image'], $match);
 				$q = "SELECT title FROM bbc_content_text WHERE content_id=".$d['id']." AND lang_id=".lang_id();
 				$new = menu_save($db->getOne($q));
 				if(!empty($new) && $new.$match[1] != $d['image'])
 				{
-					if(file_exists($path.$new.$match[1]))
+					if(_class('images')->exists($path.$new.$match[1]))
 					{
 						$new = $d['id'].'-'.$new;
 					}
 					$new .= $match[1];
-					rename($path.$d['image'], $path.$new);
-					rename($path.'p_'.$d['image'], $path.'p_'.$new);
+					_class('images')->rename($path.$d['image'], $path.$new);
+					_class('images')->rename($path.'p_'.$d['image'], $path.'p_'.$new);
 					$q = "UPDATE bbc_content SET image='$new' WHERE id=".$d['id'];
 					$db->Execute($q);
 				}

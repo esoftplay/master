@@ -116,9 +116,9 @@ function links_share($id)
 	$qr->setLevel('H');
 	$qr->setSize(10);
 	$img = $qr->getDir();
-	if (is_file($img))
+	if (_class('images')->exists($img))
 	{
-		rename($img, $Bbc->mod['dir'].$id.'.png');
+		_class('images')->rename($img, $Bbc->mod['dir'].$id.'.png');
 		$db->Update('links_share', ['image' => $id.'.png'], $id);
 	}
 }

@@ -169,6 +169,31 @@ class images_class extends images
 		}
 	}
 
+	function exists($filename = '')
+	{
+		$is_exists = parent::exists($filename);
+		if ($is_exists)
+		{
+			return true;
+		}
+		if (empty($filename))
+		{
+			$filename = $this->root.$this->path.$this->img;
+		}
+		$file = $this->_dest($filename);
+		if ($this->bucket->object($file)->exists())
+		{
+			return true;
+		}
+		$file = $this->_dest($this->root.$this->path.$filename);
+		if ($this->bucket->object($file)->exists())
+		{
+			return true;
+		}
+		return false;
+
+	}
+
 	private function _dest($path)
 	{
 		if (defined('_IMAGE_PATH'))

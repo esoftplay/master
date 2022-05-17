@@ -33,7 +33,7 @@ if(@$data['publish'])
 				}else{
 					$img_src = content_src($dt['image'], false, true);
 					$img_dir = str_replace(_URL, _ROOT, $img_src);
-					if (is_file($img_dir))
+					if (_class('images')->exists($img_dir))
 					{
 						$img_size = filesize($img_dir);
 					}else{

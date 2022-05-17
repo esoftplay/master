@@ -35,7 +35,7 @@ function _cpanel_ads(&$array, $cat_id=0)
 					if (!empty($ad['image']))
 					{
 						$path = 'images/modules/content/ads/';
-						if (is_file(_ROOT.$path.$ad['image']))
+						if (_class('images')->exists(_ROOT.$path.$ad['image']))
 						{
 							$ad['image'] = $_URL.$path.$ad['image'];
 						}else{

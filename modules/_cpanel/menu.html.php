@@ -10,7 +10,7 @@ if (!empty($config['home']))
 	{
 		if (!empty($config['home_icon']))
 		{
-			if (is_file(_ROOT.'images/'.$config['home_icon']))
+			if (_class('images')->exists(_ROOT.'images/'.$config['home_icon']))
 			{
 				$icon = _URL.'images/'.$config['home_icon'];
 			}
@@ -20,7 +20,7 @@ if (!empty($config['home']))
 			$site = config('site');
 			if (!empty($site['logo']))
 			{
-				if (is_file(_ROOT.'images/'.$site['logo']))
+				if (_class('images')->exists(_ROOT.'images/'.$site['logo']))
 				{
 					$icon = _URL.'images/'.$site['logo'];
 				}
@@ -78,7 +78,7 @@ foreach ($config['module'] as $module)
 		{
 			if (!empty($d['image']))
 			{
-				if (!empty($manage['cat_img']) && is_file(_ROOT.$path.$d['image']))
+				if (!empty($manage['cat_img']) && _class('images')->exists(_ROOT.$path.$d['image']))
 				{
 					$d['image'] = _URL.$path.$d['image'];
 				}else{

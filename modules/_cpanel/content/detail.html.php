@@ -70,7 +70,7 @@ if (!empty($data['publish']))
 			  $R = json_decode($data['images'], 1);
 			  foreach ($R as $v)
 			  {
-			    if (is_file($Bbc->mod['dir'].$data['id'].'/'.@$v['image']))
+			    if (_class('images')->exists($Bbc->mod['dir'].$data['id'].'/'.@$v['image']))
 			    {
 			      $r[] = array(
 			        'image'       => $Bbc->mod['image'].$data['id'].'/'.$v['image'],
