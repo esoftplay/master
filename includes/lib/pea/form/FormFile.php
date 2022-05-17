@@ -217,9 +217,13 @@ class FormFile extends Form
 
 	function deleteFile( $filePath, $file )
 	{
-		_class('images')->delete( $filePath.$file );
-		if($this->is_thumbnail){
-			_class('images')->delete( $filePath.$this->thumb_prefix.$file );
+		if (!empty($file))
+		{
+			_class('images')->delete( $filePath.$file );
+			if($this->is_thumbnail)
+			{
+				_class('images')->delete( $filePath.$this->thumb_prefix.$file );
+			}
 		}
 	}
 
@@ -250,83 +254,80 @@ class FormFile extends Form
 			$btn   = '';
 			$title = '';
 			$nobr  = 0;
-			if ( _class('images')->exists($file) )
+			$size = '';
+			if (!$isUrl)
 			{
-				$size = '';
-				if (!$isUrl)
+				$size  = file_size($file);
+				$size  = !empty($size) ? ' &raquo; '.$size : '';
+				if (preg_match('~([^/]+)$~', $fileName, $m))
 				{
-					$size  = file_size($file);
-					$size  = !empty($size) ? ' &raquo; '.$size : '';
-					if (preg_match('~([^/]+)$~', $fileName, $m))
+					$fileName = $m[1];
+				}
+			}
+			$fileExt = strtolower( $this->getFileExtension( $fileName ) );
+			if ( in_array( $fileExt, $this->arrImageExt ) )
+			{
+				if (!empty($size))
+				{
+					@list($w,$h) = @getimagesize($file);
+					if (!empty($w) && !empty($h))
 					{
-						$fileName = $m[1];
+						$fileName .= ' ('.money($w).' x '.money($h).' px)';
 					}
 				}
-				$fileExt = strtolower( $this->getFileExtension( $fileName ) );
-				if ( in_array( $fileExt, $this->arrImageExt ) )
+				$title = " <em>". $fileName .$size .'</em>';
+				$cls   = $this->isImageClick ? ' class="img-thumbnail img-responsive formFile-clickable img-fluid"' : ' class="img-thumbnail img-responsive img-fluid"';
+				$out  .= '<img src="'.$fileUrl.'"'.$cls.' title="'.trim(strip_tags($title)).'" />';
+			}	else
+			if ( $fileExt == 'swf' )
+			{
+				$title = " <em>". $fileName .$size .'</em>';
+				$size  = $this->isImageClick ? array(640,480) : array(300,200);
+				$out  .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="'.$size[0].'" height="'.$size[1].'">';
+				$out  .= '	<param name="movie" value="'. $fileUrl .'">';
+				$out  .= '	<param name="quality" value="high">';
+				$out  .= '	<embed src="'. $fileUrl .'" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="'.$size[0].'" height="'.$size[1].'" />';
+				$out  .= '</object>';
+				if ($this->isImageClick)
 				{
-					if (!empty($size))
-					{
-						@list($w,$h) = @getimagesize($file);
-						if (!empty($w) && !empty($h))
-						{
-							$fileName .= ' ('.money($w).' x '.money($h).' px)';
-						}
-					}
-					$title = " <em>". $fileName .$size .'</em>';
-					$cls   = $this->isImageClick ? ' class="img-thumbnail img-responsive formFile-clickable img-fluid"' : ' class="img-thumbnail img-responsive img-fluid"';
-					$out  .= '<img src="'.$fileUrl.'"'.$cls.' title="'.trim(strip_tags($title)).'" />';
-				}	else
-				if ( $fileExt == 'swf' )
-				{
-					$title = " <em>". $fileName .$size .'</em>';
-					$size  = $this->isImageClick ? array(640,480) : array(300,200);
-					$out  .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="'.$size[0].'" height="'.$size[1].'">';
-					$out  .= '	<param name="movie" value="'. $fileUrl .'">';
-					$out  .= '	<param name="quality" value="high">';
-					$out  .= '	<embed src="'. $fileUrl .'" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="'.$size[0].'" height="'.$size[1].'" />';
-					$out  .= '</object>';
-					if ($this->isImageClick)
-					{
-						$out = '<button type="button" class="btn btn-default btn-secondary btn-sm formFile-clickable" data-modal="'.htmlentities($out).'" title="'.htmlentities($title).'"><span class="glyphicon glyphicon-film"></span></button>';
-					}
-				}	else {
-					$i = _func('content', 'format', $fileExt);
-					if (!empty($i))
-					{
-						$i .= '-';
-					}
-					$out .= '<h1>'.icon('fa-file-'.$i.'o', $i).'<br /><small><a href="'.$fileUrl.'" target="_blank">'.$fileName.$size.'</a></small></h1>';
-					$nobr = 1;
+					$out = '<button type="button" class="btn btn-default btn-secondary btn-sm formFile-clickable" data-modal="'.htmlentities($out).'" title="'.htmlentities($title).'"><span class="glyphicon glyphicon-film"></span></button>';
 				}
-				if (!$this->isPlaintext)
+			}	else {
+				$i = _func('content', 'format', $fileExt);
+				if (!empty($i))
 				{
-					$btn = '
-						<input type="hidden" name="id_image_'.$func_name.'" value="0">
-						<input type="hidden" name="'.$fieldName.'" value="'.$fileName.'">
-						<input type="hidden" name="'.$this->formName.'_file_delete_image'.$add_input.'" value="0">
-						<button type="button" name="submit_delete_'.$this->name.'" class="btn btn-danger btn-sm" value="'.$this->deleteButton->value.'"
-						 onclick="if(confirm(\'Are you sure want to delete this file ?\')){this.form.id_image_'.$func_name.'.value=1;this.form.reset();this.form.submit();return false;} return false;">
-							<span class="glyphicon glyphicon-trash"></span>
-						</button>';
-				}else $btn = '';
-				if($this->isImageHover)
+					$i .= '-';
+				}
+				$out .= '<h1>'.icon('fa-file-'.$i.'o', $i).'<br /><small><a href="'.$fileUrl.'" target="_blank">'.$fileName.$size.'</a></small></h1>';
+				$nobr = 1;
+			}
+			if (!$this->isPlaintext)
+			{
+				$btn = '
+					<input type="hidden" name="id_image_'.$func_name.'" value="0">
+					<input type="hidden" name="'.$fieldName.'" value="'.$fileName.'">
+					<input type="hidden" name="'.$this->formName.'_file_delete_image'.$add_input.'" value="0">
+					<button type="button" name="submit_delete_'.$this->name.'" class="btn btn-danger btn-sm" value="'.$this->deleteButton->value.'"
+					 onclick="if(confirm(\'Are you sure want to delete this file ?\')){this.form.id_image_'.$func_name.'.value=1;this.form.reset();this.form.submit();return false;} return false;">
+						<span class="glyphicon glyphicon-trash"></span>
+					</button>';
+			}else $btn = '';
+			if($this->isImageHover)
+			{
+				$out = $btn.tip($title, $out);
+			} else {
+				if (!$this->isImageClick)
 				{
-					$out = $btn.tip($title, $out);
-				} else {
-					if (!$this->isImageClick)
+					if (!empty($out) && empty($nobr))
 					{
-						if (!empty($out) && empty($nobr))
-						{
-							$out .= '<br />';
-						}
+						$out .= '<br />';
+					}
+					$out .= $btn.$title;
+				}else{
+					link_js(_PEA_URL.'includes/FormFile.js', false);
+					if (!$this->isPlaintext)
+					{
 						$out .= $btn.$title;
-					}else{
-						link_js(_PEA_URL.'includes/FormFile.js', false);
-						if (!$this->isPlaintext)
-						{
-							$out .= $btn.$title;
-						}
 					}
 				}
 			}

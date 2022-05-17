@@ -161,7 +161,7 @@ class phpUploadFile {
 					{
 						$file_name = $this->getFileNameUploaded();
 						$dest = $this->folder.$file_name;
-						$upload = _class('images')->move_upload($tmp_file, $dest);
+						$upload = move_uploaded_file($tmp_file, $dest);
 						if ($upload)
 						{
 							@chmod($dest, $this->chmod);
@@ -193,8 +193,10 @@ class phpUploadFile {
 								$config['new_image']		= $this->folder.$this->thumb_prefix.$file_name;
 								$this->image->initialize($config);
 								$this->image->resize();
+								_class('images')->move_upload($this->folder.$this->thumb_prefix.$file_name);
 								@chmod($this->folder.$this->thumb_prefix.$file_name, $this->chmod);
 							}
+							_class('images')->move_upload($dest);
 							return true;
 						}
 						else $this->error_code .= 'move_upload_file_failed';
