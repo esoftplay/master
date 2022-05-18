@@ -9,7 +9,7 @@ function image($file, $sizes = '', $attr='')
 		$tmp = str_replace(_URL, _ROOT, $file);
 		if(!preg_match('~^(?:ht|f)tps?://~is', $tmp))
 		{
-			if(is_file($tmp))
+			if(_class('images')->exists($tmp))
 			{
 				$path_file = $tmp;
 			}else{
@@ -18,12 +18,12 @@ function image($file, $sizes = '', $attr='')
 		}
 		$path_url = $file;
 	}else{
-		if(is_file($file))
+		if(_class('images')->exists($file))
 		{
 			$path_file= $file;
 			$path_url	= str_replace(_ROOT, _URL, $file);
 		}else
-		if(is_file(_ROOT.$file))
+		if(_class('images')->exists(_ROOT.$file))
 		{
 			$path_file= _ROOT.$file;
 			$path_url	= _URL.$file;
