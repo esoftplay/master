@@ -120,6 +120,10 @@ class qr
 						_func('path', 'create', $temp);
 					}
 					QRcode::png($this->data, $dir, $this->level, $this->size, $this->margin);
+					if (defined('_IMAGE_STORAGE'))
+					{
+						_class('images')->move_upload($dir);
+					}
 				}
 			}
 			if (file_exists($dir))

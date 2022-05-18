@@ -127,7 +127,7 @@ class images
 		}
 		if(!is_file($dstfile))
 		{
-			$out = rename($oldfile, $dstfile);
+			$out = @rename($oldfile, $dstfile);
 			@chmod($dstfile, $this->perm);
 			$output = ($out) ? $img : false;
 		}else{
