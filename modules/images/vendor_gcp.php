@@ -7,9 +7,14 @@ use Google\Cloud\Storage\StorageClient;
  * overide images class for Google Cloud Storage
  * please add in config.php
  * define('_IMAGE_STORAGE', 'gcp');
+ * define('_IMAGE_BUCKET', 'bbo-image');
  * define('_IMAGE_CREDENTIAL', '/real/path/gcp_storage.json');
- * define('_IMAGE_PATH', 'domain.com/cgi-bin/help/'); // opsional
+ * define('_IMAGE_PATH', 'domain.com/cgi-bin/path/'); // optional
  */
+if (!defined('_IMAGE_BUCKET'))
+{
+	define('_IMAGE_BUCKET', 'bbo-images');
+}
 require_once _CLASS.'images.php';
 class images_class extends images
 {
@@ -19,7 +24,7 @@ class images_class extends images
 	{
 		Parent::__construct($path, $img);
 		$storage = new StorageClient(['keyFilePath' => _IMAGE_CREDENTIAL]);
-		$this->bucket  = $storage->bucket('bbo-images');
+		$this->bucket  = $storage->bucket(_IMAGE_BUCKET);
 	}
 
 	function move_upload($from, $to='')
@@ -103,35 +108,59 @@ class images_class extends images
 
 	function move($path, $img='', $imgfrom = '')
 	{
+		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
 		if(!empty($imgfrom))
 		{
+			$imgfrom   = preg_replace('~^'.preg_quote($this->root).'~s', '', $imgfrom);
 			$this->img = $imgfrom;
 		}
 		if(empty($img))
 		{
 			$img = $this->img;
 		}
-		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
-		$this->rename($this->root.$this->path.$this->img, $this->root.$path.$img);
+		$oldfile = $this->root.$this->path.$this->img;
+		$dstfile = $this->root.$path.$img;
+		$dir  = dirname($dstfile);
+		if(!is_dir($dir))
+		{
+			mkdir($dir, $this->perm, true);
+		}
+		$this->rename($oldfile, $dstfile);
+		return true;
 	}
 
 	function copying($path, $img='', $imgfrom = '')
 	{
+		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
 		if(!empty($imgfrom))
 		{
+			$imgfrom   = preg_replace('~^'.preg_quote($this->root).'~s', '', $imgfrom);
 			$this->img = $imgfrom;
 		}
 		if(empty($img))
 		{
 			$img = $this->img;
 		}
-		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
-		$from = $this->_dest($this->root.$this->path.$this->img);
-		$dest = $this->_dest($this->root.$path.$img);
+		$fromfile = $this->root.$this->path.$this->img;
+		$destfile = $this->root.$path.$img;
+		if (is_dir($fromfile))
+		{
+			die('Copying directory isnot working in GCP Cloud Storage');
+		}
+		if (!is_dir(dirname($destfile)))
+		{
+			path_create(dirname($destfile));
+		}
+		@copy($fromfile, $destfile);
+		$from = $this->_dest($fromfile);
+		$dest = $this->_dest($destfile);
 		$obj  = $this->bucket->object($from);
 		if ($obj->exists())
 		{
-			$obj->copy($dest);
+			$obj->copy(_IMAGE_BUCKET, ['name' => $dest]);
+			return true;
+		}else{
+			return false;
 		}
 	}
 

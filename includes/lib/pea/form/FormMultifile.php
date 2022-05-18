@@ -297,7 +297,8 @@ class FormMultifile extends FormMulticheckbox
 		$output      = '';
 		$post        = $this->getPostData($i);
 		$mainTableId = $this->mainTableId;
-		$imgClass = _class('images');
+		$imgClass    = _class('images');
+		$oldImages   = [];
 		if($this->relationTable)
 		{
 			$imgField = !empty($this->relationField['fields']) ? reset($this->relationField['fields']) : 'image';
@@ -346,14 +347,9 @@ class FormMultifile extends FormMulticheckbox
 				}
 				if (!in_array($image, $image_before))
 				{
-					$imgClass->move($this->folder, $image, $this->folder_tmp.$image);
-					if (!empty($this->params['thumbnail']))
-					{
-						$thumbnail = $this->params['thumbnail']['prefix'].$image;
-						$imgClass->move($this->folder, $thumbnail, $this->folder_tmp.$thumbnail);
-					}
 					$this->db->Execute('INSERT INTO '.$sql);
 				}else{
+					$oldImages[] = $image;
 					$this->db->Execute('UPDATE '.$sql.' WHERE '.$this->relationTableId.'='.@intval($ids_before[$image]));
 				}
 			}
@@ -376,6 +372,8 @@ class FormMultifile extends FormMulticheckbox
 						{
 							$imgClass->delete($this->folder.$this->params['thumbnail']['prefix'].$dt['image']);
 						}
+					}else{
+						$oldImages[] = $dt['image'];
 					}
 				}
 			}
@@ -383,11 +381,14 @@ class FormMultifile extends FormMulticheckbox
 			{
 				foreach ($images as $image)
 				{
-					$imgClass->move($this->folder, $image, $this->folder_tmp.$image);
-					if (!empty($this->params['thumbnail']))
+					if (!in_array($image, $oldImages))
 					{
-						$thumbnail = $this->params['thumbnail']['prefix'].$image;
-						$imgClass->move($this->folder, $thumbnail, $this->folder_tmp.$thumbnail);
+						$imgClass->move($this->folder, $image, $this->folder_tmp.$image);
+						if (!empty($this->params['thumbnail']))
+						{
+							$thumbnail = $this->params['thumbnail']['prefix'].$image;
+							$imgClass->move($this->folder, $thumbnail, $this->folder_tmp.$thumbnail);
+						}
 					}
 				}
 			}
@@ -447,33 +448,17 @@ class FormMultifile extends FormMulticheckbox
 		if (!empty($postData))
 		{
 			$imgField = !empty($this->relationField['fields']) ? reset($this->relationField['fields']) : 'image';
-			// if (file_exists($this->folder))
-			// {
-				foreach ($postData as $data)
+			foreach ($postData as $data)
+			{
+				$file = $data[$imgField];
+				$imgClass->move($this->folder, $file, $this->folder_tmp.$file);
+				if (!empty($this->params['thumbnail']))
 				{
-					$file = $data[$imgField];
-					$imgClass->move($this->folder, $file, $this->folder_tmp.$file);
-					if (!empty($this->params['thumbnail']))
-					{
-						$thumbnail = $this->params['thumbnail']['prefix'].$file;
-						$imgClass->move($this->folder, $thumbnail, $this->folder_tmp.$thumbnail);
-					}
-					// if(@rename($this->folder_tmp.$file, $this->folder.$file))
-					// {
-					// 	if (!empty($this->params['thumbnail']))
-					// 	{
-					// 		if (!empty($this->params['thumbnail']['is_dir']))
-					// 		{
-					// 			path_create($this->params['thumbnail']['prefix']);
-					// 		}
-					// 		@rename($this->folder_tmp.$this->params['thumbnail']['prefix'].$file, $this->folder.$this->params['thumbnail']['prefix'].$file);
-					// 	}
-					// }
+					$thumbnail = $this->params['thumbnail']['prefix'].$file;
+					$imgClass->move($this->folder, $thumbnail, $this->folder_tmp.$thumbnail);
 				}
-				path_delete($this->folder_tmp);
-			// }else{
-			// 	@rename($this->folder_tmp, $this->folder);
-			// }
+			}
+			path_delete($this->folder_tmp);
 		}else{
 			path_delete($this->folder_tmp);
 		}

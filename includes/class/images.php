@@ -15,6 +15,7 @@ class images
 	var $valid= array ('gif', 'jpg', 'png', 'bmp');
 	var $allow= array ('gif', 'jpg', 'png', 'bmp', 'ico', 'swf');
 	var $perm	= 0777;
+	var $last_image;
 	var $path;
 	var $img;
 	var $output;
@@ -107,24 +108,27 @@ class images
 
 	function move($path, $img='', $imgfrom = '')
 	{
+		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
 		if(!empty($imgfrom))
 		{
+			$imgfrom   = preg_replace('~^'.preg_quote($this->root).'~s', '', $imgfrom);
 			$this->img = $imgfrom;
 		}
 		if(empty($img))
 		{
 			$img = $this->img;
 		}
-		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
-		$dir  = dirname($this->root.$path.$img);
+		$oldfile = $this->root.$this->path.$this->img;
+		$dstfile = $this->root.$path.$img;
+		$dir  = dirname($dstfile);
 		if(!is_dir($dir))
 		{
 			mkdir($dir, $this->perm, true);
 		}
-		if(!is_file($this->root.$path.$img))
+		if(!is_file($dstfile))
 		{
-			$out = @rename($this->root.$this->path.$this->img, $this->root.$path.$img);
-			@chmod($this->root.$path.$img, $this->perm);
+			$out = rename($oldfile, $dstfile);
+			@chmod($dstfile, $this->perm);
 			$output = ($out) ? $img : false;
 		}else{
 			$rand		= rand().'.'.$this->getExt($img);
@@ -135,24 +139,27 @@ class images
 
 	function copying($path, $img='', $imgfrom = '')
 	{
+		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
 		if(!empty($imgfrom))
 		{
+			$imgfrom   = preg_replace('~^'.preg_quote($this->root).'~s', '', $imgfrom);
 			$this->img = $imgfrom;
 		}
 		if(empty($img))
 		{
 			$img = $this->img;
 		}
-		$path = preg_replace('~^'.preg_quote($this->root).'~s', '', $path);
-		$dir  = dirname($this->root.$path.$img);
+		$fromfile = $this->root.$this->path.$this->img;
+		$destfile = $this->root.$path.$img;
+		$dir  = dirname($destfile);
 		if(!is_dir($dir))
 		{
 			mkdir($dir, $this->perm, true);
 		}
-		if(!is_file($this->root.$path.$img))
+		if(!is_file($destfile))
 		{
-			$out = @copy($this->root.$this->path.$this->img, $this->root.$path.$img);
-			@chmod($this->root.$path.$img, $this->perm);
+			$out = @copy($fromfile, $destfile);
+			@chmod($destfile, $this->perm);
 			$output = ($out) ? $img : false;
 		}else{
 			$rand		= rand().'.'.$this->getExt($img);
