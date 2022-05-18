@@ -43,9 +43,10 @@ function image($file, $sizes = '', $attr='')
 		$output .= "</object>";
 	}else{
 		$sizes2 = image_size($sizes, true);
-		if(empty($path_file))
+		if(empty($path_file) || defined('_IMAGE_STORAGE'))
 		{
-			$sizes = $sizes2;
+			$sizes    = $sizes2;
+			$sizes[1] = 0;
 		}else{
 			$sizes1 = getimagesize($path_file);
 			$sizes	= array();
