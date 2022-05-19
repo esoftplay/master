@@ -91,6 +91,10 @@ $form->roll->input->image->setTitle('image');
 $form->roll->input->image->setFolder($Bbc->mod['dir']);
 $form->roll->input->image->setPlaintext( true );
 $form->roll->input->image->setImageClick( true );
+if (get_config('imageslider', 'config', 'thumbnail'))
+{
+	$form->roll->input->image->setThumbnail(get_config('imageslider', 'config', 'thumbsize'), 'thumb', false);
+}
 
 $form->roll->addInput('link', 'sqlplaintext');
 $form->roll->input->link->setTitle('Link');

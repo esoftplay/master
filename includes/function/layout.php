@@ -6,22 +6,17 @@ function image($file, $sizes = '', $attr='')
 	$path_url	= '';
 	if(preg_match('~^(?:ht|f)tps?://~is', $file))
 	{
-		$tmp = str_replace(_URL, _ROOT, $file);
+		$tmp = preg_replace('~^'.preg_quote(_URL, '~').'~s', _ROOT, $file);
 		if(!preg_match('~^(?:ht|f)tps?://~is', $tmp))
 		{
-			if(_class('images')->exists($tmp))
-			{
-				$path_file = $tmp;
-			}else{
-				return false;
-			}
+			$path_file = $tmp;
 		}
 		$path_url = $file;
 	}else{
 		if(_class('images')->exists($file))
 		{
 			$path_file= $file;
-			$path_url	= str_replace(_ROOT, _URL, $file);
+			$path_url	= preg_replace('~^'.preg_quote(_ROOT, '~').'~s', _URL, $file);
 		}else
 		if(_class('images')->exists(_ROOT.$file))
 		{

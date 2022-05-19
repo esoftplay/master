@@ -11,6 +11,10 @@ function imageslider_delete($ids)
 		foreach($r AS $img)
 		{
 			_class('images')->delete($Bbc->mod['dir'].$img);
+			if (get_config('imageslider', 'config', 'thumbnail'))
+			{
+				_class('images')->delete($Bbc->mod['dir'].'thumb_'.$img);
+			}
 		}
 		$db->Execute("DELETE FROM `imageslider` WHERE `id` IN ($ids)");
 		$db->Execute("DELETE FROM `imageslider_text` WHERE `imageslider_id` IN ($ids)");
@@ -24,10 +28,10 @@ function imageslider_save($id = 0)
   {
     $id = $_GET['id'];
   }
-  $q = "SELECT cat_id, image FROM imageslider WHERE id=$id";
+  $q = "SELECT `cat_id`, `image` FROM `imageslider` WHERE `id`=$id";
   $r = $db->getRow($q);
   $image = $Bbc->mod['dir'].$r['image'];
-  if(file_exists($image))
+  if(is_file($image))
   {
     $cat = $db->getRow("SELECT * FROM imageslider_cat WHERE id=".$r['cat_id']);
     $cfg_resize = array(
@@ -36,9 +40,21 @@ function imageslider_save($id = 0)
     ,	'height'        => $cat['height']
     ,	'maintain_ratio'=> false
     );
-    $img = _class('image_lib');
-    $img->initialize($cfg_resize);
-    $img->resize();
+    _class('image_lib', $cfg_resize)->resize();
+    _class('images')->move_upload($cfg_resize['source_image']);
+    if (get_config('imageslider', 'config', 'thumbnail'))
+    {
+    	$thumbsize  = image_size(get_config('imageslider', 'config', 'thumbsize'), true);
+    	$cfg_resize = array(
+    		'source_image'   => $image,
+    		'new_image'      => $Bbc->mod['dir'].'thumb_'.$r['image'],
+    		'width'          => $thumbsize[0],
+    		'height'         => $thumbsize[1],
+    		'maintain_ratio' => true
+    	);
+    	_class('image_lib', $cfg_resize)->resize();
+    	_class('images')->move_upload($cfg_resize['new_image']);
+    }
   }
   imageslider_repair();
 }

@@ -25,7 +25,6 @@ class phpUploadFile {
 		$this->is_resize	= $is_resize;
 		$this->rez_width	= $width;
 		$this->rez_height	= $height;
-		$this->image			= _class('image_lib');
 		$this->arr_extension_filter	= array();
 		$this->unique_file_name	= false;
 		$this->file_size_max 		= -1;
@@ -166,21 +165,22 @@ class phpUploadFile {
 						{
 							@chmod($dest, $this->chmod);
 							$this->file_name_sukses_uploaded = $file_name;
+							$cfg_resize = array('source_image'=> $dest);
 							if($this->is_resize)
 							{
 								$cfg_resize = array(
-									'source_image'=> $dest
-								,	'width'				=> $this->rez_width
-								,	'height'			=> $this->rez_height
+									'source_image'=> $dest,
+									'width'				=> $this->rez_width,
+									'height'			=> $this->rez_height
 								);
-								$this->image->initialize($cfg_resize);
-								$this->image->resize();
+								// pr(json_encode($cfg_resize, JSON_PRETTY_PRINT), __FILE__.':'.__LINE__);
+								_class('image_lib', $cfg_resize)->resize();
 							}
 							if($this->is_watermark)
 							{
 								$this->watermark_param['source_image'] = $dest;
-								$this->image->initialize($this->watermark_param);
-								$this->image->watermark();
+								// pr(json_encode($this->watermark_param, JSON_PRETTY_PRINT), __FILE__.':'.__LINE__);
+								_class('image_lib', $this->watermark_param)->watermark();
 							}
 							if($this->is_thumbnail)
 							{
@@ -188,11 +188,11 @@ class phpUploadFile {
 								{
 									@mkdir($this->folder.$this->thumb_prefix, 0777);
 								}
-								$config = array_merge($cfg_resize, $this->thumb_param);
-								$config['create_thumb'] = TRUE;
-								$config['new_image']		= $this->folder.$this->thumb_prefix.$file_name;
-								$this->image->initialize($config);
-								$this->image->resize();
+								$config                 = array_merge($cfg_resize, $this->thumb_param);
+								$config['create_thumb'] = FALSE ;
+								$config['new_image']    = $this->folder.$this->thumb_prefix.$file_name;
+								// pr(json_encode($config, JSON_PRETTY_PRINT), __FILE__.':'.__LINE__);
+								_class('image_lib', $config)->resize();
 								_class('images')->move_upload($this->folder.$this->thumb_prefix.$file_name);
 								@chmod($this->folder.$this->thumb_prefix.$file_name, $this->chmod);
 							}

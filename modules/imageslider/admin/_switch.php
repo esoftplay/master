@@ -18,8 +18,8 @@ switch( $Bbc->mod['task'] )
 		include 'new_desc.php';
 		break;
 
-	case 'new_file':
-		include 'new_file.php';
+	case 'config': // konfigurasi tambahan untuk imageslider
+		include 'config.php';
 		break;
 
 	default:

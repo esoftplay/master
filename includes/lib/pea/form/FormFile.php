@@ -207,9 +207,7 @@ class FormFile extends Form
 				$this->deleteFile( $this->folder, $oldFileName );
 			}
 			return $file_name = $upload->getFileNameOkUploaded();
-		}
-		else
-		{
+		}else{
 			$this->status = $upload->getError();
 			return false;
 		}
@@ -220,8 +218,10 @@ class FormFile extends Form
 		if (!empty($file))
 		{
 			_class('images')->delete( $filePath.$file );
+			// pr($file, __FILE__.':'.__LINE__);
 			if($this->is_thumbnail)
 			{
+				// pr($this->thumb_prefix.$file, __FILE__.':'.__LINE__);
 				_class('images')->delete( $filePath.$this->thumb_prefix.$file );
 			}
 		}
@@ -403,13 +403,7 @@ class FormFile extends Form
 			$files = $this->db->getCol( $old_sql );
 			foreach ($files as $afile)
 			{
-				$file = $this->folder.$afile;
-				_class('images')->delete($file);
-				if ($this->is_thumbnail)
-				{
-					$file = preg_replace('~(/)([^/]+)$~s', '/'.$this->thumb_prefix.'$2', $file);
-					_class('images')->delete($file);
-				}
+				$this->deleteFile($this->folder, $afile);
 			}
 		}
 		return $sql;

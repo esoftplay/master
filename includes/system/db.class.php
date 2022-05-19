@@ -13,6 +13,8 @@ if (!defined('_ROOT'))
 {
 	define('_ROOT', __DIR__.'/');
 }
+@umask(0);
+
 class bbcSQL
 {
 	var $debug     = 0;
@@ -156,7 +158,6 @@ class bbcSQL
 		$this->cache_dir= $dir;
 		if(!is_dir($this->cache_dir))
 		{
-			@umask(0);
 			@mkdir($this->cache_dir, 0777, true);
 		}
 	}

@@ -89,7 +89,6 @@ if (!function_exists('path_create'))
 		{
 			if(file_exists($path)) $output = true;
 			else {
-				umask(0);
 				$output = mkdir($path, $chmod, true);
 				if (!$output)
 				{
