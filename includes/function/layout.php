@@ -43,24 +43,28 @@ function image($file, $sizes = '', $attr='')
 			$sizes    = $sizes2;
 			$sizes[1] = 0;
 		}else{
-			$sizes1 = getimagesize($path_file);
-			$sizes	= array();
-			if($sizes1[0] > $sizes2[0])
+			$sizes = $sizes2;
+			if (is_file($path_file))
 			{
-				if($sizes1[0] > $sizes1[1])
+				$sizes1 = @getimagesize($path_file);
+				$sizes	= array();
+				if($sizes1[0] > $sizes2[0])
 				{
-					$sizes[0] = $sizes2[0];
-					$sizes[1] = $sizes2[0]*$sizes1[1]/$sizes1[0];
+					if($sizes1[0] > $sizes1[1])
+					{
+						$sizes[0] = $sizes2[0];
+						$sizes[1] = $sizes2[0]*$sizes1[1]/$sizes1[0];
+					}else{
+						$sizes[1] = $sizes2[1];
+						$sizes[0] = $sizes2[1]*$sizes1[0]/$sizes1[1];
+					}
 				}else{
-					$sizes[1] = $sizes2[1];
-					$sizes[0] = $sizes2[1]*$sizes1[0]/$sizes1[1];
+					$sizes = $sizes1;
 				}
-			}else{
-				$sizes = $sizes1;
 			}
 		}
 		$attr .= $sizes[0] ? ' width="'.$sizes[0].'"' : '';
-		$attr .= $sizes[1] ? ' height="'.$sizes[1].'"' : '';
+		// $attr .= $sizes[1] ? ' height="'.$sizes[1].'"' : '';
 		if (!empty($attr))
 		{
 			$attr = ' '.$attr;

@@ -18,13 +18,52 @@ if (!defined('_IMAGE_BUCKET'))
 require_once _CLASS.'images.php';
 class images_class extends images
 {
-	protected $bucket = null;
+	protected $bucket  = null;
+	protected $objects = [];
 
 	function __construct($path = '', $img = '')
 	{
 		Parent::__construct($path, $img);
-		$storage = new StorageClient(['keyFilePath' => _IMAGE_CREDENTIAL]);
-		$this->bucket  = $storage->bucket(_IMAGE_BUCKET);
+		$this->objects = [];
+	}
+
+	function __destruct()
+	{
+		if (!empty($this->objects))
+		{
+			$storage = new StorageClient(['keyFilePath' => _IMAGE_CREDENTIAL]);
+			$bucket  = $storage->bucket(_IMAGE_BUCKET);
+			foreach ($this->objects as $obj)
+			{
+				list($obj_file, $method, $args) = $obj;
+				if ($method == 'upload')
+				{
+					call_user_func_array([$bucket, $method], $args);
+				}else{
+					$object = $bucket->object($obj_file);
+					if ($object->exists())
+					{
+						call_user_func_array([$object, $method], $args);
+					}
+				}
+			}
+			$this->objects = [];
+		}
+	}
+
+	function gcp()
+	{
+		if (empty($this->bucket))
+		{
+			$storage       = new StorageClient(['keyFilePath' => _IMAGE_CREDENTIAL]);
+			$this->bucket  = $storage->bucket(_IMAGE_BUCKET);
+		}
+		return $this->bucket;
+	}
+
+	private function add_object($object, $method, $args = [])
+	{
+		$this->objects[] = [$object, $method, $args];
 	}
 
 	function move_upload($from, $to='')
@@ -54,10 +93,17 @@ class images_class extends images
 			$src = @fopen($to , 'r');
 			if ($src)
 			{
-				$this->bucket->upload($src, [
-					'name'          => $dst,
-					'predefinedAcl' => 'publicRead'
+				$this->add_object($src, 'upload', [
+					$src,
+					[
+						'name'          => $dst,
+						'predefinedAcl' => 'publicRead'
+					]
 				]);
+				// $this->bucket->upload($src, [
+				// 	'name'          => $dst,
+				// 	'predefinedAcl' => 'publicRead'
+				// ]);
 			}
 		}
 		return $out;
@@ -96,11 +142,12 @@ class images_class extends images
 					unlink($img);
 				}
 				$file = $this->_dest($img);
-				$obj  = $this->bucket->object($file);
-				if ($obj->exists())
-				{
-					$obj->delete();
-				}
+				$this->add_object($file, 'delete');
+				// $obj  = $this->bucket->object($file);
+				// if ($obj->exists())
+				// {
+				// 	$obj->delete();
+				// }
 			}
 		}
 		return true;
@@ -154,14 +201,16 @@ class images_class extends images
 		@copy($fromfile, $destfile);
 		$from = $this->_dest($fromfile);
 		$dest = $this->_dest($destfile);
-		$obj  = $this->bucket->object($from);
-		if ($obj->exists())
-		{
-			$obj->copy(_IMAGE_BUCKET, ['name' => $dest]);
-			return true;
-		}else{
-			return false;
-		}
+		$this->add_object($from, 'copy', [_IMAGE_BUCKET, ['name' => $dest]]);
+		return true;
+		// $obj  = $this->bucket->object($from);
+		// if ($obj->exists())
+		// {
+		// 	$obj->copy(_IMAGE_BUCKET, ['name' => $dest]);
+		// 	return true;
+		// }else{
+		// 	return false;
+		// }
 	}
 
 	function rename($oldname, $newname)
@@ -189,11 +238,12 @@ class images_class extends images
 			}
 			$from = $this->_dest($oldname);
 			$dest = $this->_dest($newname);
-			$obj  = $this->bucket->object($from);
-			if ($obj->exists())
-			{
-				$obj->rename($dest);
-			}
+			$this->add_object($from, 'rename', [$dest]);
+			// $obj  = $this->bucket->object($from);
+			// if ($obj->exists())
+			// {
+			// 	$obj->rename($dest);
+			// }
 			return @rename($oldname, $newname);
 		}
 	}
@@ -210,12 +260,13 @@ class images_class extends images
 			$filename = $this->root.$this->path.$this->img;
 		}
 		$file = $this->_dest($filename);
-		if ($this->bucket->object($file)->exists())
+		$gcp  = $this->gcp();
+		if ($gcp->object($file)->exists())
 		{
 			return true;
 		}
 		$file = $this->_dest($this->root.$this->path.$filename);
-		if ($this->bucket->object($file)->exists())
+		if ($gcp->object($file)->exists())
 		{
 			return true;
 		}
@@ -234,3 +285,15 @@ class images_class extends images
 		return $out;
 	}
 }
+/*
+# testing
+$img = _class('images');
+$img->setPath('images/');
+#$r = $img->move_upload('/Users/me/Sites/bbo/images/true.png');
+#$r = $img->rename(_ROOT.'images/true2.png', _ROOT.'images/true.png');
+#$r = $img->copying('images/', 'true31.png', 'true.png');
+#$r = $img->move('images/', 'ok/true31.png', 'true31.png');
+#$r = $img->delete(_ROOT.'images/true3.png');
+pr(microtime(), $r);
+
+*/
