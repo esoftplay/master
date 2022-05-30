@@ -3,7 +3,7 @@ FROM wyveo/nginx-php-fpm:php74
 
 RUN apt-get update && apt-get install net-tools curl rsync libmcrypt-dev openssh-client vim git gearman -y
 RUN cd /opt && git clone https://github.com/esoftplay/tools.git
-RUN echo "\n[program:esoftplay_tools]\ncommand=cd /opt/tools && git pull\nautostart=true" >> /etc/supervisord.conf
+RUN echo "\n[program:esoftplay_tools]\ncommand=/bin/bash -c 'cd /opt/tools && git pull'\nautostart=true\npriority=20" >> /etc/supervisord.conf
 
 RUN mkdir -p /var/www/html/master
 WORKDIR /var/www/html/master
@@ -47,7 +47,7 @@ RUN cat /etc/php/7.4/cli/php.ini.orig | sed \
 # Build Website
 COPY . /var/www/html/master
 RUN cd /var/www/html/master && git remote set-url origin https://github.com/esoftplay/master.git
-RUN echo "\n[program:esoftplay]\ncommand=cd /var/www/html/master && git pull\nautostart=true" >> /etc/supervisord.conf
+RUN echo "\n[program:esoftplay]\ncommand=/bin/bash -c 'cd /var/www/html/master && git pull'\nautostart=true\npriority=15" >> /etc/supervisord.conf
 COPY includes/system/docker/nginx.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY includes/system/docker/php.conf /etc/php/7.4/fpm/php-fpm.conf
 COPY includes/system/docker/master.conf  /etc/nginx/conf.d/master.conf
@@ -67,4 +67,4 @@ RUN cd /var/www/html/master/modules/images && composer update && composer instal
 RUN cd /opt && git clone https://github.com/esoftplay/async.git && cd /opt/async && git pull && mkdir -p logs
 COPY includes/system/docker/esoftplay_async  /etc/init.d/esoftplay_async
 RUN chmod +x /etc/init.d/esoftplay_async && update-rc.d esoftplay_async defaults
-RUN echo "\n[program:esoftplay_async]\ncommand=/etc/init.d/esoftplay_async start\nautostart=true\nautorestart=true\npriority=5" >> /etc/supervisord.conf
+RUN echo "\n[program:esoftplay_async]\ncommand=/bin/bash -c '/etc/init.d/esoftplay_async start' &\nautostart=true\nautorestart=true\npriority=25\nstartretries=5" >> /etc/supervisord.conf
