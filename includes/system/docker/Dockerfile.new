@@ -1,0 +1,10 @@
+FROM esoftplay/master:latest
+
+RUN mkdir -p /home/sites
+WORKDIR /home/sites
+
+VOLUME ["."]
+RUN cd /var/www/html/master && git pull
+RUN cd /home/sites && curl -s fisip.net/fw/master|php|sh
+RUN chmod -R 777 images
+RUN rm -rf images/cache
