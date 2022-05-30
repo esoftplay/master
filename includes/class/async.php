@@ -132,8 +132,8 @@ class async
 			return false;
 		}else{
 			$data = "\n".'/etc/init.d/esoftplay_async restart'
-			."\n".'/usr/local/bin/tm "restart async '.$txt.' di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808'
-			."\n".'/bin/rm -f /tmp/async-tmp.txt';
+			."\n".'/bin/rm -f /tmp/async-tmp.txt'
+			."\n".'/usr/local/bin/tm "restart async '.$txt.' di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808';
 			file_write($act_file, $data, 'a');
 			file_write($tmp_file, date('r'));
 		}

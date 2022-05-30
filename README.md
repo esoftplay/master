@@ -32,3 +32,6 @@
 4. mcrypt
 5. xml
 6. zip
+
+# How to run using docker
+`docker-composer up -d`

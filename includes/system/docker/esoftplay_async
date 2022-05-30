@@ -1,0 +1,69 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          esoftplay_async
+# Required-Start:    $local_fs $network $syslog
+# Required-Stop:     $local_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Example
+# Description:       Example start-stop-daemon - Debian
+### END INIT INFO
+
+NAME="esoftplay_async"
+PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
+
+# Include functions
+set -e
+. /lib/lsb/init-functions
+
+#We need this function to ensure the whole process tree will be killed
+killtree() {
+    local _pid=$1
+    local _sig=${2-TERM}
+    for _child in $(ps -o pid --no-headers --ppid ${_pid}); do
+        killtree ${_child} ${_sig}
+    done
+    kill -${_sig} ${_pid}
+}
+
+start() {
+  echo -n "Starting async: "
+  gearmand -d
+  # /usr/bin/php /opt/async/bin/manager.php stop &
+  /usr/bin/php /opt/async/bin/manager.php start &
+}
+
+stop() {
+  echo -n "Stopping async: "
+  /usr/bin/php /opt/async/bin/manager.php stop &
+  service gearman-job-server stop
+  kill $(gearadmin --getpid)
+}
+
+status() {
+  gearadmin --status
+  gearadmin --workers
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  status)
+    status
+    ;;
+  *)
+    echo "Usage: $NAME {start|stop|restart|status}" >&2
+    exit 1
+    ;;
+esac
+
+exit 0

@@ -1,0 +1,5 @@
+.DS_Store
+composer.lock
+database.sql
+sftp-config.json
+vendor

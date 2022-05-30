@@ -114,9 +114,9 @@ class bbcSQL
 				}
 			}
 		}
-		if (empty($out[0]))
+		if (!is_object($out[0]))
 		{
-			$this->echoerror();
+			die('failed to login to database');
 		}else{
 			mysqli_set_charset($out[0], "utf8");
 			$this->link = $out[0];
