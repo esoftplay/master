@@ -1,0 +1,7 @@
+FROM esoftplay/master:latest
+
+RUN mkdir -p /home/sites
+WORKDIR /home/sites
+
+RUN cd /var/www/html/master && git checkout . && git clean -df && git pull
+CMD /usr/bin/curl -s fisip.net/fw/master|/usr/bin/php|/bin/sh

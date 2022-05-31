@@ -50,7 +50,7 @@ RUN cd /var/www/html/master && git remote set-url origin https://github.com/esof
 RUN echo "\n[program:esoftplay]\ncommand=/bin/bash -c 'cd /var/www/html/master && git pull'\nautostart=true\npriority=15" >> /etc/supervisord.conf
 COPY includes/system/docker/nginx.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY includes/system/docker/php.conf /etc/php/7.4/fpm/php-fpm.conf
-COPY includes/system/docker/master.conf  /etc/nginx/conf.d/master.conf
+COPY includes/system/docker/sites.conf  /etc/nginx/conf.d/sites.conf
 COPY includes/system/docker/bashrc  /root/.bashrc
 
 # Prepare framework

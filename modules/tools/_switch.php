@@ -4,6 +4,7 @@ $notFile = array('_switch.php', 'index.php');
 $M_DIR   = '/opt/tools/';
 $M_DIR2  = _ROOT.'templates/'.config('template').'/modules/tools/';
 $M_DIR3  = _ROOT.'modules/';
+/*
 $key     = 'isAllowTools';
 // unset($_SESSION['isAllowTools']);
 if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1')
@@ -22,7 +23,8 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1')
 		}
 	}
 }
-if(file_exists($M_DIR) && ini_get('display_errors')==1 && !empty($_SESSION[$key]))
+*/
+if(file_exists($M_DIR) && ini_get('display_errors')==1)// && !empty($_SESSION[$key]))
 {
 	meta_title('tools');
 	chdir($M_DIR);

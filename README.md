@@ -1,37 +1,55 @@
-# Framework
-* Modules
-	* Page
-	* Library
-		* Function
-		* Class
-		* Developer Tools
-* Block
-* Templates
-	* Layout
-	* Developer Tools
+# Preparation
+ * Install docker https://www.docker.com/get-started/
+ * Make sure these port are available 80, 81 and 3307
+ * install git [optional]
+ * install framework [optional]
+ * install mysql cli [optional]
 
-# Variable
-* $Bbc
-* $sys
-* $db [$db1, $db2....]
-* $user
-* Misc
-	* $_LANG
-	* $_CONFIG
+# How to install framework [optional]
+ * run command below
+ ```bash
+ mkdir -p /var/www/html/master
+ cd /var/www/html/master
+ git clone https://github.com/esoftplay/master.git ./
+ docker-compose up -d
+ ```
+ * create ./config.php as in http://dev.esoftplay.com
+ * create database and change salt
+ ```bash
+ mysql -u root --password='root' --port 3307 -h 127.0.0.1 -e 'DROP DATABASE IF EXISTS master'
+ mysql -u root --password='root' --port 3307 -h 127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS master'
+ mysql -u root --password='root' --port 3307 -h 127.0.0.1 master < database.sql
+ curl -s -X POST -F 'code=$(date|md5)' http://localhost:81/tools/repair/change_salt
+ ```
+ * open url http://localhost:81/
+ * to close it you need to run `docker-compose down`
 
-# Constans
-* _URL
-* _ROOT
-* _MST
-* _SALT
+# How to run framework
+ * run command below
+```bash
+cd /var/www/html/master
+docker-compose up -d
+```
 
-# PHP Modules
-1. curl
-2. gd
-3. ioncube
-4. mcrypt
-5. xml
-6. zip
+# How to create new project
+ * run master or edit `docker-compose.yaml` to unmark sql service
+ * create new folder and `cd` into this folder
+ * run command below
+ ```bash
+ docker run -it -v $(pwd):/home/sites esoftplay/start
+ mysql -u root --password='root' --port 3307 -h 127.0.0.1 -e 'DROP DATABASE IF EXISTS new_project'
+ mysql -u root --password='root' --port 3307 -h 127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS new_project'
+ mysql -u root --password='root' --port 3307 -h 127.0.0.1 new_project < database.sql
+ docker-compose up -d
+ curl -s -X POST -F 'code=$(date|md5)' http://localhost/tools/repair/change_salt
+ ```
+ * open url http://localhost/
 
-# How to run using docker
-`docker-composer up -d`
+# How to run project
+ * CD into the project folder
+ * run `docker-compose up -d`
+ * open url http://localhost/
+ * edit the script if necessary
+
+# Learn more about the this framework
+ * http://dev.esoftplay.com
