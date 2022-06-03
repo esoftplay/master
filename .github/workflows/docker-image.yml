@@ -27,6 +27,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: includes/system/docker/Dockerfile
+          file: ./includes/system/docker/Dockerfile
           push: true
           tags: esoftplay/master:latest
