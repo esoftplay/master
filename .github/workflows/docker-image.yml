@@ -23,10 +23,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./includes/system/docker/Dockerfile
-          push: true
-          tags: esoftplay/master:latest
+      - name: Build the Docker image # push The image to the docker hub
+        run: docker build . --file includes/system/docker/Dockerfile --tag esoftplay/master:latest
+      - name: Docker Push
+        run: docker push esoftplay/master:latest
+
+      # - name: Build and push
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     file: includes/system/docker/Dockerfile
+      #     push: true
+      #     tags: esoftplay/master:latest
