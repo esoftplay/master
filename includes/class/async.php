@@ -10,172 +10,175 @@
 *
 * NB: Semua function yang bisa di panggil secara background hanya function dengan parameter berupa string, array, numeric dll tidak bisa memproses input parameter berupa object seperti $Bbc, $sys, $db dsb.
 */
-class async
+if (!class_exists('async'))
 {
-	private $tasks;
-	private $task_ids;
-	private $isExists = false;
-	private $host;
-	private $port;
-	function __construct()
+	class async
 	{
-		$this->isExists = class_exists('GearmanClient');
-		$this->tasks    = 0;
-		$this->task_ids = array();
-		if ($this->isExists)
+		private $tasks;
+		private $task_ids;
+		private $isExists = false;
+		private $host;
+		private $port;
+		function __construct()
 		{
-			$this->host = defined('_ASYNC_HOST') ? _ASYNC_HOST : '127.0.0.1';
-			$this->port = defined('_ASYNC_PORT') ? _ASYNC_PORT : 4730;
-		}
-	}
-	function __destruct()
-	{
-		if ($this->tasks > 0 && count($this->task_ids) > 0)
-		{
-			$client = new GearmanClient();
-			try {
-				$client->addServer($this->host, $this->port);
-				foreach ($this->task_ids as $dt)
-				{
-					try {
-						$result = $client->addTaskBackground('esoftplay_async', json_encode(array(
-							$_SERVER,
-							_ROOT,
-							_ADMIN,
-							$dt[0],	# $object
-							$dt[1],	# $insert_ID
-							$dt[2]	# $params
-							)));
-					} catch (Exception $e) {
-						$log = 'Async::'.json_encode($object).' '.  $e->getMessage();
-						if (function_exists('iLog'))
-						{
-							iLog($log);
-						}
-					}
-				}
-				$client->runTasks();
-			} catch (Exception $e) {
-				$this->restart();
-			}
-		}
-	}
-	public function run($object, $params=array())
-	{
-		global $db;
-		if (!is_array($params))
-		{
-			$params = array($params);
-		}
-		if ($this->isExists)
-		{
-			global $db;
-			$exist = $db->getOne("SHOW TABLES LIKE 'bbc_async'");
-			if (empty($exist))
-			{
-				$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_async` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `function` varchar(255) DEFAULT '', `arguments` text, `created` datetime DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-			}
-			$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".json_encode($params)."', `created`=NOW()");
-			$this->task_ids[] = array($object, $db->Insert_ID(), $params);
-			$this->tasks++;
-		}else{
-			if (is_array($object))
-			{
-				$obj = _class($object[0]);
-				if ($obj)
-				{
-					if (method_exists($obj, $object[1]))
-					{
-						$object[0] = $obj;
-						call_user_func_array($object, $params);
-					}else{
-						die('Maaf, method "'.$object[1].'" tidak ditemukan (Pesan ini muncul karena server belum mensupport asynchronous)');
-					}
-				}else{
-					die('Maaf, class "'.$object[0].'" tidak ditemukan (Pesan ini muncul karena server belum mensupport asynchronous)');
-				}
-			}else{
-				if (function_exists($object))
-				{
-					call_user_func_array($object, $params);
-				}else{
-					die('Maaf, function "'.$object[1].'" tidak ditemukan (Pesan ini muncul karena server belum mensupport asynchronous)');
-				}
-			}
-		}
-	}
-	public function fix($async_id)
-	{
-		global $db;
-		$sync   = $db->getRow("SELECT * FROM `bbc_async` WHERE `id`={$async_id} LIMIT 1");
-		if (!empty($sync))
-		{
-			$object = json_decode($sync['function'], 1);
-			$params = json_decode($sync['arguments'], 1);
+			$this->isExists = class_exists('GearmanClient');
+			$this->tasks    = 0;
+			$this->task_ids = array();
 			if ($this->isExists)
 			{
-				$this->task_ids[] = array($object, $async_id, $params);
+				$this->host = defined('_ASYNC_HOST') ? _ASYNC_HOST : '127.0.0.1';
+				$this->port = defined('_ASYNC_PORT') ? _ASYNC_PORT : 4730;
+			}
+		}
+		function __destruct()
+		{
+			if ($this->tasks > 0 && count($this->task_ids) > 0)
+			{
+				$client = new GearmanClient();
+				try {
+					$client->addServer($this->host, $this->port);
+					foreach ($this->task_ids as $dt)
+					{
+						try {
+							$result = $client->addTaskBackground('esoftplay_async', json_encode(array(
+								$_SERVER,
+								_ROOT,
+								_ADMIN,
+								$dt[0],	# $object
+								$dt[1],	# $insert_ID
+								$dt[2]	# $params
+								)));
+						} catch (Exception $e) {
+							$log = 'Async::'.json_encode($object).' '.  $e->getMessage();
+							if (function_exists('iLog'))
+							{
+								iLog($log);
+							}
+						}
+					}
+					$client->runTasks();
+				} catch (Exception $e) {
+					$this->restart();
+				}
+			}
+		}
+		public function run($object, $params=array())
+		{
+			global $db;
+			if (!is_array($params))
+			{
+				$params = array($params);
+			}
+			if ($this->isExists)
+			{
+				global $db;
+				$exist = $db->getOne("SHOW TABLES LIKE 'bbc_async'");
+				if (empty($exist))
+				{
+					$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_async` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `function` varchar(255) DEFAULT '', `arguments` text, `created` datetime DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+				}
+				$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".json_encode($params)."', `created`=NOW()");
+				$this->task_ids[] = array($object, $db->Insert_ID(), $params);
 				$this->tasks++;
 			}else{
-				$db->Execute("DELETE FROM `bbc_async` WHERE `id`=".$async_id);
-				$db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
-				$this->run($object, $params);
-			}
-		}
-	}
-	public function restart($txt = '')
-	{
-		$act_file = '/tmp/tmp.sh';
-		$tmp_file = '/tmp/async-tmp.txt';
-		if (file_exists($tmp_file))
-		{
-			return false;
-		}else{
-			$data = "\n".'/etc/init.d/esoftplay_async restart'
-			."\n".'/bin/rm -f /tmp/async-tmp.txt'
-			."\n".'/usr/local/bin/tm "restart async '.$txt.' di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808';
-			file_write($act_file, $data, 'a');
-			file_write($tmp_file, date('r'));
-		}
-		$out = true;
-		return $out;
-	}
-	public function status()
-	{
-		$status = array();
-		try {
-			$handle = fsockopen($this->host, $this->port, $errorNumber, $errorString, 30);
-			if($handle!=null)
-			{
-				fwrite($handle,"status\n");
-				while (!feof($handle))
+				if (is_array($object))
 				{
-					$line = fgets($handle, 4096);
-					if( $line==".\n")
+					$obj = _class($object[0]);
+					if ($obj)
 					{
-						break;
+						if (method_exists($obj, $object[1]))
+						{
+							$object[0] = $obj;
+							call_user_func_array($object, $params);
+						}else{
+							die('Maaf, method "'.$object[1].'" tidak ditemukan (Pesan ini muncul karena server belum mensupport asynchronous)');
+						}
+					}else{
+						die('Maaf, class "'.$object[0].'" tidak ditemukan (Pesan ini muncul karena server belum mensupport asynchronous)');
 					}
-					if (empty($status['operations']))
+				}else{
+					if (function_exists($object))
 					{
-						$status['operations'] = array();
-					}
-					if( preg_match("~^(.*)[ \t](\d+)[ \t](\d+)[ \t](\d+)~",$line,$matches) )
-					{
-						$function = $matches[1];
-						$status['operations'][$function] = array(
-							'function'         => $function,
-							'total'            => $matches[2],
-							'running'          => $matches[3],
-							'connectedWorkers' => $matches[4],
-						);
+						call_user_func_array($object, $params);
+					}else{
+						die('Maaf, function "'.$object[1].'" tidak ditemukan (Pesan ini muncul karena server belum mensupport asynchronous)');
 					}
 				}
-				fclose($handle);
 			}
-		} catch (Exception $e) {
-			// print_r($e);
 		}
-		return $status;
+		public function fix($async_id)
+		{
+			global $db;
+			$sync   = $db->getRow("SELECT * FROM `bbc_async` WHERE `id`={$async_id} LIMIT 1");
+			if (!empty($sync))
+			{
+				$object = json_decode($sync['function'], 1);
+				$params = json_decode($sync['arguments'], 1);
+				if ($this->isExists)
+				{
+					$this->task_ids[] = array($object, $async_id, $params);
+					$this->tasks++;
+				}else{
+					$db->Execute("DELETE FROM `bbc_async` WHERE `id`=".$async_id);
+					$db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
+					$this->run($object, $params);
+				}
+			}
+		}
+		public function restart($txt = '')
+		{
+			$act_file = '/tmp/tmp.sh';
+			$tmp_file = '/tmp/async-tmp.txt';
+			if (file_exists($tmp_file))
+			{
+				return false;
+			}else{
+				$data = "\n".'/etc/init.d/esoftplay_async restart'
+				."\n".'/bin/rm -f /tmp/async-tmp.txt'
+				."\n".'/usr/local/bin/tm "restart async '.$txt.' di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808';
+				file_write($act_file, $data, 'a');
+				file_write($tmp_file, date('r'));
+			}
+			$out = true;
+			return $out;
+		}
+		public function status()
+		{
+			$status = array();
+			try {
+				$handle = fsockopen($this->host, $this->port, $errorNumber, $errorString, 30);
+				if($handle!=null)
+				{
+					fwrite($handle,"status\n");
+					while (!feof($handle))
+					{
+						$line = fgets($handle, 4096);
+						if( $line==".\n")
+						{
+							break;
+						}
+						if (empty($status['operations']))
+						{
+							$status['operations'] = array();
+						}
+						if( preg_match("~^(.*)[ \t](\d+)[ \t](\d+)[ \t](\d+)~",$line,$matches) )
+						{
+							$function = $matches[1];
+							$status['operations'][$function] = array(
+								'function'         => $function,
+								'total'            => $matches[2],
+								'running'          => $matches[3],
+								'connectedWorkers' => $matches[4],
+							);
+						}
+					}
+					fclose($handle);
+				}
+			} catch (Exception $e) {
+				// print_r($e);
+			}
+			return $status;
+		}
 	}
 }
 if (!defined('_VALID_BBC'))

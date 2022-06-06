@@ -1,7 +1,6 @@
 version: '0.1'
 
 services:
-
   sql:
     image: mariadb:10.7.4
     command: --default-authentication-plugin=mysql_native_password
@@ -13,7 +12,7 @@ services:
     env_file: .env
     cap_add:
       - SYS_NICE
-    command: mysqld --sql_mode="" --character-set-server=utf8 --collation-server=utf8_slovenian_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+    command: mysqld --sql_mode="" --character-set-server=utf8 --collation-server=utf8_slovenian_ci --innodb-flush-log-at-trx-commit=0
 
   master:
     build:
@@ -23,7 +22,7 @@ services:
       - 81:80
     volumes:
       - .:/var/www/html/master
-      - /opt/tools:/opt/tools
+      # - /opt/tools:/opt/tools
 
 networks:
   default:
