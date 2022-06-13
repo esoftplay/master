@@ -133,11 +133,19 @@ if (!class_exists('async'))
 			{
 				return false;
 			}else{
-				$data = "\n".'/etc/init.d/esoftplay_async restart'
-				."\n".'/bin/rm -f /tmp/async-tmp.txt'
-				."\n".'/usr/local/bin/tm "restart async '.$txt.' di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808';
-				file_write($act_file, $data, 'a');
-				file_write($tmp_file, date('r'));
+				$data = "\n".'/etc/init.d/esoftplay_async restart';
+				if (file_exists('/usr/local/bin/tm'))
+				{
+					$data .= "\n".'/bin/rm -f /tmp/async-tmp.txt'
+					."\n".'/usr/local/bin/tm "restart async '.$txt.' di '.$_SERVER['HTTP_HOST'].' sudah selesai" -345399808';
+					file_write($act_file, $data, 'a');
+					file_write($tmp_file, date('r'));
+				}else{
+					if (function_exists('shell_exec'))
+					{
+						@shell_exec($data.' 2>&1 > /tmp/async.log');
+					}
+				}
 			}
 			$out = true;
 			return $out;
