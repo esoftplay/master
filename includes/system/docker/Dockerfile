@@ -1,9 +1,13 @@
 FROM wyveo/nginx-php-fpm:php74
 
 
-RUN apt-get update && apt-get install net-tools curl rsync libmcrypt-dev openssh-client vim git gearman -y
+RUN apt-get update && apt-get install net-tools curl rsync libmcrypt-dev openssh-client vim git gearman cron -y
 RUN cd /opt && git clone https://github.com/esoftplay/tools.git
 RUN echo "\n[program:esoftplay_tools]\ncommand=/bin/bash -c 'cd /opt/tools && git pull'\nautostart=true\npriority=20" >> /etc/supervisord.conf
+
+# SET TimeZone
+RUN cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+RUN echo 'Asia/Jakarta' > /etc/timezone
 
 RUN mkdir -p /var/www/html/master
 WORKDIR /var/www/html/master
@@ -68,3 +72,8 @@ RUN cd /opt && git clone https://github.com/esoftplay/async.git && cd /opt/async
 COPY includes/system/docker/esoftplay_async  /etc/init.d/esoftplay_async
 RUN chmod +x /etc/init.d/esoftplay_async && update-rc.d esoftplay_async defaults
 RUN echo "\n[program:esoftplay_async]\ncommand=/bin/bash -c '/etc/init.d/esoftplay_async start' &\nautostart=true\nautorestart=true\npriority=25\nstartretries=5" >> /etc/supervisord.conf
+
+# ADD empty cronjob
+COPY includes/system/docker/cronjob /etc/cron.d/cronjob
+RUN chmod 0644 /etc/cron.d/cronjob
+RUN cron
