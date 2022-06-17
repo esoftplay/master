@@ -1,1 +1,3 @@
 MAILTO=''
+
+* * * * * /usr/bin/curl -s http://localhost/user/async/cron 2>&1 > /dev/null

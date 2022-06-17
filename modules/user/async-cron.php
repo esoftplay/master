@@ -1,5 +1,11 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
+$is_async = $db->getOne("SHOW TABLES LIKE 'bbc_async'");
+if (empty($is_async))
+{
+	die();
+}
+
 $fileasync   = '/opt/async/bin/manager.php';
 $filecheck   = _CACHE.'async.cfg';
 $fileexecute = _CACHE.'async-execute.cfg';
