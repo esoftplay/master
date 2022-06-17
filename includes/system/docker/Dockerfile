@@ -5,12 +5,9 @@ RUN apt-get update && apt-get install net-tools curl rsync libmcrypt-dev openssh
 RUN cd /opt && git clone https://github.com/esoftplay/tools.git
 RUN echo "\n[program:esoftplay_tools]\ncommand=/bin/bash -c 'cd /opt/tools && git pull'\nautostart=true\npriority=20" >> /etc/supervisord.conf
 
-# SET TimeZone
-RUN cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
-RUN echo 'Asia/Jakarta' > /etc/timezone
-
 RUN mkdir -p /var/www/html/master
 WORKDIR /var/www/html/master
+
 # ADD ioncube module
 COPY includes/system/docker/ioncube_loader_lin_7.4.so /usr/lib/php/20190902/ioncube.so
 RUN echo "zend_extension = ioncube.so" > /etc/php/7.4/mods-available/ioncube.ini && \
@@ -73,7 +70,12 @@ COPY includes/system/docker/esoftplay_async  /etc/init.d/esoftplay_async
 RUN chmod +x /etc/init.d/esoftplay_async && update-rc.d esoftplay_async defaults
 RUN echo "\n[program:esoftplay_async]\ncommand=/bin/bash -c '/etc/init.d/esoftplay_async start' &\nautostart=true\nautorestart=true\npriority=25\nstartretries=5" >> /etc/supervisord.conf
 
+# SET TimeZone
+RUN cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+RUN echo 'Asia/Jakarta' > /etc/timezone
+
 # ADD empty cronjob
 COPY includes/system/docker/cronjob /etc/cron.d/cronjob
-RUN chmod 0644 /etc/cron.d/cronjob
-RUN cron
+RUN crontab -l | { cat /etc/cron.d/cronjob; } | crontab
+RUN touch /var/log/cron.log
+RUN echo "\n[program:cronjob]\ncommand=/bin/bash -c '/etc/init.d/cron start'\nautostart=true\nautorestart=true\npriority=25\nstartretries=5" >> /etc/supervisord.conf
