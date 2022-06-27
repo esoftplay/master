@@ -46,7 +46,7 @@ class bbcSQL
 		}
 		if (!defined('_CACHE'))
 		{
-			define('_CACHE', sys_get_temp_dir());
+			define('_CACHE', sys_get_temp_dir().'/');
 		}
 		$this->set_cache(_CACHE);
 	}
@@ -436,17 +436,17 @@ class bbcSQL
 		/* FOR: $db->cache_clean(); */
 		if (empty($data))
 		{
-			$this->path_delete($this->cache_dir);
+			$this->path_delete();
 		}else{
 			/* FOR: $db->cache_clean('modules.cfg'); */
-			if(is_file($this->cache_dir.$data))
+			if(is_file($data))
 			{
-				$this->path_delete($this->cache_dir.$data);
+				$this->path_delete($data);
 			}else
 			/* FOR: $db->cache_clean('config/'); */
-			if (is_dir($this->cache_dir.$data))
+			if (is_dir($data))
 			{
-				$this->path_delete($this->cache_dir.$data);
+				$this->path_delete($data);
 			}else{
 				/* FOR: $db->cache_clean(md5($q).'.cfg'); */
 				if (substr($data, -4)=='.cfg')
@@ -454,9 +454,9 @@ class bbcSQL
 					$data = substr($data, 0, -4);
 				}else{
 					/* FOR: $db->cache_clean($q); */
-					$data = md5($data);
+					$data = 'sql/'.md5($data);
 				}
-				$this->path_delete($this->cache_dir.implode('/',str_split($data, 3)).'.cfg');
+				$this->path_delete($data.'.cfg');
 			}
 		}
 	}
@@ -602,8 +602,9 @@ class bbcSQL
 		echo '<table class="table table-striped table-bordered table-hover">'.$tHead.$tBody.'</table>';
 	}
 
-	function path_delete($path)
+	function path_delete($path='')
 	{
+		$path = $this->cache_dir.trim($path, '/');
 		if (file_exists($path))
 		{
 			@chmod($path,0777);
