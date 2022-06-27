@@ -89,7 +89,10 @@ if (!function_exists('path_create'))
 		{
 			if(file_exists($path)) $output = true;
 			else {
-				$output = mkdir($path, $chmod, true);
+				try {
+					$output = mkdir($path, $chmod, true);
+				} catch (Exception $e) {
+				}
 				if (!$output)
 				{
 					$debug = debug_backtrace();
