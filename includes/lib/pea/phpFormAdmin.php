@@ -15,6 +15,7 @@ class Form
 	var $actionType;
 	var $displayFunction         = null;
 	var $reportFunction          = false;
+	var $exportFunction          = false;
 	var $formName                = '';
 	var $isHeader                = false;// apakah suatu element itu merupakan header atau bukan, krn kl header, maka tr nya make background header, default false
 	var $isHidden                = false;// apakah suatu element itu sama sekali tidak ditampilkan
