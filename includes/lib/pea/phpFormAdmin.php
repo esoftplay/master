@@ -221,6 +221,16 @@ class Form
 		$this->reportFunction = $use_in_report ? true : false;
 	}
 	/**
+	* set what function to call before printing in report
+	* this method only works for single field form
+	*
+	* @access public
+	*/
+	function setExportFunction($obj_func)
+	{
+		$this->exportFunction = $obj_func;
+	}
+	/**
 	* set the element to fill the column number of form
 	* this method only works in in multiple column
 	*
@@ -503,11 +513,10 @@ class Form
 		{
 			$str_value = current($str_value);
 		}
-		/* JANGAN DIEKSEKUSI LAGI KARENA SUDAH ADA DI getReturn untuk fileexport dieksekusi di dalam peRollAdmin */
-		// if ($this->reportFunction && is_callable($this->displayFunction))
-		// {
-		// 	$str_value = call_user_func_array($this->displayFunction, array($str_value));
-		// }
+		if (is_callable($this->exportFunction))
+		{
+			$str_value = call_user_func_array($this->exportFunction, array($str_value));
+		}
 		return $str_value;
 	}
 
