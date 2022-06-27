@@ -60,10 +60,10 @@ if (!function_exists('path_delete'))
 		elseif(!preg_match('~^'._ROOT.'~', $path)) return false;
 		if (file_exists($path))
 		{
-			@chmod($path,0777);
-			if (is_dir($path))
+			if (@is_dir($path))
 			{
-				if ($handle = opendir($path))
+				@chmod($path,0777);
+				if ($handle = @opendir($path))
 				{
 					while(false !== ($filename = readdir($handle)))
 					{
@@ -89,10 +89,7 @@ if (!function_exists('path_create'))
 		{
 			if(file_exists($path)) $output = true;
 			else {
-				try {
-					$output = mkdir($path, $chmod, true);
-				} catch (Exception $e) {
-				}
+				$output = @mkdir($path, $chmod, true);
 				if (!$output)
 				{
 					$debug = debug_backtrace();
