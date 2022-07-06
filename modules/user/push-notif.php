@@ -2,10 +2,11 @@
 
 /*
 UNTUK MELIHAT DAFTAR NOTIFIKASI BERDASARKAN USER_ID MAUPUN GLOBAL (Method: POST)
-ARGUMENTS:
+ARGUMENTS: example -> /user/push-notif/DESC
 $user_id   = [opsional]
 $group_id  = [opsional]
 $last_id   = [opsional] ID notifikasi yang paling terakhir diambil (Method: GET)
+$id        = [opsional] menentukan ASC atau DESC untuk default nya ASC (Method: GET)
 $secretkey = _class('crypt')->encode(_SALT.'|'.date()'Y-m-d H:i:s');
 */
 
@@ -36,7 +37,8 @@ if (!empty($_POST['secretkey']))
 					$group_id .= ',0';
 				}
 				$sql  = !empty($group_id) ? ' AND `group_id` IN ('.$group_id.')' : '';
-				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id`>{$last_id} ORDER BY `id` ASC LIMIT 6");
+				$sort = (!empty($_GET['id']) && strtoupper($_GET['id']) == 'DESC') ? 'DESC' : 'ASC';
+				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id`>{$last_id} ORDER BY `id` {$sort} LIMIT 6");
 				$next = '';
 				if (!empty($data))
 				{
