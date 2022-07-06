@@ -3,7 +3,7 @@
 /*
 UNTUK MENANDAI BAHWA NOTIFIKASI TELAH BERHASIL DIBACA (Method: POST)
 ARGUMENTS:
-$notif_id  = [wajib] field ID dari table 'bbc_user_push_notif'
+$notif_id  = [wajib] field ID dari table 'bbc_user_push_notif' || multiIDs sprti 2,3,5,6,12
 $secretkey = _class('crypt')->encode(_SALT.'|'.date()'Y-m-d H:i:s');
 */
 
@@ -14,7 +14,6 @@ $output = array(
 	);
 if (!empty($_POST['notif_id']) && !empty($_POST['secretkey']))
 {
-	$notif_id  = intval($_POST['notif_id']);
 	$secretkey = _class('crypt')->decode($_POST['secretkey']);
 	if (!empty($secretkey))
 	{
@@ -25,7 +24,16 @@ if (!empty($_POST['notif_id']) && !empty($_POST['secretkey']))
 		{
 			if ($time > $stamp)
 			{
-				$ok = $db->Update('bbc_user_push_notif', array('status' => 2), $notif_id);
+				$ok       = false;
+				$notif_id = $_POST['notif_id'];
+				if (is_numeric($notif_id))
+				{
+					$ok = $db->Update('bbc_user_push_notif', array('status' => 2), $notif_id);
+				}else
+				if (strpos($notif_id, ',') !== FALSE)
+				{
+					$ok = $db->Execute('UPDATE `bbc_user_push_notif` SET `status`=2 WHERE `id` IN ('.trim(preg_replace(['~[^0-9\,]+~s', '~\,{2,}~s'], ['', ','], $notif_id), ',').')');
+				}
 				if ($ok)
 				{
 					$output = array(
