@@ -34,16 +34,25 @@ if (!empty($_POST['secretkey']))
 				if (!empty($user_id))
 				{
 					$user_id  .= ',0';
+				}
+				if (!empty($group_id))
+				{
 					$group_id .= ',0';
 				}
 				$sql  = !empty($group_id) ? ' AND `group_id` IN ('.$group_id.')' : '';
 				$sort = (!empty($_GET['id']) && strtoupper($_GET['id']) == 'DESC') ? 'DESC' : 'ASC';
-				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id`>{$last_id} ORDER BY `id` {$sort} LIMIT 6");
+				$sp   = ($sort == 'ASC') ? '>' : '<';
+				if (!empty($last_id))
+				{
+					$add_sql = " AND `id` {$sp} {$last_id}";
+				}else{
+					$add_sql = '';
+				}
+				$data = $db->getAll("SELECT * FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql}{$add_sql} ORDER BY `id` {$sort} LIMIT 6");
 				$next = '';
 				if (!empty($data))
 				{
 					$dt = end($data);
-					$sp = ($sort == 'ASC') ? '>' : '<';
 					$is = $db->getOne("SELECT 1 FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id` {$sp} {$dt['id']} LIMIT 1");
 					if (!empty($is))
 					{
