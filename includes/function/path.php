@@ -62,6 +62,10 @@ if (!function_exists('path_delete'))
 		{
 			if (@is_dir($path))
 			{
+				if (substr($path, -1) == '/')
+				{
+					$path = substr($path, 0, -1);
+				}
 				@chmod($path,0777);
 				if ($handle = @opendir($path))
 				{
