@@ -62,23 +62,28 @@ if (!function_exists('path_delete'))
 		{
 			if (@is_dir($path))
 			{
-				if (substr($path, -1) == '/')
+				if (function_exists('shell_exec'))
 				{
-					$path = substr($path, 0, -1);
-				}
-				@chmod($path,0777);
-				if ($handle = @opendir($path))
-				{
-					while(false !== ($filename = readdir($handle)))
+					shell_exec('rm -rf \''.$path.'\' ');
+				}else{
+					if (substr($path, -1) == '/')
 					{
-						if ($filename != '.' && $filename != '..')
-						{
-							call_user_func(__FUNCTION__, $path.'/'.$filename);
-						}
+						$path = substr($path, 0, -1);
 					}
-					closedir($handle);
+					@chmod($path,0777);
+					if ($handle = @opendir($path))
+					{
+						while(false !== ($filename = readdir($handle)))
+						{
+							if ($filename != '.' && $filename != '..')
+							{
+								call_user_func(__FUNCTION__, $path.'/'.$filename);
+							}
+						}
+						closedir($handle);
+					}
+					@rmdir($path);
 				}
-				@rmdir($path);
 			} else {
 				@unlink($path);
 			}
