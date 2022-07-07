@@ -43,10 +43,11 @@ if (!empty($_POST['secretkey']))
 				if (!empty($data))
 				{
 					$dt = end($data);
-					$is = $db->getOne("SELECT 1 FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id`>{$dt['id']} ORDER BY `id`");
+					$sp = ($sort == 'ASC') ? '>' : '<';
+					$is = $db->getOne("SELECT 1 FROM `bbc_user_push_notif` WHERE `user_id` IN ({$user_id}){$sql} AND `id` {$sp} {$dt['id']} LIMIT 1");
 					if (!empty($is))
 					{
-						$next = _URL.'user/push-notif?last_id='.$dt['id'];
+						$next = _URL.'user/push-notif/'.$sort.'?last_id='.$dt['id'];
 					}
 				}
 				$output = array(
