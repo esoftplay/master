@@ -217,7 +217,7 @@ class upload {
 		// if ( ! @copy($this->file_temp, $this->upload_path.$this->file_name))
 		// {
 			// if ( ! @move_uploaded_file($this->file_temp, $this->upload_path.$this->file_name))
-			if ( ! _class('images')->move_upload($this->file_temp, $this->upload_path.$this->file_name);)
+			if ( ! _class('images')->move_upload($this->file_temp, $this->upload_path.$this->file_name))
 			{
 				 $this->set_error('upload_destination_error');
 				 return FALSE;
