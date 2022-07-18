@@ -134,9 +134,9 @@ class Encrypt {
 	function mcrypt_encode($data, $key)
 	{
 		$this->_show_error_message(false);
-		$init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
-		$init_vect = mcrypt_create_iv($init_size, MCRYPT_RAND);
-		$output    = $this->_add_cipher_noise($init_vect.mcrypt_encrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), $key);
+		$init_size = @mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
+		$init_vect = @mcrypt_create_iv($init_size, MCRYPT_RAND);
+		$output    = $this->_add_cipher_noise($init_vect.@mcrypt_encrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), $key);
 		$this->_show_error_message(true);
 		return $output;
 	}
@@ -145,7 +145,7 @@ class Encrypt {
 	{
 		$this->_show_error_message(false);
 		$data = $this->_remove_cipher_noise($data, $key);
-		$init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
+		$init_size = @mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
 		if ($init_size > strlen($data))
 		{
 			$this->_show_error_message(true);
@@ -153,7 +153,7 @@ class Encrypt {
 		}
 		$init_vect = substr($data, 0, $init_size);
 		$data = substr($data, $init_size);
-		$output = rtrim(mcrypt_decrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), "\0");
+		$output = rtrim(@mcrypt_decrypt($this->_get_cipher(), $key, $data, $this->_get_mode(), $init_vect), "\0");
 		$this->_show_error_message(true);
 		return $output;
 	}
