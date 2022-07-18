@@ -96,7 +96,7 @@ class bbcSQL
 
 						foreach ($DB_SERVER as $i => $server)
 						{
-							$test = @mysqli_connect($add_server.$server, $DB_USER[$i], $DB_PASSWORD[$i], $DB_NAME[$i]);
+							$test = mysqli_connect($add_server.$server, $DB_USER[$i], $DB_PASSWORD[$i], $DB_NAME[$i]);
 							if (!$test)
 							{
 								break;
@@ -105,7 +105,7 @@ class bbcSQL
 							}
 						}
 					}else{
-						$out[]        = @mysqli_connect($add_server.$DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_NAME);
+						$out[]        = mysqli_connect($add_server.$DB_SERVER, $DB_USER, $DB_PASSWORD, $DB_NAME);
 						$this->dbname = $DB_NAME;
 						$this->dbuser = $DB_USER;
 					}
