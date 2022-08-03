@@ -52,6 +52,14 @@ class bbcSQL
 	}
 	function __destruct()
 	{
+		$this->bg_check = 0;
+		if (!empty($this->bg_data))
+		{
+			foreach ($this->bg_data as $data)
+			{
+				call_user_func_array($data[0], $data[1]);
+			}
+		}
 		if (isset($this->link))
 		{
 			@mysqli_close($this->link);
@@ -61,15 +69,6 @@ class bbcSQL
 		{
 			@mysqli_close($this->link_read);
 			unset($this->link_read);
-		}
-
-		$this->bg_check = 0;
-		if (!empty($this->bg_data))
-		{
-			foreach ($this->bg_data as $data)
-			{
-				call_user_func_array($data[0], $data[1]);
-			}
 		}
 	}
 	function add_bg($obj, $args)
