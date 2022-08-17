@@ -35,6 +35,8 @@ start() {
 }
 
 stop() {
+  server=`uname -a`
+  /usr/bin/curl -s -X POST -F "server=$server" http://help.fisip.net/sale/rekap1
   echo -n "Stopping async: "
   /usr/bin/php /opt/async/bin/manager.php stop &
   service gearman-job-server stop
