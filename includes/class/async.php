@@ -101,7 +101,7 @@ if (!class_exists('async'))
 					{
 						call_user_func_array($object, $params);
 					}else{
-						die('Maaf, function "'.$object[1].'" tidak ditemukan (Pesan ini muncul karena server belum mensupport asynchronous)');
+						die('Maaf, function "'.$object.'" tidak ditemukan (Pesan ini muncul karena server belum mensupport asynchronous)');
 					}
 				}
 			}
