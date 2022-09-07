@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# dtach -n /tmp/async.socket /bin/sh /var/www/html/master/includes/system/docker/esoftplay_worker
+aDir='/opt/';
+aTmp='async.log';
+aCMD='/tmp/async.log'
+aFile="$aDir$aTmp"
+aPHP=`which php`
+mkdir -p $aDir
+while true
+do
+	if test -f "$aFile"; then
+		cat $aFile > $aCMD && truncate -s 0 $aFile
+		while read line; do
+			if [ ! -z "$line" ]; then
+				$aPHP /var/www/html/master/includes/class/async.php "${line}"
+			fi
+		done < $aCMD
+	fi
+	sleep 0.5
+done

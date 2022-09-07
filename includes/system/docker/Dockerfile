@@ -1,7 +1,7 @@
 FROM wyveo/nginx-php-fpm:php74
 
 
-RUN apt-get update && apt-get install net-tools curl rsync libmcrypt-dev openssh-client vim git gearman cron -y
+RUN apt-get update && apt-get install net-tools curl rsync libmcrypt-dev openssh-client vim git cron dtach -y
 RUN cd /opt && git clone https://github.com/esoftplay/tools.git
 RUN echo "\n[program:esoftplay_tools]\ncommand=/bin/bash -c 'cd /opt/tools && git pull'\nautostart=true\npriority=20" >> /etc/supervisord.conf
 
@@ -20,11 +20,11 @@ RUN echo "extension = mcrypt.so" > /etc/php/7.4/mods-available/mcrypt.ini && \
     ln -s /etc/php/7.4/mods-available/mcrypt.ini /etc/php/7.4/fpm/conf.d/20-mcrypt.ini && \
     ln -s /etc/php/7.4/mods-available/mcrypt.ini /etc/php/7.4/cli/conf.d/20-mcrypt.ini
 
-# ADD gearman module
-COPY includes/system/docker/gearman.so /usr/lib/php/20190902/
-RUN echo "extension = gearman.so" > /etc/php/7.4/mods-available/gearman.ini && \
-    ln -s /etc/php/7.4/mods-available/gearman.ini /etc/php/7.4/fpm/conf.d/20-gearman.ini && \
-    ln -s /etc/php/7.4/mods-available/gearman.ini /etc/php/7.4/cli/conf.d/20-gearman.ini
+# # ADD gearman module
+# COPY includes/system/docker/gearman.so /usr/lib/php/20190902/
+# RUN echo "extension = gearman.so" > /etc/php/7.4/mods-available/gearman.ini && \
+#     ln -s /etc/php/7.4/mods-available/gearman.ini /etc/php/7.4/fpm/conf.d/20-gearman.ini && \
+#     ln -s /etc/php/7.4/mods-available/gearman.ini /etc/php/7.4/cli/conf.d/20-gearman.ini
 
 # Customize PHP.ini
 RUN cp /etc/php/7.4/fpm/php.ini /etc/php/7.4/fpm/php.ini.orig
@@ -65,7 +65,7 @@ RUN cd /var/www/html/master/modules/images && composer update && composer instal
 
 
 # RUN esoftplay async
-RUN cd /opt && git clone https://github.com/esoftplay/async.git && cd /opt/async && git pull && mkdir -p logs
+# RUN cd /opt && git clone https://github.com/esoftplay/async.git && cd /opt/async && git pull && mkdir -p logs
 COPY includes/system/docker/esoftplay_async  /etc/init.d/esoftplay_async
 RUN chmod +x /etc/init.d/esoftplay_async && update-rc.d esoftplay_async defaults
 RUN echo "\n[program:esoftplay_async]\ncommand=/bin/bash -c '/etc/init.d/esoftplay_async start' &\nautostart=true\nautorestart=true\npriority=25\nstartretries=5" >> /etc/supervisord.conf

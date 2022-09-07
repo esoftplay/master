@@ -21,7 +21,7 @@ if (!class_exists('async'))
 		private $port;
 		function __construct()
 		{
-			$this->isExists = class_exists('GearmanClient');
+			$this->isExists = file_exists('/opt/async.log');
 			$this->tasks    = 0;
 			$this->task_ids = array();
 			if ($this->isExists)
@@ -34,32 +34,19 @@ if (!class_exists('async'))
 		{
 			if ($this->tasks > 0 && count($this->task_ids) > 0)
 			{
-				$client = new GearmanClient();
-				try {
-					$client->addServer($this->host, $this->port);
-					foreach ($this->task_ids as $dt)
-					{
-						try {
-							$result = $client->addTaskBackground('esoftplay_async', json_encode(array(
-								$_SERVER,
-								_ROOT,
-								_ADMIN,
-								$dt[0],	# $object
-								$dt[1],	# $insert_ID
-								$dt[2]	# $params
-								)));
-						} catch (Exception $e) {
-							$log = 'Async::'.json_encode($object).' '.  $e->getMessage();
-							if (function_exists('iLog'))
-							{
-								iLog($log);
-							}
-						}
-					}
-					$client->runTasks();
-				} catch (Exception $e) {
-					$this->restart();
+				$task = [];
+				foreach ($this->task_ids as $dt)
+				{
+					$task[] = bin2hex(json_encode(array(
+									$_SERVER,
+									_ROOT,
+									_ADMIN,
+									$dt[0],	# $object
+									$dt[1],	# $insert_ID
+									$dt[2]	# $params
+									)));
 				}
+				file_write('/opt/async.log', implode("\n", $task)."\n", 'a');
 			}
 		}
 		public function run($object, $params=array())
@@ -193,7 +180,7 @@ if (!defined('_VALID_BBC'))
 {
 	if (!empty($argv[1]))
 	{
-		$inputs = json_decode(str_replace('&#39;', "'", $argv[1]), 1);
+		$inputs = json_decode(hex2bin($argv[1]), 1);
 		if (!empty($inputs))
 		{
 			define('_AsYnCtAsK', count($inputs));

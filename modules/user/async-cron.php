@@ -6,7 +6,6 @@ if (empty($is_async))
 	die();
 }
 
-$fileasync   = '/opt/async/bin/manager.php';
 $filecheck   = _CACHE.'async.cfg';
 $fileexecute = _CACHE.'async-execute.cfg';
 $filefailed  = _CACHE.'async-failed.cfg';
