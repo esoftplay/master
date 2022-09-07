@@ -16,6 +16,9 @@ do
 				$aPHP /var/www/html/master/includes/class/async.php "${line}"
 			fi
 		done < $aCMD
+	else
+		sudo touch $aFile
+		sudo chmod 777 $aFile
 	fi
 	sleep 0.5
 done

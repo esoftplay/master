@@ -46,7 +46,7 @@ if (!class_exists('async'))
 									$dt[2]	# $params
 									)));
 				}
-				file_write('/opt/async.log', implode("\n", $task)."\n", 'a');
+				file_put_contents('/opt/async.log', implode("\n", $task)."\n", FILE_APPEND);
 			}
 		}
 		public function run($object, $params=array())

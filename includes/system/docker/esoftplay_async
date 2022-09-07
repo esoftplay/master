@@ -41,8 +41,9 @@ stop() {
 
 status() {
   if [ -S "/tmp/async.socket" ]; then
-    echo -n "ACTIVE async:"
-    tail /tmp/async.log
+    que=$(wc -l < /opt/async.log)
+    cur=$(wc -l < /tmp/async.log)
+    echo -n "ACTIVE async: ${que} - ${cur}"
   else
     echo -n "inactive async...."
   fi
