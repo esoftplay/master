@@ -15,7 +15,13 @@ PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
 
 # Include functions
 set -e
-. /lib/lsb/init-functions
+if [ -f "/lib/lsb/init-functions" ]; then
+  . /lib/lsb/init-functions
+fi
+
+if [ -f "/etc/init.d/functions" ]; then
+  . /etc/init.d/functions
+fi
 
 start() {
   echo -n "Starting async: "
