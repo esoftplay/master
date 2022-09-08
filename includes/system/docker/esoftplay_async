@@ -14,7 +14,6 @@ NAME="esoftplay_async"
 PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
 
 # Include functions
-set -e
 if [ -f "/lib/lsb/init-functions" ]; then
   . /lib/lsb/init-functions
 fi
