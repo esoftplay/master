@@ -1,18 +1,5 @@
 #!/bin/sh
 
-### BEGIN INIT INFO
-# Provides:          esoftplay_async
-# Required-Start:    $local_fs $network $syslog
-# Required-Stop:     $local_fs $network $syslog
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: Example
-# Description:       Example start-stop-daemon - Debian
-### END INIT INFO
-
-NAME="esoftplay_async"
-PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
-
 # Include functions
 if [ -f "/lib/lsb/init-functions" ]; then
   . /lib/lsb/init-functions
@@ -34,15 +21,11 @@ stop() {
   if [ -S "/tmp/async.socket" ]; then
     pkill dtach
   fi
-  # kill $(ps aux | grep dtach | awk '{print $2}')
-  # dtach -a /tmp/async.socket -e '^C'
 }
 
 status() {
   if [ -S "/tmp/async.socket" ]; then
-    que=$(wc -l < /opt/async.log)
-    cur=$(wc -l < /tmp/async.log)
-    echo -n "ACTIVE async: ${que} - ${cur}"
+    echo -n "ACTIVE async: $(wc -l < /opt/async.log) - $(wc -l < /tmp/async.log)"
   else
     echo -n "inactive async...."
   fi
