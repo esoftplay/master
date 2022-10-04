@@ -45,7 +45,7 @@ if (empty($is_admin))
 }
 $where  .= ' AND `is_admin` IN ('.$is_admin.', 3)';
 /* CLEAN OLD NOTIFICATION */
-$ago = date('Y-m-d H:i:s', strtotime('-3 MONTHS'));
+$ago = date('Y-m-d H:i:s', strtotime('-2 MONTHS'));
 $db->Execute("DELETE FROM `bbc_alert` WHERE `created` < '{$ago}'");
 if (!$db->resid)
 {
