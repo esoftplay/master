@@ -115,9 +115,16 @@ class bbcSQL
 		}
 		if (!is_object($out[0]))
 		{
+
 			header("HTTP/1.1 404 Not Found");
 			error_log(print_r($out, 1));
-			die('#failed_to_login_to_database');
+			if (function_exists('db_fail'))
+			{
+				db_fail('#failed_to_login_to_database');
+			}else{
+				$this->echoerror();
+			}
+			exit;
 		}else{
 			mysqli_set_charset($out[0], "utf8");
 			$this->link = $out[0];
