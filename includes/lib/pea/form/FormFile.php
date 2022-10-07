@@ -231,7 +231,7 @@ class FormFile extends Form
 	{
 		$out   = '';
 		$isUrl = false;
-		if (!empty($fileName))
+		if (!empty($fileName) && preg_match('~\.[a-z0-9]+$~is', $fileName))
 		{
 			if (is_url($fileName))
 			{
