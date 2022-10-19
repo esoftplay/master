@@ -492,6 +492,7 @@ class phpRollAdmin extends phpEasyAdminLib
 			file_write($file, '');
 			$csv->addRow($this->reportData['header']);
 		}
+		iLog($this->reportData['data']);
 		$csv->addData($this->reportData['data']);
 		$csv->save($file, 'a');
 	}
@@ -588,6 +589,10 @@ class phpRollAdmin extends phpEasyAdminLib
 						if ($input->reportFunction && is_callable($input->displayFunction))
 						{
 							$irow = call_user_func_array($input->displayFunction, array($irow));
+						}
+						if (is_callable($input->exportFunction))
+						{
+							$irow = call_user_func_array($input->exportFunction, array($irow));
 						}
 						$arrData[$i][]	= $irow;
 					}

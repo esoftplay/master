@@ -514,10 +514,6 @@ class Form
 		{
 			$str_value = current($str_value);
 		}
-		if (is_callable($this->exportFunction))
-		{
-			$str_value = call_user_func_array($this->exportFunction, array($str_value));
-		}
 		return $str_value;
 	}
 
