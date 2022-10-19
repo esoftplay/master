@@ -389,37 +389,50 @@ class phpRollAdmin extends phpEasyAdminLib
 				$title .= ' '.$m[1];
 			}
 			$this->arrReport = get_object_vars($this->report);
-			$this->buildReport($page, $file, $export_all);
-			if ($export_all)
+			// Jika diakses oleh includes/exportAll.js
+			if (!empty($_GET[$this->formName.'_export_type']))
 			{
+				$this->buildReport($page, $file, $export_all);
 				ob_end_clean(); // membersihkan output dari script sebelumnya (jika ada)
-				if ($this->nav->int_cur_page >= $this->nav->int_tot_page)
+				$url  = $link;
+				$url .= !empty($_GET[$this->formName.'_export_type']) ? $_GET[$this->formName.'_export_type'] : 'excel';
+				$url .= '&name='.$name;
+				$url .= '&title='.urlencode($title);
+				// Jika export semua halaman
+				if ($export_all)
 				{
-					$url  = $link;
-					$url .= !empty($_GET[$this->formName.'_export_type']) ? $_GET[$this->formName.'_export_type'] : 'excel';
-					$url .= '&name='.$name;
-					$url .= '&title='.urlencode($title);
-					$out = array(
+					if ($this->nav->int_cur_page >= $this->nav->int_tot_page)
+					{
+						$out  = array(
+							'ok'      => 1,
+							'url'     => $url,
+							'message' => (($this->nav->int_tot_page > 30) ? lang('If the data size is too large to process, the file you are downloading is in CSV format. Are you sure to continue?') : '')
+							);
+						output_json($out);
+					}else{
+						global $sys;
+						$url  = $this->nav->string_cur_uri.$this->nav->string_name.'='.($page+1).'&';
+						$max  = $this->nav->int_tot_page;
+						$done = $page ? intval(($page+1)/$max*100) : 0;
+						?>
+						<div class="progress">
+							<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $done ?>"
+							aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $done ?>%">
+								<?php echo $done ?>%
+							</div>
+						</div>
+						<?php
+						die();
+					}
+				}else{
+					// Jika hanya export halaman itu saja
+					$url .= urlencode(' - page '.money($page));
+					$out  = array(
 						'ok'      => 1,
 						'url'     => $url,
-						'message' => (($this->nav->int_tot_page > 30) ? lang('If the data size is too large to process, then it will be possible that the file you are downloading is in CSV format. Are you sure to continue?') : '')
+						'message' => ''
 						);
 					output_json($out);
-				}else{
-					global $sys;
-					$url  = $this->nav->string_cur_uri.$this->nav->string_name.'='.($page+1).'&';
-					$max  = $this->nav->int_tot_page;
-					$done = $page ? intval(($page+1)/$max*100) : 0;
-					?>
-					<div class="progress">
-						<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $done ?>"
-						aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $done ?>%">
-							<?php echo $done ?>%
-						</div>
-					</div>
-					<?php
-					die();
-					redirect($url);
 				}
 			}else{
 				if ($this->nav->int_tot_page > 1 && $page > 0)
