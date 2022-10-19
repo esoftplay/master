@@ -492,7 +492,6 @@ class phpRollAdmin extends phpEasyAdminLib
 			file_write($file, '');
 			$csv->addRow($this->reportData['header']);
 		}
-		iLog($this->reportData['data']);
 		$csv->addData($this->reportData['data']);
 		$csv->save($file, 'a');
 	}
