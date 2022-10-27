@@ -41,7 +41,7 @@ CKEDITOR.editorConfig = function( config ) {
     { name: 'colors',      items : [ 'TextColor','BGColor' ] },
     { name: 'tools',       items : [ 'Maximize', 'ShowBlocks' ] }
 	];
-	config.toolbar_Basic =[['Source','Bold','Italic','Underline','Strike','-','NumberedList','BulletedList','Blockquote','CreateDiv','-','Format','Link','Unlink','Smiley']];
+	config.toolbar_Basic =[['Source','Bold','Italic','Underline','Strike','-','NumberedList','BulletedList','Blockquote','CreateDiv','-','Format','Link','Unlink','PasteFromWord','Smiley']];
 	config.smiley_descriptions = ['smiley', 'sad', 'wink', 'big smile', 'batting', 'huggs', 'question', 'love', 'blush', 'tongue', 'kiss', 'broken heart', 'ooooh', 'angry', 'mean', 'sun glas', 'worried', 'sweating', 'devil', 'cry', 'laugh loud', 'neutral', 'eye brow', 'rotfl', 'angel', 'glasses', 'bye', 'sleep', 'eye roll', 'loser', 'sick', 'shhhh', 'silent', 'clown', 'silly', 'party', 'tired', 'drool', 'think', 'doh', 'clap', 'nail biting', 'hypnotized', 'liar', 'waiting', 'sighing', 'mad tongue', 'cowboy', 'on phone', 'call me', 'wit send', 'wave', 'time out', 'day dream'];
 	for (var i = 0; i < config.smiley_descriptions.length; i++) {
 		config.smiley_images[i] = config.smiley_descriptions[i].replace(' ', '_')+'.gif';
