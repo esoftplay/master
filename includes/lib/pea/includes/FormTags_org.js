@@ -79,6 +79,9 @@ _Bbc(function ($) {
 				n = t.top || 0;
 				else for (var a = e.offsetLeft || 0, n = e.offsetTop || 0; e = e.offsetParent;) a += e.offsetLeft,
 				n += e.offsetTop;
+				if (typeof e.offsetTop == 'undefined') {
+					n = e.offsetParent()[0].offsetTop;
+				}
 				return {
 					x: a,
 					y: n
@@ -146,7 +149,6 @@ _Bbc(function ($) {
 			// t = result
 			// r = ac_input
 			if (t) {
-				// console.log([e,t,r])
 				// $("#"+modalField).val("");
 				var tbl = $("#"+modalTbl);
 				tbl.html("");
@@ -163,6 +165,7 @@ _Bbc(function ($) {
 					$("#"+r.prop("id").substr(0, r.prop("id").length-3)).val($(this).data("id"));
 					r.blur();
 				});
+				displayOptions(r);
 			}
 		}
 		function Separate(e) {
