@@ -393,6 +393,7 @@ class phpRollAdmin extends phpEasyAdminLib
 			if (!empty($_GET[$this->formName.'_export_type']))
 			{
 				$this->buildReport($page, $file, $export_all);
+				$o = ob_get_contents();
 				ob_end_clean(); // membersihkan output dari script sebelumnya (jika ada)
 				$url  = $link;
 				$url .= !empty($_GET[$this->formName.'_export_type']) ? $_GET[$this->formName.'_export_type'] : 'excel';
