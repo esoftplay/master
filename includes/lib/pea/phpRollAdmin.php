@@ -450,6 +450,8 @@ class phpRollAdmin extends phpEasyAdminLib
 			if ($this->nav->int_tot_page > 1)
 			{
 				$out .= '<label style="min-height: 0;padding-left: 25px;"><input type="checkbox" class="export_all" data-name="'.$this->formName.'" data-page="'.$this->nav->string_name.'" title="'.lang('Export All Data').'" />'.lang('All Pages').'</label>';
+			}else{
+				$out .= '<label style="display: none;"><input type="checkbox" class="export_all" data-name="'.$this->formName.'" data-page="'.$this->nav->string_name.'" title="'.lang('Export All Data').'" /></label>';
 			}
 			$out .= '</span>';
 		}
