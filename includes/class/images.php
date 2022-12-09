@@ -308,35 +308,53 @@ class images
 							$dstX = $dstY = $srcX = $srcY = 0;
 						break;
 					}
-					$tumb = ImageCreateTrueColor($newwidth,$newheight);
-				  switch($format)
-				  {
-				  	case 'gif':
-				  		$source = imagecreatefromgif($imgfile);
-							ImageCopyResized($tumb, $source, $dstX, $dstY, $srcX, $srcY, $newwidth, $newheight, $width, $height);
-				  		imagegif($tumb,$imgdst,$compress);
-				  	break;
-				  	case 'jpg':
-				  		$source = imagecreatefromjpeg($imgfile);
-							ImageCopyResized($tumb, $source, $dstX, $dstY, $srcX, $srcY, $newwidth, $newheight, $width, $height);
-				  		imagejpeg($tumb,$imgdst,$compress);
-				  	break;
-				  	case 'png':
-				  		$source = imagecreatefrompng ($imgfile);
-							ImageCopyResized($tumb, $source, $dstX, $dstY, $srcX, $srcY, $newwidth, $newheight, $width, $height);
-				  		imagepng($tumb,$imgdst,(ceil($compress/10)-1));
-				  	break;
-				  	case 'bmp':
-				  		$source = imagecreatefromwbmp($imgfile);
-							ImageCopyResized($tumb, $source, $dstX, $dstY, $srcX, $srcY, $newwidth, $newheight, $width, $height);
-				  		imagewbmp($tumb,$imgdst,$compress);
-				  	break;
-				  }
-				  if($format)
-				  {
-				  	@chmod($imgdst, $this->perm);
-				  	$this->move_upload($imgdst);
-				  }
+					// ukuran image dan hasil akhir resize sama
+					if ([$newwidth, $newheight] == [$width, $height])
+					{
+						if($imgfile != $imgdst)
+						{
+							$format = @rename($imgfile, $imgdst);
+						}
+					}else{
+						switch($format)
+						{
+							case 'gif':
+								$tumb   = ImageCreateTrueColor($newwidth,$newheight);
+								$source = imagecreatefromgif($imgfile);
+								ImageCopyResized($tumb, $source, $dstX, $dstY, $srcX, $srcY, $newwidth, $newheight, $width, $height);
+								imagegif($tumb,$imgdst,$compress);
+								break;
+							case 'jpg':
+								$tumb   = ImageCreateTrueColor($newwidth,$newheight);
+								$source = imagecreatefromjpeg($imgfile);
+								ImageCopyResized($tumb, $source, $dstX, $dstY, $srcX, $srcY, $newwidth, $newheight, $width, $height);
+								imagejpeg($tumb,$imgdst,$compress);
+								break;
+							case 'png':
+								$tumb   = ImageCreateTrueColor($newwidth,$newheight);
+								$source = imagecreatefrompng ($imgfile);
+								ImageCopyResized($tumb, $source, $dstX, $dstY, $srcX, $srcY, $newwidth, $newheight, $width, $height);
+								imagepng($tumb,$imgdst,(ceil($compress/10)-1));
+								break;
+							case 'bmp':
+								$tumb   = ImageCreateTrueColor($newwidth,$newheight);
+								$source = imagecreatefromwbmp($imgfile);
+								ImageCopyResized($tumb, $source, $dstX, $dstY, $srcX, $srcY, $newwidth, $newheight, $width, $height);
+								imagewbmp($tumb,$imgdst,$compress);
+								break;
+							default:
+								if($imgfile != $imgdst)
+								{
+									$format = @rename($imgfile, $imgdst);
+								}
+								break;
+						}
+					}
+					if($format)
+					{
+						@chmod($imgdst, $this->perm);
+						$this->move_upload($imgdst);
+					}
 				}else{
 					if($imgfile != $imgdst)
 					{
@@ -368,42 +386,51 @@ class images
 		$size = getimagesize($source);
 		$w = $size[0];
 		$h = $size[1];
-		switch($stype)
+		if ($nw <= $w && $nh <= $h)
 		{
-			case 'gif':
-			$simg = imagecreatefromgif($source);
-			break;
-			case 'jpg':
-			$simg = imagecreatefromjpeg($source);
-			break;
-			case 'png':
-			$simg = imagecreatefrompng($source);
-			break;
-			case 'bmp':
-			$simg = imagecreatefromwbmp($source);
-			break;
+			if ($source != $dest)
+			{
+				rename($source, $dest);
+			}
+		}else{
+			switch($stype)
+			{
+				case 'gif':
+				$simg = imagecreatefromgif($source);
+				break;
+				case 'jpg':
+				$simg = imagecreatefromjpeg($source);
+				break;
+				case 'png':
+				$simg = imagecreatefrompng($source);
+				break;
+				case 'bmp':
+				$simg = imagecreatefromwbmp($source);
+				break;
+			}
+			$dimg = imagecreatetruecolor($nw, $nh);
+			$wm = $w/$nw;
+			$hm = $h/$nh;
+			$h_height = $nh/2;
+			$w_height = $nw/2;
+			if($w > $h)
+			{
+				$adjusted_width = $w / $hm;
+				$half_width = $adjusted_width / 2;
+				$int_width = $half_width - $w_height;
+				imagecopyresampled($dimg,$simg,-$int_width,0,0,0,$adjusted_width,$nh,$w,$h);
+			} else
+			if(($w < $h) || ($w == $h))
+			{
+				$adjusted_height = $h / $wm;
+				$half_height = $adjusted_height / 2;
+				$int_height = $half_height - $h_height;
+				imagecopyresampled($dimg,$simg,0,-$int_height,0,0,$nw,$adjusted_height,$w,$h);
+			} else {
+				imagecopyresampled($dimg,$simg,0,0,0,0,$nw,$nh,$w,$h);
+			}
+			imagejpeg($dimg,$dest,100);
 		}
-		$dimg = imagecreatetruecolor($nw, $nh);
-		$wm = $w/$nw;
-		$hm = $h/$nh;
-		$h_height = $nh/2;
-		$w_height = $nw/2;
-		if($w > $h)
-		{
-			$adjusted_width = $w / $hm;
-			$half_width = $adjusted_width / 2;
-			$int_width = $half_width - $w_height;
-			imagecopyresampled($dimg,$simg,-$int_width,0,0,0,$adjusted_width,$nh,$w,$h);
-		} elseif(($w < $h) || ($w == $h))
-		{
-			$adjusted_height = $h / $wm;
-			$half_height = $adjusted_height / 2;
-			$int_height = $half_height - $h_height;
-			imagecopyresampled($dimg,$simg,0,-$int_height,0,0,$nw,$adjusted_height,$w,$h);
-		} else {
-			imagecopyresampled($dimg,$simg,0,0,0,0,$nw,$nh,$w,$h);
-		}
-		imagejpeg($dimg,$dest,100);
 		@chmod($dest, $this->perm);
 		$this->move_upload($dest);
 		return true;
@@ -431,9 +458,9 @@ class images
 	function is_validImage($file)
 	{
 		$format = $this->getExt($file);
-	  $match =(in_array($format, $this->valid) and is_file($file)) ? 1 : 0;
-	  $output= array($match, $format);
-	  return $output;
+		$match =(in_array($format, $this->valid) and is_file($file)) ? 1 : 0;
+		$output= array($match, $format);
+		return $output;
 	}
 
 	function getUnique($ext)
@@ -450,26 +477,41 @@ class images
 	function proportionImg($img_src, $thumbsize)
 	{
 		list($width, $height) = getimagesize($img_src);
+		// list($width, $height) = $img_src;
 		if(is_array($thumbsize))
 		{
 			list($max_width, $max_height) = $thumbsize;
+			// jika target 0px
+			if ($max_width == 0 && $max_height == 0)
+			{
+				$output = [$width, $height];
+				return $output;
+			}else
+			if ($max_width == 0)
+			{
+				$max_width = $max_height;
+			}else
+			if ($max_height == 0)
+			{
+				$max_height = $max_width;
+			}
 			$ok = $ratio = $width_jadi = $height_jadi = array();
 			$ok[0] = $ok[1] = 1;
 			$ratio[0] = $ratio[1] = 1;
 			if ($height > $max_height)
 			{
-				$ratio[0] = (int)$max_height/$height;
+				$ratio[0]       = (int)$max_height/$height;
 				$height_jadi[0] = $max_height;
-				$width_jadi[0]	= $ratio[0]*$width;
+				$width_jadi[0]  = $ratio[0]*$width;
 			}else{
 				$height_jadi[0] = $height;
 				$width_jadi[0]	= $width;
 			}
 			if ($width > $max_width)
 			{
-				$ratio[1] = (int)$max_width/$width;
+				$ratio[1]       = (int)$max_width/$width;
 				$height_jadi[1] = $ratio[1]*$height;
-				$width_jadi[1]	= $max_width;
+				$width_jadi[1]  = $max_width;
 			}else{
 				$height_jadi[1] = $height;
 				$width_jadi[1]	= $width;
@@ -484,29 +526,29 @@ class images
 			}
 			if ($ok[0] == 1 && $ok[1] == 1)
 			{
-				$output = array($width_jadi[0], $height_jadi[0] );
-			}
-			elseif ($ok[0] == 1)
+				$output = array($width_jadi[0], $height_jadi[0]);
+			}else
+			if ($ok[0] == 1)
 			{
-				$output = array($width_jadi[0], $height_jadi[0] );
+				$output = array($width_jadi[0], $height_jadi[0]);
 			}else{
-				$output = array($width_jadi[1], $height_jadi[1] );
+				$output = array($width_jadi[1], $height_jadi[1]);
 			}
 		}else{
 			$imgratio = $width / $height;
 			if($imgratio > 1)
 			{
-				$newwidth = $thumbsize;
-				$max = $width;
+				$newwidth  = $thumbsize;
+				$max       = $width;
 				$newheight = (int)($thumbsize / $imgratio);
 			}else{
 				$newheight = $thumbsize;
-				$max = $height;
-				$newwidth = (int)($thumbsize * $imgratio);
+				$max       = $height;
+				$newwidth  = (int)($thumbsize * $imgratio);
 			}
 			if ($max < $thumbsize)
 			{
-				$newwidth = $width;
+				$newwidth  = $width;
 				$newheight = $height;
 			}
 			$output = array($newwidth, $newheight);
