@@ -154,7 +154,7 @@ function user_create($params)
 			// Name
 			if($key == 'name')
 			{
-				$data[$key] = strtolower($params[$key]);
+				$data[$key] = trim($params[$key]);
 			}
 			// Username
 			if($key == 'username')
