@@ -114,12 +114,12 @@ class excel extends excel_workbook
 			$filename = 'Excel-'.date('Y-m-d').'.xlsx';
 		}
 		$is_2007 = preg_match('~\.xlsx$~is', $filename);
-		// Redirect output to a client’s web browser
-		if ($is_2007) {
-			header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		}else{
-			header('Content-Type: application/vnd.ms-excel');
-		}
+		// // Redirect output to a client’s web browser
+		// if ($is_2007) {
+		// 	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		// }else{
+		// 	header('Content-Type: application/vnd.ms-excel');
+		// }
 		header('Content-Disposition: attachment;filename="'.$filename.'"');
 		header('Cache-Control: max-age=0');
 		// If you're serving to IE 9, then the following may be needed
