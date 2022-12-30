@@ -38,10 +38,6 @@ sehingga jika ada satu user membuka notif, maka notif untuk user lain status nya
 function alert_add($title, $description, $params = array(), $user_id='none', $group_id=0, $module = '')
 {
 	global $db, $user, $Bbc;
-	if (defined('_NO_ALERT') && _NO_ALERT == 1)
-	{
-		return false;
-	}
 	$title       = addslashes($title);
 	$description = addslashes($description);
 	$is_admin    = 3; // any page
@@ -121,24 +117,39 @@ function alert_add($title, $description, $params = array(), $user_id='none', $gr
 		$admin = $g_id > 0 ? 3 : $is_admin;
 		foreach ($user_id as $u_id)
 		{
-			$q_alert = "INSERT INTO `bbc_alert` SET
-				`user_id`     = {$u_id},
-				`group_id`    = {$g_id},
-				`module`      = '{$module}',
-				`title`       = '{$title}',
-				`description` = '{$description}',
-				`params`      = '{$params}',
-				`is_open`     = 0,
-				`is_admin`    = {$admin},
-				`updated`     = '0000-00-00 00:00:00',
-				`created`     = NOW()";
-			if (!$db->Execute($q_alert))
+			if (defined('_NO_ALERT') && _NO_ALERT == 1)
 			{
-				// include _ROOT.'modules/user/repair-comment.php'; # sudah tidak terpakai lagi
-				$db->Execute($q_alert);
+				$alert_dt = array(
+					'user_id'     => $u_id,
+					'group_id'    => $g_id,
+					'module'      => $module,
+					'title'       => $title,
+					'description' => $description,
+					'params'      => $params,
+					'is_open'     => 0,
+					'is_admin'    => $admin,
+					'updated'     => '0000-00-00 00:00:00'
+				);
+			}else{
+				$q_alert = "INSERT INTO `bbc_alert` SET
+					`user_id`     = {$u_id},
+					`group_id`    = {$g_id},
+					`module`      = '{$module}',
+					`title`       = '{$title}',
+					`description` = '{$description}',
+					`params`      = '{$params}',
+					`is_open`     = 0,
+					`is_admin`    = {$admin},
+					`updated`     = '0000-00-00 00:00:00',
+					`created`     = NOW()";
+				if (!$db->Execute($q_alert))
+				{
+					// include _ROOT.'modules/user/repair-comment.php'; # sudah tidak terpakai lagi
+					$db->Execute($q_alert);
+				}
+				$alert_id = $db->Insert_ID();
+				$alert_dt = $db->getRow("SELECT * FROM `bbc_alert` WHERE `id`={$alert_id}");
 			}
-			$alert_id = $db->Insert_ID();
-			$alert_dt = $db->getRow("SELECT * FROM `bbc_alert` WHERE `id`={$alert_id}");
 			user_call_func(__FUNCTION__, $alert_dt);
 		}
 	}
