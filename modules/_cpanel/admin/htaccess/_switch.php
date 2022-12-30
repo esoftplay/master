@@ -13,7 +13,11 @@ if(isset($_POST['edit_htaccess']))
 	<?php
 	die();
 }
-include _ROOT.'modules/user/repair-comment.php';
+if (defined('_NO_ALERT') && _NO_ALERT == 1)
+{
+}else{
+	include _ROOT.'modules/user/repair-comment.php';
+}
 _func('editor');
 $text_css = file_read($thisFile);
 $config = array(

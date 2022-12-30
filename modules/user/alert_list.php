@@ -27,22 +27,29 @@ if (empty($is_admin))
 	}
 }
 
-$query = "SELECT * FROM `bbc_alert` WHERE ({$where}) AND `is_admin` IN ({$is_admin},3) ORDER BY `id` DESC LIMIT {$start}, {$limit}";
-$list  = $db->getAll($query);
-if (!$db->resid)
+if (defined('_NO_ALERT') && _NO_ALERT == 1)
 {
-	include_once __DIR__.'/repair-comment.php';
-	$list = $db->getAll($query);
-}
-if (!empty($list))
-{
-	_func('alert');
-	foreach ($list as $i => $data)
+	$list  = [];
+	$found = 0;
+}else{
+	$query = "SELECT * FROM `bbc_alert` WHERE ({$where}) AND `is_admin` IN ({$is_admin},3) ORDER BY `id` DESC LIMIT {$start}, {$limit}";
+	$list  = $db->getAll($query);
+	if (!$db->resid)
 	{
-		$list[$i] = alert_view($data);
+		include_once __DIR__.'/repair-comment.php';
+		$list = $db->getAll($query);
 	}
+	if (!empty($list))
+	{
+		_func('alert');
+		foreach ($list as $i => $data)
+		{
+			$list[$i] = alert_view($data);
+		}
+	}
+	$found  = $db->getOne("SELECT COUNT(1) FROM `bbc_alert` WHERE {$where}");
 }
-$found  = $db->getOne("SELECT COUNT(1) FROM `bbc_alert` WHERE {$where}");
+
 $output = array(
 	'ok'         => 1,
 	'list'       => $list,

@@ -38,6 +38,10 @@ sehingga jika ada satu user membuka notif, maka notif untuk user lain status nya
 function alert_add($title, $description, $params = array(), $user_id='none', $group_id=0, $module = '')
 {
 	global $db, $user, $Bbc;
+	if (defined('_NO_ALERT') && _NO_ALERT == 1)
+	{
+		return false;
+	}
 	$title       = addslashes($title);
 	$description = addslashes($description);
 	$is_admin    = 3; // any page

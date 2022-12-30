@@ -45,33 +45,39 @@ if (empty($is_admin))
 }
 $where  .= ' AND `is_admin` IN ('.$is_admin.', 3)';
 /* CLEAN OLD NOTIFICATION */
-$ago = date('Y-m-d H:i:s', strtotime('-2 MONTHS'));
-$db->Execute("DELETE FROM `bbc_alert` WHERE `created` < '{$ago}'");
-if (!$db->resid)
+$alert['list'] = array();
+if (defined('_NO_ALERT') && _NO_ALERT == 1)
 {
-	include_once __DIR__.'/repair-comment.php';
-}
-$q_found = "SELECT COUNT(1) FROM `bbc_alert` WHERE {$where} AND `is_open`=0";
-$found   = $db->getOne($q_found);
-if (!$db->resid)
-{
-	include_once __DIR__.'/repair-comment.php';
-	$found = $db->getOne($q_found);
-}
-$alert['found'] = intval($found);
-$alert['list']  = array();
-if ($alert['found'] > 0)
-{
-	_func('alert');
-	$limit = 5;
-	$limit = $alert['found'] < $limit ? $alert['found'] : $limit;
-	$q = "SELECT * FROM `bbc_alert` WHERE {$where} AND `is_open`=0 ORDER BY id DESC LIMIT 0, {$limit}";
-	$r = $db->getAll($q);
-	foreach ($r as $d)
+}else{
+	$ago = date('Y-m-d H:i:s', strtotime('-2 MONTHS'));
+	$db->Execute("DELETE FROM `bbc_alert` WHERE `created` < '{$ago}'");
+	if (!$db->resid)
 	{
-		$alert['list'][] = alert_view($d);
+		include_once __DIR__.'/repair-comment.php';
+	}
+	$q_found = "SELECT COUNT(1) FROM `bbc_alert` WHERE {$where} AND `is_open`=0";
+	$found   = $db->getOne($q_found);
+	if (!$db->resid)
+	{
+		include_once __DIR__.'/repair-comment.php';
+		$found = $db->getOne($q_found);
+	}
+	$alert['found'] = intval($found);
+	$alert['list']  = array();
+	if ($alert['found'] > 0)
+	{
+		_func('alert');
+		$limit = 5;
+		$limit = $alert['found'] < $limit ? $alert['found'] : $limit;
+		$q = "SELECT * FROM `bbc_alert` WHERE {$where} AND `is_open`=0 ORDER BY id DESC LIMIT 0, {$limit}";
+		$r = $db->getAll($q);
+		foreach ($r as $d)
+		{
+			$alert['list'][] = alert_view($d);
+		}
 	}
 }
 $alert['checked'] = time();
 // unset($_SESSION[bbcAuth]['Alert']); pr($Bbc->debug);
-$_SESSION[bbcAuth]['Alert'] = $alert; output_json($alert);
+$_SESSION[bbcAuth]['Alert'] = $alert;
+output_json($alert);

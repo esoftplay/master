@@ -42,7 +42,11 @@ if (!empty($_GET['token']))
 		  }
 			$$r_list = $o;
 		}else{
-			include_once __DIR__.'/repair-comment.php';
+			if (defined('_NO_ALERT') && _NO_ALERT == 1)
+			{
+			}else{
+				include_once __DIR__.'/repair-comment.php';
+			}
 			$$r_list = $db->getAll($c_Q);
 		}
 		// Hitung jumlah halaman jika ini subComment
