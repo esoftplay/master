@@ -376,6 +376,11 @@ class bbcSQL
 
 	function cache($func, $query, $path = '', $sec = '')
 	{
+		$query = trim($query);
+		if (!preg_match('~^select\s+sql_cache\s~is', $query))
+		{
+			$query = preg_replace('~^select\s+~is', 'SELECT SQL_CACHE ', $query);
+		}
 		// sample $sec = '-2 hour';
 		if (defined('_DB_CACHE') && _DB_CACHE == 0)
 		{
