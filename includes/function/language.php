@@ -51,7 +51,7 @@ function lang_fetch($module_id)
 		$lang_id = lang_id();
 		$_CONFIG['rules']['lang_default'] = $lang_id;
 		$file = 'lang/'.$lang_id.'_'.$module_id.'.cfg';
-		$q = "SELECT SQL_CACHE LOWER(c.`code`), t.`content`
+		$q = "SELECT LOWER(c.`code`), t.`content`
 					FROM `bbc_lang_code` AS c
 					LEFT JOIN `bbc_lang_text` AS t ON(c.`id`=t.`code_id` AND t.`lang_id`={$lang_id})
 					WHERE c.`module_id`={$module_id}";
