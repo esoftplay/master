@@ -2,6 +2,8 @@
 
 class agenda_class {
 
+	var $db, $is_return, $limit, $no_empty, $r_cat, $return, $sys, $time_format;
+
 	function __construct()
 	{
 		global $db, $sys;

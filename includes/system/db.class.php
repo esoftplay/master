@@ -27,6 +27,7 @@ class bbcSQL
 	var $tmp_is_cache = false;
 	var $dbname, $dbuser;
 	var $self, $self_stop, $now, $timestamp, $cache_dir;
+	var $link, $tmp_cache_time, $tmp_cache_count, $link_read;
 	function __construct()
 	{
 		global $Bbc;
@@ -184,9 +185,9 @@ class bbcSQL
 				return false;
 			}
 		}
-		if ($this->resid)
+		if ($this->resid && $this->resid !== TRUE)
 		{
-			@mysqli_free_result($this->resid);
+			mysqli_free_result($this->resid);
 		}
 		if (preg_match('~[a-z]+\'[a-z]+~is', $sql))
 		{

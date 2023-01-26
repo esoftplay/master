@@ -2,6 +2,7 @@
 
 class FormTextincrement extends Form
 {
+	var $sequence;
 	function __construct()
 	{
 		$this->type = 'textincrement';

@@ -52,6 +52,8 @@ class image_lib {
 	var $wm_use_drop_shadow	= FALSE;
 	var $wm_use_truetype	= FALSE;
 
+	var $dest_image = '';
+
 	/**
 	 * Constructor
 	 *

@@ -3,7 +3,7 @@
 class currency
 {
 	var $main_tbl = 'store_currency';
-	var $db;
+	var $db, $_db;
 	var $updated;
 	var $baseCurrency;
 	var $defCurrency;

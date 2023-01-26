@@ -31,6 +31,7 @@ class oNav extends oDebug
 	var $cur_sql_pos;
 	var $int_tot_rows;
 	var $int_tot_page;
+	var $int_cur_page;
 	var $int_num_rows_this_page;	// jumlah baris dari halaman yang sedang diakses
 
 	var $layout;					// berisi array untuk nyimpen konfigurasi2 tampilan

@@ -39,6 +39,7 @@ class FormMultiform extends FormMultiinput
 	var $referenceCondition;
 	var $isToogle;
 	var $showToogle;
+	var $tableID;
 	var $extraFields = array();
 	var $extraValues = array();
 

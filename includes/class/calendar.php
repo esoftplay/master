@@ -2,14 +2,13 @@
 
 class Calendar {
 
-	var $lang;
-	var $local_time;
 	var $template		= '';
 	var $start_day		= 'sunday';
 	var $month_type 	= 'long';
 	var $day_type		= 'abr';
 	var $show_next_prev	= FALSE;
 	var $next_prev_url	= '';
+	var $lang, $lang_idadjust_date, $local_time, $temp;
 
 	function __construct($config = array())
 	{

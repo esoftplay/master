@@ -22,7 +22,7 @@ class images
 	function __construct($path = '', $img = '')
 	{
 		if(!empty($path))
-			$this->setPath($path, false);
+			$this->setpath($path, false);
 		if(!empty($img))
 			$this->setimages($img);
 	}

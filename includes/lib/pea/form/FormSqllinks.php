@@ -17,6 +17,7 @@ class FormSqllinks extends FormSqlplaintext
 	var $getName;
 	var $popWidth = 0;
 	var $isModal;
+	var $popHeight, $titlePop, $urlPop;
 
 	function __construct()
 	{

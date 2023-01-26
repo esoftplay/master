@@ -22,6 +22,7 @@ class FormOrderby extends Form
 	var $intId;
 	var $refName;
 	var $addCondition;
+	var $IdName, $OrderbyTitle, $OrderbyValue, $inIdNow, $intDownNew, $intIdDown, $intIdUp, $intMin, $ref_field, $sqlOrder, $type_order;
 
 	function __construct()
 	{

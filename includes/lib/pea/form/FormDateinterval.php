@@ -21,6 +21,8 @@ class FormDateInterval extends FormMultiinput
 	var $start;
 	var $endDate;
 	var $isSearchRange = false;
+	var $defaultValueEnd, $params, $searchButton;
+
 	function __construct()
 	{
 		parent::__construct();

@@ -38,6 +38,7 @@ class FormMultifile extends FormMulticheckbox
 	var $firstField;
 	var $isFieldTitleExist       = true;
 	var $isFieldDescriptionExist = true;
+	var $folder_tmp, $getTableCondition, $newFolder, $setDelimiter, $sqlRelationCondition;
 
 	function __construct()
 	{

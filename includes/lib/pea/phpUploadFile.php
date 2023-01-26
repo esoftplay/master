@@ -15,6 +15,7 @@ class phpUploadFile {
 	var $arrayPostName;
 	var $is_thumbnail = false;
 	var $is_watermark = false;
+	var $fileSizeMax, $isArrayPostName, $rez_height, $rez_width, $thumb_param, $thumb_prefix, $watermark_param;
 	//konstruktor
 	function __construct($post_name, $folder, $file_name_uploaded = "", $chmod = 0664, $is_resize = false, $width = 0, $height = 0)
 	{

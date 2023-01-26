@@ -6,6 +6,7 @@ $form->edit->addInput('password', 'passwordConfirm');
 */
 class FormPasswordConfirm extends Form
 {
+	var $alert;
 	var $typeEncription;
 	var $subTitle="Password";
 	var $subTitleConfirm="Confirm Password";

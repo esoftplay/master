@@ -2,11 +2,13 @@
 
 _func('content');
 class content_class {
-	var $lang_id;
-	var $r_lang;
 	var $error = array();
 	var $allowed_tags = '<br><a><i><b><u>';
 	var $check_types = array();
+	var $Bbc, $conf, $db, $img, $img_lib,
+			$img_path, $img_url, $lang_id, $path,
+			$prune_path, $r_lang, $sys, $text_path,
+			$tmp_path, $user;
 	function __construct()
 	{
 		global $db, $user, $sys, $Bbc;

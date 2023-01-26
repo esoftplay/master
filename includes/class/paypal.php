@@ -21,13 +21,10 @@ $params = array(
  *========================================*/
 class Paypal
 {
-	var $order_id;
-	var $hidden;
-	var $total;
-	var $cur;
-	var $img_icon;
 	var $autoSubmit = 0; # '1' OR '0'
 	var $debug = 0; # '1' OR '0'
+	var $admins, $clients, $data, $db, $hidden, $img_icon, $order_id, $prefix, $total;
+
 	function __construct($data, $params)
 	{
 		global $db;

@@ -31,6 +31,7 @@ class FormFile extends Form
 	var $is_watermark = false;
 	var $thumb_prefix	= '';
 	var $chmod = 0777;
+	var $arrAllowedExtension, $deleteButton, $fileName, $thumb_cfg, $watermark_param;
 
 	function __construct()
 	{

@@ -73,7 +73,7 @@ class FormSelecttable extends FormMulticheckbox
 	var $allowNewQuery         = array();
 	var $option                = array();
 	var $optionValue           = array();
-	var $isModal;
+	var $isAllowedNewTitle, $isModal, $linksPop, $popHeight, $popWidth;
 
 	function __construct()
 	{

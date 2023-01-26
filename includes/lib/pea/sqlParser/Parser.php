@@ -24,6 +24,7 @@ class SQL_Parser
     var $symbols = array();
     var $operators = array();
     var $synonyms = array();
+    var $commands = array();
 
     var $dialects = array("ANSI", "MySQL");
 

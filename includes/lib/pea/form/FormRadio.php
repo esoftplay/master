@@ -14,6 +14,7 @@ class FormRadio extends Form
 	var $option = array();
 	var $optionValue=array();
 	var $delimiter = '&nbsp;';
+	var $referenceField, $referenceTable;
 
 	function __construct()
 	{

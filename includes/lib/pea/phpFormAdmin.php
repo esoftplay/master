@@ -12,7 +12,9 @@ class Form
 	var $align = 'left';
 	var $extra;
 	var $type;
+	var $params;
 	var $actionType;
+	var $parent;
 	var $displayFunction         = null;
 	var $reportFunction          = false;
 	var $exportFunction          = false;
@@ -43,6 +45,7 @@ class Form
 	var $tableId;								// table id dari class phpRollAdmin, biasanya untuk type file
 	var $sqlCondition;					// sqlCondition dari class phpEditAdmin
 	var $defaultValue;					// defaultValue jika actionType=='add'
+	var $multiExtraField;				// untuk keperluan extrafield
 
 	function __construct()
 	{
@@ -459,7 +462,7 @@ class Form
 				}
 				$searchCondition	= $this->getFieldName().'='.$val;
 			}
-		}// eof if ( isset( $_POST[$this->searchButton->name] ) )
+		}// eof if (isset($this->defaultValue) && $this->defaultValue !== '')
 		return $searchCondition;
 	}
 

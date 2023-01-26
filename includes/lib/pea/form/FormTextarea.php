@@ -7,6 +7,7 @@ class FormTextarea extends Form
 	var $isCodeEditor = false;
 	var $param;
 	var $paramCode;
+	var $lang_r;
 	function __construct()
 	{
 		$this->type = 'textarea';
@@ -42,7 +43,7 @@ class FormTextarea extends Form
 			$val = ( $this->nl2br ) ? nl2br( @$_POST[$this->name][$i] ) : @$_POST[$this->name][$i];
 		if(!$this->isHtmlEditor AND !$this->nl2br)
 		{
-			/*$val = preg_replace("#<br\s{0,}/?>#is", "", $val);*/
+			// $val = preg_replace("~<br\s{0,}/?".">~is", "", $val);
 		}
 		return $query = "`". $this->fieldName ."` = '". $this->cleanSQL($val) ."', ";
 	}

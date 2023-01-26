@@ -28,6 +28,7 @@ class FormParams extends Form
 
 	var $referenceTable;
 	var $sqlReferenceCondition = array();
+	var $form, $isLoadedgetDataFromReferenceTable, $lang_r;
 
 	function __construct()
 	{

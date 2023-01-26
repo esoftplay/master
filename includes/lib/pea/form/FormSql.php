@@ -10,10 +10,7 @@ $form->roll->input->fieldName->setDelimiter(', ')
 */
 class FormSql extends Form
 {
-	var $operator;
-	var $comparator;
-	var $output;
-	var $defaultCondition;
+	var $delimiter, $fieldToSelect, $sql, $valueToReplace;
 
 	function __construct()
 	{

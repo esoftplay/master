@@ -1,6 +1,7 @@
 <?php
 class ngetest
 {
+	var $jquery;
 	function ngetest()
 	{
 		$dir = dirname(dirname(__FILE__)).'/';

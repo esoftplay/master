@@ -5,9 +5,7 @@ include_once( _PEA_ROOT . 'phpFormAdmin.php' );
 class phpEasyAdmin extends oDebug
 {
 	var $isLoaded;
-	var $table;
-	var $type;
-	var $db;
+	var $add, $db, $edit, $roll, $search, $table, $type;
 	function __construct( $str_table )
 	{
 		global $sys;

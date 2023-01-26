@@ -126,7 +126,11 @@ if (_SEO && _ADMIN == '')
 	if(empty($_seo['URI']))
 	{
 		seo_link_request('?menu_id=-1');
-	}elseif(!preg_match('~\.~s', @$_GET['mod']) && !empty($_GET['mod'])) $_GET['mod'] .= '.main';
+	}else
+	if(!empty($_GET['mod']) && !preg_match('~\.~s', @$_GET['mod']))
+	{
+		$_GET['mod'] .= '.main';
+	}
 }
 $_URI = array_merge(array(substr(_URI, 1, -1)), explode('/', $_seo['URI']));unset($_seo);
 

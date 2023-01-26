@@ -7,6 +7,7 @@ class phpReport
 	var $arrData;
 	var $headerColor;
 	var $maxColumnWidth; 	// maximum column width,
+	var $type;
 
     /**
     * Konstruktor: Inisialisasi

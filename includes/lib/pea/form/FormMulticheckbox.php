@@ -54,6 +54,7 @@ class FormMulticheckbox extends FormCheckbox
 		'label' => array(),
 		'value' => array()
 		);
+	var $delimiter, $isSingleSelect, $referenceArray, $relationField;
 
 	function __construct()
 	{

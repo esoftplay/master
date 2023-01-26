@@ -5,8 +5,7 @@ class Encrypt {
 	var $encryption_key	= '*#@jh$%[*H@nb]+)@Dhl;,E';
 	var $_hash_type	= 'sha1';
 	var $_mcrypt_exists = FALSE;
-	var $_mcrypt_cipher;
-	var $_mcrypt_mode;
+	var $_mcrypt_cipher, $_mcrypt_mode, $_show_error_message_flag;
 
 	function __construct()
 	{

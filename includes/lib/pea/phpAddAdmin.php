@@ -29,6 +29,7 @@ class phpAddAdmin extends phpEasyAdminLib
 	var $onInsertArgs = array('', '');
 	var $pendingQuery = array();
 	var $insertId     = 0;
+	var $langInsertId = 0;
 
 	//untuk menset message berhasil yang akan keluar
 	var $setSuccessSaveMessage	="Success add new data.";

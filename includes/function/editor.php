@@ -180,7 +180,7 @@ function editor_code($name, $value = '', $option = array(), $meta = true)
 		$output .= tabs($tabs);
 	}else{
 		$Bbc->editor_code_id++;
-		$output .= '<textarea id="input_'.$index.'" name="'.$params['id'].'" class="form-control" '.$attr.'>'.htmlentities($value, ENT_COMPAT, 'UTF-8', FALSE).'</textarea>'
+		$output .= '<textarea id="input_'.$index.'" name="'.$params['id'].'" class="form-control" '.$attr.'>'.@htmlentities($value, ENT_COMPAT, 'UTF-8', FALSE).'</textarea>'
 						. '<div rel="editor_code" id="editor_'.$index.'"'
 						.	' data-id="'.$index.'"'
 						.	' data-syntax="'.$params['syntax'].'"'

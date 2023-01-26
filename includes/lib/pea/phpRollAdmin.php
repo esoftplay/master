@@ -45,6 +45,7 @@ class phpRollAdmin extends phpEasyAdminLib
 	var $optionalColumn;
 	var $optionalCaption;
 	var $setFailSaveMessage;
+	var $arrDeletedId, $intNumRows, $load_lang, $orderUrl, $strField2Lang;
 
 	function __construct($str_table, $str_sql_condition = '', $str_table_id='id', $arr_folder= array())
 	{

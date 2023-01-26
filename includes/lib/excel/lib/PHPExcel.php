@@ -146,6 +146,7 @@ class PHPExcel
 	* @var NULL|array
 	*/
 	private $_ribbonBinObjects=NULL;
+    private $_cellXfStyleCollection = [];
 
 	/**
 	* The workbook has macros ?

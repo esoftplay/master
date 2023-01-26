@@ -318,7 +318,7 @@ class SQL_Compiler {
             case 'modify':
             default:
                 return $this->raiseError('Unknown action: '.$this->tree['command']);
-        }    // switch ($this->_tree["command"])
+        }    // switch ($this->tree["command"])
 
     }
 //    }}}

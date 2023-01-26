@@ -22,6 +22,7 @@ class FormEditlinks extends Form
 	var $caption;
 	var $getName;
 	var $isModal;
+	var $atribute;
 
 	function __construct()
 	{

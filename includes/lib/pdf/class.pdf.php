@@ -2073,7 +2073,7 @@ function PRVTcheckTextDirective1(&$text,$i,&$f,$final,&$x,&$y,$size=0,$angle=0,$
 				  // for simplicity, just take from the end, fix this another day
 				  $this->nCallback--;
 				  if ($this->nCallback<0){
-					$this->nCallBack=0;
+					$this->nCallback=0;
 				  }
 				}
 			  }

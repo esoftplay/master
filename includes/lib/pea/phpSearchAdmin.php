@@ -15,7 +15,7 @@ echo $form->search->getForm();
 */
 class phpSearchAdmin extends phpEasyAdminLib
 {
-	var $tableId;
+	var $arrSearchCondition, $searchCondition, $tableId;
 
 	function __construct( $str_table, $str_sql_condition = '1', $current_file = '' )
 	{

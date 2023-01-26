@@ -99,6 +99,13 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
     protected $_quotePrefix = false;
 
     /**
+     * Additional from danang@fisip.net
+     *
+     * @var vary
+     */
+    var $_isSupervisor, $_parent, $getActiveCell, $getActiveSheet, $getSelectedCells;
+
+    /**
      * Create a new PHPExcel_Style
      *
      * @param boolean $isSupervisor Flag indicating if this is a supervisor or not

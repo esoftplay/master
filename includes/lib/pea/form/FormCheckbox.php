@@ -19,6 +19,7 @@ class FormCheckbox extends Form
 	var $caption; 	// caption dari checkbox
 	var $value; 	// value dari checkbox tersebut. dan value apa agar checkbox tercentang
 	var $isCheckAll; // apakah fasilitas checkAll dihidupkan ato enggak
+	var $setCheckedCaption;
 	function __construct()
 	{
 		$this->type = 'checkbox';

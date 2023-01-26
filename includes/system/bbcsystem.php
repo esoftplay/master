@@ -1,18 +1,18 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
-if (function_exists('ioncube_loader_version'))
+if (defined('_BBCSYS'))
 {
-	$i = intval(ioncube_loader_version());
-	if (file_exists( __DIR__.'/'.$i.'.php'))
-	{
-		require_once __DIR__.'/'.$i.'.php';
-	}else{
-		echo 'ioncube_loader_version: '.$i.' is not ready yet';
-	}
+	require_once _BBCSYS;
 }else{
-	if (defined('_BBCSYS'))
+	if (function_exists('ioncube_loader_version'))
 	{
-		require_once _BBCSYS;
+		$i = intval(ioncube_loader_version());
+		if (file_exists( __DIR__.'/'.$i.'.php'))
+		{
+			require_once __DIR__.'/'.$i.'.php';
+		}else{
+			echo 'ioncube_loader_version: '.$i.' is not ready yet';
+		}
 	}else{
 		echo '<a href="https://www.ioncube.com/loader-wizard/loader-wizard.zip">click here</a> to get loader';
 	}

@@ -2,16 +2,12 @@
 
 class getDirectory
 {
-	var $root;
-	var $url;
-	var $mainDir;
-	var $thisDir;
-	var $lastDir;
+	var $mainDir, $output, $root, $url;
 	function __construct($path = '', $root = '', $url = '')
 	{
 		$this->root = empty($root) ? _ROOT : $root;
 		$this->url  = empty($url) ? _URL : $url;
-		$this->setPath($path);
+		$this->setpath($path);
 	}
 	function setpath($path)
 	{

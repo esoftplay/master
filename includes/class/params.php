@@ -3,21 +3,13 @@
 /*	CHECK OUT THE SAMPLE HOW TO USE AT THE BOTTOM OF THIS FILE */
 class params
 {
-	var $table;
-	var $default;
-	var $config;
-	var $name;
-	var $title;
-	var $id;
-	var $controller_id;
-	var $is_loaded;
-	var $init;
 	var $delim_file    = '|';
 	var $is_language   = false;
 	var $isFormRequire = false;
 	var $row_count     = 0;
 	var $def_files_tot = 5;
 	var $post          = array();
+	var $config, $config_post, $config_pre, $db, $default, $init, $is_encode, $is_updated, $lang_r, $name, $post_func, $pre_func, $primary, $table, $table_id, $text_id, $title;
 
 	function __construct($params=array(), $db = '')
 	{

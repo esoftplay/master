@@ -30,6 +30,8 @@ class phpEasyAdminLib
 	var $methodForm = 'POST';
 	var $sqlCondition;
 
+	var $arrReport, $deleteButton, $help, $hideToolTitle, $input, $isLoaded, $resetButton, $saveButton, $table, $tableId, $tip;
+
 	//untuk menset message berhasil yang akan keluar
 	var $setSuccessSaveMessage='Success update data.';
 	var $setFailSaveMessage='Failed update data.';
@@ -359,7 +361,7 @@ class phpEasyAdminLib
 		$this->tip->value[$field]	= $value;
 	}
 
-	// untuk menambahkan suatu field itu diisi apa pada saat pemanggilan metho $this->action();
+	// untuk menambahkan suatu field itu diisi apa pada saat pemanggilan method this->action();
 	// misalnya saat menambahkan news disuatu kategori, maka kita ingin cat_id di table news otomatis diisi 2 misalnya
 	// c: $form->add->addExtraField( 'id', '2', 'edit' );
 	function addExtraField( $field = '', $value = '', $formType='' )

@@ -135,6 +135,7 @@ if ($file && !empty($param['expire']) && $param['expire'] > time())
 die();
 class user_upload
 {
+  var $isXML;
 	function __construct($is_XML)
 	{
 		$this->isXML = $is_XML ? true : false;

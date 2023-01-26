@@ -8,8 +8,7 @@ class Jquery
 	var $path = 'jquery/';
 	var $is_return = false;
 	var $is_loaded = array();
-	var $dir;
-	var $url;
+	var $bbc, $dir, $sys, $url;
 
 	function __construct()
 	{

@@ -16,6 +16,7 @@ class FormText extends Form
 	var $isNumberFormat = false;
 	var $isDateFormat   = false;
 	var $isHtmlEntities = false;
+	var $NumberFormatValue, $dateEmptyValue, $dateFormatValue, $delimeter, $isStripTags_except, $lang_r, $strReplaceValue, $subStrValue;
 
 	function __construct()
 	{
