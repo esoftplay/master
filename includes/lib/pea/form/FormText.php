@@ -138,8 +138,8 @@ class FormText extends Form
 			}
 		}else{
 			$value = (string)$str_value;
-			$time = strtotime($str_value);
-			$out  = $time>0 ? date($this->dateFormatValue, $time) : $this->dateEmptyValue;
+			$time  = !empty($str_value) ? strtotime($str_value) : '';
+			$out   = $time>0 ? date($this->dateFormatValue, $time) : $this->dateEmptyValue;
 		}
 		return $out;
 	}
@@ -194,7 +194,7 @@ class FormText extends Form
 			}
 			$out = implode($this->delimeter, $r);
 		}else{
-			$out = '<input name="'. $name .'" type="'.$type.'" value="'. htmlentities($str_value) .'" '.$extra.'>';
+			$out = '<input name="'. $name .'" type="'.$type.'" value="'. (!empty($str_value) ? htmlentities($str_value) : '') .'" '.$extra.'>';
 		}
 		return $out;
 	}

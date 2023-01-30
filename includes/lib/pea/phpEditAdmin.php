@@ -418,13 +418,13 @@ class phpEditAdmin extends phpAddAdmin
 										}
 										break;
 									case 'money':
-										if (!preg_match('~^[0-9]+(?:\.[0-9]+)?$~s', $text)) {
+										if (!empty($text) && !preg_match('~^[0-9]+(?:\.[0-9]+)?$~s', $text)) {
 											$this->setFailSaveMessage('Please enter a valid money format in "'.$input->title.'"!');
 											$formExecute = false;
 										}
 										break;
 									case 'number':
-										if (!preg_match('~^[0-9]+$~s', $text)) {
+										if (!empty($text) && !preg_match('~^[0-9]+$~s', $text)) {
 											$this->setFailSaveMessage('Please enter a valid number in "'.$input->title.'"!');
 											$formExecute = false;
 										}

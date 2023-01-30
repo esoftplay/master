@@ -34,7 +34,8 @@ class writecookie{
 
 	function set(){
 		// ini untuk ngeset cookie yg ndukung all browser
-		if (preg_match("/MSIE/", getenv("HTTP_USER_AGENT"))) {
+		if (preg_match("/MSIE/", getenv("HTTP_USER_AGENT")))
+		{
 			$time = mktime() + $this->int_expire;
 			$date = date("l, d-M-y H:i:s", $this->int_expire);
 		}	else {

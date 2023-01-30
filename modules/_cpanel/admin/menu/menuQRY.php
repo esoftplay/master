@@ -150,7 +150,7 @@ function menu_update_insert($id=0)
       {
         if ($match[1]=='content')
         {
-          if(preg_match('~mod=content\.(.*?)&id=([0-9]+)~s', $link, $m2))
+          if(!empty($link) && preg_match('~mod=content\.(.*?)&id=([0-9]+)~s', $link, $m2))
           {
             switch ($m2[1])
             {

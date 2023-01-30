@@ -87,7 +87,7 @@ class FormTextarea extends Form
 	function getAddSQL()
 	{
 		$text = $_POST[$this->name];
-		if($this->nl2br && !preg_match("#<br\s{0,}/?>#is", $text))
+		if($this->nl2br && !empty($text) && !preg_match("#<br\s{0,}/?>#is", $text))
 			$text = nl2br($text);
 		$out['into']	= '`'.$this->fieldName .'`, ';
 		$out['value']	= "'". $text ."', ";

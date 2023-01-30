@@ -102,6 +102,10 @@ class images
 
 	function getExt($img)
 	{
+		if (empty($img))
+		{
+			return '';
+		}
 		preg_match('~\.([a-z0-9]+)[^\.]{0,}$~is', $img, $match);
 		return !empty($match[1]) ? strtolower($match[1]) : '';
 	}

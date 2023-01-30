@@ -379,4 +379,3 @@ class xss {
 $xss = new xss();
 $xss->action();
 //$xss->set_unprotected('_POST', 'var_name', 'var_index_1', 'var_index_2');
-?>

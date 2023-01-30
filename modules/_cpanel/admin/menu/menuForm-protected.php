@@ -15,7 +15,8 @@ if($prefix=='edit_') // form edit menu
 	}
 	echo '<input type="hidden" name="protected_from" value="'.intval($data['protected']).'">';
 }else
-if($data['par_id'] == 0) { // form add menu for non subMenu
+if($data['par_id'] == 0)
+{ // form add menu for non subMenu
 		foreach($r_group AS $dt)
 		{
 			if(preg_match('~,all,~is', $dt['menus']))

@@ -5,7 +5,7 @@ $helpURL = '//help.fisip.net/';
 
 if (!empty($_GET['url']))
 {
-	$url = @$_GET['url'];
+	$url = $_GET['url'];
 	$type_id = 1; // Secara default yang dicari adalah type_id=1 (Admin Area)
 	require_once _ROOT.'modules/_cpanel/admin/menu/menuQRY.php';
 	$url = preg_replace('~((?:&|\?)_?return(?:=|,).*?)$~s', '', $url);

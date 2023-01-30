@@ -372,37 +372,46 @@ function user_reminder($email, $is_send = true)
 	global $db, $sys;
 	$q="SELECT * FROM bbc_account WHERE `email`='".strtolower($email)."'";
 	$acc = $db->getRow($q);
-	if(!$db->Affected_rows()) {
+	if(!$db->Affected_rows())
+	{
 		return false;
 	}else{
 		$q="SELECT * FROM bbc_user WHERE `id`=".intval($acc['user_id']);
 		$user = $db->getRow($q);
-		if(!$db->Affected_rows()) {
+		if(!$db->Affected_rows())
+		{
 			return false;
 		}else{
-			if(!$user['active']) {
+			if(!$user['active'])
+			{
 				return false;
 			}else{
 				$user['password'] = decode($user['password']);
 				$sys->module_id = $sys->get_module_id('user');
 				// SET PARAMS...
-				foreach($acc AS $id => $dt) {
-					if($id != 'params')	{
+				foreach($acc AS $id => $dt)
+				{
+					if($id != 'params')
+					{
 						$GLOBALS[$id] = $dt;
 					}
 				}
-				foreach($user AS $id => $dt) {
-					if($id != 'params')	{
+				foreach($user AS $id => $dt)
+				{
+					if($id != 'params')
+					{
 						$GLOBALS[$id] = $dt;
 					}
 				}
 				foreach((array)config_decode($acc['params']) AS $id => $dt)
 				{
-					if(!preg_match('/ /', $id))	{
+					if(!preg_match('/ /', $id))
+					{
 						$GLOBALS[strtolower($id)] = $dt;
 					}
 				}
-				if($is_send) {
+				if($is_send)
+				{
 					$sys->mail_send($acc['email'], 'password');
 					return true;
 				}else{

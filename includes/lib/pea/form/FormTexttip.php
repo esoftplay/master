@@ -62,16 +62,14 @@ class FormTexttip extends FormSqlplaintext
 	function setInputs()
 	{
 		$arrInput = array();
-		preg_match_all('~\{([a-z_]+)\}~is', $this->template, $match);
-		if (!empty($match[1]))
+		if (!empty($this->template) && preg_match_all('~\{([a-z_]+)\}~is', $this->template, $match))
 		{
 			foreach ($match[1] as $input)
 			{
 				$arrInput[] = $input;
 			}
 		}
-		preg_match_all('~\{([a-z_]+)\}~is', $this->caption, $match);
-		if (!empty($match[1]))
+		if (!empty($this->caption) && preg_match_all('~\{([a-z_]+)\}~is', $this->caption, $match))
 		{
 			foreach ($match[1] as $input)
 			{
@@ -114,8 +112,8 @@ class FormTexttip extends FormSqlplaintext
 		$out      = parent::getReportOutput($str_value);
 		$template = $this->template;
 		$caption  = $this->caption;
-		$template = str_replace('{'.$this->fieldName.'}', $out , $template);
-		$caption  = str_replace('{'.$this->fieldName.'}', $out , $caption);
+		$template = @str_replace('{'.$this->fieldName.'}', $out , $template);
+		$caption  = @str_replace('{'.$this->fieldName.'}', $out , $caption);
 		if (!empty($template))
 		{
 			foreach ($this->elements as &$element)

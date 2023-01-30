@@ -407,7 +407,7 @@ class FormMultifile extends FormMulticheckbox
 	{
 		if ($Insert_ID > 0)
 		{
-			if (file_exists($this->folder) && preg_match('~/0/?$~', $this->folder))
+			if (!empty($this->folder) && file_exists($this->folder) && preg_match('~/0/?$~', $this->folder))
 			{
 				$this->newFolder = preg_replace('~0/?$~s', $Insert_ID.'/', $this->folder);
 				if (!file_exists($this->newFolder))

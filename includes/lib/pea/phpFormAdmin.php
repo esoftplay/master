@@ -8,6 +8,7 @@ class Form
 	var $caption;
 	var $name;
 	var $fieldName;
+	var $myfield;
 	var $size;
 	var $align = 'left';
 	var $extra;
@@ -15,25 +16,27 @@ class Form
 	var $params;
 	var $actionType;
 	var $parent;
-	var $displayFunction         = null;
-	var $reportFunction          = false;
-	var $exportFunction          = false;
-	var $formName                = '';
-	var $isHeader                = false;// apakah suatu element itu merupakan header atau bukan, krn kl header, maka tr nya make background header, default false
-	var $isHidden                = false;// apakah suatu element itu sama sekali tidak ditampilkan
-	var $isInsideRow             = true; // apakah suatu element itu didalam row tr/td atau tidak, default true
-	var $isInsideCell            = true; // apakah suatu element itu didalam row td atau tidak, default true
-	var $isIncludedInSelectQuery = true; // apakah suatu element itu akan ikut didalam select query
-	var $isIncludedInUpdateQuery = true; // apakah suatu element itu akan ikut didalam update query atau insert query
-	var $isIncludedInDeleteQuery = false;// apakah getDeleteSQL($ids) akan di eksekusi sebelum baris dihapus (Roll & Edit)
-	var $isIncludedInReport      = true; // apakah suatu element itu akan ikut didalam reporting
-	var $isIncludedInSearch      = true; // apakah suatu element itu akan ikut didalam search
-	var $isInsideMultiInput      = false;// untuk menandai suatu input, apakah suatu multi input ato bukan, karena kalo multi akan mendapatkan perlakuan khusus
-	var $isMultiLanguage         = false;// apakah field ini merupakan field multi language
-	var $isPlaintext             = false;// apakah component ini bukan merupakan output form, tapi merupakan plaintext, hanya untuk view detail
-	var $isRequire               = false;// apakah component ini harus diisi oleh user ataukah tidak
-	var $isDisplayColumn         = null; // apakah kolom ingin ditampilkan (hanya berlaku untuk phpRollAdmin saja)
-	var $like                    = false;// jika untuk form search maka akan menggunakan LIKE '%$key%' atau = (sama dengan)
+	var $displayFunction            = null;
+	var $reportFunction             = false;
+	var $exportFunction             = false;
+	var $formName                   = '';
+	var $isHeader                   = false;// apakah suatu element itu merupakan header atau bukan, krn kl header, maka tr nya make background header, default false
+	var $isHidden                   = false;// apakah suatu element itu sama sekali tidak ditampilkan
+	var $isInsideRow                = true; // apakah suatu element itu didalam row tr/td atau tidak, default true
+	var $isInsideCell               = true; // apakah suatu element itu didalam row td atau tidak, default true
+	var $isIncludedInSelectQuery    = true; // apakah suatu element itu akan ikut didalam select query
+	var $tmpisIncludedInSelectQuery = true;
+	var $isIncludedInUpdateQuery    = true; // apakah suatu element itu akan ikut didalam update query atau insert query
+	var $tmpisIncludedInUpdateQuery = true;
+	var $isIncludedInDeleteQuery    = false;// apakah getDeleteSQL($ids) akan di eksekusi sebelum baris dihapus (Roll & Edit)
+	var $isIncludedInReport         = true; // apakah suatu element itu akan ikut didalam reporting
+	var $isIncludedInSearch         = true; // apakah suatu element itu akan ikut didalam search
+	var $isInsideMultiInput         = false;// untuk menandai suatu input, apakah suatu multi input ato bukan, karena kalo multi akan mendapatkan perlakuan khusus
+	var $isMultiLanguage            = false;// apakah field ini merupakan field multi language
+	var $isPlaintext                = false;// apakah component ini bukan merupakan output form, tapi merupakan plaintext, hanya untuk view detail
+	var $isRequire                  = false;// apakah component ini harus diisi oleh user ataukah tidak
+	var $isDisplayColumn            = null; // apakah kolom ingin ditampilkan (hanya berlaku untuk phpRollAdmin saja)
+	var $like                       = false;// jika untuk form search maka akan menggunakan LIKE '%$key%' atau = (sama dengan)
 	var $isLoaded;
 	var $objectName;
 	var $noColumn       = 1;		// Jika form menggunakan multi kolom maka field ini akan menentukan posisi input berada di kolom mana

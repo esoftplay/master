@@ -5,15 +5,16 @@ class indoDate{
 	var $month;
 	var $year;
 
-	function __construct($source_date, $date_type='indo'){
+	function __construct($source_date, $date_type='indo')
+	{
 		$this->bulan	= array('00' => '00', '01'=>'Januari', '02'=>'Februari', '03'=>'Maret', '04'=>'April', '05'=>'Mei', '06'=>'Juni', '07'=>'Juli', '08'=>'Agustus', '09'=>'September', '10'=>'Oktober', '11'=>'November', '12'=>'Desember');
-		if ($date_type != 'indo') {
+		if ($date_type != 'indo')
+		{
 			$pattern='/(\d{4,4})-(\d{2,2})-(\d{2,2})/';
 			preg_match($pattern, $source_date, $date_extracted);
 			$this->year		= $date_extracted[1];
 			$this->date		= $date_extracted[3];
-		}
-		else {
+		} else {
 			$pattern='/(\d{2,2})-(\d{2,2})-(\d{4,4})/';
 			preg_match($pattern, $source_date, $date_extracted);
 			$this->year		= $date_extracted[3];
@@ -84,9 +85,14 @@ class indoDate{
 </select>
 */
 
-function dropDate($option_name='', $default_date='') {
-	if ($default_date == '' || substr($default_date, 0, 10) == '0000-00-00') $default_date = date('d-m-Y');
-	if (preg_match('#([0-9]{1,2})-([0-9]{1,2})-([0-9]{4})[0-9: ]{0,}#', $default_date , $match)){
+function dropDate($option_name='', $default_date='')
+{
+	if ($default_date == '' || substr($default_date, 0, 10) == '0000-00-00')
+	{
+		$default_date = date('d-m-Y');
+	}
+	if (preg_match('#([0-9]{1,2})-([0-9]{1,2})-([0-9]{4})[0-9: ]{0,}#', $default_date , $match))
+	{
 		$dd 	= $match[1];
 		$mm 	= $match[2];
 		$yyyy	= $match[3];
@@ -283,13 +289,14 @@ class checkCookie{
 		}
 	}
 
-	function set(){
+	function set()
+	{
 		// ini untuk ngeset cookie yg ndukung all browser
-		if (preg_match('~MSIE~s', getenv('HTTP_USER_AGENT'))) {
+		if (preg_match('~MSIE~s', getenv('HTTP_USER_AGENT')))
+		{
 			$time = mktime() + $this->int_expire;
 			$date = date('l, d-M-y H:i:s', ($time));
-		}
-		else {
+		} else {
 			$date = time() + $this->int_expire;
 		}
 		$date = time() + $this->int_expire;

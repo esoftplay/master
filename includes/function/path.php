@@ -56,8 +56,18 @@ if (!function_exists('path_delete'))
 {
 	function path_delete($path)
 	{
-		if($path == _ROOT) return false;
-		elseif(!preg_match('~^'._ROOT.'~', $path)) return false;
+		if (empty($path))
+		{
+			return false;
+		}else
+		if($path == _ROOT)
+		{
+			return false;
+		}else
+		if(!preg_match('~^'._ROOT.'~', $path))
+		{
+			return false;
+		}
 		if (file_exists($path))
 		{
 			if (@is_dir($path))

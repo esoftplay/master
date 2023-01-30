@@ -126,7 +126,7 @@ foreach ($r as $p)
 	if (file_exists($path.$p.'/_switch.php'))
 	{
 		$txt = file_read($path.$p.'/_switch.php');
-		if (preg_match('~(?:\n|\r)//([^\r\n]+)~', $txt, $match))
+		if (!empty($txt) && preg_match('~(?:\n|\r)//([^\r\n]+)~', $txt, $match))
 		{
 			$r_info[$p] = $match[1];
 		}

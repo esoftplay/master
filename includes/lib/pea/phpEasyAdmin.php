@@ -39,7 +39,7 @@ class phpEasyAdmin extends oDebug
 		if (empty($str_sql_condition))
 		{
 			$str_sql_condition = 'WHERE 1';
-		}
+		}else
 		if (!preg_match('~ order by ~is', $str_sql_condition))
 		{
 			$str_sql_condition .= ' ORDER BY `'.$str_table_id.'` DESC';

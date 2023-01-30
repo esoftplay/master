@@ -4,7 +4,7 @@ include_once _ROOT.'modules/content/_function.php';
 include_once '_class.php';
 $Agenda = new agenda_class();
 $id		= @$_GET['id'];
-$r		= explode('-', $id);
+$r		= @explode('-', $id);
 $year	= isset($r[0]) ? $r[0] : 'none';
 $month= isset($r[1]) ? $r[1] : 'none';
 $date	= isset($r[2]) ? $r[2] : 'none';

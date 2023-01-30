@@ -179,7 +179,7 @@ function date_interval( $date_start, $date_end='' , $month_char = 3)
 		{
 			$date_start = date('Y-m-d', strtotime($date_start));
 		}
-		if (!preg_match('~[0-9]+\-[0-9]+\-[0-9]+~s', $date_end))
+		if (!empty($date_end) && !preg_match('~[0-9]+\-[0-9]+\-[0-9]+~s', $date_end))
 		{
 			$date_end = date('Y-m-d', strtotime($date_end));
 		}

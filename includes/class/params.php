@@ -58,7 +58,7 @@ class params
 				'help' => @lang($dt['help']),
 				'attr' => (isset($dt['attr']) && substr($dt['attr'],0,1) != ' ') ? ' '.$dt['attr'] : @$dt['attr'],
 				'language'	=> (isset($dt['language']) && $dt['language']) ? true : false,
-				'default'		=> trim(@$dt['default']),
+				'default'		=> @trim($dt['default']),
 				'mandatory' => @intval($dt['mandatory']),
 				'checked'		=> isset($dt['checked']) ? strtolower($dt['checked']) : 'any'
 				);
@@ -116,7 +116,14 @@ class params
 	}
 	function set_param_option($option)
 	{
-		if(is_string($option))	$option = trim($option);
+		if (empty($option))
+		{
+			return array();
+		}
+		if(is_string($option))
+		{
+			$option = trim($option);
+		}
 		if(is_array($option))
 		{
 			$output = $option;
@@ -484,7 +491,10 @@ class params
 			$this->table_id = @intval($this->default[$this->primary]);
 			$this->default[$this->name] = $this->db->Affected_rows() ? $this->default[$this->name] : array();
 			$this->default[$this->name] = $this->clean_newline($this->default[$this->name]);
-			$this->default[$this->name] = @json_decode($this->default[$this->name], 1);
+			if (is_string($this->default[$this->name]) && !empty($this->default[$this->name]))
+			{
+				$this->default[$this->name] = @json_decode($this->default[$this->name], 1);
+			}
 			if($this->is_encode)
 			{
 				$this->default[$this->name]	= urldecode_r($this->default[$this->name]);

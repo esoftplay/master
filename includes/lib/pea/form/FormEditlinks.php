@@ -84,7 +84,7 @@ class FormEditlinks extends Form
 		}
 		$output    = array();
 		$add_link  = $this->getName.'='.$str_value.'&return='.urlencode(seo_uri());
-		$add_extra = trim($this->extra);
+		$add_extra = !empty($this->extra) ? trim($this->extra) : '';
 		if (!empty($str_extra))
 		{
 			if (!empty($add_extra))

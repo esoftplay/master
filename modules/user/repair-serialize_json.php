@@ -26,7 +26,7 @@ foreach ($tables as $table)
 				$fields = array();
 				foreach ($data as $field => $value)
 				{
-					if (preg_match('~^[sibao]:.*?[\}\;]$~is', trim($value)))
+					if (!empty($value) && preg_match('~^[sibao]:.*?[\}\;]$~is', trim($value)))
 					{
 						$fields[$field] = json_encode(unserialize($value));
 					}

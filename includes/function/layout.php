@@ -26,7 +26,7 @@ function image($file, $sizes = '', $attr='')
 			return false;
 		}
 	}
-	if(preg_match('~\.swf$~is', $path_file))
+	if(!empty($path_file) && preg_match('~\.swf$~is', $path_file))
 	{
 		list($width, $height) = image_size($sizes);
 		$width	= $width ? $width : 200;

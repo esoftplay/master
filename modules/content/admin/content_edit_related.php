@@ -27,7 +27,7 @@ if(!empty($ids))
 			if(!empty($title))
 			{
 				$_url   = $url.$i;
-				$_url .= preg_match('~\?~s', $_url) ? '&' : '?';
+				$_url  .= preg_match('~\?~s', $_url) ? '&' : '?';
 				$j      = '<a href="'.$_url.'" title="Edit this page" onclick="document.location.href=this.href+\'return=\'+escape(document.location.href);return false;">'.$i.'</a>';
 				$ar[$j] = '<a href="'._URL.'id.htm/'.$i.'" target="external" title="Go to this page">'.$title.'</a>';
 				$is[]   = $i;

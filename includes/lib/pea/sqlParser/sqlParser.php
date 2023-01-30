@@ -107,7 +107,7 @@ function parseSQL($sql)
 			}
 			$guessTable = preg_split ( "/\s+/", $result["tableClause"], 4 );
 			$result["tableName"] = $guessTable[0];
-			if ( ! preg_match ("/CROSS|INNER|STRAIGHT_JOIN|LEFT|NATURAL|RIGHT|JOIN/", @$guessTable[1] ) )
+			if ( !empty($guessTable[1]) && !preg_match ("/CROSS|INNER|STRAIGHT_JOIN|LEFT|NATURAL|RIGHT|JOIN/", $guessTable[1] ) )
 				$result["tableAs"] = preg_match ("~as~is", @$guessTable[1] ) ? @$guessTable[2] : @$guessTable[1];
 
 			// generate SELECT CLAUSE

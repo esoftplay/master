@@ -11,17 +11,25 @@ class getDirectory
 	}
 	function setpath($path)
 	{
-		if(!empty($path)) {
-			if(preg_match('#^'.addslashes($this->root).'#is', $path)){
+		if(!empty($path))
+		{
+			if(preg_match('#^'.addslashes($this->root).'#is', $path))
+			{
 				$path = preg_replace('#^'.addslashes($this->root).'#is', '', $path);
 			}
-			if(preg_match('#^'.addslashes($this->url).'#is', $path)){
+			if(preg_match('#^'.addslashes($this->url).'#is', $path))
+			{
 				$path = preg_replace('#^'.addslashes(_URL).'#is', '', $path);
 			}
 		}
-		if(!empty($path)) {
-			if(substr($path, 0, 1)=='/') $path = substr($path, 1);
-			if(substr($path, -1)!='/'){
+		if(!empty($path))
+		{
+			if(substr($path, 0, 1)=='/')
+			{
+				$path = substr($path, 1);
+			}
+			if(substr($path, -1)!='/')
+			{
 				$path .= '/';
 			}
 		}
@@ -31,16 +39,23 @@ class getDirectory
 	{
 		$output = array();
 		$readDir = $this->root.$this->mainDir.$thisDir;
-		if ($dir = @opendir($readDir)) {
-			while (($data = readdir($dir)) !== false) {
-				if($data != '.' and $data != '..'){
+		if ($dir = @opendir($readDir))
+		{
+			while (($data = readdir($dir)) !== false)
+			{
+				if($data != '.' and $data != '..')
+				{
 					$output[] = $data;
 				}
 			}
 			closedir($dir);
 		}
-		if(strtolower($order) == 'desc')		rsort($output);
-		else		sort($output);
+		if(strtolower($order) == 'desc')
+		{
+			rsort($output);
+		}else{
+			sort($output);
+		}
 		reset($output);
 		return $output;
 	}

@@ -146,7 +146,7 @@ class FormDate extends Form
 		$extra	= $this->extra .' '.$str_extra;
 		$str_value = str_replace(strrchr($str_value, ' '), '', $str_value);
 		$def_value = !empty($str_value) ? $str_value : '';
-		$this->params['format'] = preg_match('~\-~s', $str_value) ? 'yyyy-mm-dd' : 'dd/mm/yyyy';
+		$this->params['format'] = (!empty($str_value) && preg_match('~\-~s', $str_value)) ? 'yyyy-mm-dd' : 'dd/mm/yyyy';
 		$out = '<input type="date" name="'.$name.'" value="'.$def_value.'"'.$this->getParam().$extra.' />';
 		return $out;
 	}

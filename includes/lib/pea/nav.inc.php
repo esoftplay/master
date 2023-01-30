@@ -43,7 +43,7 @@ class oNav extends oDebug
 	var $arr_result;
 	var $int_pointer;
 	var $is_loaded;				// untuk menandai apakah suatu action telah di jalankan
-	var $a;
+	var $sqlCondition;
 
 	function __construct($string_query, $string_table_id='id', $int_max_rows=10, $int_num_nav='10', $string_name='page', $db='')
 	{

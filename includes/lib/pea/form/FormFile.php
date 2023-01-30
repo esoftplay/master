@@ -53,7 +53,7 @@ class FormFile extends Form
 	{
 		if(empty($str_folder_url))
 		{
-			if(preg_match("#^"._ROOT."#is", $str_folder))
+			if(!empty($str_folder) && preg_match("#^"._ROOT."#is", $str_folder))
 			{
 				$str_folder_url = _URL.preg_replace("#^"._ROOT."#", '', $str_folder);
 			}else{

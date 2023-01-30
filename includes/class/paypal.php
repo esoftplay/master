@@ -43,15 +43,21 @@ class Paypal
 	function getAccountData($data)
 	{
 		$out = new stdClass;
-		$out->first_name= preg_match('/ /', $data['name']) ? trim(substr($data['name'], 0, strpos($data['name'], ' '))) : trim($data['name']);
-		$out->last_name	= trim(strrchr($data['name'], ' '));
-		$out->address1	= '';	//	$data['order_address'];
-		$out->city			= '';	//	$data[''];
-		$out->state			= '';	//	$data[''];
-		$out->zip				= '';	//	$data['order_zip'];
-		$out->email			= '';	//	$data['order_email'];
-		$this->total		= $data['total'];
-		$this->clients	= $out;
+		if (!empty($data['name']))
+		{
+			$out->first_name = preg_match('/ /', $data['name']) ? trim(substr($data['name'], 0, strpos($data['name'], ' '))) : trim($data['name']);
+			$out->last_name  = trim(strrchr($data['name'], ' '));
+		}else{
+			$out->first_name = '';
+			$out->last_name  = '';
+		}
+		$out->address1 = '';	//	$data['order_address'];
+		$out->city     = '';	//	$data[''];
+		$out->state    = '';	//	$data[''];
+		$out->zip      = '';	//	$data['order_zip'];
+		$out->email    = '';	//	$data['order_email'];
+		$this->total   = $data['total'];
+		$this->clients = $out;
 	}
 	function getAccountPaypal($params)
 	{

@@ -65,12 +65,14 @@ function questionary_option($opti, $c)
 	$r = explode('<br />', $opti);
 	foreach($r AS $d)
 	{
-		preg_match('~^([0-9]+)~is', $d, $m);
-		if(isset($m[1]) && isset($dt[$m[1]]))
+		if (!empty($d) && preg_match('~^([0-9]+)~is', $d, $m))
 		{
-			$dt[$m[1]]++;
-		}else{
-			$dt[$m[1]] = 0;
+			if(isset($dt[$m[1]]))
+			{
+				$dt[$m[1]]++;
+			}else{
+				$dt[$m[1]] = 0;
+			}
 		}
 	}
 }

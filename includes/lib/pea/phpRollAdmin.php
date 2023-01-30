@@ -385,7 +385,7 @@ class phpRollAdmin extends phpEasyAdminLib
 			$file  = $_cache.implode('/', str_split($file, 2)).'.cfg';
 			$name  = substr(str_replace('/', '', preg_replace('~^'.preg_quote($_cache, '~').'~s', '', $file)), 0, -4);
 			$title = !empty($this->input->header->title) ? strip_tags($this->input->header->title) : 'Report';
-			if (preg_match('~([a-z0-9_]+)~is', $this->table, $m) && empty($this->input->header->title))
+			if (!empty($this->table) && preg_match('~([a-z0-9_]+)~is', $this->table, $m) && empty($this->input->header->title))
 			{
 				$title .= ' '.$m[1];
 			}
@@ -631,7 +631,7 @@ class phpRollAdmin extends phpEasyAdminLib
 					{
 						$out	.= $tmp.'</td>';
 					}else{
-						if (preg_match('~hidden~is', $tmp))
+						if (!empty($tmp) && preg_match('~hidden~is', $tmp))
 						{
 							$out .= $tmp;
 						}else{
@@ -1038,13 +1038,13 @@ class phpRollAdmin extends phpEasyAdminLib
 											}
 											break;
 										case 'money':
-											if (!preg_match('~^[0-9]+(?:\.[0-9]+)?$~s', $text)) {
+											if (!empty($text) && !preg_match('~^[0-9]+(?:\.[0-9]+)?$~s', $text)) {
 												$this->setFailSaveMessage('Please enter a valid money format in "'.$i_row.'"!');
 												$formExecute = false;
 											}
 											break;
 										case 'number':
-											if (!preg_match('~^[0-9]+$~s', $text)) {
+											if (!empty($text) && !preg_match('~^[0-9]+$~s', $text)) {
 												$this->setFailSaveMessage('Please enter a valid number in "'.$i_row.'"!');
 												$formExecute = false;
 											}

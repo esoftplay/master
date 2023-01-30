@@ -3,7 +3,7 @@
 class bbcconfig
 {
 	var $table = 'bbc_config';
-	var $config, $config_id, $db, $default, $init, $module_id, $name, $table, $title;
+	var $config, $config_id, $db, $default, $init, $module_id, $name, $title;
 	function __construct($config = '', $name = '', $module_id = '', $title = 'Parameters')
 	{
 		global $db;

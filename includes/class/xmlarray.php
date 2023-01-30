@@ -18,11 +18,14 @@ class xmlArray
 	}
 	function setpath($path)
 	{
-		if(!empty($path)){
-			if(preg_match('#^'.addslashes($this->baseroot).'#is', $path)){
+		if(!empty($path))
+		{
+			if(preg_match('#^'.addslashes($this->baseroot).'#is', $path))
+			{
 				$path = str_replace($this->baseroot, '', $path);
 			}
-			if(preg_match('#^'.addslashes($this->baseurl).'#is', $path)){
+			if(preg_match('#^'.addslashes($this->baseurl).'#is', $path))
+			{
 				$path = str_replace($this->baseurl, '', $path);
 			}
 		}
@@ -30,7 +33,8 @@ class xmlArray
 		if(!empty($this->path))
 		{
 			$this->path = (substr($this->path, 0, 1)=='/') ? substr($this->path, 1) : $this->path;
-			if(substr($this->path, -1)!='/'){
+			if(substr($this->path, -1)!='/')
+			{
 				$this->path .= '/';
 			}
 		}
@@ -41,14 +45,17 @@ class xmlArray
 	{
 		$file = $id.'.xml';
 		$output = array();
-		if(is_file($this->root.$file)){
+		if(is_file($this->root.$file))
+		{
 			$xml	= $this->xmlGrab($file);
 			$out	= $this->xml2array($xml);
-			if($where == '*'){
+			if($where == '*')
+			{
 				$output = $out;
 			}else{
 				$fields = explode(',', $where);
-				foreach($fields AS $field){
+				foreach($fields AS $field)
+				{
 					$id = trim($field);
 					$output[$id] = $out[$id];
 				}
@@ -60,7 +67,8 @@ class xmlArray
 	{
 		$output = '';
 		$_file = $this->root.$file;
-		if(is_file($_file)){
+		if(is_file($_file))
+		{
 			$_f = fopen($_file, 'r+');
 			$output = fread($_f,filesize($_file));
 			fclose($_f);
@@ -75,15 +83,20 @@ class xmlArray
 	}
 	function arrayparsing($arr)
 	{
-		if(is_array($arr['_c']) && count($arr['_c']) > 0){
+		if(is_array($arr['_c']) && count($arr['_c']) > 0)
+		{
 			$output = array();
-			foreach($arr['_c'] AS $id => $dt){
-				if($id == 'itemXML'){
-					foreach($dt AS $data){
+			foreach($arr['_c'] AS $id => $dt)
+			{
+				if($id == 'itemXML')
+				{
+					foreach($dt AS $data)
+					{
 						$output[] = $this->arrayparsing($data);
 					}
 				}else{
-					if(is_array($dt['_c']) && count($dt['_c']) > 0){
+					if(is_array($dt['_c']) && count($dt['_c']) > 0)
+					{
 						$output[$id] = $this->arrayparsing($dt);
 					}else{
 						$output[$id] = $this->unhtmlentities($dt['_v']);
@@ -136,7 +149,8 @@ class xmlArray
 		if(is_array($arr) AND count($arr) > 0)
 		{
 			$xml	= '<'.$this->tag.'>';
-			if(!empty($name)){
+			if(!empty($name))
+			{
 				$id = $name;
 			}else{
 				$id		= $this->Last_ID($this->path)+1;
@@ -154,7 +168,8 @@ class xmlArray
 	{
 		$tmp = $this->xmlfetch($file_id);
 		$new = array();
-		foreach($tmp AS $id => $dt){
+		foreach($tmp AS $id => $dt)
+		{
 			if(isset($data[$id]))	$new[$id] = $data[$id];
 			else $new[$id] = $dt;
 		}
@@ -164,16 +179,21 @@ class xmlArray
 	function xmlDelete($file)
 	{
 		$out = 0;
-		if(!empty($file)){
-			if(is_array($file)){
-				foreach($file AS $dt){
-					if(is_file($this->path.$dt)){
+		if(!empty($file))
+		{
+			if(is_array($file))
+			{
+				foreach($file AS $dt)
+				{
+					if(is_file($this->path.$dt))
+					{
 						$bool = unlink($this->path.$dt);
 						$out += $bool ? 1 : 0;
 					}
 				}
 			}else{
-				if(is_file($this->path.$file)){
+				if(is_file($this->path.$file))
+				{
 					$bool = unlink($this->path.$file);
 					$out += $bool ? 1 : 0;
 				}
@@ -191,21 +211,27 @@ class xmlArray
 	{
 		$this->output = '';
 		$output = '';
-		if(is_array($arr)){
+		if(is_array($arr))
+		{
 			$id0 = 0;
-			foreach($arr AS $id => $data){
-				if(is_int($id)){
-					if($id=='0'){
+			foreach($arr AS $id => $data)
+			{
+				if(is_int($id))
+				{
+					if($id=='0')
+					{
 						$key = 'itemXML';
 						$id0 = $id;
-					}elseif($id0==($id-1)){
+					}elseif($id0==($id-1))
+					{
 						$key = 'itemXML';
 						$id0 = $id;
 					}
 				}else{
 					$key = $id;
 				}
-				if(is_array($data)){
+				if(is_array($data))
+				{
 					$output .= '<'.$key.'>'.$this->array2xml($data).'</'.$key.'>';
 				}else{
 					$output .= '<'.$key.'>'.htmlentities($data).'</'.$key.'>';
@@ -227,20 +253,23 @@ class xmlArray
 		$path = !empty($path) ? $path : $this->path;
 		$d = new getDirectory($path, $this->baseroot);
 		$r = $d->dirList();
-		foreach($r AS $file) {
-			if(preg_match('/\.xml/i', $file)) {
+		foreach($r AS $file)
+		{
+			if(preg_match('/\.xml/i', $file))
+			{
 				$i = str_replace('.xml', '', $file);
 				$i = intval($i);
-				if($i > $output) {
+				if($i > $output)
+				{
 					$output = $i;
 				}
 			}
 		}
 		return $output;
 	}
-	function ins2ary(&$ary, $element, $pos) {
+	function ins2ary(&$ary, $element, $pos)
+	{
 		$ar1=array_slice($ary, 0, $pos); $ar1[]=$element;
 		$ary=array_merge($ar1, array_slice($ary, $pos));
 	}
 }
-?>

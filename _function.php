@@ -182,19 +182,19 @@ function tpl($file, $default_file='')
 function is_url($text)
 {
 	$regex		= '/^((?:ht|f)tps?:\/\/)(?:[a-z0-9\-]+\.[a-z0-9\-\.]+|localhost)\/?/is';
-	$output = (preg_match($regex, (string)$text)) ? true : false;
+	$output = (!empty($text) && preg_match($regex, (string)$text)) ? true : false;
 	return $output;
 }
 function is_email($text)
 {
 	$regex	= '/^[a-z0-9\_\.]+@(?:[a-z0-9\-\.]){1,66}\.(?:[a-z]){2,6}$/is';
-	$output = (preg_match($regex, (string)$text)) ? true : false;
+	$output = (!empty($text) && preg_match($regex, (string)$text)) ? true : false;
 	return $output;
 }
 function is_phone($text)
 {
 	$regex	= '/^\+?([0-9]+[\s\.\-]?(?:[0-9\s\.\-]+)?){5,}$/is';
-	$output = (preg_match($regex, (string)$text)) ? true : false;
+	$output = (!empty($text) && preg_match($regex, (string)$text)) ? true : false;
 	return $output;
 }
 function get_account_id($code = 'none')
@@ -203,7 +203,7 @@ function get_account_id($code = 'none')
 	if(is_numeric($code) and $code > 0) $sql = "user_id=$code";
 	elseif($code != 'none') $sql = "username='$code'";
 	else $sql = "user_id=$user->id";
-	$q = "SELECT id FROM bbc_account WHERE $sql";
+	$q = "SELECT `id` FROM `bbc_account` WHERE $sql";
 	$output = intval($db->getOne($q));
 	return $output;
 }
@@ -276,8 +276,10 @@ function paramImplode($arr = array())
 	if(is_array($arr) and !empty($arr))
 	{
 		$r = array();
-		foreach($arr AS $var => $val){
-			if(is_array($val)){
+		foreach($arr AS $var => $val)
+		{
+			if(is_array($val))
+			{
 				$val = urlencode(urlencode(paramImplode($val)));
 			}else{
 				$val = urlencode($val);
@@ -294,10 +296,12 @@ function paramExplode($txt = '')
 	if(!empty($txt))
 	{
 		$arr = explode('&', $txt);
-		foreach($arr AS $data){
+		foreach($arr AS $data)
+		{
 			$var = substr($data, 0, strpos($data, '='));
 			$val = urldecode(substr(strchr($data, '='), 1));
-			if(preg_match("/\=/", urldecode(str_replace('=', '', $val)))){
+			if(preg_match("/\=/", urldecode(str_replace('=', '', $val))))
+			{
 				$val = paramExplode(urldecode($val));
 			}
 			$output[$var] = $val;
@@ -388,41 +392,54 @@ function fixValue($value = 0)
 }
 function addslashes_r($vars)
 {
-	$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : addslashes($vars);
+	if (!empty($vars))
+	{
+		$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : addslashes($vars);
+	}
 	return $vars;
 }
 function stripslashes_r($vars)
 {
-	$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : stripslashes($vars);
+	if (!empty($vars))
+	{
+		$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : stripslashes($vars);
+	}
 	return $vars;
 }
 function urlencode_r($vars)
 {
-	$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : urlencode($vars);
+	if (!empty($vars))
+	{
+		$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : urlencode($vars);
+	}
 	return $vars;
 }
 function urldecode_r($vars)
 {
-	$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : urldecode($vars);
+	if (!empty($vars))
+	{
+		$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : urldecode($vars);
+	}
 	return $vars;
 }
 function htmlentities_r($vars)
 {
-	$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : htmlentities($vars);
+	if (!empty($vars))
+	{
+		$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : htmlentities($vars);
+	}
 	return $vars;
 }
 function unhtmlentities($cadena)
 {
-	return html_entity_decode($cadena);
-  $cadena = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $cadena);
-  $cadena = preg_replace('~&#([0-9]+);~e', 'chr(\\1)', $cadena);
-  $trans_tbl = get_html_translation_table(HTML_ENTITIES);
-  $trans_tbl = array_flip($trans_tbl);
-  return strtr($cadena, $trans_tbl);
+	return @html_entity_decode($cadena);
 }
 function unhtmlentities_r($vars)
 {
-	$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : unhtmlentities($vars);
+	if (!empty($vars))
+	{
+		$vars = is_array($vars) ? array_map(__FUNCTION__, $vars) : unhtmlentities($vars);
+	}
 	return $vars;
 }
 function justify_text($txt, $txt2, $spaces, $add = ' ')

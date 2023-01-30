@@ -64,7 +64,8 @@ class currency
 		);
 		$this->_db->debug = $debug;
 		$content = $this->curl_action($data, $debug);
-		if (!empty($content)){
+		if (!empty($content))
+		{
 			$regex = "/<tr class=\"row\d{1,2}\" valign=\"top\"><td align=\"left\">(.*?)<\/td><td align=\"left\">(.*?)<\/td><td align=\"right\">(.*?)<\/td><td align =\"right\">(.*?)<\/td><\/tr>/is";
 			preg_match_all($regex, $content, $match);
 			$output = array(

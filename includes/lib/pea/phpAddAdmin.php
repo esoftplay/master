@@ -305,33 +305,39 @@ class phpAddAdmin extends phpEasyAdminLib
 									$formExecute = false;
 								}
 							}else{
-								switch ($req[0]) {
+								switch ($req[0])
+								{
 									case 'email':
-										if (!is_email($text)) {
+										if (!is_email($text))
+										{
 											$this->setFailSaveMessage('Please enter a valid email address in "'.$input->title.'"!');
 											$formExecute = false;
 										}
 										break;
 									case 'url':
-										if (!is_url($text)) {
+										if (!is_url($text))
+										{
 											$this->setFailSaveMessage('Please enter a valid URL in "'.$input->title.'"!');
 											$formExecute = false;
 										}
 										break;
 									case 'phone':
-										if (!is_phone($text)) {
+										if (!is_phone($text))
+										{
 											$this->setFailSaveMessage('Please enter a valid phone number in "'.$input->title.'"!');
 											$formExecute = false;
 										}
 										break;
 									case 'money':
-										if (!preg_match('~^[0-9]+(?:\.[0-9]+)?$~s', $text)) {
+										if (!preg_match('~^[0-9]+(?:\.[0-9]+)?$~s', $text))
+										{
 											$this->setFailSaveMessage('Please enter a valid money format in "'.$input->title.'"!');
 											$formExecute = false;
 										}
 										break;
 									case 'number':
-										if (!preg_match('~^[0-9]+$~s', $text)) {
+										if (!preg_match('~^[0-9]+$~s', $text))
+										{
 											$this->setFailSaveMessage('Please enter a valid number in "'.$input->title.'"!');
 											$formExecute = false;
 										}

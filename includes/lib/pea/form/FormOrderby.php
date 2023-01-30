@@ -52,7 +52,7 @@ class FormOrderby extends Form
 
 	function setAddCondition($sql_where = '')
 	{
-		if (!preg_match('~^\s{0,}where ~is', $sql_where))
+		if (!empty($sql_where) && !preg_match('~^\s{0,}where ~is', $sql_where))
 		{
 			$sql_where = 'WHERE '.$sql_where;
 		}
