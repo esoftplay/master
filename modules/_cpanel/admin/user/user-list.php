@@ -5,20 +5,25 @@ if(!empty($keyword))
 	$arr = array();
 	if(isset($keyword['keyword'])){
 		$q = "SELECT user_id FROM bbc_account WHERE MATCH ( `username`, `name`, `email`, `params` )
-					AGAINST ('".$keyword['keyword']."' IN BOOLEAN MODE)";
+					AGAINST ('\"".$keyword['keyword']."\"' IN BOOLEAN MODE) LIMIT 0, 31";
 		$ids = array_merge(array(0), $db->getCol($q));
-		$arr[] = "(LOWER(username) LIKE '%".strtolower($keyword['keyword'])."%' OR id IN (".implode(',', $ids)."))";
+		if (count($ids) > 30)
+		{
+			$arr[] = "LOWER(username) LIKE '%".strtolower($keyword['keyword'])."%'";
+		}else{
+			$arr[] = "(LOWER(username) LIKE '%\"".strtolower($keyword['keyword'])."\"%' OR id IN (".implode(',', $ids)."))";
+		}
 	}
 	if(isset($keyword['group_id'])){
 		$arr[] = "group_ids LIKE '%,".$keyword['group_id'].",%'";
 	}
-	if(count($arr) > 0)	$add_sql = "WHERE ".implode(" AND ", $arr);
+	if(count($arr) > 0)	$add_sql = 'WHERE '.implode(' AND ', $arr);
 	else $add_sql = '';
 }else{
-	$add_sql = '';
+	$add_sql = 'WHERE 1 ORDER BY id DESC';
 }
-$form = _lib('pea',  $str_table = "bbc_user" );
-$form->initRoll( $add_sql, 'id' );
+$form = _lib('pea',  'bbc_user' );
+$form->initRoll( $add_sql );
 
 $form->roll->setDeleteTool(config('rules', 'disable_user_del') ? false : true);
 
