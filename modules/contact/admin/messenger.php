@@ -2,7 +2,7 @@
 
 $conf = get_config('contact', 'widget');
 $tabs = array('Messenger' => '', 'Insert New' => '');
-$sql = ($id > 0) ? 'WHERE id='.$id : '';
+$sql = (intval($id) > 0) ? 'WHERE id='.intval($id) : '';
 
 $form = _lib('pea', 'contact_messenger');
 $form->initEdit($sql);
@@ -24,7 +24,7 @@ $form->edit->input->code->setSize(3, 40);
 $form->edit->input->code->setNl2br(false);
 $form->edit->input->code->addTip('Please insert your pingbox code, if you wish to use pingbox for your customer support with Yahoo Messenger\'s pingbox. Please visit http://messenger.yahoo.com/pingbox/ to get your pingbox code');
 
-$q = "SELECT COUNT(1) FROM contact_messenger";
+$q = "SELECT COUNT(1) FROM `contact_messenger` WHERE 1";
 $d = isset($_POST['add_publish']) ? 2 : 1;
 $form->edit->addInput('orderby', 'hidden');
 $form->edit->input->orderby->setTitle('Orderby');

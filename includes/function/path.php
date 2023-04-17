@@ -72,7 +72,7 @@ if (!function_exists('path_delete'))
 		{
 			if (@is_dir($path))
 			{
-				if (function_exists('shell_exec'))
+				if (function_exists('shell_exec') && `which rm`)
 				{
 					shell_exec('rm -rf \''.$path.'\' ');
 				}else{

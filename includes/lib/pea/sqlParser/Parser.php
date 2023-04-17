@@ -99,7 +99,7 @@ class SQL_Parser
         $end = 0;
         if ($this->lexer->string != '') {
             while (($this->lexer->lineBegin+$end < $this->lexer->stringLen)
-               && ($this->lexer->string{$this->lexer->lineBegin+$end} != "\n")){
+               && ($this->lexer->string[$this->lexer->lineBegin+$end] != "\n")){
                 ++$end;
             }
         }

@@ -44,7 +44,7 @@ function phpReportRead($file = '', $method = 'r')
 	switch ($reportType)
 	{
 		case 'excel':
-			$name .= '.xls';
+			$name .= '.xlsx';
 			break;
 		case 'html':
 			$name .= '.html';
