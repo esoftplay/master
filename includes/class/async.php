@@ -63,7 +63,7 @@ if (!class_exists('async'))
 				{
 					$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_async` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `function` varchar(255) DEFAULT '', `arguments` text, `created` datetime DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 				}
-				$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".json_encode($params)."', `created`=NOW()");
+				$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".urlencode(json_encode($params))."', `created`=NOW()");
 				$this->task_ids[] = array($object, $db->Insert_ID());
 				$this->tasks++;
 			}else{
@@ -162,7 +162,7 @@ if (!defined('_VALID_BBC'))
 		if (!empty($inputs))
 		{
 			define('_AsYnCtAsK', count($inputs));
-			if (_AsYnCtAsK > 4)
+			if (_AsYnCtAsK >= 4)
 			{
 				define('_VALID_BBC', 1);
 				$_SERVER    = $inputs[0];
@@ -184,7 +184,7 @@ if (!defined('_VALID_BBC'))
 					require_once $_AsYnCtAsK['_ROOT'].'config.php';
 					include_once _ROOT.'includes/includes.php';
 					$arguments = $db->getOne("SELECT `arguments` FROM `bbc_async` WHERE `id`=".$_AsYnCtAsK['_ID']);
-					$_AsYnCtAsK['_VAR'] = json_decode($arguments, 1);
+					$_AsYnCtAsK['_VAR'] = json_decode(urldecode($arguments), 1);
 					try {
 						if (is_array($_AsYnCtAsK['_OBJ']))
 						{
