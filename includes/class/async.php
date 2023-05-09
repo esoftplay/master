@@ -99,7 +99,7 @@ if (!class_exists('async'))
 			if (!empty($sync))
 			{
 				$object = json_decode($sync['function'], 1);
-				$params = json_decode($sync['arguments'], 1);
+				$params = json_decode(urldecode($sync['arguments']), 1);
 				if ($this->isExists)
 				{
 					$this->task_ids[] = array($object, $async_id);
