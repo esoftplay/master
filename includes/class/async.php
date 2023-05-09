@@ -42,8 +42,7 @@ if (!class_exists('async'))
 									_ROOT,
 									_ADMIN,
 									$dt[0],	# $object
-									$dt[1],	# $insert_ID
-									$dt[2]	# $params
+									$dt[1]	# $insert_ID
 									)));
 				}
 				file_put_contents('/opt/async.log', implode("\n", $task)."\n", FILE_APPEND);
@@ -65,7 +64,7 @@ if (!class_exists('async'))
 					$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_async` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `function` varchar(255) DEFAULT '', `arguments` text, `created` datetime DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 				}
 				$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".json_encode($params)."', `created`=NOW()");
-				$this->task_ids[] = array($object, $db->Insert_ID(), $params);
+				$this->task_ids[] = array($object, $db->Insert_ID());
 				$this->tasks++;
 			}else{
 				if (is_array($object))
@@ -103,7 +102,7 @@ if (!class_exists('async'))
 				$params = json_decode($sync['arguments'], 1);
 				if ($this->isExists)
 				{
-					$this->task_ids[] = array($object, $async_id, $params);
+					$this->task_ids[] = array($object, $async_id);
 					$this->tasks++;
 				}else{
 					$db->Execute("DELETE FROM `bbc_async` WHERE `id`=".$async_id);
@@ -139,40 +138,19 @@ if (!class_exists('async'))
 		}
 		public function status()
 		{
-			$status = array();
-			try {
-				$handle = fsockopen($this->host, $this->port, $errorNumber, $errorString, 30);
-				if($handle!=null)
+			$exec = '/tmp/async.socket';
+			if (file_exists($exec))
+			{
+				if (function_exists('shell_exec'))
 				{
-					fwrite($handle,"status\n");
-					while (!feof($handle))
-					{
-						$line = fgets($handle, 4096);
-						if( $line==".\n")
-						{
-							break;
-						}
-						if (empty($status['operations']))
-						{
-							$status['operations'] = array();
-						}
-						if( preg_match("~^(.*)[ \t](\d+)[ \t](\d+)[ \t](\d+)~",$line,$matches) )
-						{
-							$function = $matches[1];
-							$status['operations'][$function] = array(
-								'function'         => $function,
-								'total'            => $matches[2],
-								'running'          => $matches[3],
-								'connectedWorkers' => $matches[4],
-							);
-						}
-					}
-					fclose($handle);
+					$out = shell_exec('echo -n "ACTIVE async: $(wc -l < /opt/async.log) - $(wc -l < /tmp/async.log)"');
+				}else{
+					$out = 'exec is not available';
 				}
-			} catch (Exception $e) {
-				// print_r($e);
+			}else{
+				$out = 'not supported';
 			}
-			return $status;
+			return $out;
 		}
 	}
 }
@@ -184,7 +162,7 @@ if (!defined('_VALID_BBC'))
 		if (!empty($inputs))
 		{
 			define('_AsYnCtAsK', count($inputs));
-			if (_AsYnCtAsK > 5)
+			if (_AsYnCtAsK > 4)
 			{
 				define('_VALID_BBC', 1);
 				$_SERVER    = $inputs[0];
@@ -193,7 +171,7 @@ if (!defined('_VALID_BBC'))
 					'_ADMIN' => $inputs[2],
 					'_OBJ'   => $inputs[3],
 					'_ID'    => $inputs[4],
-					'_VAR'   => $inputs[5]
+					'_VAR'   => ''
 					);
 				define('_ADMIN', $_AsYnCtAsK['_ADMIN']);
 				define('bbcAuth', !empty($_AsYnCtAsK['_ADMIN']) ? 'bbcAuthAdmin' : 'bbcAuthUser');
@@ -205,6 +183,8 @@ if (!defined('_VALID_BBC'))
 					$Bbc->no_log = 1;
 					require_once $_AsYnCtAsK['_ROOT'].'config.php';
 					include_once _ROOT.'includes/includes.php';
+					$arguments = $db->getOne("SELECT `arguments` FROM `bbc_async` WHERE `id`=".$_AsYnCtAsK['_ID']);
+					$_AsYnCtAsK['_VAR'] = json_decode($arguments, 1);
 					try {
 						if (is_array($_AsYnCtAsK['_OBJ']))
 						{
