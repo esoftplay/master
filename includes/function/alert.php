@@ -255,10 +255,10 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 	$ids      = array();
 	$out      = false;
 	$group_id = 0;
-	// Jika 0 maka akan dikirim ke semua user
+	// Jika 0 maka tidak akan dikirim
 	if ($to == 0)
 	{
-		$ids[] = $to;
+		return false;
 	}else
 	// Jika berupa angka maka akan terkirim ke user_id tersebut (gak perduli di group apapun)
 	if (is_numeric($to))
@@ -272,9 +272,14 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 	}else
 	// Jika formatnya user_id-group_id maka akan dikirimkan ke user_id tersebut khusus untuk group tersebut
 	// contoh kasus user tersebut register sebagai driver sekaligus sebagai penumpang (sedangkan aplikasi driver & penumpang beda app)
-	if (preg_match('~^[0-9]+\-[0-9]+$~is', $to))
+	if (preg_match('~^([0-9]+)\-([0-9]+)$~is', $to, $m))
 	{
-		$ids[] = $to;
+		if ($m[1] == 0)
+		{
+			return false;
+		}else{
+			$ids[] = $to;
+		}
 	}else
 	// Jika tujuan dalam format string
 	if (!empty($to) && is_string($to))
@@ -380,13 +385,18 @@ function alert_push_send($id, $last_id=0)
 			$tos     = array();
 			$last_id = intval($last_id);
 			$add_sql = !empty($data['group_id']) ? ' AND `group_ids` LIKE \'%,'.$data['group_id'].',%\'' : '';
-			if (empty($data['user_id']))
+			if (!empty($data['user_id']))
 			{
-				$sql = "`id` > {$last_id}{$add_sql}"; // digunakan untuk pencarian device selanjutnya jika device per user lebih dari 100
-				$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
+				if ($data['user_id'] == -1) // Jika ini broadcast message
+				{
+					$sql = "`id` > {$last_id}{$add_sql}"; // digunakan untuk pencarian device selanjutnya jika device per user lebih dari 100
+					$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
+				}else{
+					$sql = "`user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql}";
+					$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
+				}
 			}else{
-				$sql = "`user_id`={$data['user_id']} AND `id` > {$last_id}{$add_sql}";
-				$tos = $db->getAll("SELECT * FROM `bbc_user_push` WHERE {$sql} ORDER BY `id` ASC LIMIT {$limit}");
+				return false;
 			}
 			if (!empty($tos))
 			{
@@ -395,30 +405,26 @@ function alert_push_send($id, $last_id=0)
 				$messages  = array();
 				foreach ($tos as $to)
 				{
-					// $group_ids = repairExplode($to['group_ids']);
-					// foreach ($group_ids as $g_id)
-					// {
-						$tmp_title         = preg_replace('~^#[A-Za-z]+\s{0,}~is', '', $data['title']);
-						$messages[$to['id']][] = array(
-							'id'        => $to['id'],
-							'to'        => $to['token'],
-							'title'     => $tmp_title,
-							'body'      => $data['message'],
-							'sound'     => 'default',
-							'badge'     => $unread,
-							'channelId' => 'android',
-							'data'      => array(
-															'id'      => $data['id'],
-															'action'  => $params['action'],
-															'module'  => $params['module'],
-															'title'   => $tmp_title,
-															'message' => $data['message'],
-															'params'  => $params['arguments']
-														)
-							);
-					// }
-					$last_id = $to['id'];
+					$tmp_title         = preg_replace('~^#[A-Za-z]+\s{0,}~is', '', $data['title']);
+					$messages[$to['id']][] = array(
+						'id'        => $to['id'],
+						'to'        => $to['token'],
+						'title'     => $tmp_title,
+						'body'      => $data['message'],
+						'sound'     => 'default',
+						'badge'     => $unread,
+						'channelId' => 'android',
+						'data'      => array(
+														'id'      => $data['id'],
+														'action'  => $params['action'],
+														'module'  => $params['module'],
+														'title'   => $tmp_title,
+														'message' => $data['message'],
+														'params'  => $params['arguments']
+													)
+						);
 				}
+				$last_id = $to['id'];
 
 				$r_ch = array();
 				foreach ($messages as $to_id => $message)

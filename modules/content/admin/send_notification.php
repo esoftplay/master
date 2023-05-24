@@ -22,7 +22,7 @@ if (empty($exist))
 			// // news about new content
 			if ($_POST['type_id'] == 1)
 			{
-				$out = alert_push(0,
+				$out = alert_push(-1,
 					$_POST['title'],
 					$_POST['message'],
 					'content/detail',
@@ -32,7 +32,7 @@ if (empty($exist))
 					);
 			}else{
 				// alert modal
-				$out = alert_push(0,
+				$out = alert_push(-1,
 					$_POST['title'],
 					$_POST['message'],
 					'content',
