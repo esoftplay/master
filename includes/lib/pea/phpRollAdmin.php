@@ -367,72 +367,48 @@ class phpRollAdmin extends phpEasyAdminLib
 		if ($this->isReportOn)
 		{
 			$export_all = !empty($_GET[$this->formName.'_export_all']);
-			$_cache     = _ROOT.'images/tmp/';
-			$purge_day  = date('Y/m/d', strtotime('-2 DAYS'));
-			if (file_exists($_cache.$purge_day))
-			{
-				_func('path', 'delete', $_cache.$purge_day);
-			}
-			$_cache .= date('Y/m/d/');
-
 
 
 			$out  .= '<span class="input-group-addon checkbox roll-export">';
 			$out  .= 'Export: ';
-			$link  = _PEA_URL . 'report/phpReportGenerator.php?formName='. $this->formName .'&formType=roll&reportType=';
-			$file  = menu_save(@$_GET['mod'].$this->formName.session_id());
-			$file .= $export_all ? '' : $page;
-			$file  = $_cache.implode('/', str_split($file, 2)).'.cfg';
-			$name  = substr(str_replace('/', '', preg_replace('~^'.preg_quote($_cache, '~').'~s', '', $file)), 0, -4);
+			$name  = menu_save(@$_GET['mod'].$this->formName.session_id(), false, '_');
+			$name .= $export_all ? '' : $page;
 			$title = !empty($this->input->header->title) ? strip_tags($this->input->header->title) : 'Report';
 			if (!empty($this->table) && preg_match('~([a-z0-9_]+)~is', $this->table, $m) && empty($this->input->header->title))
 			{
 				$title .= ' '.$m[1];
 			}
-			$this->arrReport = get_object_vars($this->report);
 			// Jika diakses oleh includes/exportAll.js
 			if (!empty($_GET[$this->formName.'_export_type']))
 			{
-				$this->buildReport($page, $file, $export_all);
+				$data = $this->buildReport($page, $export_all, $_GET[$this->formName.'_export_type']);
 				$o = ob_get_contents();
 				ob_end_clean(); // membersihkan output dari script sebelumnya (jika ada)
-				$url  = $link;
-				$url .= !empty($_GET[$this->formName.'_export_type']) ? $_GET[$this->formName.'_export_type'] : 'excel';
-				$url .= '&name='.$name;
-				$url .= '&title='.urlencode($title);
 				// Jika export semua halaman
 				if ($export_all)
 				{
-					if ($this->nav->int_cur_page >= $this->nav->int_tot_page)
+					if ($this->nav->int_cur_page > $this->nav->int_tot_page)
 					{
 						$out  = array(
 							'ok'      => 1,
-							'url'     => $url,
-							'message' => (($this->nav->int_tot_page > 30) ? lang('If the data size is too large to process, the file you are downloading is in CSV format. Are you sure to continue?') : '')
+							'data'    => $data,
+							'done'    => 100
 							);
 						output_json($out);
 					}else{
-						global $sys;
-						$url  = $this->nav->string_cur_uri.$this->nav->string_name.'='.($page+1).'&';
-						$max  = $this->nav->int_tot_page;
-						$done = $page ? intval(($page+1)/$max*100) : 0;
-						?>
-						<div class="progress">
-							<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $done ?>"
-							aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $done ?>%">
-								<?php echo $done ?>%
-							</div>
-						</div>
-						<?php
-						die();
+						$out  = array(
+							'ok'      => 1,
+							'data'    => $data,
+							'done'    => ($page ? intval($page/$this->nav->int_tot_page*100) : 0)
+							);
+						output_json($out);
 					}
 				}else{
 					// Jika hanya export halaman itu saja
-					$url .= urlencode(' - page '.money($page));
 					$out  = array(
 						'ok'      => 1,
-						'url'     => $url,
-						'message' => ''
+						'data'    => $data,
+						'done'    => 100
 						);
 					output_json($out);
 				}
@@ -441,18 +417,18 @@ class phpRollAdmin extends phpEasyAdminLib
 				{
 					$title .= ' - Page '.money($page);
 				}
-				foreach($this->arrReport as $report)
+				foreach($this->report as $type => $val)
 				{
-					$icon = $report->type == 'html' ? 'text' : $report->type;
-					$out .= ' <a class="fa fa-file-'.$icon.'-o fa-lg" rel="'.$link.$report->type.'&name='.$name.'&title='.urlencode($title).'" data-type="'.$report->type.'" style="cursor: pointer" title="Export to '.ucfirst($report->type).'"></a>';
+					$icon = $type == 'html' ? 'text' : $type;
+					$out .= ' <a class="fa fa-file-'.$icon.'-o fa-lg" rel="'.$name.'='.urlencode($title).'" data-type="'.$type.'" style="cursor: pointer" title="Export to '.ucfirst($type).'"></a>';
 				}
 			}
 			link_js(_PEA_ROOT . 'includes/exportAll.js', false);
 			if ($this->nav->int_tot_page > 1)
 			{
-				$out .= '<label style="min-height: 0;padding-left: 25px;"><input type="checkbox" class="export_all" data-name="'.$this->formName.'" data-page="'.$this->nav->string_name.'" title="'.lang('Export All Data').'" />'.lang('All Pages').'</label>';
+				$out .= '<label style="min-height: 0;padding-left: 25px;"><input type="checkbox" class="export_all" data-form="'.$this->formName.'" data-page="'.$this->nav->string_name.'" title="'.lang('Export All Data').'" />'.lang('All Pages').'</label>';
 			}else{
-				$out .= '<label style="display: none;"><input type="checkbox" class="export_all" data-name="'.$this->formName.'" data-page="'.$this->nav->string_name.'" title="'.lang('Export All Data').'" /></label>';
+				$out .= '<label style="display: none;"><input type="checkbox" class="export_all" data-form="'.$this->formName.'" data-page="'.$this->nav->string_name.'" title="'.lang('Export All Data').'" /></label>';
 			}
 			$out .= '</span>';
 		}
@@ -486,18 +462,57 @@ class phpRollAdmin extends phpEasyAdminLib
 		}
 		return $out;
 	}
-	function buildReport($page, $file, $is_export_all)
+	function buildReport($page, $is_export_all, $type)
 	{
-		$csv    = _class('csv');
-		$csv->clear();
-
-		if (($page==1 && $is_export_all) || !$is_export_all)
+		switch ($type)
 		{
-			file_write($file, '');
-			$csv->addRow($this->reportData['header']);
+			case 'excel':
+				$out = [];
+				if (($page==1 && $is_export_all) || !$is_export_all)
+				{
+					$row = [];
+					foreach ($this->reportData['header'] as $dt)
+					{
+						$row[] = '"'.str_replace('"', '""', $dt).'"';
+					}
+					$out[] = implode(',', $row);
+				}
+				foreach ($this->reportData['data'] as $rows)
+				{
+					$row = [];
+					foreach ($rows as $dt)
+					{
+						$row[] = '"'.str_replace('"', '""', $dt).'"';
+					}
+					$out[] = implode(',', $row);
+				}
+				$output = implode("\n", $out)."\n";
+				break;
+
+			default: // html
+				$output = '';
+				if (($page==1 && $is_export_all) || !$is_export_all)
+				{
+					$output .= '<thead><tr>';
+					foreach ($this->reportData['header'] as $row)
+					{
+						$output .= '<th>'.$row.'</th>';
+					}
+					$output .= '</tr></thead>';
+					$output .= '<tbody>';
+				}
+				foreach ($this->reportData['data'] as $rows)
+				{
+					$output .= '<tr>';
+					foreach ($rows as $dt)
+					{
+						$output .= '<td>'.$dt.'</td>';
+					}
+					$output .= '</tr>';
+				}
+				break;
 		}
-		$csv->addData($this->reportData['data']);
-		$csv->save($file, 'a');
+		return $output;
 	}
 
 	function getMainQuery()

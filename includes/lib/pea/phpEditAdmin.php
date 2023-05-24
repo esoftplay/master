@@ -53,20 +53,76 @@ class phpEditAdmin extends phpAddAdmin
 		$out	= '';
 		if ( $this->isReportOn )
 		{
-			$out .= '<div class="input-group"><span class="input-group-addon">Export:';
-			$this->arrReport	= get_object_vars( $this->report );
-			$link  = _PEA_URL . 'report/phpReportGenerator.php?formName='. $this->formName .'&formType=edit&reportType=';
-			$title = !empty($this->input->header->title) ? strip_tags($this->input->header->title) : 'Report';
-			foreach( $this->arrReport as $report )
+			// Jika diakses oleh includes/exportAll.js
+			if (!empty($_GET[$this->formName.'_export_type']))
 			{
-				$report->setData( $this->reportData['data'] );
-				$report->fileName = $title . $report->extension;
-				$icon = $report->type == 'html' ? 'text' : $report->type;
-				$out .= ' <a class="fa fa-file-'.$icon.'-o fa-lg" onclick="document.location.href=\''.$link.$report->type.'&'.@http_build_query((array)$report).'\'" style="cursor: pointer" title="Export to '.ucfirst($report->type).'"></a>';
+				$data = $this->buildReport($_GET[$this->formName.'_export_type']);
+				$o = ob_get_contents();
+				ob_end_clean(); // membersihkan output dari script sebelumnya (jika ada)
+				$out  = array(
+					'ok'      => 1,
+					'data'    => $data,
+					);
+				output_json($out);
+
+			}else{
+				$out   = '<div class="input-group edit-export"><span class="input-group-addon">Export:';
+				$title = !empty($this->input->header->title) ? strip_tags($this->input->header->title) : 'Report';
+				link_js(_PEA_ROOT . 'includes/exportAll.js', false);
+				foreach( $this->report as $type => $val)
+				{
+					$icon = $type == 'html' ? 'text' : $type;
+					$out .= ' <a class="fa fa-file-'.$icon.'-o fa-lg" data-title="'.urlencode($title).'" data-type="'.$type.'" data-form="'.$this->formName.'" style="cursor: pointer" title="Export to '.ucfirst($type).'"></a>';
+				}
+				$out .= '</span></div>';
 			}
-			$out .= '</span></div>';
 		}
 		return $out;
+	}
+
+	function buildReport($type)
+	{
+		if (!empty($this->reportData['data'][0]))
+		{
+			$data = array_chunk($this->reportData['data'][0], 2);
+		}else{
+			return;
+		}
+		$output = '';
+		switch ($type)
+		{
+			case 'excel':
+				$out = ['"Column","Content"'];
+				foreach ($data as $rows)
+				{
+					$row = [];
+					foreach ($rows as $dt)
+					{
+						$row[] = '"'.str_replace('"', '""', $dt).'"';
+					}
+					$out[] = implode(',', $row);
+				}
+				$output = implode("\n", $out)."\n";
+				break;
+
+			default: // html
+				$output .= '<thead><tr>';
+				$output .= '<th>Column</th>';
+				$output .= '<th>Content</th>';
+				$output .= '</tr></thead>';
+				$output .= '<tbody>';
+				foreach ($data as $rows)
+				{
+					$output  .= '<tr>';
+					foreach ($rows as $dt)
+					{
+						$output  .= '<td>'.$dt.'</td>';
+					}
+					$output  .= '</tr>';
+				}
+				break;
+		}
+		return $output;
 	}
 
 	// getMainForm() mengembalikan form complete, tapi tanpa submit button, tanpa header title

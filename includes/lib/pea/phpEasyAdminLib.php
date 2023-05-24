@@ -379,30 +379,23 @@ class phpEasyAdminLib
 			$this->addReportAll();
 		else
 		{
-			$type  = strtolower( $type );
-			$class = 'phpRoll'. ucfirst( $type );
-			$file  = _PEA_ROOT . 'report/'. $class .'.php';
-			if ( !is_file( $file ) )
-				die( 'Report Type <strong>'.$type.'</strong> not exist. '.$file.' not exist'  );
-			include_once( $file );
-			if (!$this->isReportOn)
+			$types = ['excel', 'html'];
+			if (in_array($type, $types))
 			{
-				link_css(_ROOT.'templates/admin/bootstrap/css/font-awesome.min.css');
+				if (!$this->isReportOn)
+				{
+					link_css(_ROOT.'templates/admin/bootstrap/css/font-awesome.min.css');
+				}
+				$this->isReportOn	= true;
+				$this->report->$type = 1;
 			}
-			$this->isReportOn	= true;
-			$title = !empty($this->input->header->title) ? strip_tags($this->input->header->title) : 'Report';
-			$this->report->$type = new $class($title);
 		}
 	}
 
 	function addReportAll()
 	{
-		$file		= _PEA_ROOT . 'report/reportList.php';
-		include( $file );
-		foreach( $report as $type )
-		{
-			$this->addReport( $type );
-		}
+		$this->addReport('excel');
+		$this->addReport('html');
 	}
 
 	function setSaveButton( $name = 'submit_update', $value = 'SAVE', $icon = 'floppy-disk', $label='value' )
