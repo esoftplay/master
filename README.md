@@ -1,11 +1,13 @@
-# [Preparation](https://youtu.be/JuBIeuGyQks)
+You can click the header to watch the demo
+
+# [Preparation](https://youtu.be/XAsPVBlLBnI?t=17)
  * Install docker https://www.docker.com/get-started/
  * Make sure these port are available 80, 81 and 3307
  * install git [optional]
  * install framework [optional]
  * install mysql cli [optional]
 
-# [How to install framework [optional]](https://youtu.be/JuBIeuGyQks)
+# [How to install framework [optional]](https://youtu.be/XAsPVBlLBnI?t=316)
  * run command below
  ```bash
  mkdir -p /var/www/html/master
@@ -24,15 +26,15 @@
  * open url http://localhost:81/
  * to close it you need to run `docker-compose down`
 
-# [How to run framework](https://youtu.be/JuBIeuGyQks)
+# [How to run framework](https://youtu.be/XAsPVBlLBnI?t=695)
  * run command below
 ```bash
 cd /var/www/html/master
 docker-compose up -d
 ```
 
-# [How to create new project](https://youtu.be/JuBIeuGyQks)
- * run master or edit `docker-compose.yaml` to unmark sql service
+# [How to create new project](https://youtu.be/XAsPVBlLBnI?t=861)
+ * run master
  * create new folder and `cd` into this folder
  * run command below
  ```bash
@@ -45,11 +47,11 @@ docker-compose up -d
  ```
  * open url http://localhost/
 
-# [How to run project](https://youtu.be/JuBIeuGyQks)
+# [How to run project](https://youtu.be/XAsPVBlLBnI?t=1412)
  * CD into the project folder
  * run `docker-compose up -d`
  * open url http://localhost/
  * edit the script if necessary
 
-# [Learn more about the this framework](https://youtu.be/JuBIeuGyQks)
+# [Learn more about the this framework](https://youtu.be/XAsPVBlLBnI?t=1568)
  * http://dev.esoftplay.com
