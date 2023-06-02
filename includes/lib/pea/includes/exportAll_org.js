@@ -1,3 +1,4 @@
+// pack -cw exportAll_org.js exportAll.js
 _Bbc(function($){
 	$(".fa-lg", $(".roll-export")).on("click", function(e){
 		e.preventDefault();
