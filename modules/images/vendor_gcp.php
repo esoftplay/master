@@ -113,7 +113,7 @@ class images_class extends images
 	{
 		if (file_exists($this->root.$this->path.$img))
 		{
-			$this->delete($this->root.$this->path.$img);
+			return $this->delete($this->root.$this->path.$img);
 		}else{
 			$is_dir = 0;
 			if (is_dir($img))
@@ -131,25 +131,27 @@ class images_class extends images
 			if ($is_dir)
 			{
 				$r = path_list($img);
+				$o = false;
 				foreach ($r as $file)
 				{
-					$this->delete($img.$file);
+					$o = $this->delete($img.$file);
 				}
+				return $o;
 			}else{
 				if (is_file($img))
 				{
 					@chmod($img, 0777);
 					unlink($img);
 				}
-				$file = $this->_dest($img);
-				$this->add_object($file, 'delete');
-				// $obj  = $this->bucket->object($file);
-				// if ($obj->exists())
-				// {
-				// 	$obj->delete();
-				// }
 			}
 		}
+		$file = $this->_dest($img);
+		$this->add_object($file, 'delete');
+		// $obj  = $this->bucket->object($file);
+		// if ($obj->exists())
+		// {
+		// 	$obj->delete();
+		// }
 		return true;
 	}
 
