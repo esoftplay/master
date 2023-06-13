@@ -34,7 +34,7 @@ docker-compose up -d
 ```
 
 # [How to create new project](https://youtu.be/XAsPVBlLBnI?t=861)
- * run master
+ * run master or edit `docker-compose.yaml` to unmark sql service
  * create new folder and `cd` into this folder
  * run command below
  ```bash
