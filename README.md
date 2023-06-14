@@ -39,10 +39,10 @@ docker-compose up -d
  * run command below
  ```bash
  docker run -it -v $(pwd):/home/sites esoftplay/start
+ docker-compose up -d
  mysql -u root --password='root' --port 3307 -h 127.0.0.1 -e 'DROP DATABASE IF EXISTS new_project'
  mysql -u root --password='root' --port 3307 -h 127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS new_project'
  mysql -u root --password='root' --port 3307 -h 127.0.0.1 new_project < database.sql
- docker-compose up -d
  curl -s -X POST -F 'code='$(date|md5) http://localhost/tools/repair/change_salt > /dev/null
  ```
  * open url http://localhost/
