@@ -13,7 +13,7 @@ start() {
   echo -n "Starting async: "
   touch /opt/async.log
   chmod 777 /opt/async.log
-  dtach -n /tmp/async.socket /bin/sh /var/www/html/master/includes/system/docker/esoftplay_worker
+  dtach -n /tmp/async.socket /bin/bash /var/www/html/master/includes/system/docker/esoftplay_worker
 }
 
 stop() {

@@ -237,17 +237,20 @@ function redirect($url='')
 function repairExplode($data, $delimeter = ',')
 {
 	$arr = array();
-	if (is_array($data))
+	if (!empty($data))
 	{
-		$r = $data;
-	}else{
-		$r = explode($delimeter, $data);
-	}
-	foreach($r AS $value)
-	{
-		if(!empty($value) || $value == '0')
+		if (is_array($data))
 		{
-			$arr[] = $value;
+			$r = $data;
+		}else{
+			$r = explode($delimeter, $data);
+		}
+		foreach($r AS $value)
+		{
+			if(!empty($value) || $value == '0')
+			{
+				$arr[] = $value;
+			}
 		}
 	}
 	$output = array_unique($arr);
@@ -256,11 +259,14 @@ function repairExplode($data, $delimeter = ',')
 function repairImplode($data, $delimeter = ',')
 {
 	$arr = array();
-	foreach((array)$data AS $value)
+	if (!empty($data))
 	{
-		if(!empty($value))
+		foreach((array)$data AS $value)
 		{
-			$arr[] = $value;
+			if(!empty($value))
+			{
+				$arr[] = $value;
+			}
 		}
 	}
 	$output = implode($delimeter, array_unique($arr));
