@@ -1,4 +1,17 @@
-#!/bin/sh
+#!/bin/bash
+#
+# esoftplay_async       Bring up/down networking
+#
+# chkconfig: 2345 10 90
+# description: Activates/Deactivates asyncronous in esoftplay framework \
+#              start at boot time.
+#
+### BEGIN INIT INFO
+# Provides: $esoftplay_async
+# Should-Start: iptables ip6tables NetworkManager-wait-online NetworkManager $network-pre
+# Short-Description: Bring up/down asyncronous
+# Description: Bring up/down asyncronous
+### END INIT INFO
 
 # Include functions
 if [ -f "/lib/lsb/init-functions" ]; then

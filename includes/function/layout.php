@@ -688,6 +688,7 @@ function output_json($array)
 			}
 		}
 	}
+	ob_get_clean();
 	header('content-type: application/json; charset: UTF-8');
 	header('cache-control: must-revalidate');
 	header('expires: ' . gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT');
