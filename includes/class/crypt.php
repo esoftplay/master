@@ -15,7 +15,6 @@ class crypt
 		{
 			$salt = $this->salt;
 		}
-		date_default_timezone_set('UTC');
 		$text   = $this->sha5(substr(date('c'),0,19) . "$text", true, $this->use_sha);
 		$iv     = substr(bin2hex(openssl_random_pseudo_bytes(16)),0,16);
 		$output = base64_encode(base64_encode($iv) . openssl_encrypt($text, $this->method, $salt, 0, $iv));
