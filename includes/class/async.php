@@ -185,6 +185,10 @@ if (!defined('_VALID_BBC'))
 					include_once _ROOT.'includes/includes.php';
 					$arguments = $db->getOne("SELECT `arguments` FROM `bbc_async` WHERE `id`=".$_AsYnCtAsK['_ID']);
 					$_AsYnCtAsK['_VAR'] = json_decode(urldecode($arguments), 1);
+					if (!is_array($_AsYnCtAsK['_VAR']))
+					{
+						$_AsYnCtAsK['_VAR'] = array();
+					}
 					try {
 						if (is_array($_AsYnCtAsK['_OBJ']))
 						{
