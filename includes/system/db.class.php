@@ -200,13 +200,26 @@ class bbcSQL
 		}else{
 			$stat_r = $stat_w = '';
 		}
+		$result = false;
 		if (!empty($stat_r) && preg_match('~\s{0,}select\s+~is', $sql))
 		{
 			$result = @mysqli_query($this->link_read, $sql);
 			$this->echoerror($sql, $this->link_read, $stat_r);
+			try{
+				$result = @mysqli_query($this->link_read, $sql);
+				$this->echoerror($sql, $this->link_read, $stat_r);
+			}
+			catch(Exception $e) {
+				$this->echoerror($e->getMessage(), $this->link_read, $stat_r);
+			}
 		}else{
-			$result = @mysqli_query($this->link, $sql);
-			$this->echoerror($sql, $this->link, $stat_w);
+			try{
+				$result = @mysqli_query($this->link, $sql);
+				$this->echoerror($sql, $this->link, $stat_w);
+			}
+			catch(Exception $e) {
+				$this->echoerror($e->getMessage(), $this->link, $stat_w);
+			}
 		}
 		$this->resid = $result;
 		$this->tmp_is_cache = false;
