@@ -1,7 +1,7 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
 $url     = '';
-$helpURL = '//help.fisip.net/';
+$helpURL = 'https://help.fisip.net/';
 
 if (!empty($_GET['url']))
 {
@@ -33,10 +33,9 @@ if (!empty($_GET['id']))
 }
 
 // Tambahkan semua module yang dimiliki
-$r = $db->cacheGetCol("SELECT name FROM bbc_module ORDER BY id ASC");
+$r = $db->cacheGetCol("SELECT `name` FROM `bbc_module` ORDER BY `id` ASC");
 $url .= preg_match('~\?~', $url) ? '&' : '?';
 $url .= 'modules='.implode(',', $r);
-
 $sys->stop();
 ?>
 <html>
