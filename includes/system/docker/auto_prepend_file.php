@@ -121,7 +121,6 @@ function tm($msg, $no = -1001681033483, $method = 'sendMessage', $token='')
 				$post   = array(
 					'chat_id'    => $id,
 					'text'       => $msg,
-					'parse_mode' => 'markdown'
 					);
 			}
 			curl_setopt($init, CURLOPT_POST, 1);
