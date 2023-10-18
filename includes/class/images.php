@@ -12,8 +12,8 @@ class images
 {
 	var $root = _ROOT;
 	var $url	= _URL;
-	var $valid= array ('gif', 'jpg', 'png', 'bmp');
-	var $allow= array ('gif', 'jpg', 'png', 'bmp', 'ico', 'swf');
+	var $valid= array ('gif', 'jpg', 'jpeg', 'png', 'bmp');
+	var $allow= array ('gif', 'jpg', 'jpeg', 'png', 'bmp', 'ico', 'swf');
 	var $perm	= 0777;
 	var $last_image;
 	var $path;
@@ -328,6 +328,7 @@ class images
 								ImageCopyResized($tumb, $source, $dstX, $dstY, $srcX, $srcY, $newwidth, $newheight, $width, $height);
 								imagegif($tumb,$imgdst,$compress);
 								break;
+							case 'jpeg':
 							case 'jpg':
 								$tumb   = ImageCreateTrueColor($newwidth,$newheight);
 								$source = imagecreatefromjpeg($imgfile);
@@ -402,6 +403,7 @@ class images
 				case 'gif':
 				$simg = imagecreatefromgif($source);
 				break;
+				case 'jpeg':
 				case 'jpg':
 				$simg = imagecreatefromjpeg($source);
 				break;
@@ -462,8 +464,8 @@ class images
 	function is_validImage($file)
 	{
 		$format = $this->getExt($file);
-		$match =(in_array($format, $this->valid) and is_file($file)) ? 1 : 0;
-		$output= array($match, $format);
+		$match  = (in_array($format, $this->valid) and is_file($file)) ? 1 : 0;
+		$output = array($match, $format);
 		return $output;
 	}
 

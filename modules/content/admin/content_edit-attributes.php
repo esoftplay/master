@@ -39,7 +39,7 @@ $params  = array(
 		'folder' => $path,
 		'tmp'    => $temp,
 		),
-	'ext'       => array('jpg','gif','png','bmp'),
+	'ext'       => _class('images')->valid,
 	'resize'    => get_config('content','manage', 'image_size'),
 	'thumbnail' => array(
 		'size'   => $data['config']['thumbsize'],
