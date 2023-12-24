@@ -106,7 +106,7 @@ if (!class_exists('async'))
 					$this->tasks++;
 				}else{
 					$db->Execute("DELETE FROM `bbc_async` WHERE `id`=".$async_id);
-					$db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
+					// $db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
 					$this->run($object, $params);
 				}
 			}
@@ -227,7 +227,7 @@ if (!defined('_VALID_BBC'))
 						}
 						// echo $Bbc->debug;
 						$db->Execute("DELETE FROM `bbc_async` WHERE `id`=".$_AsYnCtAsK['_ID']);
-						$db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
+						// $db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT=1");
 
 						$Bbc     = null;
 						$sys     = null;
