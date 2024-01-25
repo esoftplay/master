@@ -20,12 +20,6 @@ RUN echo "extension = mcrypt.so" > /etc/php/7.4/mods-available/mcrypt.ini && \
     ln -s /etc/php/7.4/mods-available/mcrypt.ini /etc/php/7.4/fpm/conf.d/20-mcrypt.ini && \
     ln -s /etc/php/7.4/mods-available/mcrypt.ini /etc/php/7.4/cli/conf.d/20-mcrypt.ini
 
-# # ADD gearman module
-# COPY includes/system/docker/gearman.so /usr/lib/php/20190902/
-# RUN echo "extension = gearman.so" > /etc/php/7.4/mods-available/gearman.ini && \
-#     ln -s /etc/php/7.4/mods-available/gearman.ini /etc/php/7.4/fpm/conf.d/20-gearman.ini && \
-#     ln -s /etc/php/7.4/mods-available/gearman.ini /etc/php/7.4/cli/conf.d/20-gearman.ini
-
 # Customize PHP.ini
 RUN cp /etc/php/7.4/fpm/php.ini /etc/php/7.4/fpm/php.ini.orig
 RUN cat /etc/php/7.4/fpm/php.ini.orig | sed \
