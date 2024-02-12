@@ -20,7 +20,7 @@ if(!empty($r))
   $url           = str_replace(_ROOT, _URL, $dir);
   foreach($r AS $img)
   {
-    if(is_file($dir.$img['image']))
+    if(is_file($dir.$img['image']) || defined('_IMAGE_STORAGE'))
     {
       $output['images'][] = array(
         'link'        => !empty($img['link']) ? site_url($img['link']) : '',
