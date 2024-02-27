@@ -1,7 +1,7 @@
 FROM wyveo/nginx-php-fpm:php74
 
-
-RUN apt-get update && apt-get install net-tools curl rsync libmcrypt-dev openssh-client vim git cron dtach -y
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+RUN apt-get update && apt-get install debsuryorg-archive-keyring net-tools curl rsync libmcrypt-dev openssh-client vim git cron dtach -y
 RUN cd /opt && git clone https://github.com/esoftplay/tools.git
 RUN echo "\n[program:esoftplay_tools]\ncommand=/bin/bash -c 'cd /opt/tools && git pull'\nautostart=true\npriority=20" >> /etc/supervisord.conf
 
