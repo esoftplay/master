@@ -65,11 +65,11 @@ if (defined('_AsYnCtAsK'))
 					$output    .= $match[3];
 					$matches[3] = $output;
 				}
-				$matches[3] = (empty($matches[3])) ? ($matches[1]=='href' ? _URL : '') : site_url($matches[3]);
-				$output = $matches[1].'='.$matches[2].$matches[3].$matches[4];
+				$matches[3] = empty($matches[3]) ? ($matches[1]=='href' ? _URL : '') : site_url($matches[3]);
+				$output = ' '.$matches[1].'='.$matches[2].$matches[3].$matches[4];
 				return $output;
 			}
-			$Bbc->regex = '~(href|action)=(["\'])?(.*?)(["\'>][\s]{0,}){1}~is';
+			$Bbc->regex = '~\s(href|action)=(["\']|&quot;)?(.*?)(&quot;|["\'>])~is';
 			$Bbc->content = preg_replace_callback($Bbc->regex, "module_replace", $Bbc->content);
 		}
 		if($sys->is_stop || !empty($_GET['is_ajax']))
