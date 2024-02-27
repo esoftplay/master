@@ -1,7 +1,7 @@
 <?php  if ( ! defined('_VALID_BBC')) exit('No direct script access allowed'); ?>
 <!DOCTYPE html>
 <html lang="en">
-	<head><?php echo $sys->meta();?></head>
+	<head><?php echo $sys->meta();?><meta name="ROBOTS" content="noindex"></head>
 	<body scroll="no">
 		<div id="x-desktop">
 			<div id="x-menu"></div>
