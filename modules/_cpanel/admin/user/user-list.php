@@ -1,5 +1,19 @@
 <?php defined( '_VALID_BBC' ) or die( 'Restricted access' );
 
+
+$is_push = 0;
+if (defined('_FCM_SENDER_ID'))
+{
+	$tables = $db->getCol("SHOW TABLES LIKE 'bbc_user_push_topic_list'");
+	if (!in_array('bbc_user_push_topic_list', $tables))
+	{
+		$is_push = 2;
+	}else{
+		$is_push = 1;
+	}
+}
+
+
 if(!empty($keyword))
 {
 	$arr = array();
@@ -25,6 +39,7 @@ if(!empty($keyword))
 $form = _lib('pea',  'bbc_user' );
 $form->initRoll( $add_sql );
 
+$form->roll->setFormName('listuser');
 $form->roll->setDeleteTool(config('rules', 'disable_user_del') ? false : true);
 
 
@@ -46,6 +61,23 @@ $form->roll->input->group_ids->setReferenceField('name', 'id');
 $form->roll->input->group_ids->setRelationTable(false);
 $form->roll->input->group_ids->setPlainText(true);
 $form->roll->input->group_ids->setDelimiter(', ');
+$form->roll->input->group_ids->setDisplayColumn(false);
+
+if (!empty($is_push))
+{
+	$form->roll->addInput( 'topics', 'sqllinks' );
+	$form->roll->input->topics->setTitle( 'Topics' );
+	$form->roll->input->topics->setFieldName( 'id AS topics' );
+	$form->roll->input->topics->setLinks('index.php?mod=_cpanel.user&act=fcm_topic');
+	$form->roll->input->topics->setHelp('list of notification topics which user subscribed to');
+	$form->roll->input->topics->setModal(true);
+	$form->roll->input->topics->setDisplayColumn(false);
+	$form->roll->input->topics->setDisplayFunction(function($user_id) {
+		global $db;
+		$topics = $db->getOne("SELECT COUNT(`list_id`) FROM `bbc_user_push_topic_list` WHERE `user_id`={$user_id}");
+		return money($topics, $is_shorten= false);
+	});
+}
 
 $form->roll->addInput( 'login_time', 'texttip' );
 $form->roll->input->login_time->setTitle( 'Info' );
@@ -72,3 +104,5 @@ $form->roll->input->active->setCaption( 'Active' );
 
 $form->roll->setDisableInput('delete', 1);
 $form->roll->onDelete('user_delete', $form->roll->getDeletedId(), $LoadLast = false );
+
+// echo $form->roll->getForm();

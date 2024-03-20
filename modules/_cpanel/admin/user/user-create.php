@@ -145,7 +145,7 @@ if (empty($_GET['is_ajax']))
 }
 $userEdit = ob_get_contents();
 ob_end_clean();
-if (!empty($_GET['is_ajax']))
+if (!empty($_GET['is_ajax']) && empty($_POST['listuser_ColView']))
 {
 	echo $userEdit;
 	die();

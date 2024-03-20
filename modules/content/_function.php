@@ -717,10 +717,10 @@ function content_category_update()
 function content_fcm($fields)
 {
 	$output = '';
-	if (defined('_FCM'))
+	if (defined('_FCM_SENDER_ID'))
 	{
 		$def = array(
-			'to'   => '/topics/'.config('site', 'url'),
+			'to'   => '/topics/userAll',
 			'data' => array(
 				'is_master' => 1,
 				'type_id'   => '1',
@@ -740,29 +740,26 @@ function content_fcm($fields)
 			$fields['data']['url']   = preg_replace('~://~is', '://data.', $fields['data']['url']);
 		}
 		$fields['data'] = array_merge($def['data'], $fields['data']);
+		_func('alert');
 		if (!empty($fields['data']['message']) && $fields['data']['type_id'] != 2)
 		{
 			$fields['notification'] = array(
 				'title' => substr($fields['data']['title'], 0, 80),
 				'body'  => substr($fields['data']['message'], 0, 141),
-				'icon'  => 'ic_notification',
 				);
-			// unset($fields['data']['title'], $fields['data']['message']);
+			unset($fields['data']['title'], $fields['data']['message']);
+			$output = alert_push($fields['to'],
+			           $fields['notification']['title'],
+			           $fields['notification']['body'],
+			           'content',
+			           $fields['data']);
+		}else{
+			$output = alert_push($fields['to'],
+			           $fields['data']['title'],
+			           $fields['data']['message'],
+			           'content',
+			           $fields['data']);
 		}
-		$ch = curl_init();
-		// Set the URL, number of POST vars, POST data
-		curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-			'Authorization: key=' . _FCM,
-			'Content-Type: application/json'
-			));
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-		$output = curl_exec($ch);
-		curl_close($ch);
 	}
 	return $output;
 }

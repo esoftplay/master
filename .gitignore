@@ -1,4 +1,5 @@
 .DS_Store
+composer.lock
 Thumbs.db
 images/cache/
 images/tmp/

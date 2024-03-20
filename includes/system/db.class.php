@@ -22,6 +22,7 @@ class bbcSQL
 	var $bg_check  = 1;
 	var $bg_data   = [];
 	var $dbOutput;
+	var $sql;
 	var $resid;
 	var $timestamp_sec= 900;
 	var $tmp_is_cache = false;
@@ -221,7 +222,8 @@ class bbcSQL
 				$this->echoerror($e->getMessage(), $this->link, $stat_w);
 			}
 		}
-		$this->resid = $result;
+		$this->sql          = $sql;
+		$this->resid        = $result;
 		$this->tmp_is_cache = false;
 		return $result;
 	}

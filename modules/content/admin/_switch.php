@@ -44,16 +44,11 @@ switch( $Bbc->mod['task'] )
 		include 'ads_edit.php';
 		break;
 
-	case 'fcm':
-		include 'fcm.php';
-		break;
-	case 'fcm_content':
-	case 'send_notification_content':
-		include 'fcm_content.php';
-		break;
-
 	case 'send_notification': // Menu untuk mengirimkan notifikasi ke para pengguna aplikasi jika ada mobile app nya
 		include 'send_notification.php';
+		break;
+	case 'send_notification_content':
+		include 'send_notification_content.php';
 		break;
 
 	case 'type': // menampilkan daftar "Content Type" untuk membagi semua content kedalam configurasi yang berbeda2 di tiap content type

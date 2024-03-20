@@ -301,6 +301,7 @@ class phpRollAdmin extends phpEasyAdminLib
 			// save post in session
 			if (!empty($_POST[$this->formName.'_ColView']))
 			{
+				ob_end_clean();
 				if ($_POST[$this->formName.'_ColView'] == "EDIT")
 				{
 					if (!empty($_POST['ColView']))
@@ -312,7 +313,7 @@ class phpRollAdmin extends phpEasyAdminLib
 				}else{
 					unset($_SESSION['ColView'][$sesKey]);
 				}
-				die("saved");
+				die("saved_ColView");
 			}
 			// replace variable $this->optionalColumn
 			if (isset($_SESSION['ColView'][$sesKey]))
@@ -742,7 +743,8 @@ class phpRollAdmin extends phpEasyAdminLib
 		$button = '';
 		if (!empty($_GET['return']) && empty($_GET['is_ajax']))
 		{
-			$button .= $GLOBALS['sys']->button($_GET['return']);
+			$returl = preg_replace('~&is_ajax=1~s', '', $_GET['return']);
+			$button.= $GLOBALS['sys']->button($returl);
 		}
 		if ($this->saveTool)
 		{

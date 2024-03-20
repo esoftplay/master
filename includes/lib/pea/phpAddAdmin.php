@@ -176,7 +176,8 @@ class phpAddAdmin extends phpEasyAdminLib
 			{
 				$GLOBALS['sys']->nav_add($this->hideToolTitle);
 			}
-			$footer =	$GLOBALS['sys']->button($_GET['return']);
+			$returl = preg_replace('~&is_ajax=1~s', '', $_GET['return']);
+			$footer =	$GLOBALS['sys']->button($returl);
 		}
 		if	($this->saveTool)
 		{

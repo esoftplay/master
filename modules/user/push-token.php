@@ -7,12 +7,11 @@ $user_id   = [opsional]
 $group_id  = [opsional] comma separated or Array
 $username  = [opsional]
 $token     = [wajib]
-$push_id   = [optional] ID dari hasil return push-token sebelumnya untuk diupdate
+$push_id   = [optional] ID dari hasil return push-token sebelumnya untuk diupdate (biasanya krn update token krn tolen ada umurnya)
 $old_id    = [optional] ID dari hasil return push-token sebelumnya untuk dihapus
 $device    = [optional] nama atau jenis device yang digunakan untuk membuka app
 $secretkey = _class('crypt')->encode(_SALT.'|'.date()'Y-m-d H:i:s');
 */
-
 $output = array(
 	'ok'      => 0,
 	'message' => 'failed to save your data',
@@ -37,6 +36,7 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 		{
 			if ($time > $stamp)
 			{
+				// iLog([$token, $user_id, $group_ids, $username, $device, $os, $push_id]);
 				_func('alert');
 				$out = alert_push_signup($token, $user_id, $group_ids, $username, $device, $os, $push_id);
 				if($out)
@@ -68,3 +68,7 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 	$output['result'] = [];
 }
 output_json($output);
+/*
+check database ada di /admin/index.php?mod=_cpanel.user&act=fcm-activate
+di file: modules/_cpanel/admin/user/fcm-activate.php
+*/

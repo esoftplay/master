@@ -96,13 +96,17 @@ class FormTextarea extends Form
 
 	function getEntityOutput( $str_value = '' )
 	{
-		if ( $this->nl2br )
+		$out = '';
+		if (!empty($str_value))
 		{
-			$out	= preg_replace( "#<br\s{0,}/?>#is", "", $str_value );
-		}else{
-			$out	= $str_value;
+			if ( $this->nl2br )
+			{
+				$out	= preg_replace( "#<br\s{0,}/?>#is", "", $str_value );
+			}else{
+				$out	= $str_value;
+			}
+			$out	= htmlentities(preg_replace( "#\r\n#is", "\n", $out ));
 		}
-		$out	= htmlentities(preg_replace( "#\r\n#is", "\n", $out ));
 		return $out;
 	}
 

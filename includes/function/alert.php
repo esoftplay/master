@@ -154,6 +154,7 @@ function alert_add($title, $description, $params = array(), $user_id='none', $gr
 		}
 	}
 }
+
 function alert_view($data)
 {
 	$check  = array('id', 'module', 'title', 'description', 'params');
@@ -191,7 +192,7 @@ function alert_view($data)
 	}
 	if (_ADMIN != '')
 	{
-		$i = _cpanel_check_link($output['url']);
+		$i = _alert_view_cpanel($output['url']);
 		$output['ref_id'] = intval($i);
 		if (empty($output['ref_id']))
 		{
@@ -200,7 +201,8 @@ function alert_view($data)
 	}
 	return $output;
 }
-function _cpanel_check_link($link)
+
+function _alert_view_cpanel($link)
 {
 	global $Bbc, $db;
 	$output = '';
@@ -248,13 +250,15 @@ $to:
 	- $user_ids          = Array yang berisi Integer dari field ID di table `bbc_user`
 	- 'group:'.$group_id = String yang di awali dengan 'group:' kemudian diikuti Integer dari field ID di table `bbc_user_group`
 	- $user_id-$group_id = Integer dari field ID di table `bbc_user` dengan ID dari table `bbc_user_group`
+	- /topics/$topicname = akan mengirim user yg ada di table bbc_user_push_topic_list
 */
-function alert_push($to, $title, $message, $module = 'content', $arguments = array(), $action = 'default')
+function alert_push($to, $title, $message, $module = 'content', $arguments = array(), $action = 'default', $sending_id=0)
 {
 	global $db, $sys;
 	$ids      = array();
 	$out      = false;
 	$group_id = 0;
+	$tos      = [];
 	// Jika 0 maka tidak akan dikirim
 	if ($to == 0)
 	{
@@ -263,12 +267,15 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 	// Jika berupa angka maka akan terkirim ke user_id tersebut (gak perduli di group apapun)
 	if (is_numeric($to))
 	{
-		$ids[] = intval($to);
+		$id    = intval($to);
+		$ids[] = $id;
+		$tos[] = '/topics/user_'.$id;
 	}else
 	// Jika dikirim ke banyak user_id (atau user_id yang di group tertentu misal beberapa user yang di aplikasi driver)
 	if (is_array($to))
 	{
 		$ids = $to;
+		$tos = array_map(function($a){ return '/topics/user_'.$a;}, $to);
 	}else
 	// Jika formatnya user_id-group_id maka akan dikirimkan ke user_id tersebut khusus untuk group tersebut
 	// contoh kasus user tersebut register sebagai driver sekaligus sebagai penumpang (sedangkan aplikasi driver & penumpang beda app)
@@ -278,7 +285,12 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 		{
 			return false;
 		}else{
-			$ids[] = $to;
+			$ids[]    = $to;
+			$push_ids = $db->getCol("SELECT `token` FROM `bbc_user_push` WHERE `user_id`={$m[1]} AND `type`=1 AND `group_ids`=',{$m[2]},'");
+			if (!empty($push_ids))
+			{
+				$tos = $push_ids;
+			}
 		}
 	}else
 	// Jika tujuan dalam format string
@@ -287,45 +299,52 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 		// Jika ingin mengirim untuk semua user yang ada di group tertentu
 		if (substr($to, 0, 6) == 'group:')
 		{
-			$group_id = substr($to, 6, strlen($to)-1);
+			$group_id = substr($to, 6);
 			if (!empty($group_id))
 			{
-				$ids = $db->getCol("SELECT `user_id` FROM `bbc_user_push` WHERE `group_ids` LIKE '%,{$group_id},%' WHERE `active`=1");
+				$topic_id = $db->getOne("SELECT `id` FROM `bbc_user_push_topic` WHERE `name`='group_{$group_id}'");
+				if (!empty($topic_id))
+				{
+					$tos[] = '/topics/group_'.$group_id;
+					$ids   = $topic_id;
+				}
 			}
-		}else{
-			// Jika mengirim notif ke username tertentu
-			$id = $db->getOne("SELECT `id` FROM `bbc_user` WHERE `username`='{$to}'");
-			if (!empty($id))
+		}else
+		// misal kirim ke topic tetentu misal
+		if (substr($to, 0, 8) == '/topics/')
+		{
+			$topic = substr($to, 8);
+			if ($topic == 'userAll')
 			{
-				$ids[] = $id;
+				$ids[] = 0;
+				$tos[] = $to;
+			}else{
+				$topic_id = $db->getOne("SELECT `id` FROM `bbc_user_push_topic` WHERE `name`='{$topic}'");
+				if (!empty($topic_id))
+				{
+					$ids = $topic_id;
+					if (!empty($ids))
+					{
+						$tos[] = $to;
+					}
+				}
 			}
+		}else
+		// Jika mengirim notif ke username tertentu
+		if (is_email($to))
+		{
+				$id = $db->getOne("SELECT `user_id` FROM `bbc_account` WHERE `email`='{$to}'");
+				if (!empty($id))
+				{
+					$ids[] = $id;
+					$tos[] = '/topics/user_'.$id;
+				}
 		}
 	}
 	if (!empty($ids))
 	{
-		$exist = $db->getOne("SHOW TABLES LIKE 'bbc_user_push_notif'");
-		if (empty($exist))
-		{
-			$db->Execute("CREATE TABLE `bbc_user_push_notif` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`user_id` bigint(20) DEFAULT '0',
-				`group_id` int(11) DEFAULT '0',
-				`title` varchar(150) DEFAULT '',
-				`message` varchar(255) DEFAULT '',
-				`params` text COMMENT 'variable yang akan di proses dalam mobile app field wajib action, module, argument',
-				`return` text COMMENT 'data return dari API notifikasi',
-				`status` tinyint(1) DEFAULT '0' COMMENT '0=belum terkirim, 1=berhasil terkirim, 2=sudah terbaca, 3=gagal terkirim',
-				`created` datetime DEFAULT CURRENT_TIMESTAMP,
-				`updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				PRIMARY KEY (`id`),
-				KEY `user_id` (`user_id`),
-				KEY `group_id` (`group_id`),
-				KEY `status` (`status`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table untuk menyimpan data notifikasi yang dikirim ke para pengguna mobile app'");
-		}else{
-			$timestamp = date('Y-m-d H:i:s', strtotime('-2 MONTH'));
-			$db->Execute("DELETE FROM `bbc_user_push_notif` WHERE `created`<'{$timestamp}'");
-		}
+		$timestamp = date('Y-m-d H:i:s', strtotime('-2 MONTH'));
+		$db->Execute("DELETE FROM `bbc_user_push_notif` WHERE `created`<'{$timestamp}'");
 		$title   = strip_tags($title);
 		$message = strip_tags($message, '<br>');
 		$message = preg_replace('~<br(?:\s+?/?)?>~is', "\n", $message);
@@ -341,26 +360,73 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 					)
 				)
 			);
-		foreach ($ids as $id)
-		{
-			$r = explode('-', $id);
-			if (is_numeric($r[0]))
-			{
-				$user_id = $r[0];
-				$gID     = (!empty($r[1]) && is_numeric($r[1])) ? $r[1] : $group_id;
+		_alert_push_insert($ids, $data, $tos, $group_id, $sending_id);
+		$out = true;
+	}
+	return $out;
+}
 
-				$data['user_id']  = $user_id;
-				$data['group_id'] = $gID;
-				$push_notif_id    = $db->Insert('bbc_user_push_notif', $data);
-				if ($push_notif_id)
-				{
-					_class('async')->run('alert_push_send', [$push_notif_id, 0]);
-					if (!$out)
-					{
-						$out = $push_notif_id;
-					}
-				}
+function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id = 0)
+{
+	global $db;
+	$out = 0;
+	$id  = null;
+	// jika $ids berisi array maka itu adalah kumpulan id dr user_id
+	if (is_array($ids) && isset($ids[$last_id]))
+	{
+		$id = $ids[$last_id];
+	}else{
+		// jika $ids berisi integer maka itu adalah topic_id
+		$i = $db->getOne("SELECT `user_id` FROM `bbc_user_push_topic_list` WHERE `topic_id`={$ids} LIMIT {$last_id}, 1");
+		if (!empty($i))
+		{
+			$id = $i;
+		}
+	}
+	if (isset($id))
+	{
+		$r = explode('-', $id);
+		if (is_numeric($r[0]))
+		{
+			$data['user_id']  = $r[0];
+			$data['group_id'] = (!empty($r[1]) && is_numeric($r[1])) ? $r[1] : $group_id;
+			$push_notif_id    = $db->Insert('bbc_user_push_notif', $data);
+			$out              = $push_notif_id;
+			if (!empty($push_notif_id) && $tos != ['/topics/userAll'])
+			{
+				_class('async')->run('alert_push_send', [$push_notif_id, 0]);
 			}
+			if (!empty($sending_id))
+			{
+				$db->Execute("UPDATE `bbc_user_push_sending` SET `sent`=(`sent`+1) WHERE `id`={$sending_id}");
+			}
+			_class('async')->run(__FUNCTION__, [$ids, $data, $tos, $group_id, $sending_id, ++$last_id]);
+		}
+	}else
+	if ($last_id > 0 && !empty($tos))
+	{
+		// https://php-fcm.readthedocs.io/en/latest/message.html#notification-sending-options
+		$notification = new \Fcm\Push\Notification();
+		$notification
+			->setTitle($data['title'])
+			->setBody($data['message'])
+			->setSound("default")
+			->setIcon("ic_notification")
+			->setBadge(11);
+		foreach ($tos as $to)
+		{
+			$notification->addRecipient($to);
+		}
+		$params = json_decode($data['params'], 1);
+		foreach ($params as $key => $value)
+		{
+			$notification->addData($key, $value);
+		}
+		$out = alert_fcm()->send($notification);
+		// iLog([$notification, $tos, $out]);
+		if (!empty($sending_id))
+		{
+			$db->Execute("UPDATE `bbc_user_push_sending` SET `status`=1 WHERE `id`={$sending_id}");
 		}
 	}
 	return $out;
@@ -384,7 +450,8 @@ function alert_push_send($id, $last_id=0)
 			$unread  = $db->getOne("SELECT count(id) FROM `bbc_user_push_notif` WHERE `user_id`={$data['user_id']} AND `status` IN(0,1)"); // status 1 = berhasil terkirim, 0 = belum terkirim (tetapi pada mobile app tetap bisa di list)
 			$tos     = array();
 			$last_id = intval($last_id);
-			$add_sql = !empty($data['group_id']) ? ' AND `group_ids` LIKE \'%,'.$data['group_id'].',%\'' : '';
+			$add_sql = ' AND `type`=0';
+			$add_sql.= !empty($data['group_id']) ? ' AND `group_ids` LIKE \'%,'.$data['group_id'].',%\'' : '';
 			if (!empty($data['user_id']))
 			{
 				if ($data['user_id'] == -1) // Jika ini broadcast message
@@ -534,26 +601,6 @@ function alert_push_send($id, $last_id=0)
 function alert_push_signup($token, $user_id, $group_ids, $username, $device, $os, $push_id = 0)
 {
 	global $db;
-	$exist = $db->getOne("SHOW TABLES LIKE 'bbc_user_push'");
-	if (empty($exist))
-	{
-		$db->Execute("CREATE TABLE `bbc_user_push` (
-			`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-			`user_id` bigint(20) DEFAULT '0',
-			`group_ids` varchar(120) DEFAULT '0' COMMENT 'comma separated like repairImplode()',
-			`username` varchar(120) DEFAULT '',
-			`token` varchar(255) DEFAULT '',
-			`device` varchar(255) DEFAULT '',
-			`os` varchar(60) DEFAULT '',
-			`ipaddress` varchar(20) DEFAULT '',
-			`created` datetime DEFAULT CURRENT_TIMESTAMP,
-			`updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'setiap mengirim pesan ke table bbc_user_push_notif maka field ini akan di update',
-			PRIMARY KEY (`id`),
-			KEY `user_id` (`user_id`),
-			KEY `group_ids` (`group_ids`),
-			KEY `os` (`os`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table untuk menyimpan token dari para pengguna mobile app'");
-	}
 	if (!empty($group_ids))
 	{
 		if (!is_array($group_ids))
@@ -571,21 +618,323 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $os
 		'group_ids' => $group_ids,
 		'username'  => $username,
 		'token'     => $token,
+		'type'      => preg_match('~^ExponentPushToken~is', $token) ? 0 : 1,
 		'device'    => $device,
 		'os'        => $os,
 		'ipaddress' => @$_SERVER['REMOTE_ADDR'],
 		'updated'   => date('Y-m-d H:i:s')
 		);
-	$id = $db->getOne("SELECT `id` FROM `bbc_user_push` WHERE `id`={$push_id}");
-	if (!empty($id))
+	$old = $db->getRow("SELECT * FROM `bbc_user_push` WHERE `id`={$push_id}");
+	if (!empty($old['id']))
 	{
-		$output = $db->Update('bbc_user_push', $input, $push_id);
+		if ($old['user_id'] != $user_id)
+		{
+			$db->Update('bbc_user_push_topic_list', ['user_id'=>$user_id], 'push_id='.$push_id);
+			alert_push_topic($push_id, $user_id, false, ['user_'.$old['user_id']]);
+		}
+		$output = $push_id;
+		$db->Update('bbc_user_push', $input, $push_id);
 	}else{
 		$output = $db->Insert('bbc_user_push', $input);
 	}
 	if ($output)
 	{
-		user_call_func(__FUNCTION__, $token, $user_id, $group_ids, $username, $output);
+		// panggil semua function alert_push_signup di semua module
+		user_call_func(__FUNCTION__, $token, $user_id, $group_ids, $username, $device, $os, $push_id, $output);
+		if (!empty($input['type']))
+		{
+			$GLOBALS['token'] = $token;
+			alert_push_topic($output, $user_id, true);
+		}
 	}
 	return $output;
+}
+
+// untuk mendaftarkan device ke topic yang dibutuhkan dan menyimpan di DB
+function alert_push_topic($push_id, $user_id, $is_subscribe=true, $topics=array())
+{
+	global $db, $token;
+	if ($is_subscribe)
+	{
+		/* JIKA user_id==0 berrti dia logout dan perlu unsubscribe kesemua kecuali userAll */
+		if ($user_id == 0)
+		{
+			$dels        = [];
+			$old_user_id = $db->getOne("SELECT `user_id` FROM `bbc_user_push_topic_list` WHERE `push_id`={$push_id} LIMIT 1");
+			if (!empty($old_user_id))
+			{
+				$dels[] = 'user_'.$old_user_id;
+			}
+			$topics = $db->getCol("SELECT t.`name` FROM `bbc_user_push_topic` AS t LEFT JOIN `bbc_user_push_topic_list` AS l on(t.`id`=l.`topic_id`) WHERE `push_id`={$push_id}");
+			foreach($topics as $topic)
+			{
+				if (!in_array($topic, $dels))
+				{
+					$dels[] = $topic;
+				}
+			}
+			$db->Execute("DELETE FROM `bbc_user_push_topic_list` WHERE `push_id`={$push_id}");
+			if (!empty($dels))
+			{
+				call_user_func_array(__FUNCTION__, [$push_id, $user_id, false, $dels]);
+			}
+		}else{
+			$topics['info'] = []; // function hook bs menambahkan info dengan menjadikan nama topic sebagai key nya
+			$topics[]       = 'userAll';
+			$topics[]       = 'user_'.$user_id;
+			$group          = $db->getOne("SELECT `group_ids` FROM `bbc_user_push` WHERE `id`={$push_id}");
+			$ids            = repairExplode($group);
+			foreach ($ids as $g_id)
+			{
+				$topics[] = 'group_'.$g_id;
+				if (empty($topics['info']['group_'.$g_id]))
+				{
+					$topics['info']['group_'.$g_id] = 'User group: '.$db->getOne("SELECT `name` FROM `bbc_user_group` WHERE `id`={$g_id}");
+				}
+			}
+			$mods           = user_modules();
+			foreach ($mods as $mod)
+			{
+				if (function_exists($mod.'_'.__FUNCTION__))
+				{
+					call_user_func_array($mod.'_'.__FUNCTION__, [$push_id, $user_id, $is_subscribe, &$topics]);
+				}
+			}
+			// list topic yg sudah terdaftar sblumnya
+			$listed = $db->getAll("SELECT t.`id`, t.`name`, t.`user_id`, l.`list_id` FROM `bbc_user_push_topic` AS t LEFT JOIN `bbc_user_push_topic_list` AS l ON(l.`topic_id`=t.`id`) WHERE l.`push_id`={$push_id} AND l.`user_id`={$user_id}");
+
+			$olds = [];
+			$news = [];
+			$dels = [];
+			/* HAPUS YG SUDAH TERDAFTAR JIKA TOPICS BARU GK ADA LAGI (SUDAH KELUAR DR GROUP DLL) */
+			foreach ($listed as $dt)
+			{
+				$olds[] = $dt['name'];
+				if (!in_array($dt['name'], $topics))
+				{
+					// jika topic adalah buatan admin maka pertahankan subscribe nya
+					if (!empty($dt['user_id']))
+					{
+						$news[] = $dt['name'];
+					}else{
+						$dels[] = $dt['name'];
+						$db->Execute("DELETE FROM `bbc_user_push_topic_list` WHERE `list_id`={$dt['list_id']}");
+					}
+				}
+			}
+
+			/* MASUKKAN DB JIKA BELUM ADA DI LISTED */
+			foreach ($topics as $topic)
+			{
+				if (!is_array($topic))
+				{
+					if (!in_array($topic, $olds))
+					{
+						if (!preg_match('~^user[_A]~s', $topic))
+						{
+							$dt = $db->getRow("SELECT * FROM `bbc_user_push_topic` WHERE `name`='{$topic}'");
+							if (empty($dt))
+							{
+								$dt = [
+									'id'   => $db->Insert('bbc_user_push_topic', ['name' => $topic, 'description' => @$topics['info'][$topic], 'user_id' => '0']),
+									'name' => $topic
+								];
+							}
+							$db->Insert('bbc_user_push_topic_list', ['push_id' => $push_id, 'topic_id' => $dt['id'], 'user_id' => $user_id]);
+						}
+					}
+				}
+			}
+			if (!empty($news))
+			{
+				$topics = array_merge($topics, $news);
+			}
+			unset($topics['info']);
+			_class('async')->run('alert_fcm_topic_subscribe', [$token, $topics]);
+			if (!empty($dels))
+			{
+				call_user_func_array(__FUNCTION__, [$push_id, $user_id, false, $dels]);
+			}
+		}
+	}else{
+		$mods = user_modules();
+		foreach ($mods as $mod)
+		{
+			if (function_exists($mod.'_'.__FUNCTION__))
+			{
+				call_user_func_array($mod.'_'.__FUNCTION__, [$push_id, $user_id, $is_subscribe, &$topics]);
+			}
+		}
+		_class('async')->run('alert_fcm_topic_unsubscribe', [$token, $topics]);
+	}
+}
+
+function alert_push_topic_delete($topic)
+{
+	global $db;
+	if (!empty($topic['id']))
+	{
+		$tokens = [];
+		$r_data = $db->getAll("SELECT l.`list_id`, p.`token` FROM `bbc_user_push_topic_list` AS l LEFT JOIN `bbc_user_push` AS p ON (p.`id`=l.`push_id`) WHERE l.`topic_id`={$topic['id']} ORDER BY l.`list_id` ASC LIMIT 0, 100");
+		if (!empty($r_data))
+		{
+			foreach ($r_data as $data)
+			{
+				$tokens[] = $data['token'];
+				$db->Execute("DELETE FROM `bbc_user_push_topic_list` WHERE `list_id`={$data['list_id']}");
+			}
+			alert_fcm_topic_unsubscribe($tokens, $topic['name']);
+			_class('async')->run(__FUNCTION__, [$topic]);
+		}else{
+			$db->Execute("DELETE FROM `bbc_user_push_topic` WHERE `id`={$topic['id']}");
+		}
+	}
+}
+
+function alert_fcm()
+{
+	global $Bbc;
+	if (empty($Bbc->fcm_client))
+	{
+		// https://console.firebase.google.com/project/bigbang-online/settings/cloudmessaging/android:com.esoftplay.devclient
+		// https://stackoverflow.com/questions/44261666/fcm-sender-id-or-fcm-server-key-are-invalid-in-laravel-brozot
+		$Bbc->fcm_client = new \Fcm\FcmClient(_FCM_SERVER_KEY, _FCM_SENDER_ID);
+		$output = $Bbc->fcm_client;
+	}else{
+		$output = $Bbc->fcm_client;
+	}
+	return $output;
+}
+
+function alert_fcm_subscribe($user_ids, $topic, $last_id = 0 )
+{
+	if (!empty($user_ids[$last_id]))
+	{
+		global $db;
+		$tokens = [];
+		$next   = 1;
+
+		for ($i=0; $i < 100; $i++)
+		{
+			if (isset($user_ids[$last_id]))
+			{
+				$id = $user_ids[$last_id];
+				if (is_numeric($id))
+				{
+					# check apakah user_id valid
+					$arr = $db->getAll("SELECT * FROM `bbc_user_push` WHERE `user_id`={$id} AND `type`=1");
+					if (!empty($arr))
+					{
+						foreach ($arr as $push)
+						{
+							# check apakah sudah ada di bbc_user_push_topic_list
+							$is_exists = $db->getOne("SELECT 1 FROM `bbc_user_push_topic_list` WHERE `push_id`={$push['id']} AND `topic_id`={$topic['id']} AND `user_id`={$id}");
+							if (!$is_exists)
+							{
+								# masukkan ke array tokens
+								$tokens[] = $push['token'];
+								$db->Insert('bbc_user_push_topic_list', [
+									'push_id'  => $push['id'],
+									'topic_id' => $topic['id'],
+									'user_id'  => $id
+								]);
+							}
+						}
+					}
+				}
+				$last_id++;
+			}else{
+				$next=0;
+				break;
+			}
+		}
+		if (!empty($tokens))
+		{
+			_class('async')->run('alert_fcm_topic_subscribe', [$tokens, $topic['name']]);
+		}
+		if ($next)
+		{
+			_class('async')->run(__FUNCTION__, [$user_ids, $topic, $last_id]);
+		}
+	}
+}
+
+function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
+{
+	 // JIKA YANG ARRAY ADALAH TOPICS
+	if (is_array($topics) && !empty($topics[$i]))
+	{
+		// https://php-fcm.readthedocs.io/en/latest/topic.html#subscribing-to-a-topic
+		$subscribe = new \Fcm\Topic\Subscribe($topics[$i]);
+		$subscribe->addDevice($tokens);
+		$log = alert_fcm()->send($subscribe);
+		// $log = alert_fcm()->topicSubscribe($topics[$i], $tokens);
+		// iLog([$log, $topics[$i], 'subscribe']);
+		$i++;
+		if (!empty($topics[$i]))
+		{
+			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
+		}
+	}else
+	 // JIKA YANG ARRAY ADALAH TOKEN
+	if (is_array($tokens) && !empty($tokens[$i]))
+	{
+		$subscribe = new \Fcm\Topic\Subscribe($topics);
+		for ($j=0; $j < 100; $j++)
+		{
+			if (!empty($tokens[$i]))
+			{
+				$subscribe->addDevice($tokens[$i]);
+				$i++;
+			}else{
+				break;
+			}
+		}
+		$log = alert_fcm()->send($subscribe);
+		// iLog([$log, $tokens[$i], 'subscribe']);
+		if (!empty($tokens[$i]))
+		{
+			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
+		}
+	}
+}
+
+function alert_fcm_topic_unsubscribe($tokens, $topics, $i=0)
+{
+	 // JIKA YANG ARRAY ADALAH TOPICS
+	if (is_array($topics) && !empty($topics[$i]))
+	{
+		// https://php-fcm.readthedocs.io/en/latest/topic.html#unsubscribing-from-a-topic
+		$subscribe = new \Fcm\Topic\Unsubscribe($topics[$i]);
+		$subscribe->addDevice($tokens);
+		$log = alert_fcm()->send($subscribe);
+		// $log = alert_fcm()->topicUnsubscribe($topics[$i], $tokens);
+		// iLog([$log, $topics[$i], 'unsubscribe']);
+		$i++;
+		if (!empty($topics[$i]))
+		{
+			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
+		}
+	}else
+	 // JIKA YANG ARRAY ADALAH TOKEN
+	if (is_array($tokens) && !empty($tokens[$i]))
+	{
+		$subscribe = new \Fcm\Topic\Unsubscribe($topics);
+		for ($j=0; $j < 100; $j++)
+		{
+			if (!empty($tokens[$i]))
+			{
+				$subscribe->addDevice($tokens[$i]);
+				$i++;
+			}else{
+				break;
+			}
+		}
+		$log = alert_fcm()->send($subscribe);
+		// iLog([$log, $tokens[$i], 'subscribe']);
+		if (!empty($tokens[$i]))
+		{
+			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
+		}
+	}
 }

@@ -2,6 +2,22 @@
 
 switch($_GET['act'])
 {
+	case 'fcm': // list topics
+		include 'fcm.php';
+		break;
+	case 'fcm_detail': // detail topics
+		include 'fcm_detail.php';
+		break;
+	case 'fcm_member': // member of topics
+		include 'fcm_member.php';
+		break;
+	case 'fcm_topic': // list topic by member
+		include 'fcm_topic.php';
+		break;
+	case 'fcm-activate':
+		include 'fcm-activate.php';
+		break;
+
 	case 'force2Logout':
 		include 'user-logout.php';
 		break;
@@ -26,7 +42,7 @@ switch($_GET['act'])
 	default:
 		include 'user-search.php';
 		include 'user-register.php';
-		// include 'user-form.php';
+		# // include 'user-form.php';
 		include 'user-create.php';
 		include 'user-list.php';
 		include 'user-display.php';
