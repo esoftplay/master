@@ -36,7 +36,7 @@ $form->roll->input->total->setDisplayFunction(function($topic_id) {
 
 $form->roll->addInput('description','sqlplaintext');
 $form->roll->input->description->setTitle('Info');
-$form->roll->input->description->setDisplayColumn(false);
+$form->roll->input->description->setDisplayColumn(true);
 
 $form->roll->addInput('user_id', 'selecttable');
 $form->roll->input->user_id->setTitle('Creator');
