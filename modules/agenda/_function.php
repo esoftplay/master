@@ -57,12 +57,3 @@ function agenda_calendar($year = 'none', $month = 'none')
 	$calendar = _class('calendar', $prefs);
 	return $calendar->generate($year, $month, $data);
 }
-
-function agenda_alert_push_topic($push_id, $user_id, $is_subscribe, &$topics)
-{
-	if ($is_subscribe)
-	{
-		$topics[] = 'percobaan';
-		$topics['info']['percobaan'] = 'ini hanya percobaan membuat topic saja';
-	}
-}
