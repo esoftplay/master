@@ -260,7 +260,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 	$group_id = 0;
 	$tos      = [];
 	// Jika 0 maka tidak akan dikirim
-	if ($to == 0)
+	if (is_numeric($to) && $to == 0)
 	{
 		return false;
 	}else
@@ -319,7 +319,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 				$ids[] = 0;
 				$tos[] = $to;
 			}else{
-				$topic_id = $db->getOne("SELECT `id` FROM `bbc_user_push_topic` WHERE `name`='{$topic}'");
+				$topic_id = $db->getOne("SELECT `id` FROM `bbc_user_push_topic` WHERE `name`='{$topic}' LIMIT 1");
 				if (!empty($topic_id))
 				{
 					$ids = $topic_id;
