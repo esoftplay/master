@@ -633,6 +633,7 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $os
 			$db->Update('bbc_user_push_topic_list', ['user_id'=>$user_id], 'push_id='.$push_id);
 			if (!empty($input['type']))
 			{
+				$GLOBALS['token'] = $token;
 				alert_push_topic($push_id, $user_id, false, ['user_'.$old['user_id']]);
 			}
 		}
