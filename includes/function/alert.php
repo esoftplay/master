@@ -252,6 +252,7 @@ $to:
 	- $user_id-$group_id = Integer dari field ID di table `bbc_user` dengan ID dari table `bbc_user_group`
 	- /topics/$topicname = akan mengirim user yg ada di table bbc_user_push_topic_list
 */
+require_once _INC.'vendor/autoload.php';
 function alert_push($to, $title, $message, $module = 'content', $arguments = array(), $action = 'default', $sending_id=0)
 {
 	global $db, $sys;
@@ -403,7 +404,7 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 			_class('async')->run(__FUNCTION__, [$ids, $data, $tos, $group_id, $sending_id, ++$last_id]);
 		}
 	}else
-	if ($last_id > 0 && !empty($tos))
+	if ($last_id > 0 && !empty($tos) && defined('_FCM_SENDER_ID'))
 	{
 		// https://php-fcm.readthedocs.io/en/latest/message.html#notification-sending-options
 		$notification = new \Fcm\Push\Notification();
@@ -630,7 +631,10 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $os
 		if ($old['user_id'] != $user_id)
 		{
 			$db->Update('bbc_user_push_topic_list', ['user_id'=>$user_id], 'push_id='.$push_id);
-			alert_push_topic($push_id, $user_id, false, ['user_'.$old['user_id']]);
+			if (!empty($input['type']))
+			{
+				alert_push_topic($push_id, $user_id, false, ['user_'.$old['user_id']]);
+			}
 		}
 		$output = $push_id;
 		$db->Update('bbc_user_push', $input, $push_id);
@@ -868,7 +872,6 @@ function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
 		$subscribe = new \Fcm\Topic\Subscribe($topics[$i]);
 		$subscribe->addDevice($tokens);
 		$log = alert_fcm()->send($subscribe);
-		// $log = alert_fcm()->topicSubscribe($topics[$i], $tokens);
 		// iLog([$log, $topics[$i], 'subscribe']);
 		$i++;
 		if (!empty($topics[$i]))
@@ -908,7 +911,6 @@ function alert_fcm_topic_unsubscribe($tokens, $topics, $i=0)
 		$subscribe = new \Fcm\Topic\Unsubscribe($topics[$i]);
 		$subscribe->addDevice($tokens);
 		$log = alert_fcm()->send($subscribe);
-		// $log = alert_fcm()->topicUnsubscribe($topics[$i], $tokens);
 		// iLog([$log, $topics[$i], 'unsubscribe']);
 		$i++;
 		if (!empty($topics[$i]))

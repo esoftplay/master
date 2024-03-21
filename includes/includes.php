@@ -1,6 +1,5 @@
 <?php  if ( ! defined('_VALID_BBC')) exit('No direct script access allowed');
 
-require_once 'vendor/autoload.php';
 if (!defined('_ROOT')) define('_INC'		, dirname(__FILE__).'/');
 else	define('_INC'		, _ROOT.'includes/');
 define('_CLASS'	, _INC.'class/');
