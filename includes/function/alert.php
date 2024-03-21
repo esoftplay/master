@@ -252,7 +252,6 @@ $to:
 	- $user_id-$group_id = Integer dari field ID di table `bbc_user` dengan ID dari table `bbc_user_group`
 	- /topics/$topicname = akan mengirim user yg ada di table bbc_user_push_topic_list
 */
-require_once _INC.'vendor/autoload.php';
 function alert_push($to, $title, $message, $module = 'content', $arguments = array(), $action = 'default', $sending_id=0)
 {
 	global $db, $sys;
@@ -369,13 +368,16 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 
 function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id = 0)
 {
-	global $db;
+	global $db, $sys;
 	$out = 0;
 	$id  = null;
 	// jika $ids berisi array maka itu adalah kumpulan id dr user_id
-	if (is_array($ids) && isset($ids[$last_id]))
+	if (is_array($ids))
 	{
-		$id = $ids[$last_id];
+		if (isset($ids[$last_id]))
+		{
+			$id = $ids[$last_id];
+		}
 	}else{
 		// jika $ids berisi integer maka itu adalah topic_id
 		$i = $db->getOne("SELECT `user_id` FROM `bbc_user_push_topic_list` WHERE `topic_id`={$ids} LIMIT {$last_id}, 1");
@@ -404,27 +406,46 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 			_class('async')->run(__FUNCTION__, [$ids, $data, $tos, $group_id, $sending_id, ++$last_id]);
 		}
 	}else
-	if ($last_id > 0 && !empty($tos) && defined('_FCM_SENDER_ID'))
+	if ($last_id > 0 && !empty($tos))
 	{
-		// https://php-fcm.readthedocs.io/en/latest/message.html#notification-sending-options
-		$notification = new \Fcm\Push\Notification();
-		$notification
-			->setTitle($data['title'])
-			->setBody($data['message'])
-			->setSound("default")
-			->setIcon("ic_notification")
-			->setBadge(11);
-		foreach ($tos as $to)
+		if (defined('_FCM_SENDER_ID'))
 		{
-			$notification->addRecipient($to);
+			// https://php-fcm.readthedocs.io/en/latest/message.html#notification-sending-options
+			$url  = 'https://fcm.googleapis.com/fcm/send';
+			$post = array(
+				'to'           => [],
+				'data'         => [],
+				'notification' => [
+					'title'    => $data['title'],
+					'body'     => $data['message'],
+					'sound'    => 'default',
+					'icon'     => 'ic_notification',
+					'color'    => '',
+					'tag'      => '',
+					'subtitle' => '',
+					'badge'    => 11
+				]
+			);
+			foreach ($tos as $to)
+			{
+				$post['to'][] = $to;
+			}
+			$post['to'] = implode(',', $post['to']);
+
+			$params = json_decode($data['params'], 1);
+			foreach ($params as $key => $value)
+			{
+				$post['data'][$key] = $value;
+			}
+			$header = array(
+				'CURLOPT_HTTPHEADER' => array(
+					'Authorization: key='._FCM_SERVER_KEY,
+					'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8')
+				);
+			$output = $sys->curl($url, json_encode($post), $header);
+			// iLog([$output]);
 		}
-		$params = json_decode($data['params'], 1);
-		foreach ($params as $key => $value)
-		{
-			$notification->addData($key, $value);
-		}
-		$out = alert_fcm()->send($notification);
-		// iLog([$notification, $tos, $out]);
+
 		if (!empty($sending_id))
 		{
 			$db->Execute("UPDATE `bbc_user_push_sending` SET `status`=1 WHERE `id`={$sending_id}");
@@ -796,21 +817,6 @@ function alert_push_topic_delete($topic)
 	}
 }
 
-function alert_fcm()
-{
-	global $Bbc;
-	if (empty($Bbc->fcm_client))
-	{
-		// https://console.firebase.google.com/project/bigbang-online/settings/cloudmessaging/android:com.esoftplay.devclient
-		// https://stackoverflow.com/questions/44261666/fcm-sender-id-or-fcm-server-key-are-invalid-in-laravel-brozot
-		$Bbc->fcm_client = new \Fcm\FcmClient(_FCM_SERVER_KEY, _FCM_SENDER_ID);
-		$output = $Bbc->fcm_client;
-	}else{
-		$output = $Bbc->fcm_client;
-	}
-	return $output;
-}
-
 function alert_fcm_subscribe($user_ids, $topic, $last_id = 0 )
 {
 	if (!empty($user_ids[$last_id]))
@@ -866,14 +872,24 @@ function alert_fcm_subscribe($user_ids, $topic, $last_id = 0 )
 
 function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
 {
+	global $sys;
+	$log    = '';
+	$url    = 'https://iid.googleapis.com/iid/v1:batchAdd';
+	$header = array(
+		'CURLOPT_HTTPHEADER' => array(
+			'Authorization: key='._FCM_SERVER_KEY,
+			 'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8'
+			)
+	);
 	 // JIKA YANG ARRAY ADALAH TOPICS
 	if (is_array($topics) && !empty($topics[$i]))
 	{
 		// https://php-fcm.readthedocs.io/en/latest/topic.html#subscribing-to-a-topic
-		$subscribe = new \Fcm\Topic\Subscribe($topics[$i]);
-		$subscribe->addDevice($tokens);
-		$log = alert_fcm()->send($subscribe);
-		// iLog([$log, $topics[$i], 'subscribe']);
+		$post = array(
+			'to'                  => '/topics/'.$topics[$i],
+			'registration_tokens' => $tokens
+			);
+		$log = $sys->curl($url, json_encode($post), $header);
 		$i++;
 		if (!empty($topics[$i]))
 		{
@@ -883,36 +899,52 @@ function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
 	 // JIKA YANG ARRAY ADALAH TOKEN
 	if (is_array($tokens) && !empty($tokens[$i]))
 	{
-		$subscribe = new \Fcm\Topic\Subscribe($topics);
+		$post = array(
+			'to'                  => '/topics/'.$topics,
+			'registration_tokens' => []
+			);
 		for ($j=0; $j < 100; $j++)
 		{
 			if (!empty($tokens[$i]))
 			{
-				$subscribe->addDevice($tokens[$i]);
+				$post['registration_tokens'][] = $tokens[$i];
 				$i++;
 			}else{
 				break;
 			}
 		}
-		$log = alert_fcm()->send($subscribe);
-		// iLog([$log, $tokens[$i], 'subscribe']);
+		$log = $sys->curl($url, json_encode($post), $header);
 		if (!empty($tokens[$i]))
 		{
 			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
 		}
 	}
+	if (!empty($log))
+	{
+		// iLog([$log, $post, 'subscribe']);
+	}
 }
 
 function alert_fcm_topic_unsubscribe($tokens, $topics, $i=0)
 {
+	global $sys;
+	$log    = '';
+	$url    = 'https://iid.googleapis.com/iid/v1:batchRemove';
+	$header = array(
+		'CURLOPT_HTTPHEADER' => array(
+			'Authorization: key='._FCM_SERVER_KEY,
+			 'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8'
+			)
+	);
 	 // JIKA YANG ARRAY ADALAH TOPICS
 	if (is_array($topics) && !empty($topics[$i]))
 	{
 		// https://php-fcm.readthedocs.io/en/latest/topic.html#unsubscribing-from-a-topic
-		$subscribe = new \Fcm\Topic\Unsubscribe($topics[$i]);
-		$subscribe->addDevice($tokens);
-		$log = alert_fcm()->send($subscribe);
-		// iLog([$log, $topics[$i], 'unsubscribe']);
+		$post = array(
+			'to'                  => '/topics/'.$topics[$i],
+			'registration_tokens' => $tokens
+			);
+		$log = $sys->curl($url, json_encode($post), $header);
 		$i++;
 		if (!empty($topics[$i]))
 		{
@@ -922,22 +954,28 @@ function alert_fcm_topic_unsubscribe($tokens, $topics, $i=0)
 	 // JIKA YANG ARRAY ADALAH TOKEN
 	if (is_array($tokens) && !empty($tokens[$i]))
 	{
-		$subscribe = new \Fcm\Topic\Unsubscribe($topics);
+		$post = array(
+			'to'                  => '/topics/'.$topics,
+			'registration_tokens' => []
+			);
 		for ($j=0; $j < 100; $j++)
 		{
 			if (!empty($tokens[$i]))
 			{
-				$subscribe->addDevice($tokens[$i]);
+				$post['registration_tokens'][] = $tokens[$i];
 				$i++;
 			}else{
 				break;
 			}
 		}
-		$log = alert_fcm()->send($subscribe);
-		// iLog([$log, $tokens[$i], 'subscribe']);
+		$log = $sys->curl($url, json_encode($post), $header);
 		if (!empty($tokens[$i]))
 		{
 			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
 		}
+	}
+	if (!empty($log))
+	{
+		// iLog([$log, $post, 'unsubscribe']);
 	}
 }
