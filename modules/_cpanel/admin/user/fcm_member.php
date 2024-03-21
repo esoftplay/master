@@ -19,11 +19,11 @@ if (!empty($group['id']))
 	$form->roll->addInput('header', 'header');
 	$form->roll->input->header->setTitle('Member of '.$group['name']);
 
-	$form->roll->addInput('user_id', 'selecttable');
-	$form->roll->input->user_id->setTitle('Username');
-	$form->roll->input->user_id->setReferenceTable('bbc_user');
-	$form->roll->input->user_id->setReferenceField( 'username', 'id' );
-	$form->roll->input->user_id->setPlaintext(true);
+	$form->roll->addInput('push_id', 'selecttable');
+	$form->roll->input->push_id->setTitle('Username');
+	$form->roll->input->push_id->setReferenceTable('bbc_user_push');
+	$form->roll->input->push_id->setReferenceField( 'CONCAT(username, " (",device,")")', 'id' );
+	$form->roll->input->push_id->setPlaintext(true);
 
 	$form->roll->onDelete('_cpanel_user_fcm_member_delete');
 	echo $form->roll->getForm();

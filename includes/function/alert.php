@@ -333,7 +333,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 		// Jika mengirim notif ke username tertentu
 		if (is_email($to))
 		{
-				$id = $db->getOne("SELECT `user_id` FROM `bbc_account` WHERE `email`='{$to}'");
+				$id = $db->getOne("SELECT `id` FROM `bbc_user` WHERE `username`='{$to}' LIMIT 1");
 				if (!empty($id))
 				{
 					$ids[] = $id;
@@ -356,7 +356,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 				array(
 					'action'    => $action,
 					'module'    => $module,
-					'arguments' => $arguments
+					'arguments' => !empty($arguments) ? $arguments : ''
 					)
 				)
 			);
@@ -872,110 +872,116 @@ function alert_fcm_subscribe($user_ids, $topic, $last_id = 0 )
 
 function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
 {
-	global $sys;
-	$log    = '';
-	$url    = 'https://iid.googleapis.com/iid/v1:batchAdd';
-	$header = array(
-		'CURLOPT_HTTPHEADER' => array(
-			'Authorization: key='._FCM_SERVER_KEY,
-			 'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8'
-			)
-	);
-	 // JIKA YANG ARRAY ADALAH TOPICS
-	if (is_array($topics) && !empty($topics[$i]))
+	if (defined('_FCM_SENDER_ID'))
 	{
-		// https://php-fcm.readthedocs.io/en/latest/topic.html#subscribing-to-a-topic
-		$post = array(
-			'to'                  => '/topics/'.$topics[$i],
-			'registration_tokens' => $tokens
-			);
-		$log = $sys->curl($url, json_encode($post), $header);
-		$i++;
-		if (!empty($topics[$i]))
+		global $sys;
+		$log    = '';
+		$url    = 'https://iid.googleapis.com/iid/v1:batchAdd';
+		$header = array(
+			'CURLOPT_HTTPHEADER' => array(
+				'Authorization: key='._FCM_SERVER_KEY,
+				 'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8'
+				)
+		);
+		 // JIKA YANG ARRAY ADALAH TOPICS
+		if (is_array($topics) && !empty($topics[$i]))
 		{
-			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
-		}
-	}else
-	 // JIKA YANG ARRAY ADALAH TOKEN
-	if (is_array($tokens) && !empty($tokens[$i]))
-	{
-		$post = array(
-			'to'                  => '/topics/'.$topics,
-			'registration_tokens' => []
-			);
-		for ($j=0; $j < 100; $j++)
+			// https://php-fcm.readthedocs.io/en/latest/topic.html#subscribing-to-a-topic
+			$post = array(
+				'to'                  => '/topics/'.$topics[$i],
+				'registration_tokens' => $tokens
+				);
+			$log = $sys->curl($url, json_encode($post), $header);
+			$i++;
+			if (!empty($topics[$i]))
+			{
+				_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
+			}
+		}else
+		 // JIKA YANG ARRAY ADALAH TOKEN
+		if (is_array($tokens) && !empty($tokens[$i]))
 		{
+			$post = array(
+				'to'                  => '/topics/'.$topics,
+				'registration_tokens' => []
+				);
+			for ($j=0; $j < 100; $j++)
+			{
+				if (!empty($tokens[$i]))
+				{
+					$post['registration_tokens'][] = $tokens[$i];
+					$i++;
+				}else{
+					break;
+				}
+			}
+			$log = $sys->curl($url, json_encode($post), $header);
 			if (!empty($tokens[$i]))
 			{
-				$post['registration_tokens'][] = $tokens[$i];
-				$i++;
-			}else{
-				break;
+				_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
 			}
 		}
-		$log = $sys->curl($url, json_encode($post), $header);
-		if (!empty($tokens[$i]))
+		if (!empty($log))
 		{
-			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
+			// iLog([$log, $post, 'subscribe']);
 		}
-	}
-	if (!empty($log))
-	{
-		// iLog([$log, $post, 'subscribe']);
 	}
 }
 
 function alert_fcm_topic_unsubscribe($tokens, $topics, $i=0)
 {
-	global $sys;
-	$log    = '';
-	$url    = 'https://iid.googleapis.com/iid/v1:batchRemove';
-	$header = array(
-		'CURLOPT_HTTPHEADER' => array(
-			'Authorization: key='._FCM_SERVER_KEY,
-			 'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8'
-			)
-	);
-	 // JIKA YANG ARRAY ADALAH TOPICS
-	if (is_array($topics) && !empty($topics[$i]))
+	if (defined('_FCM_SENDER_ID'))
 	{
-		// https://php-fcm.readthedocs.io/en/latest/topic.html#unsubscribing-from-a-topic
-		$post = array(
-			'to'                  => '/topics/'.$topics[$i],
-			'registration_tokens' => $tokens
-			);
-		$log = $sys->curl($url, json_encode($post), $header);
-		$i++;
-		if (!empty($topics[$i]))
+		global $sys;
+		$log    = '';
+		$url    = 'https://iid.googleapis.com/iid/v1:batchRemove';
+		$header = array(
+			'CURLOPT_HTTPHEADER' => array(
+				'Authorization: key='._FCM_SERVER_KEY,
+				 'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8'
+				)
+		);
+		 // JIKA YANG ARRAY ADALAH TOPICS
+		if (is_array($topics) && !empty($topics[$i]))
 		{
-			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
-		}
-	}else
-	 // JIKA YANG ARRAY ADALAH TOKEN
-	if (is_array($tokens) && !empty($tokens[$i]))
-	{
-		$post = array(
-			'to'                  => '/topics/'.$topics,
-			'registration_tokens' => []
-			);
-		for ($j=0; $j < 100; $j++)
+			// https://php-fcm.readthedocs.io/en/latest/topic.html#unsubscribing-from-a-topic
+			$post = array(
+				'to'                  => '/topics/'.$topics[$i],
+				'registration_tokens' => $tokens
+				);
+			$log = $sys->curl($url, json_encode($post), $header);
+			$i++;
+			if (!empty($topics[$i]))
+			{
+				_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
+			}
+		}else
+		 // JIKA YANG ARRAY ADALAH TOKEN
+		if (is_array($tokens) && !empty($tokens[$i]))
 		{
+			$post = array(
+				'to'                  => '/topics/'.$topics,
+				'registration_tokens' => []
+				);
+			for ($j=0; $j < 100; $j++)
+			{
+				if (!empty($tokens[$i]))
+				{
+					$post['registration_tokens'][] = $tokens[$i];
+					$i++;
+				}else{
+					break;
+				}
+			}
+			$log = $sys->curl($url, json_encode($post), $header);
 			if (!empty($tokens[$i]))
 			{
-				$post['registration_tokens'][] = $tokens[$i];
-				$i++;
-			}else{
-				break;
+				_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
 			}
 		}
-		$log = $sys->curl($url, json_encode($post), $header);
-		if (!empty($tokens[$i]))
+		if (!empty($log))
 		{
-			_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
+			// iLog([$log, $post, 'unsubscribe']);
 		}
-	}
-	if (!empty($log))
-	{
-		// iLog([$log, $post, 'unsubscribe']);
 	}
 }
