@@ -412,10 +412,10 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 		if (defined('_FCM_SENDER_ID'))
 		{
 			// https://php-fcm.readthedocs.io/en/latest/message.html#notification-sending-options
-			$url  = 'https://fcm.googleapis.com/fcm/send';
 			// $url  = 'https://fcm.googleapis.com/v1/projects/'._FCM_PROJECT_ID.'/messages:send';
+			$url  = 'https://fcm.googleapis.com/fcm/send';
 			$post = array(
-				'to'           => [],
+				'to'           => '',
 				'data'         => [],
 				'notification' => [
 					'title'    => $data['title'],
@@ -428,25 +428,35 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 					'badge'    => 11
 				]
 			);
-			foreach ($tos as $to)
-			{
-				$post['to'][] = $to;
-			}
-			$post['to'] = implode(',', $post['to']);
-
-			$params = json_decode($data['params'], 1);
-			foreach ($params as $key => $value)
-			{
-				$post['data'][$key] = $value;
-			}
 			$header = array(
 				'CURLOPT_HTTPHEADER' => array(
 					// 'Authorization: Bearer '._FCM_SERVER_KEY,
 					'Authorization: key='._FCM_SERVER_KEY,
 					'Content-Type: application/json')
 				);
-			$output = $sys->curl($url, json_encode($post), $header);
-			// iLog([$output, $post]);
+			$params = json_decode($data['params'], 1);
+			foreach ($params as $key => $value)
+			{
+				$post['data'][$key] = $value;
+			}
+			foreach ($tos as $to)
+			{
+				$msg       = $post;
+				$msg['to'] = $to;
+				$output    = json_decode($sys->curl($url, json_encode($msg), $header), 1);
+				// iLog($output, $msg);
+				// {"multicast_id":4945943626783652948,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
+				if (!empty($output['results']))
+				{
+					if (!empty($output['results'][0]))
+					{
+						if (empty($output['results'][0]['message_id']))
+						{
+							$db->Execute("DELETE FROM `bbc_user_push` WHERE `token`='{$to}' AND `type`=1");
+						}
+					}
+				}
+			}
 		}
 
 		if (!empty($sending_id))
