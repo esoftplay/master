@@ -623,6 +623,7 @@ function alert_push_send($id, $last_id=0)
 function alert_push_signup($token, $user_id, $group_ids, $username, $device, $os, $push_id = 0)
 {
 	global $db;
+	$topics = [];
 	if (!empty($group_ids))
 	{
 		if (!is_array($group_ids))
@@ -670,14 +671,18 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $os
 		if (!empty($input['type']))
 		{
 			$GLOBALS['token'] = $token;
-			alert_push_topic($output, $user_id, true);
+			alert_push_topic($output, $user_id, true, $topics);
 		}
+		$output = [
+			'push_id' => $output,
+			'topics'  => $topics
+		];
 	}
 	return $output;
 }
 
 // untuk mendaftarkan device ke topic yang dibutuhkan dan menyimpan di DB
-function alert_push_topic($push_id, $user_id, $is_subscribe=true, $topics=array())
+function alert_push_topic($push_id, $user_id, $is_subscribe=true, &$topics=array())
 {
 	global $db, $token;
 	if ($is_subscribe)
@@ -776,7 +781,7 @@ function alert_push_topic($push_id, $user_id, $is_subscribe=true, $topics=array(
 				$topics = array_merge($topics, $news);
 			}
 			unset($topics['info']);
-			_class('async')->run('alert_fcm_topic_subscribe', [$token, $topics]);
+			// _class('async')->run('alert_fcm_topic_subscribe', [$token, $topics]);
 			if (!empty($dels))
 			{
 				call_user_func_array(__FUNCTION__, [$push_id, $user_id, false, $dels]);
@@ -791,7 +796,7 @@ function alert_push_topic($push_id, $user_id, $is_subscribe=true, $topics=array(
 				call_user_func_array($mod.'_'.__FUNCTION__, [$push_id, $user_id, $is_subscribe, &$topics]);
 			}
 		}
-		_class('async')->run('alert_fcm_topic_unsubscribe', [$token, $topics]);
+		// _class('async')->run('alert_fcm_topic_unsubscribe', [$token, $topics]);
 	}
 }
 

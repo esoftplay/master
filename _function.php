@@ -362,11 +362,11 @@ function ids(&$ids, $out_array = false)
 	if(empty($ids))
 	{
 		$ids = (!$out_array) ? '' : array();
-		return false;
+		return $ids;
 	}
 	$ids = is_array($ids) ? $ids : array($ids);
 	if(!$out_array) $ids = implode(',', $ids);
-	return true;
+	return $ids;
 }
 function parseToArray($r_select, $r_all)
 {
