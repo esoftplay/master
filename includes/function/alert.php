@@ -360,6 +360,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 					)
 				)
 			);
+		// iLog([$ids, $data, $tos, $group_id, $sending_id]);
 		_alert_push_insert($ids, $data, $tos, $group_id, $sending_id);
 		$out = true;
 	}
@@ -412,6 +413,7 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 		{
 			// https://php-fcm.readthedocs.io/en/latest/message.html#notification-sending-options
 			$url  = 'https://fcm.googleapis.com/fcm/send';
+			// $url  = 'https://fcm.googleapis.com/v1/projects/'._FCM_PROJECT_ID.'/messages:send';
 			$post = array(
 				'to'           => [],
 				'data'         => [],
@@ -439,11 +441,12 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 			}
 			$header = array(
 				'CURLOPT_HTTPHEADER' => array(
+					// 'Authorization: Bearer '._FCM_SERVER_KEY,
 					'Authorization: key='._FCM_SERVER_KEY,
-					'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8')
+					'Content-Type: application/json')
 				);
 			$output = $sys->curl($url, json_encode($post), $header);
-			// iLog([$output]);
+			// iLog([$output, $post]);
 		}
 
 		if (!empty($sending_id))
@@ -988,6 +991,34 @@ function alert_fcm_topic_unsubscribe($tokens, $topics, $i=0)
 		if (!empty($log))
 		{
 			// iLog([$log, $post, 'unsubscribe']);
+		}
+	}
+}
+
+function alert_fcm_verify($limit=1000, $i=0)
+{
+	global $db;
+	if ($limit > $i && defined('_FCM_SERVER_KEY'))
+	{
+		$data = $db->getRow("SELECT * FROM `bbc_user_push` WHERE `type`=1 AND `updated` < '".date('Y-m-d H:i:s', strtotime('-3 MONTHS'))."' ORDER BY `updated` ASC LIMIT 1");
+		if (!empty($data))
+		{
+			// https://developers.google.com/instance-id/reference/server#example_get_request
+			$url    = 'https://iid.googleapis.com/iid/info/'.$data['token'];
+			$header = array(
+				'CURLOPT_HTTPHEADER' => array(
+					'Authorization: Bearer '._FCM_SERVER_KEY,
+					'access_token_auth: true ',
+					'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8')
+				);
+			$output = $sys->curl($url, [], $header);
+			$output = json_decode($output, 1);
+			if (empty($output['authorizedEntity']))
+			{
+				$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$data['id']}");
+			}
+			$i++;
+			_class('async')->run(__FUNCTION__, [$limit, $i]);
 		}
 	}
 }
