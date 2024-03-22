@@ -286,7 +286,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 			return false;
 		}else{
 			$ids[]    = $to;
-			$push_ids = $db->getCol("SELECT `token` FROM `bbc_user_push` WHERE `user_id`={$m[1]} AND `type`=1 AND `group_ids`=',{$m[2]},'");
+			$push_ids = $db->getCol("SELECT `token` FROM `bbc_user_push` WHERE `user_id`={$m[1]} AND `type`=1 AND `group_ids` LIKE '%,{$m[2]},%'");
 			if (!empty($push_ids))
 			{
 				$tos = $push_ids;
