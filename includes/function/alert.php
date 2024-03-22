@@ -656,7 +656,8 @@ function alert_push_signup($token, $user_id, $group_ids, $username, $device, $os
 			if (!empty($input['type']))
 			{
 				$GLOBALS['token'] = $token;
-				alert_push_topic($push_id, $user_id, false, ['user_'.$old['user_id']]);
+				$unsubs = ['user_'.$old['user_id']];
+				alert_push_topic($push_id, $user_id, false, $unsubs);
 			}
 		}
 		$output = $push_id;
