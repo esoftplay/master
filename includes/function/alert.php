@@ -1072,6 +1072,8 @@ function alert_fcm_verify($limit=1000, $i=0)
 			if (empty($output['authorizedEntity']) && !empty($output['error']))
 			{
 				$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$data['id']}");
+			}else{
+				$db->Update('bbc_user_push', ['updated' => date('Y-m-d H:i:s')], $data['id']);
 			}
 			$i++;
 			_class('async')->run(__FUNCTION__, [$limit, $i]);
