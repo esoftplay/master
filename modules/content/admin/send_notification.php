@@ -2,7 +2,7 @@
 
 if (!defined('_FCM_SENDER_ID'))
 {
-	echo msg('it looks like you don\'t have any users in your mobile app or simply you have no integrated mobile app. Make sure you have constant variables _FCM_SENDER_ID and _FCM_SERVER_KEY in the config', 'danger');
+	echo msg('it looks like you don\'t have any users in your mobile app or simply you have no integrated mobile app. Make sure you have constant variables _FCM_SENDER_ID and _FCM_SERVER_JSON in the config', 'danger');
 }else{
 	$tables = $db->getCol("SHOW TABLES LIKE 'bbc_user_push%'");
 	if (!in_array('bbc_user_push_topic_list', $tables))

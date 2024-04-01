@@ -4,15 +4,18 @@ $sys->nav_add('Activate mobile notification');
 
 if (!defined('_FCM_SENDER_ID'))
 {
-	echo msg('Make sure you have constant variables _FCM_SENDER_ID and _FCM_SERVER_KEY in the config.<br />
-	         here you can do:
-	         <ul>
-		         <li>got to <a href="https://console.firebase.google.com/" target="_blank">firebase console</a></li>
-		         <li>select project you want to setup</li>
-		         <li>go to project setting</li>
-		         <li>click tab "Cloud Messaging"</li>
-		         </ul>
-		         <img src="https://i.stack.imgur.com/cZ1Sj.png" class="img-responsive" alt="Image">', 'danger');
+	echo msg('Make sure you have constant variables _FCM_SENDER_ID and _FCM_SERVER_JSON in the config.<br />
+	         to get <b>_FCM_SENDER_ID</b> here you can do:
+					<ul>
+						<li>go to <a href="https://console.firebase.google.com/" target="_blank">firebase console</a></li>
+						<li>select project you want to setup</li>
+						<li>go to project setting</li>
+						<li>click tab "Cloud Messaging"</li>
+						<li><img src="https://i.ibb.co/1T9b4wD/Screenshot-2024-04-01-at-15-21-20.png" class="img-responsive" /></li>
+					</ul>
+					to get <b>_FCM_SERVER_JSON</b> you can
+					<a href="https://stackoverflow.com/questions/46287267/how-can-i-get-the-file-service-account-json-for-google-translate-api" target="_blank">click here</a>
+					and copy the content as constant variable', 'danger');
 }else{
 	$tables = $db->getCol("SHOW TABLES LIKE 'bbc_user_push%'");
 	if (in_array('bbc_user_push_topic_list', $tables))

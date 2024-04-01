@@ -1,5 +1,10 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
+if (!defined('_FCM_SENDER_ID') || !defined('_FCM_SERVER_JSON'))
+{
+	redirect('index.php?mod=_cpanel.user&act=fcm-activate');
+}
+
 $tabs = [
 	'Sending Message' => '',
 	'List Topic'      => '',

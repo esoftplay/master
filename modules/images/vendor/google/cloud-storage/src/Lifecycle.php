@@ -26,8 +26,8 @@ use Google\Cloud\Core\Timestamp;
  *
  * This builder does not execute any network requests and is intended to be used
  * in combination with either
- * {@see Google\Cloud\Storage\StorageClient::createBucket()}
- * or {@see Google\Cloud\Storage\Bucket::update()}.
+ * {@see StorageClient::createBucket()}
+ * or {@see Bucket::update()}.
  *
  * Example:
  * ```
@@ -120,6 +120,10 @@ class Lifecycle implements \ArrayAccess, \IteratorAggregate
      *           the value is N, this condition is satisfied when there are at
      *           least N versions (including the live version) newer than this
      *           version of the object.
+     *     @type string[] $matchesPrefix Objects having names which start with
+     *           values specified by this condition will be matched.
+     *     @type string[] $matchesSuffix Objects having names which end with
+     *           values specified by this condition will be matched.
      * }
      * @return Lifecycle
      */
@@ -210,6 +214,10 @@ class Lifecycle implements \ArrayAccess, \IteratorAggregate
      *           the value is N, this condition is satisfied when there are at
      *           least N versions (including the live version) newer than this
      *           version of the object.
+     *     @type string[] $matchesPrefix Objects having names which start with
+     *           values specified by this condition will be matched.
+     *     @type string[] $matchesSuffix Objects having names which end with
+     *           values specified by this condition will be matched.
      * }
      * @return Lifecycle
      */

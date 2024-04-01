@@ -51,6 +51,16 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 						'message' => 'success',
 						'result'  => $out
 						);
+					// HAPUS TOKEN 1000 TOKEN LAMA YG GK KEPAKAI
+					$path = _ROOT.'images/token_delete.log';
+					$json = @json_decode(file_read($path), 1);
+					$date = date('Y-m-d');
+					if (empty($json[$date]))
+					{
+						$json = [$date => 1];
+						file_write($path, json_encode($json));
+						alert_fcm_verify();
+					}
 				}else{
 					// $output['message'] = 'tidak ada output di "alert_push_signup":'.pr($out, 1);
 				}

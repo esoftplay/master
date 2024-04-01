@@ -348,17 +348,22 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 		$title   = strip_tags($title);
 		$message = strip_tags($message, '<br>');
 		$message = preg_replace('~<br(?:\s+?/?)?>~is', "\n", $message);
-		$data    = array(
+		$params  = [
+			'action' => $action,
+			'module' => $module
+		];
+		if (!empty($arguments))
+		{
+			foreach ($arguments as $key => $value)
+			{
+				$params[$key] = $value;
+			}
+		}
+		$data = array(
 			'title'   => $title,
 			'message' => $message,
 			'status'  => 0,
-			'params'  => json_encode(
-				array(
-					'action'    => $action,
-					'module'    => $module,
-					'arguments' => !empty($arguments) ? $arguments : ''
-					)
-				)
+			'params'  => json_encode($params)
 			);
 		// iLog([$ids, $data, $tos, $group_id, $sending_id]);
 		_alert_push_insert($ids, $data, $tos, $group_id, $sending_id);
@@ -409,56 +414,65 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 	}else
 	if ($last_id > 0 && !empty($tos))
 	{
-		if (defined('_FCM_SENDER_ID'))
+		if (defined('_FCM_SENDER_ID') && defined('_FCM_SERVER_JSON'))
 		{
 			// https://php-fcm.readthedocs.io/en/latest/message.html#notification-sending-options
-			// $url  = 'https://fcm.googleapis.com/v1/projects/'._FCM_PROJECT_ID.'/messages:send';
-			$url  = 'https://fcm.googleapis.com/fcm/send';
-			$post = array(
-				'to'           => '',
-				'data'         => [],
-				'notification' => [
-					'title'    => $data['title'],
-					'body'     => $data['message'],
-					'sound'    => 'default',
-					'icon'     => 'ic_notification',
-					'color'    => '',
-					'tag'      => '',
-					'subtitle' => '',
-					'badge'    => 11
-				]
-			);
-			$header = array(
-				'CURLOPT_HTTPHEADER' => array(
-					// 'Authorization: Bearer '._FCM_SERVER_KEY,
-					'Authorization: key='._FCM_SERVER_KEY,
-					'Content-Type: application/json')
-				);
+			$url    = 'https://fcm.googleapis.com/v1/projects/'.alert_fcm('project_id').'/messages:send';
 			$params = json_decode($data['params'], 1);
+			$args   = [];
 			foreach ($params as $key => $value)
 			{
-				$post['data'][$key] = $value;
+				$args[$key] = $value;
+			}
+			$post = [
+				'message' => [
+					'notification' => [
+						'title'    => $data['title'],
+						'body'     => $data['message'],
+					],
+					'android' => [
+						'notification' => [
+							'sound' => !empty($args['sound']) ? $args['sound'] : 'default'
+						]
+					],
+					'apns' => [
+						'payload' => [
+							'aps' => [
+								'sound' => !empty($args['sound']) ? $args['sound'] : 'default'
+							]
+						]
+					],
+					'data' => $args
+				]
+			];
+			$header = array(
+				'CURLOPT_HTTPHEADER' => array(
+					'Authorization: Bearer '.alert_fcm_token(),
+					'Content-Type: application/json')
+				);
+			if (empty($post['message']['data']))
+			{
+				unset($post['message']['data']);
 			}
 			foreach ($tos as $to)
 			{
-				$msg       = $post;
-				$msg['to'] = $to;
-				$output    = json_decode($sys->curl($url, json_encode($msg), $header), 1);
-				// iLog($output, $msg);
-				// {"multicast_id":4945943626783652948,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"InvalidRegistration"}]}
-				if (!empty($output['results']))
+				$msg = [];
+				if (substr($to, 0, 8) == '/topics/')
 				{
-					if (!empty($output['results'][0]))
-					{
-						if (empty($output['results'][0]['message_id']))
-						{
-							$db->Execute("DELETE FROM `bbc_user_push` WHERE `token`='{$to}' AND `type`=1");
-						}
-					}
+					$msg['message']['topic'] = substr($to, 8);
+				}else{
+					$msg['message']['token'] = $to;
+				}
+				$msg    = array_merge_recursive($msg, $post);
+				$output = json_decode($sys->curl($url, json_encode($msg), $header), 1);
+				// iLog([$output, $msg]);
+				// {"error": {"code": 404, "message": "Requested entity was not found.", "status": "NOT_FOUND", "details": [{"@type": "type.googleapis.com/google.firebase.fcm.v1.FcmError", "errorCode": "UNREGISTERED" }] } }
+				if (!empty($output['error']['status']))
+				{
+					$db->Execute("DELETE FROM `bbc_user_push` WHERE `token`='{$to}' AND `type`=1");
 				}
 			}
 		}
-
 		if (!empty($sending_id))
 		{
 			$db->Execute("UPDATE `bbc_user_push_sending` SET `status`=1 WHERE `id`={$sending_id}");
@@ -889,6 +903,30 @@ function alert_fcm_subscribe($user_ids, $topic, $last_id = 0 )
 	}
 }
 
+function alert_fcm($key='')
+{
+	$out = json_decode(_FCM_SERVER_JSON, 1);
+	if (!empty($key))
+	{
+		return @$out[$key];
+	}else{
+		return $out;
+	}
+}
+
+function alert_fcm_token()
+{
+	require_once _ROOT.'modules/images/vendor/autoload.php';
+
+	$client = new \Google_Client();
+	// $client->setAuthConfig($credentialsFilePath);
+	$client->setAuthConfig(alert_fcm());
+	$client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+	$client->refreshTokenWithAssertion();
+	$token = $client->getAccessToken();
+	return $token['access_token'];
+}
+
 function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
 {
 	if (defined('_FCM_SENDER_ID'))
@@ -896,10 +934,12 @@ function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
 		global $sys;
 		$log    = '';
 		$url    = 'https://iid.googleapis.com/iid/v1:batchAdd';
+		// $url    = 'https://iid.googleapis.com/iid/v1/%s/rel/topics/%s';
 		$header = array(
 			'CURLOPT_HTTPHEADER' => array(
-				'Authorization: key='._FCM_SERVER_KEY,
-				 'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8'
+				'Authorization: Bearer '.alert_fcm_token(),
+				 'access_token_auth: true',
+				 'Content-Type: application/json;'
 				)
 		);
 		 // JIKA YANG ARRAY ADALAH TOPICS
@@ -912,6 +952,8 @@ function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
 				);
 			$log = $sys->curl($url, json_encode($post), $header);
 			$i++;
+			// $log = $sys->curl(sprintf($url, $tokens, $topics[$i]), '{}', $header);
+			// $i++;
 			if (!empty($topics[$i]))
 			{
 				_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
@@ -935,6 +977,8 @@ function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
 				}
 			}
 			$log = $sys->curl($url, json_encode($post), $header);
+			// $log = $sys->curl(sprintf($url, $tokens[$i], $topics), '{}', $header);
+			// $i++;
 			if (!empty($tokens[$i]))
 			{
 				_class('async')->run(__FUNCTION__, [$tokens, $topics, $i]);
@@ -956,8 +1000,9 @@ function alert_fcm_topic_unsubscribe($tokens, $topics, $i=0)
 		$url    = 'https://iid.googleapis.com/iid/v1:batchRemove';
 		$header = array(
 			'CURLOPT_HTTPHEADER' => array(
-				'Authorization: key='._FCM_SERVER_KEY,
-				 'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8'
+				'Authorization: Bearer '.alert_fcm_token(),
+				 'access_token_auth: true',
+				 'Content-Type: application/json;'
 				)
 		);
 		 // JIKA YANG ARRAY ADALAH TOPICS
@@ -1008,7 +1053,7 @@ function alert_fcm_topic_unsubscribe($tokens, $topics, $i=0)
 function alert_fcm_verify($limit=1000, $i=0)
 {
 	global $db;
-	if ($limit > $i && defined('_FCM_SERVER_KEY'))
+	if ($limit > $i && defined('_FCM_SENDER_ID'))
 	{
 		$data = $db->getRow("SELECT * FROM `bbc_user_push` WHERE `type`=1 AND `updated` < '".date('Y-m-d H:i:s', strtotime('-3 MONTHS'))."' ORDER BY `updated` ASC LIMIT 1");
 		if (!empty($data))
@@ -1017,13 +1062,14 @@ function alert_fcm_verify($limit=1000, $i=0)
 			$url    = 'https://iid.googleapis.com/iid/info/'.$data['token'];
 			$header = array(
 				'CURLOPT_HTTPHEADER' => array(
-					'Authorization: Bearer '._FCM_SERVER_KEY,
-					'access_token_auth: true ',
-					'Content-Type: application/json; application/x-www-form-urlencoded;charset=UTF-8')
-				);
-			$output = $sys->curl($url, [], $header);
+					'Authorization: Bearer '.alert_fcm_token(),
+					'access_token_auth: true',
+					'Content-Type: application/json;'
+				)
+			);
+			$output = $sys->curl($url, '{}', $header);
 			$output = json_decode($output, 1);
-			if (empty($output['authorizedEntity']))
+			if (empty($output['authorizedEntity']) && !empty($output['error']))
 			{
 				$db->Execute("DELETE FROM `bbc_user_push` WHERE `id`={$data['id']}");
 			}
