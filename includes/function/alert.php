@@ -432,7 +432,9 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 					],
 					'android' => [
 						'notification' => [
-							'sound' => !empty($args['sound']) ? $args['sound'] : 'default'
+							'sound' => !empty($args['sound']) ? $args['sound'] : 'default',
+							'icon'  => 'notification_icon',
+							'color' => '@color/notification_icon_color'
 						]
 					],
 					'apns' => [
