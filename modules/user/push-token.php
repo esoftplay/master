@@ -52,7 +52,7 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 						'result'  => $out
 						);
 					// HAPUS TOKEN 1000 TOKEN LAMA YG GK KEPAKAI
-					$path = _ROOT.'images/token_delete.log';
+					$path = sys_get_temp_dir().'/delete-token'.menu_save(_URL);
 					$json = @json_decode(file_read($path), 1);
 					$date = date('Y-m-d');
 					if (empty($json[$date]))
