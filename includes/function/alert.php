@@ -918,8 +918,9 @@ function alert_fcm($key='')
 
 function alert_fcm_token()
 {
+	/*
+	// "google/apiclient": "^2.15",
 	require_once _ROOT.'modules/images/vendor/autoload.php';
-
 	$client = new \Google_Client();
 	// $client->setAuthConfig($credentialsFilePath);
 	$client->setAuthConfig(alert_fcm());
@@ -927,6 +928,79 @@ function alert_fcm_token()
 	$client->refreshTokenWithAssertion();
 	$token = $client->getAccessToken();
 	return $token['access_token'];
+	*/
+	$tmp  = sys_get_temp_dir().'/jwt-token'.menu_save(_URL);
+	$txt  = file_read($tmp);
+	$json = json_decode($txt, 1);
+	$time = time(); // Get seconds since 1 January 1970
+	if (!empty($json['expire']) && $json['expire'] > $time)
+	{
+		return $json['result']['access_token'];
+	}
+
+	function alert_fcm_token_encode($text)
+	{
+		return str_replace(
+			['+', '/', '='],
+			['-', '_', ''],
+			base64_encode($text)
+		);
+	}
+	// https://developers.google.com/identity/protocols/oauth2/service-account#httprest
+	// Parse service account details
+	$authConfig = alert_fcm();
+
+	// Read private key from service account details
+	$secret = openssl_get_privatekey($authConfig['private_key']);
+
+	// Create the token header
+	$header = json_encode([
+		'typ' => 'JWT',
+		'alg' => 'RS256'
+	]);
+
+	// Allow 1 minute time deviation between client en server (not sure if this is necessary)
+	$start = $time - 60;
+	$end   = $start + 3600;
+
+	// Create payload
+	$payload = json_encode([
+		'iss'   => $authConfig['client_email'],
+		'scope' => 'https://www.googleapis.com/auth/firebase.messaging',
+		'aud'   => 'https://oauth2.googleapis.com/token',
+		'exp'   => $end,
+		'iat'   => $start
+	]);
+
+	// Encode Header
+	$base64UrlHeader = alert_fcm_token_encode($header);
+
+	// Encode Payload
+	$base64UrlPayload = alert_fcm_token_encode($payload);
+
+	// Create Signature Hash
+	$result = openssl_sign($base64UrlHeader . "." . $base64UrlPayload, $signature, $secret, OPENSSL_ALGO_SHA256);
+
+	// Encode Signature to Base64Url String
+	$base64UrlSignature = alert_fcm_token_encode($signature);
+
+	// Create JWT
+	$jwt = $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
+
+	//-----Request token, with an http post request------
+	$options = array(
+		'http' => array(
+			'method'  => 'POST',
+			'content' => 'grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion='.$jwt,
+			'header'  => 'Content-Type: application/x-www-form-urlencoded'
+		)
+	);
+	$context      = stream_context_create($options);
+	$responseText = file_get_contents('https://oauth2.googleapis.com/token', false, $context);
+
+	$response = json_decode($responseText, 1);
+	file_write($tmp, json_encode(['result' => $response, 'expire' => strtotime('+30 MINUTES')]));
+	return $response['access_token'];
 }
 
 function alert_fcm_topic_subscribe($tokens, $topics, $i=0)
