@@ -434,7 +434,7 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 						'notification' => [
 							'sound' => !empty($args['sound']) ? $args['sound'] : 'default',
 							'icon'  => 'notification_icon',
-							'color' => '@color/notification_icon_color'
+							'color' => defined('_FCM_ICON_BG') ? _FCM_ICON_BG : '@color/notification_icon_color'
 						]
 					],
 					'apns' => [
