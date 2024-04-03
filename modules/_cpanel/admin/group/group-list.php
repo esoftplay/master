@@ -5,6 +5,11 @@ $form->initRoll( 'WHERE 1 ORDER BY is_admin ASC, score DESC, name ASC', 'id' );
 
 $form->roll->setSaveTool(false);
 
+$form->roll->addInput('group_id','sqlplaintext');
+$form->roll->input->group_id->setTitle('ID');
+$form->roll->input->group_id->setFieldName('id AS group_id');
+$form->roll->input->group_id->setDisplayColumn(false);
+
 $form->roll->addInput( 'name', 'sqllinks' );
 $form->roll->input->name->setTitle( 'Group' );
 $form->roll->input->name->setLinks( $Bbc->mod['circuit'].'.group&act=edit' );

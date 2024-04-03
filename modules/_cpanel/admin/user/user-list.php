@@ -42,6 +42,10 @@ $form->initRoll( $add_sql );
 $form->roll->setFormName('listuser');
 $form->roll->setDeleteTool(config('rules', 'disable_user_del') ? false : true);
 
+$form->roll->addInput('user_id','sqlplaintext');
+$form->roll->input->user_id->setTitle('ID');
+$form->roll->input->user_id->setFieldName('id AS user_id');
+$form->roll->input->user_id->setDisplayColumn(false);
 
 $form->roll->addInput( 'username', 'sqllinks' );
 $form->roll->input->username->setTitle( 'Username' );
