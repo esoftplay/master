@@ -18,7 +18,7 @@ if (defined('_FCM_SENDER_ID') && !empty($is_push))
 	$form->roll->addInput('topic_id', 'selecttable');
 	$form->roll->input->topic_id->setTitle('Member of Topics');
 	$form->roll->input->topic_id->setReferenceTable('bbc_user_push_topic');
-	$form->roll->input->topic_id->setReferenceField( 'name', 'id' );
+	$form->roll->input->topic_id->setReferenceField( 'CONCAT(name, " ( ",description," )")', 'id' );
 	$form->roll->input->topic_id->setLinks('index.php?mod=_cpanel.user&act=fcm_member');
 	$form->roll->input->topic_id->setPlaintext(true);
 
