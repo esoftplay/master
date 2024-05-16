@@ -43,7 +43,7 @@ class content_class {
 		}
 		$tmp_data = content_fetch($content_id, false);
 		// old image exists but different than the new one in POST
-		if (!empty($tmp_data['image']) && $tmp_data['image']!=$post['image'])
+		if (!empty($tmp_data['image']) && !empty($post['image']) && $tmp_data['image']!=$post['image'])
 		{
 			_class('images')->delete($this->img_path.$tmp_data['image']);
 			_class('images')->delete($this->img_path.'p_'.$tmp_data['image']);

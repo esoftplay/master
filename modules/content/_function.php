@@ -266,6 +266,10 @@ function content_src($src, $is_imgsrc = false, $is_large_image = false)
 {
 	$output = '';
 	$path   = 'images/modules/content/images/';
+	if (empty($src))
+	{
+		return $output;
+	}else
 	if (is_url($src))
 	{
 		$output = $src;
