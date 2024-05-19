@@ -207,6 +207,56 @@ function get_account_id($code = 'none')
 	$output = intval($db->getOne($q));
 	return $output;
 }
+function get_once($name, $times=1, $period='day')
+{
+	global $db;
+	if (!preg_match('~[0-9]+\s~is', $period))
+	{
+		$period = '1 '.$period;
+	}
+	$out  = 0;
+	$next = strtotime($period);
+	$now  = strtotime("now");
+	$data = $db->getRow("SELECT * FROM `bbc_once` WHERE `name`='{$name}'");
+	if (empty($data))
+	{
+		$i = $db->Insert('bbc_once', ['name' => $name, 'times' => 1, 'expired' => date('Y-m-d H-i-s', $next)]);
+		if (!empty($i) && $i > 0)
+		{
+			$out = 1;
+		}else{
+			$q = $db->sql;
+			$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_once` (
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `name` varchar(120) DEFAULT NULL,
+			  `times` int(11) DEFAULT '1',
+			  `expired` datetime DEFAULT CURRENT_TIMESTAMP,
+			  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  PRIMARY KEY (`id`),
+			  UNIQUE KEY `name` (`name`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table untuk menyimpan action sudah dijalankan atau tidak berdasarkan waktu /jam /hari dll'");
+			$i = $db->Execute($q);
+			if (!empty($i) && $i > 0)
+			{
+				$out = 1;
+			}
+		}
+	}else{
+		$data['exp'] = strtotime($data['expired']);
+		if ($data['exp'] > $now)
+		{
+			if ($data['times'] < $times)
+			{
+				$out = 1;
+				$db->Execute("UPDATE `bbc_once` SET `times`=(`times`+1) WHERE `id`={$data['id']} ");
+			}
+		}else{
+			$db->Execute("UPDATE `bbc_once` SET `times`=1, `expired`='".date('Y-m-d H-i-s', $next)."' WHERE `id`={$data['id']}");
+			$out = 1;
+		}
+	}
+	return $out;
+}
 function redirect($url='')
 {
 	global $sys, $Bbc;

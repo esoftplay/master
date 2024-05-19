@@ -59,7 +59,10 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 					{
 						$json = [$date => 1];
 						file_write($path, json_encode($json));
-						alert_fcm_verify();
+						if (get_once('alert_fcm_verify', 1, 'day'))
+						{
+							alert_fcm_verify();
+						}
 					}
 				}else{
 					// $output['message'] = 'tidak ada output di "alert_push_signup":'.pr($out, 1);
