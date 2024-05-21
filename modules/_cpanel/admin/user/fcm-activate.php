@@ -86,8 +86,8 @@ if (!defined('_FCM_SENDER_ID'))
 				CREATE TABLE `bbc_user_push_topic` (
 				  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 				  `user_id` bigint(20) DEFAULT '0' COMMENT '0=buatan system',
-				  `name` varchar(60) CHARACTER SET utf8 COLLATE utf8_slovenian_ci DEFAULT NULL,
-				  `description` text CHARACTER SET utf8 COLLATE utf8_slovenian_ci,
+				  `name` varchar(60) DEFAULT NULL,
+				  `description` text,
 				  `created` datetime DEFAULT CURRENT_TIMESTAMP,
 				  `updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				  PRIMARY KEY (`id`),
