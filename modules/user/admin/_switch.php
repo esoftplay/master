@@ -8,7 +8,7 @@ switch($Bbc->mod['task'])
 		break;
 
  	case 'login':
-		include 'login.php';
+		include 'logindo.php';
 		break;
 
 	case 'repair':
