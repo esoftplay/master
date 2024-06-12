@@ -1,9 +1,31 @@
 <?php  if (!defined('_VALID_BBC')) exit('No direct script access allowed');
 
-$is_async = $db->getOne("SHOW TABLES LIKE 'bbc_async'");
-if (empty($is_async))
+$r_tbl = $db->getCol("SHOW TABLES LIKE 'bbc_async%'");
+if (empty($r_tbl))
 {
 	die();
+}
+$is_plan = 0;
+if (in_array('bbc_async_plan', $r_tbl))
+{
+	$is_plan = 1;
+	$r_data  = $db->getAll("SELECT `id`, `function`, `arguments` FROM `bbc_async_plan` WHERE `ontime` < NOW() ORDER BY `ontime` ASC LIMIT 100");
+	if (!empty($r_data))
+	{
+		foreach ($r_data as $data)
+		{
+			$db->Execute("DELETE FROM `bbc_async_plan` WHERE `id`={$data['id']}");
+			_class('async')->run(json_decode($data['function'], 1), json_decode(urldecode($data['arguments']), 1));
+		}
+	}
+}
+if (get_once('clean_bbc_async', 1, 'day'))
+{
+	$db->Execute("ALTER TABLE `bbc_async` AUTO_INCREMENT = 1");
+	if ($is_plan)
+	{
+		$db->Execute("ALTER TABLE `bbc_async_plan` AUTO_INCREMENT = 1");
+	}
 }
 
 $filecheck   = _CACHE.'async.cfg';

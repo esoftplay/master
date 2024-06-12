@@ -48,7 +48,7 @@ if (!class_exists('async'))
 				file_put_contents('/opt/async.log', implode("\n", $task)."\n", FILE_APPEND);
 			}
 		}
-		public function run($object, $params=array())
+		public function run($object, $params=array(), $ontime='')
 		{
 			global $db;
 			if (!is_array($params))
@@ -58,14 +58,39 @@ if (!class_exists('async'))
 			if ($this->isExists)
 			{
 				global $db;
-				$exist = $db->getOne("SHOW TABLES LIKE 'bbc_async'");
-				if (empty($exist))
+				if (!empty($ontime))
 				{
-					$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_async` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `function` varchar(255) DEFAULT '', `arguments` text, `created` datetime DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+					if (!is_numeric($ontime))
+					{
+						$i = strtotime($ontime);
+						if (is_numeric($i))
+						{
+							$ontime = $i;
+						}else{
+							$ontime = '';
+						}
+					}
 				}
-				$db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".urlencode(json_encode($params))."', `created`=NOW()");
-				$this->task_ids[] = array($object, $db->Insert_ID());
-				$this->tasks++;
+				if (empty($ontime))
+				{
+					$is_ok = $db->Execute("INSERT INTO `bbc_async` SET `function`='".json_encode($object)."', `arguments`='".urlencode(json_encode($params))."', `created`=NOW()");
+					if (!$is_ok)
+					{
+						$sql = $db->sql;
+						$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_async` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `function` varchar(255) DEFAULT '', `arguments` text, `created` datetime DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+						$is_ok = $db->Execute($db->sql);
+					}
+					$this->task_ids[] = array($object, $db->Insert_ID());
+					$this->tasks++;
+				}else{
+					$is_ok = $db->Execute("INSERT INTO `bbc_async_plan` SET `function`='".json_encode($object)."', `arguments`='".urlencode(json_encode($params))."', `ontime`='".date('Y-m-d H:i:s', $ontime)."'");
+					if (!$is_ok)
+					{
+						$sql = $db->sql;
+						$db->Execute("CREATE TABLE `bbc_async_plan` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `function` varchar(255) DEFAULT NULL, `arguments` text, `ontime` datetime DEFAULT NULL, `created` datetime DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`), KEY `ontime` (`ontime`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+						$is_ok = $db->Execute($db->sql);
+					}
+				}
 			}else{
 				if (is_array($object))
 				{
@@ -90,6 +115,14 @@ if (!class_exists('async'))
 						die('Maaf, function "'.$object.'" tidak ditemukan (Pesan ini muncul karena server belum mensupport asynchronous)');
 					}
 				}
+			}
+		}
+		public function plan($object, $params=array(), $ontime = '')
+		{
+			global $db;
+			if (!is_array($params))
+			{
+				$params = array($params);
 			}
 		}
 		public function fix($async_id)
