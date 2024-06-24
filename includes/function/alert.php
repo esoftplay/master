@@ -1128,7 +1128,7 @@ function alert_fcm_topic_unsubscribe($tokens, $topics, $i=0)
 
 function alert_fcm_verify($limit=1000, $i=0)
 {
-	global $db;
+	global $db, $sys;
 	if ($limit > $i && defined('_FCM_SENDER_ID'))
 	{
 		$data = $db->getRow("SELECT * FROM `bbc_user_push` WHERE `type`=1 AND `updated` < '".date('Y-m-d H:i:s', strtotime('-3 MONTHS'))."' ORDER BY `updated` ASC LIMIT 1");
