@@ -24,7 +24,7 @@ class FormFile extends Form
 	var $uploadStatus;
 	var $rez_width;
 	var $rez_height;
-	var $prefixFileName;
+	var $prefixFileName = '';
 	var $arrImageExt;			// extension sehingga dianggap image, sehingga di output bisa sbg <img ser
 	var $is_resize = false;
 	var $is_thumbnail = false;

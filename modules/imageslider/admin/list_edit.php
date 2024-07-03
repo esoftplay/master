@@ -28,6 +28,10 @@ $form->edit->addInput('image','file');
 $form->edit->input->image->setImageClick();
 $form->edit->input->image->setRequire('any');
 $form->edit->input->image->setAllowedExtension(array('jpg', 'gif', 'png', 'bmp'));
+if (get_config('imageslider', 'config', 'thumbnail'))
+{
+	$form->edit->input->image->setThumbnail(get_config('imageslider', 'config', 'thumbnail'), $prefix = 'thumb', false);
+}
 
 $form->edit->addInput('link', 'text');
 // $form->edit->input->link->setRequire('url', false);
