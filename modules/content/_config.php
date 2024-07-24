@@ -5,7 +5,7 @@ if(isset($_seo['URI']))
 	$_seo['cfg'] = get_config('content','manage');
 	if (@$_seo['cfg']['webtype'] == '1')
 	{
-		$r = $db->getAll("SELECT SQL_CACHE * FROM `bbc_content_schedule` WHERE `action_time` < NOW() ORDER BY `action_time` ASC LIMIT 100");
+		$r = $db->getAll("SELECT * FROM `bbc_content_schedule` WHERE `action_time` < NOW() ORDER BY `action_time` ASC LIMIT 100");
 		if (!empty($r))
 		{
 			foreach ($r as $schedule)
