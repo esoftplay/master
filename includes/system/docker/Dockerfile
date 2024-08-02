@@ -1,42 +1,11 @@
 FROM esoftplay/nginx-php:php74
 
-RUN apt-get update && apt-get install net-tools curl rsync libmcrypt-dev openssh-client vim git cron dtach -y
-RUN cd /opt && git clone https://github.com/esoftplay/tools.git
-RUN echo "\n[program:esoftplay_tools]\ncommand=/bin/bash -c 'cd /opt/tools && git pull'\nautostart=true\npriority=20" >> /etc/supervisord.conf
-
 RUN mkdir -p /var/www/html/master
 WORKDIR /var/www/html/master
 
-# ADD ioncube module
-COPY includes/system/docker/ioncube_loader_lin_7.4.so /usr/lib/php/20190902/ioncube.so
-RUN echo "zend_extension = ioncube.so" > /etc/php/7.4/mods-available/ioncube.ini && \
-    ln -s /etc/php/7.4/mods-available/ioncube.ini /etc/php/7.4/fpm/conf.d/10-ioncube.ini && \
-    ln -s /etc/php/7.4/mods-available/ioncube.ini /etc/php/7.4/cli/conf.d/10-ioncube.ini
-
-# ADD mcrypt module
-COPY includes/system/docker/mcrypt.so /usr/lib/php/20190902/
-RUN echo "extension = mcrypt.so" > /etc/php/7.4/mods-available/mcrypt.ini && \
-    ln -s /etc/php/7.4/mods-available/mcrypt.ini /etc/php/7.4/fpm/conf.d/20-mcrypt.ini && \
-    ln -s /etc/php/7.4/mods-available/mcrypt.ini /etc/php/7.4/cli/conf.d/20-mcrypt.ini
-
-# Customize PHP.ini
-RUN cp /etc/php/7.4/fpm/php.ini /etc/php/7.4/fpm/php.ini.orig
-RUN cat /etc/php/7.4/fpm/php.ini.orig | sed \
-     -e 's/short_open_tag = Off/short_open_tag = On/g' \
-     -e 's/; max_input_vars = 1000/max_input_vars = 1000000/g' \
-     -e 's/default_socket_timeout = 60/; default_socket_timeout = 60/g' \
-     -e 's/auto_prepend_file = \/var\/www\/html\/master\/includes\/system\/docker\/auto_prepend_file.php/auto_prepend_file =/g' \
-     -e 's/auto_prepend_file =/auto_prepend_file = \/var\/www\/html\/master\/includes\/system\/docker\/auto_prepend_file.php/g' \
-     -e 's/html_errors = On/html_errors = Off/g' > /etc/php/7.4/fpm/php.ini
-
-RUN cp /etc/php/7.4/cli/php.ini /etc/php/7.4/cli/php.ini.orig
-RUN cat /etc/php/7.4/cli/php.ini.orig | sed \
-     -e 's/short_open_tag = Off/short_open_tag = On/g' \
-     -e 's/; max_input_vars = 1000/max_input_vars = 1000000/g' \
-     -e 's/default_socket_timeout = 60/; default_socket_timeout = 60/g' \
-     -e 's/auto_prepend_file = \/var\/www\/html\/master\/includes\/system\/docker\/auto_prepend_file.php/auto_prepend_file =/g' \
-     -e 's/auto_prepend_file =/auto_prepend_file = \/var\/www\/html\/master\/includes\/system\/docker\/auto_prepend_file.php/g' \
-     -e 's/html_errors = On/html_errors = Off/g' > /etc/php/7.4/cli/php.ini
+# Add auto_prepend_file.php
+RUN rm -f /etc/auto_prepend_file.php
+COPY includes/system/docker/auto_prepend_file.php /etc/auto_prepend_file.php
 
 # Build Website
 COPY . /var/www/html/master
