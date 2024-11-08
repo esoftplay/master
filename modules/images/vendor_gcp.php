@@ -252,6 +252,7 @@ class images_class extends images
 
 	function exists($filename = '')
 	{
+		return true;
 		$is_exists = parent::exists($filename);
 		if ($is_exists)
 		{

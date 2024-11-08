@@ -972,7 +972,7 @@ class content_class {
 		$config = image_size($sizes, true);
 		$sizes  = getimagesize($path.$image);
 		$this->img->setpath($path);
-		$this->img->setimage($image);
+		$this->img->setimages($image);
 		if($config[0] == $config[1]) // width and height are the same size
 		{
 			$this->img->resize($config, $result);
