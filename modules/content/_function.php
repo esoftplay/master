@@ -274,17 +274,17 @@ function content_src($src, $is_imgsrc = false, $is_large_image = false)
 	{
 		$output = $src;
 	}else
-	if (_class('images')->exists(_ROOT.$src))
+	if (_class('images')->exists(_ROOT.$path.$src))
 	{
-		$output = _URL.$src;
+		$output = _URL.$path.$src;
 	}else
 	if ($is_large_image && _class('images')->exists(_ROOT.$path.'p_'.$src))
 	{
 		$output = _URL.$path.'p_'.$src;
 	}else
-	if (_class('images')->exists(_ROOT.$path.$src))
+	if (_class('images')->exists(_ROOT.$src))
 	{
-		$output = _URL.$path.$src;
+		$output = _URL.$src;
 	}else{
 		$p = 'images/modules/content/'.get_config('content', 'manage', 'images');
 		if (_class('images')->exists(_ROOT.$p))
