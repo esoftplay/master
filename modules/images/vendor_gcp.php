@@ -246,7 +246,8 @@ class images_class extends images
 			// {
 			// 	$obj->rename($dest);
 			// }
-			return @rename($oldname, $newname);
+			@rename($oldname, $newname);
+			return true;
 		}
 	}
 
