@@ -242,11 +242,16 @@ class FormFile extends Form
 				$isUrl    = true;
 				$this->setPlaintext(true);
 			}else{
-				if (is_file(_ROOT.$fileName))
+				if (preg_match('~^'.strip_tags(_ROOT, '~').'~s', $fileName))
 				{
-					$file    = _ROOT . $fileName;
-					$fileUrl = _URL . $fileName;
+					$file    = $fileName;
+					$fileUrl = preg_replace('~^'.strip_tags(_ROOT, '~').'~s', _URL, $fileName);
 					$this->setPlaintext(true);
+				}else
+				if (preg_match('~^images/~s', $fileName))
+				{
+					$file    = _ROOT.$fileName;
+					$fileUrl = _URL.$fileName;
 				}else{
 					$file    = $this->folder . $fileName;
 					$fileUrl = $this->folderUrl . $fileName;

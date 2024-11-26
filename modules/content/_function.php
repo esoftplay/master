@@ -265,7 +265,8 @@ function content_check($id)
 function content_src($src, $is_imgsrc = false, $is_large_image = false)
 {
 	$output = '';
-	$path   = 'images/modules/content/images/';
+	$pre    = 'images/modules/content/';
+	$path   = $pre.'images/';
 	if (empty($src))
 	{
 		return $output;
@@ -273,23 +274,28 @@ function content_src($src, $is_imgsrc = false, $is_large_image = false)
 	if (is_url($src))
 	{
 		$output = $src;
-	}else
-	if (_class('images')->exists(_ROOT.$path.$src))
-	{
-		$output = _URL.$path.$src;
-	}else
-	if ($is_large_image && _class('images')->exists(_ROOT.$path.'p_'.$src))
-	{
-		$output = _URL.$path.'p_'.$src;
-	}else
-	if (_class('images')->exists(_ROOT.$src))
-	{
-		$output = _URL.$src;
 	}else{
-		$p = 'images/modules/content/'.get_config('content', 'manage', 'images');
-		if (_class('images')->exists(_ROOT.$p))
+		if ($is_large_image && !preg_match('~/~s', $src))
 		{
-			$output = _URL.$p;
+			$src = 'p_'.$src;
+		}
+		if (preg_match('~'.strip_tags(_ROOT, '~').'~s', $src))
+		{
+			$output = preg_replace('~'.strip_tags(_ROOT, '~').'~s', _URL, $src);
+		}else
+		if (!preg_match('~'.strip_tags($pre, '~').'~s', $src))
+		{
+			$output = _URL.$path.$src;
+		}else
+		if (!empty($src))
+		{
+			$output = _URL.$src;
+		}else{
+			$p = get_config('content', 'manage', 'images');
+			if (!empty($p))
+			{
+				$output = _URL.'images/modules/content/'.$p;
+			}
 		}
 	}
 	if ($is_imgsrc)
