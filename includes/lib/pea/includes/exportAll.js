@@ -145,11 +145,14 @@ _Bbc(function($){
 						window[name] += out.data;
 						if (type != 'html') {
 							if (pXls.tot.rows < 1000000) {
-								out.data.split('\n').forEach(line => {
+								out.data.split('"\n').forEach(line => {
 									row = [];
-									line.split(',').forEach(col => {
+									line += '"';
+									line.split('","').forEach(col => {
 										col = col.replace(/^"/, '');
 										col = col.replace(/"$/, '');
+										col = col.replace(/\r/g, '');
+										col = col.replace(/_x000d_/g, '');
 										col = col.replace(/""/g, '"');
 										col = col.replace(/\\"/g, '"');
 										if (col) {
@@ -171,13 +174,16 @@ _Bbc(function($){
 								ext = "csv";
 							}
 						}
-
 						if (out.done < 100) {
 							peaExtract(url, ++page, modal, body, name, title, type);
 						}else{
 							if (type=='html') {
 								window[name] += htmlClose();
 								ext = 'html';
+							}else{
+								if (ext == "xlsx" && typeof XLSX == "undefined") {
+									ext = "csv";
+								}
 							}
 							if (ext == "xlsx") {
 								
