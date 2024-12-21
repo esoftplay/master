@@ -1,4 +1,9 @@
 // pack -cw exportAll_org.js exportAll.js
+
+var scriptEle = document.createElement("script");
+scriptEle.setAttribute("src", "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js");
+document.head.appendChild(scriptEle);
+var pXls = {};
 _Bbc(function($){
 	$(".fa-lg", $(".roll-export")).on("click", function(e){
 		e.preventDefault();
@@ -57,8 +62,19 @@ _Bbc(function($){
 			$(this).remove();
 		});
 		modal.modal("show");
+		pXls = {
+			tot: {
+				header: 0,
+				rows: 0
+			},
+			data: {
+				header: [],
+				body: []
+			}
+		}
 		peaExtract(url, page, modal, body, name, title.trim(), type);
 	});
+
 	$(".fa-lg", $(".edit-export")).on("click", function(e){
 		e.preventDefault();
 		var title = $(this).data("title").replace(/\+/g, ' ').trim();
@@ -119,7 +135,7 @@ _Bbc(function($){
 			success: function(out) {
 				if (window[$(modal).prop("id")]) {
 					if ( typeof out.done != 'undefined') {
-						body.html('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $done ?>"aria-valuemin="0" aria-valuemax="100" style="width:'+out.done+'%"> '+out.done+'% </div></div>');
+						body.html('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $done ?>" aria-valuemin="0" aria-valuemax="100" style="width:'+out.done+'%"> '+out.done+'% </div></div>');
 						if (typeof window[name] == 'undefined') {
 							window[name] = '';
 							if (type == 'html') {
@@ -127,21 +143,65 @@ _Bbc(function($){
 							}
 						}
 						window[name] += out.data;
+						if (type != 'html') {
+							if (pXls.tot.rows < 1000000) {
+								out.data.split('\n').forEach(line => {
+									row = [];
+									line.split(',').forEach(col => {
+										col = col.replace(/^"/, '');
+										col = col.replace(/"$/, '');
+										col = col.replace(/""/g, '"');
+										col = col.replace(/\\"/g, '"');
+										if (col) {
+											row.push(col)
+										}
+									});
+									if (row.length > 0) {
+										if (pXls.tot.header == 0) {
+											pXls.tot.header++;
+											pXls.data.header.push(row);
+										}else{
+											pXls.tot.rows++;
+											pXls.data.body.push(row);
+										}
+									}
+								})
+								ext = "xlsx";
+							}else{
+								ext = "csv";
+							}
+						}
+
 						if (out.done < 100) {
 							peaExtract(url, ++page, modal, body, name, title, type);
 						}else{
 							if (type=='html') {
 								window[name] += htmlClose();
 								ext = 'html';
-							}else{
-								ext = 'csv';
 							}
-							var blob = new Blob([window[name]], { type: 'text/'+ext });
-							var href = window.URL.createObjectURL(blob);
-							var b = document.createElement('a');
-							b.setAttribute('href', href);
-							b.setAttribute('download', title+'.'+ext);
-							b.click();
+							if (ext == "xlsx") {
+								/* generate worksheet and workbook */
+								const worksheet = XLSX.utils.json_to_sheet(pXls.data.body);
+								const workbook = XLSX.utils.book_new();
+								XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet 1");
+
+								/* fix headers */
+								XLSX.utils.sheet_add_aoa(worksheet, pXls.data.header, { origin: "A1" });
+
+								/* calculate column width */
+								/* const max_width = rows.reduce((w, r) => Math.max(w, r.name.length), 10); */
+								/* worksheet["!cols"] = [ { wch: max_width } ]; */
+
+								/* create an XLSX file and try to save to file */
+								XLSX.writeFile(workbook, title+'.'+ext, { compression: true });
+							}else{
+								var blob = new Blob([window[name]], { type: 'text/'+ext });
+								var href = window.URL.createObjectURL(blob);
+								var b = document.createElement('a');
+								b.setAttribute('href', href);
+								b.setAttribute('download', title+'.'+ext);
+								b.click();
+							}
 							modal.modal("hide");
 							delete window[name];
 						}

@@ -1,1 +1,215 @@
-eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('13(h(u){u(".14-15",u(".16-R")).I("J",h(t){t.17();2 e=u(q).1M("18").1N("=");2 a=e[0];2 o=1O(e[1].S(/\\+/g," "));2 i=u(q).j("x");2 d=u(".1P",u(q).1Q(".16-R"));2 n=u(d).j("C");2 l=u(d).j("19");2 r=1a;2 s=y.1b.D;4(d.1c(":1d")){r=K 1e("([?&]"+n+"=[0-9]+)","g");s=s.S(r,"");o=o.1R(0,o.1S(" - 1T")+1);C=1}z{r=K 1e("[?&]"+n+"=([0-9]+)","g");X=r.1U(s);C=1;4(X!=1a){4(X[1]>0){C=X[1]}}}s+=s.1f(/\\?/)?"&":"?";s+=l+"1V=";s+=d.1c(":1d")?"1":"0";s+="&"+l+"1g="+i;s+="&"+n+"=";f=\'<5 7="6 1W" 1X="-1" T="1h" L="1i\'+l+\'">\'+\'<5 7="6-1h" T="y">\'+\'<5 7="6-U">\'+\'<5 7="6-1Y">\'+\'<A x="A" 7="1Z" j-1j="6" E-20="21"><1k E-22="1l">&23;</1k></A>\'+\'<1m 7="6-M">24 25..</1m>\'+"</5>"+\'<5 7="6-F"></5>\'+\'<5 7="6-26">\'+\'<A x="A" 7="V V-27 V-28" j-1j="6">29</A>\'+"</5>"+"</5>"+"</5>"+"</5>";u(y.F).2a(f);2 c=u("#1i"+l);2 p=u(".6-F",c);c.I("1n.1o.6",h(t){3[u(q).W("L")]=1l}).I("1p.1o.6",h(t){3[u(q).W("L")]=1q;u(q).2b()});c.6("1n");m(s,C,c,p,a,o.1r(),i)});u(".14-15",u(".2c-R")).I("J",h(t){t.17();2 i=u(q).j("M").S(/\\+/g," ").1r();2 d=u(q).j("x");2 e=u(q).j("19");2 a=y.1b.D;a+=a.1f(/\\?/)?"&":"?";a+="&"+e+"1g="+d;2d.2e(a);u.1s(a,{1t:h(t){4(t.j){G="";4(d=="k"){G=p(i)}G+=t.j;4(d=="k"){G+=w();v="k"}z{v="1u"}2 e=K 1v([G],{x:"Y/"+v});2 a=3.1w.1x(e);2 o=y.1y("a");o.N("D",a);o.N("1z",i+"."+v);o.J()}}})});2 p=h(t){1A"<!2f k>"+\'<k 2g="2h">\'+"<1B>"+\'<Z 2i="2j-8">\'+\'<Z 2k-2l="X-2m-2n" U="2o=2p">\'+\'<Z 2q="2r" U="10=2s-10, 2t-2u=1">\'+"<M>"+t+"</M>"+\'<2v D="\'+O+\'1C/1D/P/1E/P.1F.1E" 18="2w" />\'+\'<Q x="Y/2x">2 1G="\'+1G+\'";2 O="\'+O+\'";h 13(a,b){2 c="2y";4(!3[c+"i"]){3[c+"i"]=0};3[c+"i"]++;4(!b){b=c+"i"+3[c+"i"]};4(!3[c]){3[c]=b}z{3[c]+=","+b}3[b]=a;4(11 1H!="12"){3[b](1H)}};<\\/Q>\'+"</1B>"+"<F>"+\'<B 7="B B-2z B-2A B-2B">\'};2 w=h(){1A"</2C></B>"+\'<Q 2D="\'+O+\'1C/1D/P/1I/P.1F.1I"><\\/Q>\'+"</F>"+"</k>"};2 m=h(i,d,n,l,r,s,c){u.1s(i+d,{2E:1q,1t:h(t){4(3[u(n).W("L")]){4(11 t.H!="12"){l.k(\'<5 7="1J"><5 7="1J-2F" T="2G" E-2H="<?2I 2J $H ?>"E-2K="0" E-2L="1K" 2M="10:\'+t.H+\'%"> \'+t.H+"% </5></5>");4(11 3[r]=="12"){3[r]="";4(c=="k"){3[r]=p(s)}}3[r]+=t.j;4(t.H<1K){m(i,++d,n,l,r,s,c)}z{4(c=="k"){3[r]+=w();v="k"}z{v="1u"}2 e=K 1v([3[r]],{x:"Y/"+v});2 a=3.1w.1x(e);2 o=y.1y("a");o.N("D",a);o.N("1z",s+"."+v);o.J();n.6("1p");1L 3[r]}}}z{1L 3[r]}}})}});',62,173,'||var|window|if|div|modal|class||||||||||function||data|html||||||this|||||ext||type|document|else|button|table|page|href|aria|body|output|done|on|click|new|id|title|setAttribute|_URL|bootstrap|script|export|replace|role|content|btn|prop||text|meta|width|typeof|undefined|_Bbc|fa|lg|roll|preventDefault|rel|form|null|location|is|checked|RegExp|match|_export_type|dialog|export_|dismiss|span|true|h4|show|bs|hide|false|trim|ajax|success|csv|Blob|URL|createObjectURL|createElement|download|return|head|templates|admin|css|min|_ROOT|BS3|js|progress|100|delete|attr|split|decodeURIComponent|export_all|closest|substring|lastIndexOf|Page|exec|_export_all|fade|tabindex|header|close|label|Close|hidden|times|Extracting|Data|footer|default|secondary|Cancel|append|remove|edit|console|log|DOCTYPE|lang|en|charset|utf|http|equiv|UA|Compatible|IE|edge|name|viewport|device|initial|scale|link|stylesheet|javascript|BS3load_func|striped|bordered|hover|tbody|src|global|bar|progressbar|valuenow|php|echo|valuemin|valuemax|style'.split('|'),0,{}))
+// pack -cw exportAll_org.js exportAll.js
+
+var scriptEle = document.createElement("script");
+scriptEle.setAttribute("src", "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js");
+document.head.appendChild(scriptEle);
+var pXls = {};
+_Bbc(function($){
+	$(".fa-lg", $(".roll-export")).on("click", function(e){
+		e.preventDefault();
+		var rel = $(this).attr("rel").split('=');
+		var name = rel[0];
+		var title = decodeURIComponent(rel[1].replace(/\+/g, ' '));
+		var type = $(this).data("type");
+
+
+		var checkbox = $(".export_all", $(this).closest(".roll-export"));
+		var getPage = $(checkbox).data("page");
+		var getForm = $(checkbox).data("form");
+		var regex = null;
+		var url = document.location.href;
+		if (checkbox.is(":checked")) {
+			regex = new RegExp("([\?&]"+getPage+"=[0-9]+)", "g");
+			url = url.replace(regex, "");
+			title = title.substring(0, title.lastIndexOf(' - Page') + 1);
+			page = 1;
+		}else{
+			regex = new RegExp("[\?&]"+getPage+"=([0-9]+)", "g");
+			X = regex.exec(url);
+			page = 1;
+			if (X != null) {
+				if (X[1] > 0) {
+					page=X[1];
+				}
+			}
+		}
+		url += url.match(/\?/) ? "&" : "?";
+		url += getForm + "_export_all=";
+		url += checkbox.is(":checked") ? "1" : "0";
+		url += "&" + getForm + "_export_type="+type;
+		url += "&" + getPage + "=";
+		f = '<div class="modal fade" tabindex="-1" role="dialog" id="export_'+getForm+'">'
+				+'<div class="modal-dialog" role="document">'
+					+'<div class="modal-content">'
+						+'<div class="modal-header">'
+							+'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+							+'<h4 class="modal-title">Extracting Data..</h4>'
+						+'</div>'
+						+'<div class="modal-body"></div>'
+						+'<div class="modal-footer">'
+							+'<button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">Cancel</button>'
+						+'</div>'
+					+'</div>'
+				+'</div>'
+			+'</div>';
+		$(document.body).append(f);
+		var modal = $("#export_"+getForm);
+		var body = $(".modal-body", modal);
+		modal.on("show.bs.modal", function(e){
+			window[$(this).prop("id")] = true;
+		}).on("hide.bs.modal", function(e){
+			window[$(this).prop("id")] = false;
+			$(this).remove();
+		});
+		modal.modal("show");
+		pXls = {
+			tot: {
+				header: 0,
+				rows: 0
+			},
+			data: {
+				header: [],
+				body: []
+			}
+		}
+		peaExtract(url, page, modal, body, name, title.trim(), type);
+	});
+
+	$(".fa-lg", $(".edit-export")).on("click", function(e){
+		e.preventDefault();
+		var title = $(this).data("title").replace(/\+/g, ' ').trim();
+		var type = $(this).data("type");
+		var form = $(this).data("form");
+		var url = document.location.href;
+		url += url.match(/\?/) ? "&" : "?";
+		url += "&" + form + "_export_type="+type;
+		console.log(url);
+		$.ajax(url,{
+			success: function(out) {
+				if (out.data) {
+					output = '';
+					if (type == 'html') {
+						output = htmlOpen(title);
+					}
+					output += out.data;
+					if (type == 'html') {
+						output += htmlClose();
+						ext = 'html';
+					}else{
+						ext = 'csv';
+					}
+					var blob = new Blob([output], { type: 'text/'+ext });
+					var href = window.URL.createObjectURL(blob);
+					var b = document.createElement('a');
+					b.setAttribute('href', href);
+					b.setAttribute('download', title+'.'+ext);
+					b.click();
+				}
+			}
+		});
+	});
+
+	var htmlOpen = function(title) {
+		return '<!DOCTYPE html>'
+						+'<html lang="en">'
+							+'<head>'
+								+'<meta charset="utf-8">'
+								+'<meta http-equiv="X-UA-Compatible" content="IE=edge">'
+								+'<meta name="viewport" content="width=device-width, initial-scale=1">'
+								+'<title>'+title+'</title>'
+								+'<link href="'+_URL+'templates/admin/bootstrap/css/bootstrap.min.css" rel="stylesheet" />'
+								+'<script type="text/javascript">var _ROOT="'+_ROOT+'";var _URL="'+_URL+'";function _Bbc(a,b){var c="BS3load_func";if(!window[c+"i"]){window[c+"i"]=0};window[c+"i"]++;if(!b){b=c+"i"+window[c+"i"]};if(!window[c]){window[c]=b}else{window[c]+=","+b}window[b]=a;if(typeof BS3!="undefined"){window[b](BS3)}};</script>'
+							+'</head>'
+							+'<body>'
+								+'<table class="table table-striped table-bordered table-hover">';
+	};
+	var htmlClose = function(){
+		return '</tbody></table>'
+					+'<script src="'+_URL+'templates/admin/bootstrap/js/bootstrap.min.js"></script>'
+				+'</body>'
+			+'</html>';
+	};
+	var peaExtract = function(url, page, modal, body, name, title, type) {
+		$.ajax(url+page,{
+			global: false,
+			success: function(out) {
+				if (window[$(modal).prop("id")]) {
+					if ( typeof out.done != 'undefined') {
+						body.html('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $done ?>" aria-valuemin="0" aria-valuemax="100" style="width:'+out.done+'%"> '+out.done+'% </div></div>');
+						if (typeof window[name] == 'undefined') {
+							window[name] = '';
+							if (type == 'html') {
+								window[name] = htmlOpen(title);
+							}
+						}
+						window[name] += out.data;
+						if (type != 'html') {
+							if (pXls.tot.rows < 1000000) {
+								out.data.split('\n').forEach(line => {
+									row = [];
+									line.split(',').forEach(col => {
+										col = col.replace(/^"/, '');
+										col = col.replace(/"$/, '');
+										col = col.replace(/""/g, '"');
+										col = col.replace(/\\"/g, '"');
+										if (col) {
+											row.push(col)
+										}
+									});
+									if (row.length > 0) {
+										if (pXls.tot.header == 0) {
+											pXls.tot.header++;
+											pXls.data.header.push(row);
+										}else{
+											pXls.tot.rows++;
+											pXls.data.body.push(row);
+										}
+									}
+								})
+								ext = "xlsx";
+							}else{
+								ext = "csv";
+							}
+						}
+
+						if (out.done < 100) {
+							peaExtract(url, ++page, modal, body, name, title, type);
+						}else{
+							if (type=='html') {
+								window[name] += htmlClose();
+								ext = 'html';
+							}
+							if (ext == "xlsx") {
+								
+								const worksheet = XLSX.utils.json_to_sheet(pXls.data.body);
+								const workbook = XLSX.utils.book_new();
+								XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet 1");
+
+								
+								XLSX.utils.sheet_add_aoa(worksheet, pXls.data.header, { origin: "A1" });
+
+								
+								
+								
+
+								
+								XLSX.writeFile(workbook, title+'.'+ext, { compression: true });
+							}else{
+								var blob = new Blob([window[name]], { type: 'text/'+ext });
+								var href = window.URL.createObjectURL(blob);
+								var b = document.createElement('a');
+								b.setAttribute('href', href);
+								b.setAttribute('download', title+'.'+ext);
+								b.click();
+							}
+							modal.modal("hide");
+							delete window[name];
+						}
+					}
+				}else{
+					delete window[name];
+				}
+			}
+		});
+	};
+});
