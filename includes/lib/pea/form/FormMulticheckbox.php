@@ -543,6 +543,11 @@ class FormMulticheckbox extends FormCheckbox
 				}
 			}
 			$out = '';
+			if ($count > 10)
+			{
+				$out .= '<a href="" class="multicheckboxAll">checkAll</a><div class="clearfix"></div>';
+				link_js(_PEA_URL.'includes/FormMulticheckbox.js');
+			}
 			$x   = floor(12/$this->column);
 			foreach ((array)@$r as $col)
 			{
