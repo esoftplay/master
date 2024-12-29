@@ -1,8 +1,9 @@
 // pack -cw exportAll_org.js exportAll.js
+// https://jscompress.com
 
-var scriptEle = document.createElement("script");
-scriptEle.setAttribute("src", "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js");
-document.head.appendChild(scriptEle);
+var a = document.createElement("script");
+a.setAttribute("src", "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js");
+document.head.appendChild(a);
 var pXls = {};
 _Bbc(function($){
 	$(".fa-lg", $(".roll-export")).on("click", function(e){
@@ -129,6 +130,11 @@ _Bbc(function($){
 				+'</body>'
 			+'</html>';
 	};
+	var isNumeric = function(str) {
+		if (typeof str != "string") return false // we only process strings!
+		return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+					!isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+	};
 	var peaExtract = function(url, page, modal, body, name, title, type) {
 		$.ajax(url+page,{
 			global: false,
@@ -156,6 +162,13 @@ _Bbc(function($){
 										col = col.replace(/""/g, '"');
 										col = col.replace(/\\"/g, '"');
 										if (col) {
+											if(isNumeric(col)) {
+												if (col.length < 11) {
+													if (col[0]!='0') {
+														col=parseInt(col);
+													}
+												}
+											}
 											row.push(col)
 										}
 									});
