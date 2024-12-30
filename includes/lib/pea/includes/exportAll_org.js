@@ -84,7 +84,6 @@ _Bbc(function($){
 		var url = document.location.href;
 		url += url.match(/\?/) ? "&" : "?";
 		url += "&" + form + "_export_type="+type;
-		console.log(url);
 		$.ajax(url,{
 			success: function(out) {
 				if (out.data) {
@@ -164,7 +163,7 @@ _Bbc(function($){
 										if (col) {
 											if(isNumeric(col)) {
 												if (col.length < 11) {
-													if (col[0]!='0') {
+													if (col[0]!='0' || col == '0') {
 														col=parseInt(col);
 													}
 												}

@@ -386,7 +386,7 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 		}
 	}else{
 		// jika $ids berisi integer maka itu adalah topic_id
-		$i = $db->getOne("SELECT `user_id` FROM `bbc_user_push_topic_list` WHERE `topic_id`={$ids} LIMIT {$last_id}, 1");
+		$i = $db->getOne("SELECT DISTINCT `user_id` FROM `bbc_user_push_topic_list` WHERE `topic_id`={$ids} LIMIT {$last_id}, 1");
 		if (!empty($i))
 		{
 			$id = $i;
