@@ -24,17 +24,17 @@ if (!empty($data['publish']))
 	unset($data['tags']);
 	if (config('manage', 'webtype') == '1')
 	{
-		$q = "SELECT t.id, t.title
-						FROM bbc_content_tag_list AS l
-						LEFT JOIN bbc_content_tag AS t ON (l.tag_id=t.id)
-					WHERE l.content_id=".$data['id'];
+		$q = "SELECT t.`id`, t.`title`
+						FROM `bbc_content_tag_list` AS l
+						LEFT JOIN `bbc_content_tag` AS t ON (l.`tag_id`=t.`id`)
+					WHERE l.`content_id`=".$data['id'];
 		$arr = $db->getAll($q);
 		foreach ($arr as $d)
 		{
 			$r[] = array(
 				'id'    => $d['id'],
 				'title' => $d['title'],
-				'url' => content_tag_link($d['id'], $d['title'])
+				'url'   => content_tag_link($d['id'], $d['title'])
 				);
 		}
 	}
