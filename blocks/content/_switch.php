@@ -14,7 +14,7 @@ if (!isset($config['type_id']))
 }
 if($config['type_id'] > 0)
 {
-	$add_sql = 'AND c.type_id='.$config['type_id'];
+	$add_sql = 'AND c.`type_id`='.$config['type_id'];
 }else $add_sql = '';
 if(@$config['kind_id'] > -1)
 {
@@ -49,9 +49,9 @@ if($config['type_id'] == -2) // INSERT IDs
 {
 	$ids = $config['ids'];
 	ids($ids);
-	$q="SELECT c.*, t.title, t.intro, t.content FROM bbc_content AS c
-			LEFT JOIN bbc_content_text AS t ON (c.id=t.content_id AND t.lang_id=".lang_id().")
-			WHERE c.publish=1 AND c.id IN($ids) ORDER BY c.id DESC $limit";
+	$q="SELECT c.*, t.`title`, t.`intro`, t.`content` FROM `bbc_content` AS c
+			LEFT JOIN `bbc_content_text` AS t ON (c.`id`=t.`content_id` AND t.`lang_id`=".lang_id().")
+			WHERE c.`publish`=1 AND c.`id` IN($ids) ORDER BY c.`id` DESC $limit";
 	$arr				= $db->cacheGetAssoc($q);
 	$cat['list']= array();
 	if(!empty($ids))
@@ -93,18 +93,18 @@ if($config['cat_id']==-1) // popular content
 		$date = date('Y-m-d', $timestamp);
 		$add_sql .= " AND (c.`modified` >'{$date}' || c.`created` > '{$date}')";
 	}
-	$q="SELECT c.*, t.title, t.intro, t.content FROM bbc_content AS c
-			LEFT JOIN bbc_content_text AS t ON (c.id=t.content_id AND t.lang_id=".lang_id().")
-			WHERE c.publish=1 {$add_sql} ORDER BY hits DESC {$limit}";
+	$q="SELECT c.*, t.`title`, t.`intro`, t.`content` FROM `bbc_content` AS c
+			LEFT JOIN `bbc_content_text` AS t ON (c.`id`=t.`content_id` AND t.`lang_id`=".lang_id().")
+			WHERE c.`publish`=1 {$add_sql} ORDER BY `hits` DESC {$limit}";
 	$cat['list']       = $db->cacheGetAll($q);
 	$cat['total']      = count($cat['list']);
 	$cat['total_page'] = 1;
 }else
 if($config['cat_id']==-2) // latest content
 {
-	$q="SELECT SQL_CALC_FOUND_ROWS c.*, t.title, t.intro, t.content FROM bbc_content AS c
-			LEFT JOIN bbc_content_text AS t ON (c.id=t.content_id AND t.lang_id=".lang_id().")
-			WHERE c.publish=1 {$add_sql} ORDER BY c.id DESC $limit";
+	$q="SELECT SQL_CALC_FOUND_ROWS c.*, t.`title`, t.`intro`, t.`content` FROM `bbc_content` AS c
+			LEFT JOIN `bbc_content_text` AS t ON (c.`id`=t.`content_id` AND t.`lang_id`=".lang_id().")
+			WHERE c.`publish`=1 {$add_sql} ORDER BY c.`id` DESC $limit";
 	$cat['list']       = $db->cacheGetAll($q);
 	$cat['total']      = $db->cacheGetOne("SELECT FOUND_ROWS(), 'latest'");
 	$cat['total_page'] = ceil($cat['total'] / $config['tot_list']);

@@ -41,8 +41,12 @@ if (!empty($data['publish']))
 	$data['tags'] = $r;
 
 	/* RELATED */
-	$r   = array();
-	$l   = !empty($data['config']['comment_list']) ? $data['config']['comment_list'] : 6;
+	$r = array();
+	$l = !empty($data['config']['comment_list']) ? $data['config']['comment_list'] : 6;
+	if (empty($data['config']['related']))
+	{
+		$l = 0;
+	}
 	$cat = content_related($data['id'], $l);
 	if (!empty($cat['list']))
 	{

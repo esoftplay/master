@@ -160,6 +160,10 @@ function content_config_detail()
 			'text'	=> 'Thumbnail Size',
 			'type'	=> 'text',
 			'add'		=> 'Pixel'),
+		'related' => array(
+			'text'	=> 'Fetch content related on detail view',
+			'type'	=> 'radio',
+			'option'=> $opt['yes']),
 		'comment' => array(
 			'text'	=> 'Which type of Comment Form in content detail',
 			'type'	=> 'select',

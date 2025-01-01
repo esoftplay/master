@@ -1070,7 +1070,7 @@ function content_related($id, $limit = 5, $add_sql='')
 		'list'  => array(),
 		'total' => 0
 		);
-	if (empty($id) || !is_numeric($id))
+	if (empty($id) || !is_numeric($id) || $limit==0)
 	{
 		return $output;
 	}
@@ -1088,8 +1088,8 @@ function content_related($id, $limit = 5, $add_sql='')
 	if(!empty($rid))
 	{
 		$ids		= implode(',', $rid);
-		$q="SELECT c.*, t.`title`, t.`intro`, t.`content` FROM bbc_content AS c
-				LEFT JOIN bbc_content_text AS t ON (c.`id`=t.`content_id` AND t.`lang_id`=".lang_id().")
+		$q="SELECT c.*, t.`title`, t.`intro`, t.`content` FROM `bbc_content` AS c
+				LEFT JOIN `bbc_content_text` AS t ON (c.`id`=t.`content_id` AND t.`lang_id`=".lang_id().")
 				WHERE c.`publish`=1 AND c.`id` IN ({$ids}) {$add_sql} ORDER BY c.`id` ASC {$qlimit}";
 		$ar = $db->cacheGetAssoc($q);
 		foreach ($rid as $i)
@@ -1146,7 +1146,7 @@ function content_related($id, $limit = 5, $add_sql='')
 		$rid	 = array();
 		$title = addslashes($db->cacheGetOne("SELECT `title` FROM `bbc_content_text` WHERE `content_id`={$id} AND `lang_id`=".lang_id()));
 		$q = "SELECT  c.*, t.`title`, t.`intro`, t.`content`, MATCH (t.`title`,t.`description`,t.`keyword`,t.`tags`,t.`intro`,t.`content`) AGAINST ('{$title}' IN BOOLEAN MODE) AS relevance
-		FROM bbc_content AS c LEFT JOIN bbc_content_text AS t ON (c.`id`=t.`content_id` AND t.`lang_id`=".lang_id().")
+		FROM `bbc_content` AS c LEFT JOIN `bbc_content_text` AS t ON (c.`id`=t.`content_id` AND t.`lang_id`=".lang_id().")
 		WHERE c.`publish`=1 AND c.`id`!={$id} AND MATCH (t.`title`,t.`description`,t.`keyword`,t.`tags`,t.`intro`,t.`content`) AGAINST ('{$title}' IN BOOLEAN MODE)
 		ORDER BY relevance DESC {$qlimit}";
 		$output['list']  = $db->cacheGetAll($q);
