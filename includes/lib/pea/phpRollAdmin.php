@@ -602,7 +602,7 @@ class phpRollAdmin extends phpEasyAdminLib
 					}
 					$arrResult[$input->objectName] = $this->getDefaultValue($input, $arrResult, $i);
 					// dapatkan array data report
-					if ($this->isReportOn && $input->isIncludedInReport)
+					if ($this->isReportOn && $input->isIncludedInReport && !empty($_GET[$this->formName.'_export_type']))
 					{
 						$irow = $input->getReportOutput($arrResult[$input->objectName]);
 						if ($input->reportFunction && is_callable($input->displayFunction))

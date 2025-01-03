@@ -127,7 +127,7 @@
 	 * @param string $time
 	 * @return boolean
 	 */
-	function setLastModified($path=null, $time)
+	function setLastModified($path=null, $time=null)
 	{
 		$path = is_null($path)?$this->filePath:$path;
 		$time = is_null($time)?time():$time;
