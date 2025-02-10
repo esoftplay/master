@@ -1,3 +1,4 @@
+// pack -cw FormTags_org.js FormTags.js
 _Bbc(function ($) {
 	if ($.autocomplete = function (a, i) {
 		var r = $(a).attr("autocomplete", "off"),
@@ -90,9 +91,9 @@ _Bbc(function ($) {
 			t = 0 < i.width ? i.width : r.width();
 			l.css({
 				width: parseInt(t) + "px",
-				top: e.y + a.offsetHeight + "px",
+				top: e.y + a.offsetHeight + $(a).position().top + "px",
 				left: e.x + "px"
-			}).show()
+			}).show();
 		}
 		function L() {
 			(t && clearTimeout(t), h.removeClass(i.loadingClass), l.is(":visible") && l.hide(), i.mustMatch) && (r.val() != a.lastSelected && addOneOption(null))
