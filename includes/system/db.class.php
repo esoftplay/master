@@ -24,8 +24,10 @@ class bbcSQL
 	var $dbOutput;
 	var $sql;
 	var $resid;
-	var $timestamp_sec= 900;
-	var $tmp_is_cache = false;
+	var $timestamp_sec = 900;
+	var $tmp_is_cache  = false;
+	var $isLogWait     = false;
+	var $logWait       = [];
 	var $dbname, $dbuser;
 	var $self, $self_stop, $now, $timestamp, $cache_dir;
 	var $link, $tmp_cache_time, $tmp_cache_count, $link_read;
@@ -54,6 +56,7 @@ class bbcSQL
 	}
 	function __destruct()
 	{
+		global $Bbc;
 		$this->bg_check = 0;
 		if (!empty($this->bg_data))
 		{
@@ -71,6 +74,13 @@ class bbcSQL
 		{
 			@mysqli_close($this->link_read);
 			unset($this->link_read);
+		}
+		if (!empty($Bbc->lock))
+		{
+			if (function_exists('lock_end'))
+			{
+				lock_end();
+			}
 		}
 	}
 	function add_bg($obj, $args)
@@ -482,6 +492,25 @@ class bbcSQL
 					$data = 'sql/'.md5($data);
 				}
 				$this->path_delete($data.'.cfg');
+			}
+		}
+	}
+
+	function startLog($isLogWait = true)
+	{
+		$this->isLogWait = $isLogWait;
+	}
+
+	function endLog($call_func = '')
+	{
+		$arrQuery        = $this->logWait;
+		$this->isLogWait = false;
+		$this->logWait   = [];
+		if (!empty($call_func))
+		{
+			if (is_callable($call_func))
+			{
+				call_user_func($call_func, $arrQuery);
 			}
 		}
 	}
