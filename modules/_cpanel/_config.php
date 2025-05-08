@@ -2,6 +2,10 @@
 
 if (isset($_seo['URI']) && _ADMIN=='')
 {
+	if (preg_match('~^_cpanel/langbuilder~s', $_seo['URI']))
+	{
+		$db->now = strtotime('+1 DAY');
+	}
 	$Bbc->valid_access = false;
 	if (preg_match('~^(?:www\.)?data\.~is', @$_SERVER['HTTP_HOST']))
 	{

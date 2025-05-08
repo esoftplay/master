@@ -24,6 +24,9 @@ switch ($Bbc->mod['task'])
 	case 'search':
 		include tpl('search.html.php');
 		break;
+	case 'langbuilder':
+		include 'langbuilder.php';
+		break;
 	default:
 		include 'default.php';
 		break;

@@ -28,7 +28,7 @@ function lang_assoc($id = 'id')
 	global $Bbc, $db;
 	if(isset($Bbc->lang_assoc[$id])) return $Bbc->lang_assoc[$id];
 	$file = 'lang/ref_assoc_'.$id.'.cfg';
-	$q = "SELECT $id AS d, id, code, title FROM bbc_lang";
+	$q = "SELECT $id AS d, `id`, `code`, `title` FROM `bbc_lang` WHERE 1";
 	$Bbc->lang_assoc[$id] = $db->cache('getAssoc', $q, $file);
 	return $Bbc->lang_assoc[$id];
 }
