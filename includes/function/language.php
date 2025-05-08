@@ -43,12 +43,16 @@ function lang_id()
 function lang_fetch($module_id)
 {
 	global $Bbc, $db, $_LANG, $_CONFIG;
-	$Bbc->lang_fetch = isset($Bbc->lang_fetch) ? $Bbc->lang_fetch : array();
+	$lang_id = lang_id();
+	if (!isset($Bbc->lang_fetch[$lang_id]))
+	{
+		$Bbc->lang_fetch[$lang_id] = [];
+	}
 	if(is_numeric($module_id))
 	{
-		if(in_array($module_id, $Bbc->lang_fetch)) return true;
-		else $Bbc->lang_fetch[] = $module_id;
-		$lang_id = lang_id();
+		if(in_array($module_id, $Bbc->lang_fetch[$lang_id])) return true;
+		else $Bbc->lang_fetch[$lang_id][] = $module_id;
+
 		$_CONFIG['rules']['lang_default'] = $lang_id;
 		$file = 'lang/'.$lang_id.'_'.$module_id.'.cfg';
 		$q = "SELECT LOWER(c.`code`), t.`content`

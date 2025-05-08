@@ -11,7 +11,7 @@ if (!empty($id))
 	}
 	$data_output = array(
 		'ok'      => 1,
-		'message' => 'module '.$id.' sudah diindex'
+		'message' => 'language module '.$id.' sudah diindex'
 	);
 }else{
 	$urls     = [];
