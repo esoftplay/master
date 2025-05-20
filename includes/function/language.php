@@ -52,7 +52,7 @@ function lang_fetch($module_id)
 	{
 		if(in_array($module_id, $Bbc->lang_fetch[$lang_id])) return true;
 		else $Bbc->lang_fetch[$lang_id][] = $module_id;
-
+		$db->set_cache(_ROOT.'images/tmp/');
 		$_CONFIG['rules']['lang_default'] = $lang_id;
 		$file = 'lang/'.$lang_id.'_'.$module_id.'.cfg';
 		$q = "SELECT LOWER(c.`code`), t.`content`
@@ -64,6 +64,7 @@ function lang_fetch($module_id)
 		{
 			$_LANG[$id] = $content;
 		}
+		$db->set_cache(_CACHE);
 		return true;
 	}
 	return false;
