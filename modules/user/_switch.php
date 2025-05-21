@@ -93,6 +93,9 @@ switch($Bbc->mod['task'])
 	case 'files':
 		include 'files.php';
 		break;
+	case 'files-gcs':
+		include 'files-gcs.php';
+		break;
 	case 'editor_css':
 		include 'editor_css.php';
 		break;

@@ -5,4 +5,4 @@ images/cache/
 images/tmp/
 images/license.txt
 /config.php
-/modules/images/vendor/
+modules/images/vendor/

@@ -6,6 +6,7 @@ if (empty($_SESSION['bbcAuthAdmin']['id']))
 }else
 if (defined('_IMAGE_STORAGE'))
 {
+	redirect(_URL.'user/files-gcs');
 	$sys->stop(true);
 	echo msg('Mohon maaf, fitur file manager tidak akan berjalan jika menggunakan stateless server');
 }else{
