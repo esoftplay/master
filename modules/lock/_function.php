@@ -7,14 +7,13 @@ require_once __DIR__.'/lib/index.php';
 
 use shared\cache\Bcache;
 
-if (!defined('_LOCK_REDIS'))
-{
-	die('const _LOCK_REDIS must be defined in your config');
-}
-
 function lock_start($key, $errFunc = '', $timeout = 15)
 {
 	global $Bbc;
+	if (!defined('_LOCK_REDIS'))
+	{
+		die('const _LOCK_REDIS must be defined in your config');
+	}
 	if (empty($Bbc->lock))
 	{
 		$lock_redis  = explode(':', _LOCK_REDIS);

@@ -185,7 +185,7 @@ class phpSearchAdmin extends phpEasyAdminLib
 						}
 						if (!empty($_POST[$input->name]) || @$_POST[$input->name] == $false)
 						{
-							$_SESSION[$this->formName][$this->table][$input->name] = $_POST[$input->name];
+							$_SESSION[$this->formName][$this->table][$input->name] = trim($_POST[$input->name]);
 						}else{
 							unset($_SESSION[$this->formName][$this->table][$input->name]);
 						}
