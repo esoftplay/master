@@ -4,9 +4,9 @@ if (!isset($is_admin))
 {
   $is_admin = 0;
 }
-$q = "SELECT id, name FROM bbc_module WHERE active=1 ORDER BY name";
+$q = "SELECT `id`, `name` FROM `bbc_module` WHERE `active`=1 ORDER BY `name` ASC";
 $r_module = $db->getAll($q);
-$q = "SELECT id, name, menus FROM bbc_user_group WHERE is_admin={$is_admin} ORDER BY is_admin, score DESC";
+$q = "SELECT `id`, `name`, `menus` FROM `bbc_user_group` WHERE `is_admin`={$is_admin} ORDER BY `is_admin`, `score` DESC";
 $r_group = $db->getAll($q);
 
 function link_parse($url)
@@ -108,14 +108,15 @@ function menu_update_insert($id=0)
   {
     $id = @intval($_GET['id']);
   }
-  $menu = $db->getRow("SELECT * FROM bbc_menu WHERE id={$id}");
+  $menu = $db->getRow("SELECT * FROM `bbc_menu` WHERE `id`={$id}");
   $sql  = array();
   if (!empty($menu))
   {
     $link = '';
     if (!empty($menu['link']))
     {
-      if (!preg_match('~^index\.php\?mod=~s', $menu['link']))
+      $menu['link'] = trim($menu['link']);
+      if (preg_match('~^index\.php\?mod\=~s', $menu['link']))
       {
         $link = link_parse($menu['link']);
         if ($link != $menu['link'])
@@ -129,7 +130,7 @@ function menu_update_insert($id=0)
       preg_match('~index\.php\?mod=([^\.]+)~is', $link, $match);
       if (!empty($match[1]))
       {
-        $module_id = $db->getOne("SELECT id FROM bbc_module WHERE name='".$match[1]."'");
+        $module_id = $db->getOne("SELECT `id` FROM `bbc_module` WHERE `name`='".$match[1]."' LIMIT 1");
         if ($module_id!=$menu['module_id'])
         {
           $sql[] = '`module_id`='.intval($module_id);

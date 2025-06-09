@@ -35,8 +35,8 @@ $data['id'] = @intval($data['id']);
 		<input type="button" value="Create" onclick="return menu_create('<?php echo $prefix;?>', <?php echo $data['id'];?>);" class="btn btn-default btn-secondary" />
 		<div id="<?php echo $prefix;?>menus">
 			<?php
-			$q="SELECT id, cat_id FROM bbc_menu
-					WHERE is_content_cat=1 AND content_cat_id=".$data['id']."  ORDER BY cat_id, par_id, orderby";
+			$q="SELECT `id`, `cat_id` FROM `bbc_menu`
+					WHERE `is_content_cat`=1 AND `content_cat_id`=".$data['id']."  ORDER BY `cat_id`, `par_id`, `orderby` ASC";
 			$r = $db->getAssoc($q);
 			$av_menu = array();
 			foreach($r AS $id => $cat_id)

@@ -22,9 +22,14 @@
 		</div>
 		<div class="form-group">
 			<label>Menu Title</label>
-<?php	foreach($r_lang AS $lang_id => $dt) {	?>
-			<input type="text" id="menu_title_<?php echo $lang_id;?>" placeholder="<?php echo $dt['title'];?>" class="form-control menu_create" data-prefix="<?php echo $form_act; ?>" data-id="<?php echo $data['id']; ?>" />
-<?php	}	?>
+			<?php
+			foreach($r_lang AS $lang_id => $dt)
+			{
+				?>
+				<input type="text" id="menu_title_<?php echo $lang_id;?>" placeholder="<?php echo $dt['title'];?>" class="form-control menu_create" data-prefix="<?php echo $form_act; ?>" data-id="<?php echo $data['id']; ?>" />
+				<?php
+			}
+			?>
 		</div>
 		<div class="form-group">
 			<label>SEO Link</label>
@@ -34,8 +39,8 @@
 		<hr />
 		<div id="menu_exists">
 			<?php
-			$q="SELECT id, cat_id FROM bbc_menu
-					WHERE is_content=1 AND content_id=".$data['id']."  ORDER BY cat_id, par_id, orderby";
+			$q="SELECT `id`, `cat_id` FROM `bbc_menu`
+					WHERE `is_content`=1 AND `content_id`=".$data['id']."  ORDER BY `cat_id`, `par_id`, `orderby` ASC";
 			$r = $db->getAssoc($q);
 			$av_menu = array();
 			foreach($r AS $id => $cat_id)
