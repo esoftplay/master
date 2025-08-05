@@ -737,7 +737,7 @@ function alert_push_topic($push_id, $user_id, $is_subscribe=true, &$topics=array
 			$db->Execute("DELETE FROM `bbc_user_push_topic_list` WHERE `push_id`={$push_id}");
 			if (!empty($dels))
 			{
-				call_user_func_array(__FUNCTION__, [$push_id, $user_id, false, $dels]);
+				call_user_func_array(__FUNCTION__, [$push_id, $user_id, false, &$dels]);
 			}
 		}else{
 			$topics['info'] = []; // function hook bs menambahkan info dengan menjadikan nama topic sebagai key nya
