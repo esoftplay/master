@@ -14,7 +14,7 @@ if (empty($Bbc->no_log))
 			$_seo['_URI'] = preg_replace('~[^a-z0-9]+~is', '', _URI);
 			if (preg_match('~([a-z0-9\-]+)\.~is', $_seo['dom'], $m))
 			{
-				session_name($_seo['_URI'].$m[1]);
+				session_name($_seo['_URI'].'a'.$m[1]);
 			}else{
 				if (!empty($_seo['_URI']))
 				{
@@ -77,8 +77,8 @@ if (empty($Bbc->no_log))
 	/*===================================================
 	 * LOGOUT ALL USER IF IDLE TIME TOO LONG
 	 *==================================================*/
-	$q = "UPDATE `bbc_user` SET `exp_checked`='0000-00-00 00:00:00' WHERE `exp_checked` < NOW() AND `exp_checked`!='0000-00-00 00:00:00'";
-	$db->Execute($q);
+	// $q = "UPDATE `bbc_user` SET `exp_checked`='0000-00-00 00:00:00' WHERE `exp_checked` < NOW() AND `exp_checked`!='0000-00-00 00:00:00'";
+	// $db->Execute($q);
 
 	/*===================================================
 	 * MARK USER IF STILL ONLINE...
