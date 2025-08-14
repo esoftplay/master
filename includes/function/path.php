@@ -109,7 +109,7 @@ if (!function_exists('path_create'))
 			if(file_exists($path)) $output = true;
 			else {
 				$output = @mkdir($path, $chmod, true);
-				if (!$output)
+				if (!$output && !file_exists($path))
 				{
 					$debug = debug_backtrace();
 					$file  = $debug[0]['file'];
@@ -132,6 +132,8 @@ if (!function_exists('path_create'))
 					{
 						error_log(_URL.': '.$f.' Failed path create on '.$path);
 					}
+				}else{
+					$output = true;
 				}
 			}
 		}else{
