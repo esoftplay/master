@@ -443,7 +443,7 @@ function user_login($username, $password, $is_admin = 0, $rememberme = 0)
 	$username = str_replace("'", "\'", $username);
 	$q        = "SELECT * FROM `bbc_user` WHERE `username`='{$username}'";
 	$dt       = $db->getRow($q);
-	if($db->affected_rows())
+	if(!empty($dt))
 	{
 		// LOGIN CORRECT
 		if($password == decode($dt['password']))

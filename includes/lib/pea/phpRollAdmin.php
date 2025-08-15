@@ -553,7 +553,7 @@ class phpRollAdmin extends phpEasyAdminLib
 		}
 		$page  = !empty($_GET[$this->nav->string_name]) ? intval($_GET[$this->nav->string_name])-1 : 0;
 		$start = $page * intval($this->nav->int_max_rows);
-		$table = $this->table .' '. $this->sqlCondition;
+		$table = $this->setQuoteSQL($this->table) .' '. $this->sqlCondition;
 		$query = "SELECT $strField2Select FROM $table";
 		$query = $this->getOrderQuery($query);
 		$query .= " LIMIT ". $start .", ". intval($this->nav->int_max_rows);
@@ -943,7 +943,7 @@ class phpRollAdmin extends phpEasyAdminLib
 								}
 							}
 							$table = preg_replace('~((?:\s+as\s+.*?)?\s+left\s+join\s+.*?)$~is','',$this->table);
-							$q = "DELETE FROM {$table} WHERE {$this->tableId} IN ({$del_ids})";
+							$q = "DELETE FROM `{$table}` WHERE {$this->tableId} IN ({$del_ids})";
 							$ok= $this->db->Execute($q);
 							if ($ok)
 							{
@@ -975,7 +975,7 @@ class phpRollAdmin extends phpEasyAdminLib
 									}else{
 										$sql = preg_replace('~(order by .*?)$~is', $ord, $sql);
 									}
-									$q = "SELECT {$this->tableId}, {$orderby} FROM {$this->table} {$sql}";
+									$q = "SELECT {$this->tableId}, {$orderby} FROM ".$this->setQuoteSQL($this->table)." {$sql}";
 									$r = $this->db->getAll($q);
 									$i = 0;
 									foreach ($r as $dt)
@@ -983,7 +983,7 @@ class phpRollAdmin extends phpEasyAdminLib
 										$i++;
 										if ($dt[$orderby]!=$i)
 										{
-											$q = "UPDATE {$this->table} SET `{$orderby}`=$i WHERE `{$this->tableId}`=".$dt[$this->tableId];
+											$q = "UPDATE ".$this->setQuoteSQL($this->table)." SET `{$orderby}`=$i WHERE `{$this->tableId}`=".$dt[$this->tableId];
 											$this->db->Execute($q);
 										}
 									}
@@ -1106,7 +1106,7 @@ class phpRollAdmin extends phpEasyAdminLib
 								foreach((array)$_POST[$this->input->system_id->name] as $i => $id)
 								{
 									$lang_text = array();
-									$query = "UPDATE ". $this->table ." SET ";
+									$query = "UPDATE ". $this->setQuoteSQL($this->table) ." SET ";
 									foreach ($this->arrInput as $input)
 									{
 										if ($input->isMultiLanguage)

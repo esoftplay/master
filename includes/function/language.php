@@ -40,10 +40,13 @@ function lang_id()
 	return $output;
 }
 
-function lang_fetch($module_id)
+function lang_fetch($module_id, $lang_id = 0)
 {
 	global $Bbc, $db, $_LANG, $_CONFIG;
-	$lang_id = lang_id();
+	if (!($lang_id > 1))
+	{
+		$lang_id = lang_id();
+	}
 	if (!isset($Bbc->lang_fetch[$lang_id]))
 	{
 		$Bbc->lang_fetch[$lang_id] = [];

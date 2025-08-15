@@ -361,7 +361,7 @@ class phpEditAdmin extends phpAddAdmin
 		{
 			if (!is_numeric($this->onSaveArgs[$i]) && empty($this->onSaveArgs[$i]))
 			{
-				$this->onSaveArgs[$i] = $this->db->getOne("SELECT {$this->tableId} FROM {$this->table} $this->sqlCondition");
+				$this->onSaveArgs[$i] = $this->db->getOne("SELECT {$this->tableId} FROM ". $this->setQuoteSQL($this->table) ." $this->sqlCondition");
 			}
 			$tmp = call_user_func( $this->onSave[$i], $this->onSaveArgs[$i] );
 			if (is_bool($tmp) || $tmp=='1' || $tmp=='0')
@@ -386,7 +386,7 @@ class phpEditAdmin extends phpAddAdmin
 			$into	= $values = $tableId = '';
 			if ( isset( $_POST[$this->deleteButton->name] ) )
 			{
-				$q = "SELECT $this->tableId FROM ". $this->table ." ". $this->sqlCondition;
+				$q = "SELECT $this->tableId FROM ". $this->setQuoteSQL($this->table) ." ". $this->sqlCondition;
 				$tableId= $this->db->getOne($q);
 				/* CARI APAKAH ADA FIELD YANG PERLU DITANGANI SEBELUM DIHAPUS */
 				foreach ($this->arrInput as $input)
@@ -400,7 +400,7 @@ class phpEditAdmin extends phpAddAdmin
 						}
 					}
 				}
-				$q = "DELETE FROM ". $this->table ." ". $this->sqlCondition;
+				$q = "DELETE FROM ". $this->setQuoteSQL($this->table) ." ". $this->sqlCondition;
 				$this->error	= !$this->db->Execute($q);
 				if ( $this->error )
 				{
@@ -535,7 +535,7 @@ class phpEditAdmin extends phpAddAdmin
 					}
 					if (!empty($query))
 					{
-						$q = "UPDATE ". $this->table ." SET  ".$this->replaceTrailingComma(implode('', $query)) .' '. $this->sqlCondition;
+						$q = "UPDATE ". $this->setQuoteSQL($this->table) ." SET  ".$this->replaceTrailingComma(implode('', $query)) .' '. $this->sqlCondition;
 						$this->error	= !$this->db->Execute($q);
 					}else{
 						$this->error = false;
@@ -548,7 +548,7 @@ class phpEditAdmin extends phpAddAdmin
 						{
 							if(count($lang_text) > 0)
 							{
-								$q = "SELECT $this->tableId FROM $this->table ".$this->sqlCondition;
+								$q = "SELECT $this->tableId FROM ". $this->setQuoteSQL($this->table) ." ".$this->sqlCondition;
 								$tableId = $this->db->getOne($q);
 								$q = "SELECT `lang_id` FROM `{$this->LanguageTable}` WHERE `{$this->LanguageTableId}`={$tableId} ".$this->LanguageTableWhere;
 								$r_lang_id = $this->db->getCol($q);

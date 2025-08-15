@@ -406,7 +406,7 @@ class phpAddAdmin extends phpEasyAdminLib
 
 					if ( $values != '' && $into != '' )
 					{
-						$query 			= "INSERT INTO ". $this->table ." ($into) VALUES ($values)";
+						$query 			= "INSERT INTO ". $this->setQuoteSQL($this->table) ." ($into) VALUES ($values)";
 						$this->error= !$this->db->Execute($query);
 						if ( $this->error )
 						{
@@ -417,7 +417,7 @@ class phpAddAdmin extends phpEasyAdminLib
 							{
 								if ($this->tableId != 'id')
 								{
-									$this->langInsertId = $this->db->getOne("SELECT ".$this->tableId." FROM ".$this->table." WHERE id=".$this->insertId);
+									$this->langInsertId = $this->db->getOne("SELECT ".$this->tableId." FROM ".$this->setQuoteSQL($this->table)." WHERE id=".$this->insertId);
 								}else{
 									$this->langInsertId = $this->insertId;
 								}
