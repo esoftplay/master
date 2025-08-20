@@ -77,8 +77,11 @@ if (empty($Bbc->no_log))
 	/*===================================================
 	 * LOGOUT ALL USER IF IDLE TIME TOO LONG
 	 *==================================================*/
-	// $q = "UPDATE `bbc_user` SET `exp_checked`='0000-00-00 00:00:00' WHERE `exp_checked` < NOW() AND `exp_checked`!='0000-00-00 00:00:00'";
-	// $db->Execute($q);
+	if (get_once('user_iddle', 1, 'hour'))
+	{
+		$q = "UPDATE `bbc_user` SET `exp_checked`='0000-00-00 00:00:00' WHERE `exp_checked` < NOW() AND `exp_checked`!='0000-00-00 00:00:00'";
+		$db->Execute($q);
+	}
 
 	/*===================================================
 	 * MARK USER IF STILL ONLINE...
