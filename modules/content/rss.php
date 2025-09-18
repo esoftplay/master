@@ -3,9 +3,9 @@
 $id = @intval($_GET['id']);
 $data = content_rss($id, 0);
 $sys->stop();
-$config = $data['config'];
 if(@$data['publish'])
 {
+	$config = (array)@$data['config'];
 	header ("content-type: application/xml");
 	_func('image');
 	$link = ($id > 0) ? content_cat_link($data['id'], $data['title']) : _URL;
@@ -32,14 +32,7 @@ if(@$data['publish'])
 					$enclosure = '';
 				}else{
 					$img_src = content_src($dt['image'], false, true);
-					$img_dir = str_replace(_URL, _ROOT, $img_src);
-					if (_class('images')->exists($img_dir))
-					{
-						$img_size = filesize($img_dir);
-					}else{
-						$img_size = filesize(_ROOT.'images/loading.gif');
-					}
-					$enclosure = "\n".'<enclosure url="'.$img_src.'" length="'.$img_size.'" type="image/jpg" />';
+					$enclosure = "\n".'<enclosure url="'.$img_src.'" type="image/jpg" />';
 				}
 				?>
 				<item>

@@ -343,8 +343,12 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 	}
 	if (!empty($ids))
 	{
-		$timestamp = date('Y-m-d H:i:s', strtotime('-2 MONTH'));
-		$db->Execute("DELETE FROM `bbc_user_push_notif` WHERE `created`<'{$timestamp}'");
+		if (get_once('remove_push_notif', 1, 'day'))
+		{
+			$timestamp = date('Y-m-d H:i:s', strtotime('-2 MONTH'));
+			$db->Execute("DELETE FROM `bbc_user_push_notif` WHERE `created`<'{$timestamp}'");
+		}
+		$hastag  = 'global';
 		$title   = strip_tags($title);
 		$message = strip_tags($message, '<br>');
 		$message = preg_replace('~<br(?:\s+?/?)?>~is', "\n", $message);
@@ -359,13 +363,37 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 				$params[$key] = $value;
 			}
 		}
-		$data = array(
+		/* AMBIL HASTAG MASUKKAN KE TABLE bbc_user_push_tag */
+		if (preg_match('~^#([a-z0-9_]+)\s+(.*?)$~is', $title, $tags))
+		{
+			$hastag = $tags[1];
+			$title  = $tags[2];
+		}
+		$tag_id = $db->getOne("SELECT `id` FROM `bbc_user_push_topic` WHERE `name`='{$hastag}");
+		if (empty($tag_id))
+		{
+			$db->Execute("CREATE TABLE `bbc_user_push_tag` (
+				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`name` varchar(120) DEFAULT NULL,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `name` (`name`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+			if ($hastag != 'global')
+			{
+				$db->Insert('bbc_user_push_tag', ['name' => 'global']);
+			}
+			$tag_id = $db->Insert('bbc_user_push_tag', ['name' => $hastag]);
+			$db->Execute("ALTER TABLE `bbc_user_push_notif` ADD `tag_id` INT  UNSIGNED  NULL  DEFAULT 1  AFTER `group_id`");
+			$db->Execute("ALTER TABLE `bbc_user_push_notif` ADD FOREIGN KEY (`tag_id`) REFERENCES `bbc_user_push_tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE");
+		}
+
+		$data   = array(
+			'tag_id'  => $tag_id,
 			'title'   => $title,
 			'message' => $message,
 			'status'  => 0,
 			'params'  => json_encode($params)
 			);
-		// iLog([$ids, $data, $tos, $group_id, $sending_id]);
 		_alert_push_insert($ids, $data, $tos, $group_id, $sending_id);
 		$out = true;
 	}
@@ -375,8 +403,9 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id = 0)
 {
 	global $db, $sys;
-	$out = 0;
-	$id  = null;
+	$out      = 0;
+	$id       = null;
+	$is_topic = 0;
 	// jika $ids berisi array maka itu adalah kumpulan id dr user_id
 	if (is_array($ids))
 	{
@@ -386,10 +415,11 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 		}
 	}else{
 		// jika $ids berisi integer maka itu adalah topic_id
-		$i = $db->getOne("SELECT DISTINCT `user_id` FROM `bbc_user_push_topic_list` WHERE `topic_id`={$ids} LIMIT {$last_id}, 1");
+		$i = $db->getOne("SELECT DISTINCT `user_id` FROM `bbc_user_push_topic_list` WHERE `topic_id`={$ids} ORDER BY `list_id` ASC LIMIT {$last_id}, 1");
 		if (!empty($i))
 		{
-			$id = $i;
+			$id       = $i;
+			$is_topic = 1;
 		}
 	}
 	if (isset($id))
@@ -399,15 +429,32 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 		{
 			$data['user_id']  = $r[0];
 			$data['group_id'] = (!empty($r[1]) && is_numeric($r[1])) ? $r[1] : $group_id;
-			$push_notif_id    = $db->Insert('bbc_user_push_notif', $data);
-			$out              = $push_notif_id;
+			if ($is_topic)
+			{
+				$sent  = 0;
+				$limit = 100;
+				$r_ids = $db->getCol("SELECT DISTINCT `user_id` FROM bbc_user_push_topic_list WHERE `topic_id`={$ids} ORDER BY `list_id` ASC LIMIT {$last_id}, {$limit}");
+				foreach ($r_ids as $i)
+				{
+					$last_id++;
+					$sent++;
+					$data['user_id'] = $i;
+					$push_notif_id   = $db->Insert('bbc_user_push_notif', $data);
+				}
+			}else{
+				$last_id++;
+				$sent          = 1;
+				$push_notif_id = $db->Insert('bbc_user_push_notif', $data);
+			}
+			$out = $push_notif_id;
+			// UNTUK MENGIRIM NOTIF YG MASIH MENGGUNAKAN EXPO
 			if (!empty($push_notif_id) && $tos != ['/topics/userAll'])
 			{
-				_class('async')->run('alert_push_send', [$push_notif_id, 0]);
+				// _class('async')->run('alert_push_send', [$push_notif_id, 0]);
 			}
 			if (!empty($sending_id))
 			{
-				$db->Execute("UPDATE `bbc_user_push_sending` SET `sent`=(`sent`+1) WHERE `id`={$sending_id}");
+				$db->Execute("UPDATE `bbc_user_push_sending` SET `sent`=(`sent`+{$sent}) WHERE `id`={$sending_id}");
 			}
 			_class('async')->run(__FUNCTION__, [$ids, $data, $tos, $group_id, $sending_id, ++$last_id]);
 		}
@@ -483,6 +530,7 @@ function _alert_push_insert($ids, $data, $tos, $group_id, $sending_id, $last_id 
 	return $out;
 }
 
+// SUDAH GK PERLU LAGI karena PENGGUNA EXPO SUDAH TIDAK BS BUKA APPLIKASI
 function alert_push_send($id, $last_id=0)
 {
 	global $db, $sys;
