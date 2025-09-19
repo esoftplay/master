@@ -97,6 +97,7 @@ class bbcsystem
 		{
 			if (file_exists(_ROOT.'templates/'.$template.'/index.php'))
 			{
+				global $_CONFIG;
 				$this->template_url  = _URL.'templates/'.$template.'/';
 				$this->template_dir  = _ROOT.'templates/'.$template.'/';
 				$_CONFIG['template'] = $template;
