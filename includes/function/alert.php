@@ -372,7 +372,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 		$tag_id = $db->getOne("SELECT `id` FROM `bbc_user_push_tag` WHERE `name`='{$hastag}'");
 		if (empty($tag_id))
 		{
-			$db->Execute("CREATE TABLE `bbc_user_push_tag` (
+			$db->Execute("CREATE TABLE IF NOT EXISTS `bbc_user_push_tag` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`name` varchar(120) DEFAULT NULL,
 				PRIMARY KEY (`id`),
