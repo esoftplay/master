@@ -369,7 +369,7 @@ function alert_push($to, $title, $message, $module = 'content', $arguments = arr
 			$hastag = $tags[1];
 			$title  = $tags[2];
 		}
-		$tag_id = $db->getOne("SELECT `id` FROM `bbc_user_push_topic` WHERE `name`='{$hastag}'");
+		$tag_id = $db->getOne("SELECT `id` FROM `bbc_user_push_tag` WHERE `name`='{$hastag}'");
 		if (empty($tag_id))
 		{
 			$db->Execute("CREATE TABLE `bbc_user_push_tag` (
