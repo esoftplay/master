@@ -187,7 +187,7 @@ function is_url($text)
 }
 function is_email($text)
 {
-	$regex	= '/^[a-z0-9\_\.]+@(?:[a-z0-9\-\.]){1,66}\.(?:[a-z]){2,6}$/is';
+	$regex	= '/^[a-z0-9\_\-\.]+@(?:[a-z0-9\-\.]){1,66}\.(?:[a-z]){2,6}$/is';
 	$output = (!empty($text) && preg_match($regex, (string)$text)) ? true : false;
 	return $output;
 }
