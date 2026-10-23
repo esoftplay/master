@@ -1,3 +1,25 @@
+# 1. Matikan pembacaan direktori (Sudah benar)
 Options -Indexes
-AddType image/jpeg .php .phtml .php3 .cfg .pl
-#php_flag engine off
+
+# 2. Tolak total semua akses langsung ke ekstensi script berbahaya
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|php8|phps|pl|py|cgi|sh|cfg|ini)$">
+    Require all denied
+    # Gunakan baris di bawah jika Apache kamu versi sangat lama (< 2.4):
+    # Order Deny,Allow
+    # Deny from all
+</FilesMatch>
+
+# 3. Matikan mesin PHP secara total khusus di folder ini
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+# 4. Hapus semua handler script agar dibaca sebagai teks biasa jika lolos
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .cfg .pl
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .cfg .pl
