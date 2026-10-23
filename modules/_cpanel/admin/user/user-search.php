@@ -36,7 +36,7 @@ $r_group_array = $db->getAll($q);
 		</select>
 	</div>
 	<div class="form-group">
-		<input name="keyword" type="text" value="<?php echo @htmlentities($keyword['keyword']);?>" class="form-control" title="keyword" placeholder="keyword">
+		<input name="keyword" type="text" value="<?php echo htmlentities($keyword['keyword']??'');?>" class="form-control" title="keyword" placeholder="keyword">
 	</div>
 		<input type="hidden" name="<?php echo $_search['keyword'];?>" value="1">
 	<button type="submit" name="Submit" value="search" class="btn btn-default btn-secondary">

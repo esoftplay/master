@@ -237,7 +237,7 @@ $array = $db->getAssoc("SELECT `id`, `image`, `title`, `description` FROM `galle
 		// attribute data-title dan data-description adalah optional
 		foreach ($array as $gal)
 		{
-			echo '<img src="'._URL.$g_path.$gal['image'].'" data-title="'.htmlentities($gal['title']).'" data-description="'.htmlentities($gal['description']).'" />';
+			echo '<img src="'._URL.$g_path.$gal['image'].'" data-title="'.htmlentities($gal['title']??'').'" data-description="'.htmlentities($gal['description']??'').'" />';
 		}
 		?>
 	</div>

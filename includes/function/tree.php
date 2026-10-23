@@ -48,7 +48,7 @@ function tree_list($arr, $title = '', $cookie = true, $all_active_link = true, $
 		$j++;
 		$link    = (!$all_active_link) ? _tree_list_link($arr, $row['id'], $i, $j) : $row['link'];
 		$alt     = !empty($row['description']) ? $row['description'] : $row['title'];
-		$alt     = addslashes(htmlentities(trim(strip_tags(preg_replace('~\s{2,}~s', ' ', $alt)))));
+		$alt     = addslashes(htmlentities(trim(strip_tags(preg_replace('~\s{2,}~s', ' ', $alt??'')))));
 		$targeti = $row['link'] != $link ? '' : $target;
 		if(!empty($row['image']))
 		{

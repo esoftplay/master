@@ -100,7 +100,7 @@ if (!empty($data['help']))
 					foreach($r_lang AS $lang_id => $dt)
 					{
 						?>
-						<input type="text" name="title[<?php echo $lang_id;?>]" value="<?php echo @htmlentities($data['title'][$lang_id]);?>" title="<?php echo $dt['title'];?>" placeholder="<?php echo $dt['title'];?>" class="form-control" />
+						<input type="text" name="title[<?php echo $lang_id;?>]" value="<?php echo htmlentities($data['title'][$lang_id]??'');?>" title="<?php echo $dt['title'];?>" placeholder="<?php echo $dt['title'];?>" class="form-control" />
 						<?php
 					}
 					?>

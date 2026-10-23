@@ -604,7 +604,7 @@ class bbcsystem
 		{
 			$output = '<span class="glyphicon glyphicon-'.$icon
 			.'" data-toggle="popover" data-placement="'.$position
-			.'" data-content="'.htmlentities(trim($text)).'"></span>';
+			.'" data-content="'.htmlentities($text??'').'"></span>';
 			if (empty($this->tips))
 			{
 				$this->tips = 1;
@@ -620,9 +620,10 @@ class bbcsystem
 		{
 			if (!empty($text))
 			{
+				$text   = trim($text);
 				$output = '<span class="tips" title="'.htmlentities($title)
 				.'" data-toggle="popover" data-placement="'.$position
-				.'" data-content="'.htmlentities(trim($text)).'">'.$title.'</span>';
+				.'" data-content="'.htmlentities($text??'').'">'.$title.'</span>';
 				if (empty($this->tips))
 				{
 					$this->tips = 1;

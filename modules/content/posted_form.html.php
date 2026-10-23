@@ -62,11 +62,11 @@ if ($id > 0)
 				?>
 				<div class="form-group">
 					<label><?php echo lang('Title'); ?></label>
-					<input name="title[<?php echo $lang_id;?>]" type="text" value="<?php echo htmlentities(@$data['text'][$lang_id]['title']);?>" id="title_<?php echo $lang_id;?>" class="form-control" title="<?php echo $t_title;?>" placeholder="<?php echo $t_title;?>">
+					<input name="title[<?php echo $lang_id;?>]" type="text" value="<?php echo htmlentities($data['text'][$lang_id]['title']??'');?>" id="title_<?php echo $lang_id;?>" class="form-control" title="<?php echo $t_title;?>" placeholder="<?php echo $t_title;?>">
 				</div>
 				<div class="form-group">
 					<label><?php echo lang('Intro'); ?></label>
-					<textarea name="intro[<?php echo $lang_id; ?>]" id="text_intro_<?php echo $lang_id;?>" class="form-control"><?php echo @htmlentities($data['text'][$lang_id]['intro']); ?></textarea>
+					<textarea name="intro[<?php echo $lang_id; ?>]" id="text_intro_<?php echo $lang_id;?>" class="form-control"><?php echo htmlentities($data['text'][$lang_id]['intro']??''); ?></textarea>
 				</div>
 				<div class="form-group">
 					<label><?php echo lang('Content'); ?></label>
@@ -114,7 +114,7 @@ if ($id > 0)
 						$images = json_decode($data['images'], 1);
 						foreach ((array)$images as $image)
 						{
-							echo '<img src="'._URL.$path.$image['image'].'" data-title="'.htmlentities($image['title']).'" data-description="'.htmlentities($image['description']).'" />';
+							echo '<img src="'._URL.$path.$image['image'].'" data-title="'.htmlentities($image['title']??'').'" data-description="'.htmlentities($image['description']??'').'" />';
 						}
 						?>
 					</div>

@@ -55,7 +55,7 @@ class FormTexttip extends FormSqlplaintext
 	{
 		if (!empty($template))
 		{
-			$this->template = $template;
+			$this->template = trim($template);
 			$this->setInputs();
 		}
 	}
@@ -144,9 +144,9 @@ class FormTexttip extends FormSqlplaintext
 		}
 		if (empty($this->extra[0])) $this->extra[0] = '';
 		if (empty($this->extra[1])) $this->extra[1] = '';
-		$output = '<span class="tips" title="'.htmlentities($caption)
+		$output = '<span class="tips" title="'.htmlentities($caption??'')
 				.'" data-toggle="popover" data-placement="'.$this->position
-				.'" data-content="'.htmlentities(trim($template)).'">'.$this->extra[0].$out.$this->extra[1].'</span>';
+				.'" data-content="'.htmlentities($template??'').'">'.$this->extra[0].$out.$this->extra[1].'</span>';
 		if (empty($GLOBALS['sys']->tips))
 		{
 			$GLOBALS['sys']->tips = 1;

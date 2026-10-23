@@ -568,11 +568,11 @@ class FormMultifile extends FormMulticheckbox
 					$extra = '';
 					if ($this->isFieldTitleExist)
 					{
-						$extra .= ' data-title="'.htmlentities($data['title']).'"';
+						$extra .= ' data-title="'.htmlentities($data['title']??'').'"';
 					}
 					if ($this->isFieldDescriptionExist)
 					{
-						$extra .= ' data-description="'.htmlentities($data['description']).'"';
+						$extra .= ' data-description="'.htmlentities($data['description']??'').'"';
 					}
 					echo '<img src="'.$this->folderUrl.$data['image'].'"'.$extra.' />';
 				}

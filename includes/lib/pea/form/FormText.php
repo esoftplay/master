@@ -190,11 +190,11 @@ class FormText extends Form
 				$alt   = $i ? $d['title'] : $this->title;
 				$value = isset($str_value[$d['id']]) ? $str_value[$d['id']] : '';
 				$extra = preg_replace(array('~\s{0,}title=".*?"~is', '~\s{0,}placeholder=".*?"~is'), '', $extra);
-				$r[]   = '<input name="'.$name.'['.$d['id'].']" type="'.$type.'" value="'.htmlentities($value).'" '.$extra.' title="'.$alt.'" placeholder="'.$alt.'">';
+				$r[]   = '<input name="'.$name.'['.$d['id'].']" type="'.$type.'" value="'.htmlentities($value??'').'" '.$extra.' title="'.$alt.'" placeholder="'.$alt.'">';
 			}
 			$out = implode($this->delimeter, $r);
 		}else{
-			$out = '<input name="'. $name .'" type="'.$type.'" value="'. (!empty($str_value) ? htmlentities($str_value) : '') .'" '.$extra.'>';
+			$out = '<input name="'. $name .'" type="'.$type.'" value="'. htmlentities($str_value??'').'" '.$extra.'>';
 		}
 		return $out;
 	}

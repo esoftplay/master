@@ -147,7 +147,7 @@ include_once _ROOT.'modules/content/constants.php';
 			$images = config_decode($data['images'], 1);
 			foreach ((array)$images as $image)
 			{
-				echo '<img src="'._URL.$path.$image['image'].'" data-title="'.htmlentities($image['title']).'" data-description="'.htmlentities($image['description']).'" />';
+				echo '<img src="'._URL.$path.$image['image'].'" data-title="'.htmlentities($image['title']??'').'" data-description="'.htmlentities($image['description']??'').'" />';
 			}
 			?>
 		</div>

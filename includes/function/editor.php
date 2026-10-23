@@ -29,7 +29,7 @@ function editor_html($name, $value = '', $config = array(), $is_inline = false)
 		unset($config['Config']);
 	}
 	$func   = $is_inline ? 'inline' : 'replace';
-	$value2 = htmlentities($value, ENT_COMPAT, 'UTF-8', FALSE);
+	$value2 = htmlentities($value??'', ENT_COMPAT, 'UTF-8', FALSE);
 	if (!empty($value2))
 	{
 		$value = $value2;
@@ -167,7 +167,7 @@ function editor_code($name, $value = '', $option = array(), $meta = true)
 		{
 			$name = $index.$key;
 			$Bbc->editor_code_id++;
-			$tabs[$key] = '<textarea id="input_'.$name.'" name="'.$params['id'].'['.$key.']" class="form-control" '.$attr.'>'.htmlentities($val, ENT_COMPAT, 'UTF-8', FALSE).'</textarea>'
+			$tabs[$key] = '<textarea id="input_'.$name.'" name="'.$params['id'].'['.$key.']" class="form-control" '.$attr.'>'.htmlentities($val??'', ENT_COMPAT, 'UTF-8', FALSE).'</textarea>'
 							. '<div rel="editor_code" id="editor_'.$name.'"'
 							.	' data-id="'.$name.'"'
 							.	' data-syntax="'.$params['syntax'].'"'
@@ -180,7 +180,7 @@ function editor_code($name, $value = '', $option = array(), $meta = true)
 		$output .= tabs($tabs);
 	}else{
 		$Bbc->editor_code_id++;
-		$output .= '<textarea id="input_'.$index.'" name="'.$params['id'].'" class="form-control" '.$attr.'>'.@htmlentities($value, ENT_COMPAT, 'UTF-8', FALSE).'</textarea>'
+		$output .= '<textarea id="input_'.$index.'" name="'.$params['id'].'" class="form-control" '.$attr.'>'.htmlentities($value??'', ENT_COMPAT, 'UTF-8', FALSE).'</textarea>'
 						. '<div rel="editor_code" id="editor_'.$index.'"'
 						.	' data-id="'.$index.'"'
 						.	' data-syntax="'.$params['syntax'].'"'

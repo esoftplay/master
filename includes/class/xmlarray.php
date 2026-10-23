@@ -234,7 +234,7 @@ class xmlArray
 				{
 					$output .= '<'.$key.'>'.$this->array2xml($data).'</'.$key.'>';
 				}else{
-					$output .= '<'.$key.'>'.htmlentities($data).'</'.$key.'>';
+					$output .= '<'.$key.'>'.htmlentities($data??'').'</'.$key.'>';
 				}
 			}
 		}

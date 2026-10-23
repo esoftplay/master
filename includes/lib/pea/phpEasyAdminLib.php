@@ -593,7 +593,7 @@ class phpEasyAdminLib
 			break;
 			default:
 				$title  = !empty($input->caption) ? $input->caption : $input->title;
-				$title  = htmlentities($title);
+				$title  = htmlentities($title??'');
 				$output = 'class="form-control" title="'.$title.'" placeholder="'.$title.'"';
 				if ($input->isRequire)
 				{

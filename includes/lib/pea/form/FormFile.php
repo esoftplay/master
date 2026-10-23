@@ -296,7 +296,7 @@ class FormFile extends Form
 				$out  .= '</object>';
 				if ($this->isImageClick)
 				{
-					$out = '<button type="button" class="btn btn-default btn-secondary btn-sm formFile-clickable" data-modal="'.htmlentities($out).'" title="'.htmlentities($title).'"><span class="glyphicon glyphicon-film"></span></button>';
+					$out = '<button type="button" class="btn btn-default btn-secondary btn-sm formFile-clickable" data-modal="'.htmlentities($out??'').'" title="'.htmlentities($title??'').'"><span class="glyphicon glyphicon-film"></span></button>';
 				}
 			}	else {
 				$i = _func('content', 'format', $fileExt);

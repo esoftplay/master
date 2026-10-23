@@ -9,17 +9,17 @@ if(@$data['publish'])
 	header ("content-type: application/xml");
 	_func('image');
 	$link = ($id > 0) ? content_cat_link($data['id'], $data['title']) : _URL;
-	$link = htmlentities($link);
+	$link = htmlentities($link??'');
 	echo '<?xml version="1.0" encoding="iso-8859-1"?>',"\n";
 	?>
 	<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 		<channel>
 			<atom:link href="<?php echo seo_uri();?>" rel="self" type="application/rss+xml" />
-			<title><?php echo htmlentities($data['title']);?></title>
+			<title><?php echo htmlentities($data['title']??'');?></title>
 			<link><?php echo $link;?></link>
-			<description><?php echo htmlentities($data['description']);?></description>
+			<description><?php echo htmlentities($data['description']??'');?></description>
 			<image>
-				<title><?php echo htmlentities($data['title']);?></title>
+				<title><?php echo htmlentities($data['title']??'');?></title>
 				<link><?php echo $link;?></link>
 				<url><?php echo _URL.'images/'.config('site','logo');?></url>
 			</image>
@@ -36,7 +36,7 @@ if(@$data['publish'])
 				}
 				?>
 				<item>
-					<title><?php echo htmlentities($dt['title']);?></title>
+					<title><?php echo htmlentities($dt['title']??'');?></title>
 					<link><?php echo htmlentities(content_link($dt['id'], $dt['title']));?></link>
 					<guid><?php echo htmlentities(content_link($dt['id'], $dt['title']));?></guid>
 					<pubDate><?php echo date('D, d M Y H:i:s', strtotime($dt['created']));?> +0700</pubDate>

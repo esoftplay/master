@@ -4,12 +4,12 @@ function survey_demografi_text($d, $i)
 {
 	global $id;
 	$text = lang($d);
-	return $text.'<input type="hidden" name="options['.$id.']['.$i.'][question]" value="'.htmlentities($text).'" style="display: none;" />';
+	return $text.'<input type="hidden" name="options['.$id.']['.$i.'][question]" value="'.htmlentities($text??'').'" style="display: none;" />';
 }
 function survey_demografi_input($i, $text='', $pre_text = 0)
 {
 	global $id;
-	$out = '<input type="text" class="form-control" name="options['.$id.']['.$i.'][0]" value="'.@htmlentities($_POST['options'][$id][$i][0]).'" />';
+	$out = '<input type="text" class="form-control" name="options['.$id.']['.$i.'][0]" value="'.@htmlentities($_POST['options'][$id][$i][0]??'').'" />';
 	if (!empty($text))
 	{
 		if ($pre_text)
@@ -55,7 +55,7 @@ function survey_demografi_rangking($r, $i, $t)
 				$text = '<input type="text" name="options['.$id.']['.$i.']['.$j.'][text]" value="'.@$_POST['options'][$id][$i][$j]['text'].'" size="40" />';
 			}else{
 				$text = lang($d);
-				$text .= '<input type="hidden" style="display: none;" name="options['.$id.']['.$i.']['.$j.'][text]" value="'.htmlentities($text).'" />';
+				$text .= '<input type="hidden" style="display: none;" name="options['.$id.']['.$i.']['.$j.'][text]" value="'.htmlentities($text??'').'" />';
 			}
 		$output .= '
 	<tr>

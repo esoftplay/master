@@ -261,7 +261,7 @@ class params
 							if(empty($opt))	$opt = ($key!=0) ? 'key' : 'value';
 							$key = ($opt == 'key') ? $key : $val;
 							$select	= ($key==$value) ? ' checked="checked"' : '';
-							$out[] = '<label><input type="radio" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key).'" id="'.menu_save($id.$key).'"'.$select.$data['attr'].' />'.$val.'</label>';
+							$out[]  = '<label><input type="radio" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key??'').'" id="'.menu_save($id.$key).'"'.$select.$data['attr'].' />'.$val.'</label>';
 						}
 						$input .= implode($data['delim'], $out);
 					break;
@@ -308,7 +308,7 @@ class params
 							$key            = key($data['option']);
 							$val            = current($data['option']);
 							$select	        = $key == $value ? ' checked="checked"' : '';
-							$input         .= '<label><input type="checkbox" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key).'" id="'.menu_save($id.$key).'"'.$select.$data['attr'].' /> '.$val.'</label>';
+							$input .= '<label><input type="checkbox" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($key??'').'" id="'.menu_save($id.$key).'"'.$select.$data['attr'].' /> '.$val.'</label>';
 						}
 					break;
 					case 'custom':
@@ -327,11 +327,12 @@ class params
 							}
 							foreach((array)$this->lang_r AS $l)
 							{
-								$r_tmp[]= '<input type="text" name="'.$this->set_field_name($name, $id.']['.$l['id']).'" value="'.@htmlentities($value[$l['id']]).'" title="'.$l['title'].'" class="form-control"'.$data['attr'].' />';
+								$r_tmp[]= '<input type="text" name="'.$this->set_field_name($name, $id.']['.$l['id']).'" value="'.htmlentities($value[$l['id']]??'').'" title="'.$l['title'].'" class="form-control"'.$data['attr'].' />';
 							}
 							$input .= implode('<br />', $r_tmp);
-						}else
-							$input .= '<input type="text" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($value).'" class="form-control"'.$data['attr'].' />';
+						}else{
+							$input .= '<input type="text" name="'.$this->set_field_name($name, $id).'" value="'.htmlentities($value??'').'" class="form-control"'.$data['attr'].' />';
+						}
 					break;
 					case 'textarea':
 						if ($data['language'] && !is_array($value))
@@ -368,12 +369,12 @@ class params
 								foreach((array)$this->lang_r AS $l)
 								{
 									if($data['format'] == 'html')	$r_tmp[$l['title']]= editor_html($this->set_field_name($name, $id.']['.$l['id']), $value[$l['id']], $data['attr']);
-									else	$r_tmp[$l['title']]= '<textarea name="'.$this->set_field_name($name, $id.']['.$l['id']).'" class="form-control"'.$data['attr'].' />'.@htmlentities($value[$l['id']]).'</textarea>';
+									else	$r_tmp[$l['title']]= '<textarea name="'.$this->set_field_name($name, $id.']['.$l['id']).'" class="form-control"'.$data['attr'].' />'.htmlentities($value[$l['id']]??'').'</textarea>';
 								}
 								$input .= tabs($r_tmp);
 							}else{
 								if($data['format'] == 'html')	$input .= editor_html($this->set_field_name($name, $id), $value, $data['attr']);
-								else $input .= '<textarea name="'.$this->set_field_name($name, $id).'" class="form-control"'.$data['attr'].' />'.htmlentities($value).'</textarea>';
+								else $input .= '<textarea name="'.$this->set_field_name($name, $id).'" class="form-control"'.$data['attr'].' />'.htmlentities($value??'').'</textarea>';
 							}
 						}
 					break;

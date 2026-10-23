@@ -289,7 +289,11 @@ class bbcSQL
 	{
 		if(!$this->tmp_is_cache)
 		{
-			$result = @mysqli_num_rows($this->resid);
+			$result = 0;
+			if (!is_bool($this->resid))
+			{
+				$result = @mysqli_num_rows($this->resid);
+			}
 			if(!$result)
 			{
 				$result = mysqli_affected_rows($this->link);
@@ -560,7 +564,7 @@ class bbcSQL
 			if(!empty($sql))
 			{
 				$this->debug_tot++;
-				$dbOutput .= '<hr />SQL - '.$this->debug_tot.$type.': '.htmlentities($sql);
+				$dbOutput .= '<hr />SQL - '.$this->debug_tot.$type.': '.htmlentities($sql??'');
 			}
 			if (empty($link))
 			{
@@ -642,7 +646,7 @@ class bbcSQL
 			$row = array(++$index);
 			for ($i=0; $i<mysqli_num_fields($this->resid); $i++)
 			{
-				$row[] = htmlentities($dt[$i]);
+				$row[] = htmlentities($dt[$i]??'');
 			}
 			$rows[] = $row;
 		}

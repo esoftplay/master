@@ -105,7 +105,11 @@ class FormTextarea extends Form
 			}else{
 				$out	= $str_value;
 			}
-			$out	= htmlentities(preg_replace( "#\r\n#is", "\n", $out ));
+			$out	= preg_replace( "#\r\n#is", "\n", $out );
+			if (is_string($out) && !empty($out))
+			{
+				$out = htmlentities($out);
+			}
 		}
 		return $out;
 	}

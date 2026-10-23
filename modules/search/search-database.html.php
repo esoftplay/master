@@ -5,7 +5,7 @@
 					<div class="input-group">
 						<div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
 							<input type="hidden" name="mod" size="30" value="<?php echo $Bbc->mod['name'].'.result';?>" />
-							<input class="form-control" type="text" placeholder="Enter Keywords" name="id" size="30" value="<?php echo htmlentities($keyword);?>"/>
+							<input class="form-control" type="text" placeholder="Enter Keywords" name="id" size="30" value="<?php echo htmlentities($keyword??'');?>"/>
 					</div>
 				</div>
 				<div class="col-sm-1">

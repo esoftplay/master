@@ -13,7 +13,7 @@ $defConfig = array('language' => (count($r_lang) > 1) ? $language['code'] : 'en'
 ?>
 <div class="form-group">
 	<label>Content Title</label>
-	<input type="text" name="text[title][<?php echo $lang_id;?>]" value="<?php echo htmlentities($text['title']);?>" id="title_<?php echo $lang_id;?>" class="form-control" />
+	<input type="text" name="text[title][<?php echo $lang_id;?>]" value="<?php echo htmlentities($text['title'] ?? '');?>" id="title_<?php echo $lang_id;?>" class="form-control" />
 </div>
 <div class="panel-group" id="accordion<?php echo $lang_id; ?>">
 	<div class="panel panel-default">

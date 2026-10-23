@@ -233,7 +233,7 @@ class FormDateInterval extends FormMultiinput
 			{
 				$this->caption = $this->title;
 			}
-			$output = '<span class="tips" title="'.htmlentities($this->caption).'" data-toggle="popover" data-placement="auto" data-content="'.htmlentities('<table>'.implode('', $tips).'</table>').'">'.$output.'</span>';
+			$output = '<span class="tips" title="'.htmlentities($this->caption??'').'" data-toggle="popover" data-placement="auto" data-content="'.htmlentities('<table>'.implode('', $tips).'</table>').'">'.$output.'</span>';
 			if (empty($GLOBALS['sys']->tips))
 			{
 				$GLOBALS['sys']->tips = 1;
@@ -265,8 +265,8 @@ class FormDateInterval extends FormMultiinput
 		}
 		// RENDERING NORMAL INPUT OUTPUT
 		$out   = array();
-		$out[] = '<input name="'.$names[0].'" type="text" value="'. htmlentities($values[0]) .'" '.$extras[0].'>';
-		$out[] = '<input name="'.$names[1].'" type="text" value="'. htmlentities($values[1]) .'" '.$extras[1].'>';
+		$out[] = '<input name="'.$names[0].'" type="text" value="'. htmlentities($values[0]??'') .'" '.$extras[0].'>';
+		$out[] = '<input name="'.$names[1].'" type="text" value="'. htmlentities($values[1]??'') .'" '.$extras[1].'>';
 		foreach ( $this->elements as $id=>$element )
 		{
 			if ($id!=$enddate)

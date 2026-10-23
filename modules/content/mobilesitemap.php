@@ -20,7 +20,7 @@ foreach($r AS $d)
 	{
 		$modified	= $d['revised'] > 0 ? $d['modified'] : $d['created'];
 		$links[]	= $link;
-		$content[]= '<url><loc>'.htmlentities($link).'</loc><lastmod>'.date('Y-m-d', strtotime($modified)).'</lastmod><mobile:mobile/></url>';
+		$content[]= '<url><loc>'.htmlentities($link??'').'</loc><lastmod>'.date('Y-m-d', strtotime($modified)).'</lastmod><mobile:mobile/></url>';
 	}
 }
 
@@ -37,7 +37,7 @@ foreach($r AS $d)
 	{
 		$prior = $link == $_URL ? '1.0' : '0.6';
 		$links[] = $link;
-		$content[] = '<url><loc>'.htmlentities($link).'</loc><mobile:mobile/></url>';
+		$content[] = '<url><loc>'.htmlentities($link??'').'</loc><mobile:mobile/></url>';
 	}
 }
 
@@ -52,7 +52,7 @@ foreach($r AS $d)
 	{
 		$prior = $link == $_URL ? '1.0' : '0.6';
 		$links[] = $link;
-		$content[] = '<url><loc>'.htmlentities($link).'</loc><mobile:mobile/></url>';
+		$content[] = '<url><loc>'.htmlentities($link??'').'</loc><mobile:mobile/></url>';
 	}
 }
 function content_menu_link($link, $seo, $main_url)

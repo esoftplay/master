@@ -178,9 +178,10 @@ class bbcconfig
 				$text = (isset($data['text'])) ? $data['text'] : ucwords($id);
 				$data['attr'] = isset($data['attr']) ? $data['attr'] : '';
 
-				$type = strtolower($data['type']);
-				$value= isset($config[$id]) ? $config[$id] : @$data['default'];
-				$input= $opt = '';
+				$type  = strtolower($data['type']);
+				$value = isset($config[$id]) ? $config[$id] : @$data['default'];
+				$value = htmlentities($value??'');
+				$input = $opt = '';
 				switch($type)
 				{
 					case 'radio':
@@ -191,7 +192,7 @@ class bbcconfig
 							if(empty($opt))	$opt = ($key!=0) ? 'key' : 'value';
 							$key = ($opt == 'key') ? $key : $val;
 							$select	= ($key==$value) ? ' checked="checked"' : '';
-							$out[] = '<label><input type="radio" name="'.$name.'['.$id.']" value="'.htmlentities($key).'" id="'.$name.$id.$key.'"'.$data['attr'].$select.'> '.$val.'</label>';
+							$out[] = '<label><input type="radio" name="'.$name.'['.$id.']" value="'.htmlentities($key??'').'" id="'.$name.$id.$key.'"'.$data['attr'].$select.'> '.$val.'</label>';
 						}
 						if (empty($data['delim']))
 						{
@@ -231,8 +232,8 @@ class bbcconfig
 							$data['option'] = is_array($data['option']) ? $data['option'] : array(1 => $data['option']);
 							$key            = key($data['option']);
 							$val            = current($data['option']);
-							$select	        = $key == $value ? ' checked="checked"' : '';
-							$input         .= '<label><input type="checkbox" name="'.$name.'['.$id.']" value="'.htmlentities($key).'" id="'.$name.$id.$key.'"'.$data['attr'].$select.'> '.$val.'</label>';
+							$select	        = ($key == $value) ? ' checked="checked"' : '';
+							$input         .= '<label><input type="checkbox" name="'.$name.'['.$id.']" value="'.htmlentities($key??'').'" id="'.$name.$id.$key.'"'.$data['attr'].$select.'> '.$val.'</label>';
 						}
 					break;
 					case 'htmlarea':
@@ -247,7 +248,7 @@ class bbcconfig
 						$input .= editor_code($name.'['.$id.']', $value, $data['attr']);
 					break;
 					case 'textarea':
-						$input .= '<textarea name="'.$name.'['.$id.']"'.$data['attr'].' class="form-control">'.htmlentities($value).'</textarea>';
+						$input .= '<textarea name="'.$name.'['.$id.']"'.$data['attr'].' class="form-control">'.$value.'</textarea>';
 					break;
 					case 'file':
 						$data['path'] = isset($data['path']) ? $data['path'] : 'images/';
@@ -277,11 +278,11 @@ class bbcconfig
 						$input .= '<input type="file" name="'.$name.'['.$id.']" value=""'.$data['attr'].' class="form-control">';
 					break;
 					case 'hidden':
-						$input .= '<input type="hidden" name="'.$name.'['.$id.']" value="'.htmlentities($value).'" />';
+						$input .= '<input type="hidden" name="'.$name.'['.$id.']" value="'.$value.'" />';
 						break;
 					case 'text':
 					default:
-						$input .= '<input type="text" name="'.$name.'['.$id.']" value="'.htmlentities($value).'"'.$data['attr'].' class="form-control">';
+						$input .= '<input type="text" name="'.$name.'['.$id.']" value="'.$value.'"'.$data['attr'].' class="form-control">';
 						if($type != 'text')
 							$input .= msg('Unsupported type input...', 'warning');
 					break;

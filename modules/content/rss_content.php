@@ -17,11 +17,11 @@ if($id > 0)
 		<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 			<channel>
 				<atom:link href="<?php echo seo_uri();?>" rel="self" type="application/rss+xml" />
-				<title><?php echo htmlentities($data['title']);?></title>
+				<title><?php echo htmlentities($data['title']??'');?></title>
 				<link><?php echo htmlentities(content_link($data['id'], $data['title']));?></link>
-				<description><?php echo htmlentities($data['description']);?></description>
+				<description><?php echo htmlentities($data['description']??'');?></description>
 				<image>
-					<title><?php echo htmlentities($data['title']);?></title>
+					<title><?php echo htmlentities($data['title']??'');?></title>
 					<link><?php echo htmlentities(content_link($data['id'], $data['title']));?></link>
 					<url><?php echo content_src($data['image']);?></url>
 				</image>
@@ -30,8 +30,8 @@ if($id > 0)
 				{
 					if(is_url($dt['website']))
 					{
-						$link = '<link>'.htmlentities($dt['website']).'</link>
-						<guid>'.htmlentities($dt['website']).'</guid>';
+						$link = '<link>'.htmlentities($dt['website']??'').'</link>
+						<guid>'.htmlentities($dt['website']??'').'</guid>';
 					}else{
 						$link = '';
 					}
@@ -41,7 +41,7 @@ if($id > 0)
 					$enclosure = '<enclosure url="'.@$m[1].'" type="image/jpg" />';
 					?>
 					<item>
-						<title><?php echo htmlentities($dt['name']);?></title>
+						<title><?php echo htmlentities($dt['name']??'');?></title>
 						<?php echo $link;?>
 						<pubDate><?php echo date('D, d M Y H:i:s', strtotime($dt['date']));?> +0700</pubDate>
 						<description><?php echo $dt['content'];?></description>
