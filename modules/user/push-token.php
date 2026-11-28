@@ -17,7 +17,7 @@ $output = array(
 	'message' => 'failed to save your data',
 	'result'  => 0
 	);
-die();
+
 if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 {
 	$token     = to_string($_POST['token'] ?? '');
@@ -62,7 +62,7 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 						file_write($path, json_encode($json));
 						if (get_once('alert_fcm_verify', 1, 'day'))
 						{
-							// alert_fcm_verify();
+							alert_fcm_verify();
 						}
 					}
 				}else{
