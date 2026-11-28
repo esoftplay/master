@@ -20,13 +20,13 @@ $output = array(
 die();
 if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 {
-	$token     = $_POST['token'];
+	$token     = to_string($_POST['token'] ?? '');
 	$user_id   = @intval($_POST['user_id']);
-	$group_ids = @$_POST['group_id'];
+	$group_ids = to_string($_POST['group_id'] ?? '');
 	$push_id   = @intval($_POST['push_id']);
-	$username  = @$_POST['username'];
-	$device    = @$_POST['device'];
-	$os        = @$_POST['os'];
+	$username  = to_string($_POST['username'] ?? '');
+	$device    = to_string($_POST['device'] ?? '');
+	$os        = to_string($_POST['os']);
 	$secretkey = _class('crypt')->decode($_POST['secretkey']);
 	if (!empty($secretkey))
 	{
@@ -62,7 +62,7 @@ if (!empty($_POST['token']) && !empty($_POST['secretkey']))
 						file_write($path, json_encode($json));
 						if (get_once('alert_fcm_verify', 1, 'day'))
 						{
-							alert_fcm_verify();
+							// alert_fcm_verify();
 						}
 					}
 				}else{
